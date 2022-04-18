@@ -81,12 +81,11 @@ const Navbar = () => {
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       style={{
-        backgroundColor: "rgba( 0, 0, 0, 0.2 )",
+        backgroundColor: "rgba( 0, 0, 0, 0 )",
         boxShadow: "none",
-        borderBottomStyle: "solid",
-        borderBottomColor: "white",
+        borderBottom: "0.1rem solid white",
       }}
     >
       <Container maxWidth="xl">
@@ -162,7 +161,10 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              <Typography textAlign="center" style={{ color: "white" }}>
+              <Typography
+                textAlign="center"
+                style={{ color: "white", marginLeft: "5px" }}
+              >
                 {username}
               </Typography>
             </IconButton>
