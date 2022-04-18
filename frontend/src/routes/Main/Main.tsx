@@ -9,10 +9,7 @@ import Community from "../../components/Main/Community/Community";
 const Main = () => {
   return (
     <>
-      <div>
-        <img src={bg1} alt="" style={{ position: "relative" }} />
-      </div>
-      {/* <Carousels></Carousels> */}
+      <Carousels></Carousels>
       <BestNailArt></BestNailArt>
       <VideoPlayer></VideoPlayer>
       <HotDesigners></HotDesigners>
