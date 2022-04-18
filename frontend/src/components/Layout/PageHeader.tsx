@@ -60,6 +60,7 @@ const Wrapper = styled.div`
       bottom: 10px;
       font-size: 14px;
       color: #bfbfbd;
+      margin-left:10px;
       .NavElement {
           position: absolute;
           width: 100%;
@@ -73,7 +74,13 @@ const Wrapper = styled.div`
 
           span {
             margin-top : 0px;
+         
           }
+          
+          svg {
+            top: 20%;
+          }
+          
 
         }
 

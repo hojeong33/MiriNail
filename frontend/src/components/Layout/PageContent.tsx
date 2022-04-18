@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import NFTItems from './NFTItems'
-import Paginations from './Paginations'
+import { Paginations } from './Paginations'
 
 const Wrapper = styled.div`
   * {
@@ -123,7 +123,11 @@ const PageContent = () => {
             </div>
             <div className="RightBox">
               <NFTItems />
-              <Paginations />
+          
+              <div style={{visibility : "hidden"}}>sdsf</div>
+              <div style={{left : "35%"}}>
+                <Paginations />
+              </div>
             </div>
             
           </div>
@@ -134,6 +138,7 @@ const PageContent = () => {
         </MainFrame>
         
       </Wrapper>
+      
     </>
   )
 }

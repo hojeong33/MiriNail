@@ -9,6 +9,10 @@ import Tutorial from './routes/Guide/Tutorial';
 import GlobalStyle from './styles/global';
 import FAQ from './routes/Guide/FAQ';
 import NFTList from './routes/NFT/NFTList';
+import NFTDetail from './routes/NFT/NFTDetail';
+import 'bootstrap/dist/css/bootstrap.css';
+
+
 
 function App() {
   return (
@@ -23,6 +27,7 @@ function App() {
           <Route path="/tutorial" element={<Tutorial />}/>
           <Route path="/faq" element={<FAQ />}/>
           <Route path="/nft" element={<NFTList />} />
+          <Route path="/nft/detail" element={<NFTDetail />} />
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>

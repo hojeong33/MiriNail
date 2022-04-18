@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import {useState} from 'react'
+import { Paginations } from './Paginations'
 
 const Wrapper = styled.div`
 
@@ -141,7 +142,11 @@ const NFTItems = () => {
         
         
       </ul>
+      <div>
+        
+      </div>
       </Wrapper>
+      
     </>
   )
 }
