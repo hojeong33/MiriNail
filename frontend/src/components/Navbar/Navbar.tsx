@@ -58,6 +58,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = () => {
+  //테스트
+  const isLogin = false;
   const username = "@abcdef";
   //User 하위 메뉴창
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -162,44 +164,49 @@ const Navbar = () => {
           </Search>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Button
-              href={KAKAO_AUTH_URL}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Kakao Login
-            </Button>
-            {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              <Typography
-                textAlign="center"
-                style={{ color: "white", marginLeft: "5px" }}
+            {!isLogin ? (
+              <Button
+                href={KAKAO_AUTH_URL}
+                sx={{ my: 2, color: "white", display: "block" }}
               >
-                {username}
-              </Typography>
-            </IconButton>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Mypage</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
-            </Menu> */}
+                Kakao Login
+              </Button>
+            ) : (
+              <>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Typography
+                    textAlign="center"
+                    style={{ color: "white", marginLeft: "5px" }}
+                  >
+                    {username}
+                  </Typography>
+                </IconButton>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Mypage</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>
