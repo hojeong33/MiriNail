@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import UnderLineInput from '../../Commons/UnderLineInput'
 import FileUpload from './FileUpload'
+import {useState,useEffect} from 'react'
 
 
 const Wrapper = styled.div`
@@ -137,7 +138,26 @@ const MainFrame = styled.div`
   }
 `
 
+
 const PageContent = () => {
+  const [imageProcess,setImageProcess] = useState(0)
+  const [infoProcess,setInfoProcess] = useState(0)
+  const [textProcess,setTextProcess] = useState('')
+  useEffect(() => {
+    console.log(imageProcess)
+  },[imageProcess])
+  useEffect(() => {
+    console.log(infoProcess)
+  },[infoProcess])
+
+  const onChangeText = (e:any) => {
+    setTextProcess(e.target.value) 
+
+  }
+  
+  // useEffect(() => {
+  //   console.log(textProcess)
+  // },[textProcess])
   return (
     <>
       <Wrapper>
@@ -149,16 +169,16 @@ const PageContent = () => {
               <div className="OrderFilter">
                 <a>정렬</a>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb1" />
-                  <label htmlFor="cb1">이미지 등록 (1/2)</label>
+                  <input type="checkbox" id="cb1" checked={imageProcess === 2 ? true : false}/>
+                  <label htmlFor="cb1">이미지 등록 ({imageProcess}/2)</label>
                 </div>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb2" />
-                  <label htmlFor="cb2">네일정보 등록 (1/4)</label>
+                  <input type="checkbox" id="cb2" checked={infoProcess === 4 ? true : false}/>
+                  <label htmlFor="cb2">네일정보 등록 ({infoProcess}/4)</label>
                 </div>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb3" />
-                  <label htmlFor="cb3">소개글 등록 (0/1)</label>
+                  <input type="checkbox" id="cb3" checked={textProcess.length >= 10 ? true : false}/>
+                  <label htmlFor="cb3">소개글 등록 ({textProcess.length >= 10 ? 1 : 0}/1)</label>
                 </div>
               </div>
 
@@ -169,18 +189,18 @@ const PageContent = () => {
                 이미지 등록
               </div>
               <div className='fileBox'>
-                <FileUpload />
+                <FileUpload setImageProcess={setImageProcess}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}}>
                 네일정보 등록
               </div>
               <div className='infoBox'>
-                <UnderLineInput />
+                <UnderLineInput setInfoProcess={setInfoProcess}/>
               </div>
-              <div className='subTitle' style={{marginTop:"120px"}}>
-                소개글 등록
+              <div className='subTitle' style={{marginTop:"120px"}} >
+                소개글 등록 (10자 이상 입력해주세요.)
               </div>
-              <textarea name="" id="">asdfsd</textarea>
+              <textarea name="textVal" id="" onChange={onChangeText}>asdfsd</textarea>
               <div className="buttons">
                 <div className="btn1">
                   등록

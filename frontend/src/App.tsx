@@ -12,6 +12,7 @@ import NFTList from './routes/NFT/NFTList';
 import NFTDetail from './routes/NFT/NFTDetail';
 import 'bootstrap/dist/css/bootstrap.css';
 import NFTRegister from './routes/NFT/NFTRegister';
+import DesignerList from './routes/Designer/DesignerList';
 
 
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/nft" element={<NFTList />} />
           <Route path="/nft/detail" element={<NFTDetail />} />
           <Route path="/nft/register" element={<NFTRegister />} />
+          <Route path="/designer" element={<DesignerList />} />
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>

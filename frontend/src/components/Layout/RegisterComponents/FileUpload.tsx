@@ -3,12 +3,18 @@ import ImagePreview from './ImagePreview';
 import './File.scss';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-const ImageUploadBox = ({ max = 10 }:any) => {
+const ImageUploadBox = (props:any) => {
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [previewImages, setPreviewImages] = useState([]);
   const uploadBoxRef = useRef<any>();
   const inputRef = useRef<any>();
-  
+
+  useEffect(() => {
+    console.log(uploadedImages)
+    props.setImageProcess(uploadedImages.length)
+    // props.setImageProcess(uploadedImages.length)
+  }, [uploadedImages])
+
   useEffect(() => {
     const uploadBox = uploadBoxRef.current;
     const input = inputRef.current;
@@ -20,7 +26,8 @@ const ImageUploadBox = ({ max = 10 }:any) => {
         reader.onloadend = (e:any) => {
           const result:any = e.target.result ;
           if (result) {
-            setUploadedImages((state:any) => [...state, result].slice(0, max));
+            setUploadedImages((state:any) => [...state, result].slice(0, 2));
+            
           }
         };
         reader.readAsDataURL(file);
@@ -53,7 +60,7 @@ const ImageUploadBox = ({ max = 10 }:any) => {
       uploadBox.removeEventListener("dragover", dragOverHandler);
       input.removeEventListener("change", changeHandler);
     };
-  }, [max]);
+  }, []);
   
   useEffect(() => {
     const imageJSXs:any = uploadedImages.map((image, index) => {
