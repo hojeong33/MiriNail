@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-// import Footer from './components/Footer/Footer';
-// import Navbar from './components/Navbar/Navbar';
 import Community from './routes/Community/Community';
 import Main from './routes/Main/Main';
 import Mypage from './routes/Mypage/Mypage';
@@ -13,6 +11,12 @@ import NFTDetail from './routes/NFT/NFTDetail';
 import 'bootstrap/dist/css/bootstrap.css';
 import NFTRegister from './routes/NFT/NFTRegister';
 import DesignerList from './routes/Designer/DesignerList';
+
+import Footer from "./components/Footer/Footer";
+import Navbar from "./components/Navbar/Navbar";
+import KakaoRedirect from "./components/Login/KakaoRedirect";
+// import Cards from './components/Commons/Cards';
+
 
 
 
@@ -32,6 +36,9 @@ function App() {
           <Route path="/nft/detail" element={<NFTDetail />} />
           <Route path="/nft/register" element={<NFTRegister />} />
           <Route path="/designer" element={<DesignerList />} />
+          <Route path="/api/users/login" element={<KakaoRedirect />} />
+          {/* <Route path="/test" element={<Cards />} /> */}
+      
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>

@@ -1,5 +1,19 @@
 import styled from "styled-components"
 import {useState} from 'react'
+import Slider from "react-slick";
+import DesignerCarousel from "./DesignerCarousel";
+
+export interface hotDesignersProps {
+  designer_seq : number;
+  user_nickname : string;
+  user_profile_img : string;
+  designer_shop_name : string;
+  follow_follower_length : number;
+  designs : number; 
+}
+export interface Props {
+  items : hotDesignersProps[];
+}
 
 const Wrapper = styled.div`
 * {
@@ -12,12 +26,16 @@ const Wrapper = styled.div`
   
   }
 
+  
+
 `
 
 const MainFrame = styled.div`
   width :1300px;
   height: 100%;
   margin : 0 auto;
+
+ 
   
 
   .clear {
@@ -67,8 +85,19 @@ const MainFrame = styled.div`
     }
   }
 `
+
+
 const PageContent = () => {
-  const [hotDesigners,setHotDesigniers] = useState([
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    // nextArrow: <SampleNextArrow />,
+    // prevArrow: <SamplePrevArrow />,
+  };
+  const [hotDesigners,setHotDesigniers] = useState<hotDesignersProps[]>([
     {
       designer_seq : 1,
       user_nickname : 'Designer1',
@@ -101,32 +130,73 @@ const PageContent = () => {
       follow_follower_length : 50,
       designs : 40, 
     },
+    {
+      designer_seq : 5,
+      user_nickname : 'Designer1',
+      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
+      designer_shop_name : 'Nailshop1',
+      follow_follower_length : 50,
+      designs : 40, 
+    },
+    {
+      designer_seq : 6,
+      user_nickname : 'Designer1',
+      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
+      designer_shop_name : 'Nailshop1',
+      follow_follower_length : 50,
+      designs : 40, 
+    },
+    {
+      designer_seq : 7,
+      user_nickname : 'Designer1',
+      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
+      designer_shop_name : 'Nailshop1',
+      follow_follower_length : 50,
+      designs : 40, 
+    },
+    {
+      designer_seq : 8,
+      user_nickname : 'Designer1',
+      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
+      designer_shop_name : 'Nailshop1',
+      follow_follower_length : 50,
+      designs : 40, 
+    },
+    {
+      designer_seq : 9,
+      user_nickname : 'Designer1',
+      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
+      designer_shop_name : 'Nailshop1',
+      follow_follower_length : 50,
+      designs : 40, 
+    },
+    {
+      designer_seq : 10,
+      user_nickname : 'Designer1',
+      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
+      designer_shop_name : 'Nailshop1',
+      follow_follower_length : 50,
+      designs : 40, 
+    },
+    {
+      designer_seq : 11,
+      user_nickname : 'Designer1',
+      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
+      designer_shop_name : 'Nailshop1',
+      follow_follower_length : 50,
+      designs : 40, 
+    },
   ])
 
 
   return (
     <>
       <Wrapper>
+        
         <MainFrame>
-        <ul className="clear">
-          <div>Hot Designers</div>
-          <li className="ItemListType">
-            <a href="" className="ItemBox">
-              <div className="imx">
-                <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-                <div className="itemName">글레이즈 - 루비 레드</div>
-                <div className="itemPrice">50,000원</div>
-                <div className="hashTag">#겨울 #Designer1</div>
-              </div>
-            </a>
-          </li>
-          {hotDesigners.map(e => {
-            return (
-              <div>dd</div>
-            )
-          })}
-        </ul>
+          <DesignerCarousel items={hotDesigners} />
         </MainFrame>
+        
       </Wrapper>
     </>
   )
