@@ -8,6 +8,7 @@ import Mypage from "./routes/Mypage/Mypage";
 import Tutorial from "./routes/Guide/Tutorial";
 import GlobalStyle from "./styles/global";
 import FAQ from "./routes/Guide/FAQ";
+import KakaoRedirect from "./components/Login/KakaoRedirect";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/Community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/api/users/login" element={<KakaoRedirect />} />
         </Routes>
         <Footer />
       </BrowserRouter>

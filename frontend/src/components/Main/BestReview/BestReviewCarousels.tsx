@@ -20,6 +20,9 @@ const StyledSlider = styled(Slider)`
     bottom: 10px;
     right: 80%;
   }
+  .slick-cloned {
+    background-color: black;
+  }
 `;
 function BestReviewCarousels({ items }: Props) {
   const settings = {

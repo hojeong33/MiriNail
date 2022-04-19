@@ -12,7 +12,10 @@ import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { styled, alpha } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { KAKAO_AUTH_URL } from "../Login/Auth";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -159,7 +162,13 @@ const Navbar = () => {
           </Search>
 
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <Button
+              href={KAKAO_AUTH_URL}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Kakao Login
+            </Button>
+            {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               <Typography
                 textAlign="center"
@@ -190,7 +199,7 @@ const Navbar = () => {
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
-            </Menu>
+            </Menu> */}
           </Box>
         </Toolbar>
       </Container>
