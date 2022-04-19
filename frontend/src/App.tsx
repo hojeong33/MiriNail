@@ -11,6 +11,7 @@ import FAQ from './routes/Guide/FAQ';
 import NFTList from './routes/NFT/NFTList';
 import NFTDetail from './routes/NFT/NFTDetail';
 import 'bootstrap/dist/css/bootstrap.css';
+import NFTRegister from './routes/NFT/NFTRegister';
 
 
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/faq" element={<FAQ />}/>
           <Route path="/nft" element={<NFTList />} />
           <Route path="/nft/detail" element={<NFTDetail />} />
+          <Route path="/nft/register" element={<NFTRegister />} />
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
