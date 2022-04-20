@@ -3,10 +3,8 @@ package com.nail.backend.domain.qna.db.repository;
 
 import com.nail.backend.domain.qna.db.entity.QQna;
 import com.nail.backend.domain.qna.db.entity.QQnaAnswer;
-import com.nail.backend.domain.qna.db.entity.Qna;
 import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
-import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +21,15 @@ public class QnaRepositorySupport {
     QQnaAnswer qQnaAnswer = QQnaAnswer.qnaAnswer;
 
 //    CREATE_________________________________________
+
+    // 답변 달리면 답변여부 update
+    @Transactional
+    public void updateIsAnswered(Long qnaSeq){
+        jpaQueryFactory.update(qQna)
+                .set(qQna.qnaIsAnswered,true)
+                .where(qQna.qnaSeq.eq(qnaSeq))
+                .execute();
+    }
 
 
 //    READ___________________________________________
@@ -46,6 +53,8 @@ public class QnaRepositorySupport {
                 .execute();
         return execute;
     }
+
+
 
 //    DELETE_________________________________________
 

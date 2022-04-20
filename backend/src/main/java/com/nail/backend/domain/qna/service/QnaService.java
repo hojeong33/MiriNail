@@ -21,5 +21,6 @@ public interface QnaService {
     Long qnaAnswerModify(QnaAnswerModifyPutReq qnaAnswerModifyPutReq);
 //    DELETE_________________________________________
     boolean qnaRemove(Long qnaSeq);
+    boolean qnaAnswerRemove(Long qnaAnswerSeq);
 
 }

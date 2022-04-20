@@ -90,6 +90,9 @@ public class QnaServiceImpl implements QnaService {
                 .build();
         QnaAnswer saveQnaAnswer = qnaAnswerRepository.save(qnaAnswer);
 
+        // 답변 여부 update
+        qnaRepositorySupport.updateIsAnswered(qnaAnswerRegisterPostReq.getQnaSeq());
+
         return saveQnaAnswer;
     }
 
@@ -130,6 +133,17 @@ public class QnaServiceImpl implements QnaService {
 
         if(qnaRepository.findById(qnaSeq).isPresent()){
             qnaRepository.deleteById(qnaSeq);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean qnaAnswerRemove(Long qnaAnswerSeq){
+
+        if(qnaAnswerRepository.findById(qnaAnswerSeq).isPresent()){
+            qnaAnswerRepository.deleteById(qnaAnswerSeq);
             return true;
         }
         return false;

@@ -1,6 +1,5 @@
 package com.nail.backend.domain.qna.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.qna.db.entity.Qna;
 import com.nail.backend.domain.qna.db.entity.QnaAnswer;
@@ -124,11 +123,31 @@ public class QnaContoroller {
         log.info("qnaDelete - 호출");
 
         if(qnaService.qnaRemove(qnaSeq)){
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제 성공"));
+        }
+        else{
             log.error("qnaDelete - This qnaSeq doesn't exist");
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"삭제 실패"));
         }
-        else
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제 성공"));
     }
 
+    @Transactional
+    @ApiOperation(value = "문의 답변 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "삭제 성공"),
+            @ApiResponse(code = 404, message = "삭제 실패")
+    })
+    @DeleteMapping("/answer/{qnaAnswerSeq}")
+    public ResponseEntity<BaseResponseBody> qnaAnswerRemove(@ApiParam(value ="qna Answer번호") @PathVariable Long qnaAnswerSeq){
+        log.info("qnaAnswerDelete - 호출");
+
+        if(qnaService.qnaAnswerRemove(qnaAnswerSeq)){
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제성공"));
+        }
+        else{
+            log.error("qnaAnswerDelete - This qnaAnswerSeq doesn't exist");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"삭제실패"));
+        }
+
+    }
 }
