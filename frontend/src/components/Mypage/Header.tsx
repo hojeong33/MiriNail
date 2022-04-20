@@ -19,9 +19,22 @@ const Wrapper = styled.div`
     max-width: 1300px;
     margin: 0 auto;
     height: 100%;
+    .line {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 30px;
+      border-bottom: 3px solid #3d3c3a;
+      margin-top: -30px;
+      margin-left: -15px;
+    }
   }
 
   .pageHeaderTitle {
+    font-family: 'Playfair Display', serif;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -36,22 +49,6 @@ const Wrapper = styled.div`
     font-weight: 500;
   }
 
-  .pageHeaderLinks {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    font-size: 18px;
-    width: 100%;
-    margin-top: 100px;
-    text-align: center;
-    color: #3d3c3a;
-
-    span {
-      padding: 0px 25px;
-      cursor: pointer;
-    }
-  }
-
   .pageHeaderNavigation {
     position: absolute;
     width: 100%;
@@ -61,34 +58,16 @@ const Wrapper = styled.div`
     color: #bfbfbd;
     .NavElement {
       position: absolute;
+      display: flex;
+      align-items: center;
       width: 100%;
       height: 30px;
       bottom: 10px;
       font-size: 14px;
       color: #bfbfbd;
-      margin-left:10px;
-      .NavElement {
-          position: absolute;
-          width: 100%;
-          height: 30px;
-          bottom: 10px;
-          font-size: 14px;
-          color: #bfbfbd;
-          * {
-            margin-right:15px;
-          }
-
-          span {
-            margin-top : 0px;
-         
-          }
-          
-          svg {
-            top: 20%;
-          }
-          
-
-        }
+      * {
+        margin-right: 15px;
+      }
 
       span {
         margin-top: 0px;
@@ -97,7 +76,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function PageHeader() {
+function Header() {
   
 
   return (
@@ -105,21 +84,14 @@ function PageHeader() {
     <Wrapper>
       <div className="row">
         <div className="pageHeaderTitle">
-          SHOPPING
-        </div>
-        <div className="pageHeaderLinks">
-          <span>
-            타입별
-          </span>
-          <span>
-            색상별
-          </span>
+        <div className="line"></div>
+          <div>MY PAGE</div> 
         </div>
         <div className="pageHeaderNavigation">
           <div className="NavElement">
-            <span>제품</span>
+            <span>마이</span>
             <ChevronRightIcon />
-            <span>LINE UP</span>
+            <span>마이페이지</span>
           </div>
         </div>
       </div>
@@ -128,4 +100,4 @@ function PageHeader() {
   )
 }
 
-export default PageHeader
+export default Header
