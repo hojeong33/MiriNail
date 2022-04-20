@@ -2,8 +2,11 @@ package com.nail.backend.domain.qna.service;
 
 
 import com.nail.backend.domain.qna.db.entity.Qna;
+import com.nail.backend.domain.qna.db.entity.QnaAnswer;
+import com.nail.backend.domain.qna.db.repository.QnaAnswerRepository;
 import com.nail.backend.domain.qna.db.repository.QnaRepository;
 import com.nail.backend.domain.qna.db.repository.QnaRepositorySupport;
+import com.nail.backend.domain.qna.request.QnaAnswerRegisterPostReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,9 @@ public class QnaServiceImpl implements QnaService {
 
     @Autowired
     QnaRepositorySupport qnaRepositorySupport;
+
+    @Autowired
+    QnaAnswerRepository qnaAnswerRepository;
 
     @Autowired
     AwsS3Service awsS3Service;
@@ -70,10 +76,24 @@ public class QnaServiceImpl implements QnaService {
                 .build();
 
         Qna saveQna = qnaRepository.save(qna);
-
-
         return saveQna;
     }
+
+    @Override
+    @Transactional
+    public QnaAnswer qnaAnswerRegister(QnaAnswerRegisterPostReq qnaAnswerRegisterPostReq){
+
+        QnaAnswer qnaAnswer = QnaAnswer.builder()
+                .qnaSeq(qnaAnswerRegisterPostReq.getQnaSeq())
+                .qnaAnswerDesc(qnaAnswerRegisterPostReq.getQnaAnswerDesc())
+                .build();
+        QnaAnswer saveQnaAnswer = qnaAnswerRepository.save(qnaAnswer);
+
+        return saveQnaAnswer;
+    }
+
+
+
 //    READ___________________________________________
 //    UPDATE_________________________________________
 

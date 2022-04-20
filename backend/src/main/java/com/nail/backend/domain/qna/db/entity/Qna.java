@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
-@ApiModel(value = "QnA", description = "문의 및 답변")
+@ApiModel(value = "QnA", description = "문의")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
