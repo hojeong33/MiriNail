@@ -10,25 +10,23 @@ interface AccordionProps {
 
 // style
 const Container = styled.div`
-  border-radius: 10px;
   display: flex;
-  width: 70vw;
+  width: 100%;
   position: relative;
   flex-direction: column;
   justify-content: center;
-  /* border-radius: 10px; */
   border: 1px solid lightgray;
   margin-bottom: 5px;
   span {
     font-size: 24px;
-    font-weight: bold;
+
     margin-right: 12px;
   }
 `;
 
 const Question = styled.div`
   font-size: 20px;
-  font-weight: bold;
+
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -86,7 +84,7 @@ function Accordion(props: AccordionProps) {
         parentRef.current.style.height = `${
           props.contents ? childRef.current.clientHeight : 0
         }px`;
-        parentRef.current.style.backgroundColor = "#efeff8 ";
+        parentRef.current.style.backgroundColor = "rgb(236 236 236)";
       }
       setIsCollapse(!isCollapse);
     },

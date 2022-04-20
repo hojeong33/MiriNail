@@ -3,38 +3,16 @@ import styled from "styled-components";
 import Accordion from '../../components/FAQ/Accordion';
 
 //style
-const Container = styled.div`
-  font-family: 'Noto Sans KR', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
 
 const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #35357a;
-  border-radius: 0 0 10px 10px;
-  color: white;
-  width: 100%;
-  height: 180px;
+  text-align : left;
+  font-size : 40px;
 `
 
 const Main = styled.div`
-  min-height: 50vh;
-  margin-top: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 200px;
-`
 
-const Title = styled.h1`
-  margin: 80px 0;
-  font-size: 45px;
+  margin-top: 60px;
+
 `
 
 
@@ -60,10 +38,9 @@ export default function FAQ() {
   const A6 = "상단 메뉴의 Store 또는 특정 유저의 프로필에서 판매 등록된 작품을 조회할 수 있습니다.\n판매 등록된 작품은 일반판매등록, 경매등록 두가지의 종류가 있습니다.\n\n일반 판매등록된 작품을 구매하기 위해서는 구매버튼을 눌러 등록된 판매가를 보내면 작품을 구매할 수 있습니다.\n경매등록된 작품을 구매하기 위해서는 현재 작품에 제시된 최고가보다 높은 가격을 제시하여 경매 종료 시점에 내가 등록한 제시가보다 더 높은 가격에 제시한 유저가 없을 경우 작품이 구매됩니다."
 
   return (
-    <Container>
+    <>
       <Header>
-        {/* <h1>무엇을 도와드릴까요?</h1> */}
-        <Title>무엇을 도와드릴까요?</Title>
+        FAQ
       </Header>
       <Main>
         <Accordion title={Q1} contents={A1}></Accordion>
@@ -73,6 +50,6 @@ export default function FAQ() {
         <Accordion title={Q5} contents={A5}></Accordion>
         <Accordion title={Q6} contents={A6}></Accordion>
       </Main>
-    </Container>
+    </>
   );
 }
