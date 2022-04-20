@@ -1,14 +1,12 @@
 package com.nail.backend.domain.qna.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.qna.db.entity.Qna;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
 import com.nail.backend.domain.qna.service.QnaService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -72,11 +70,28 @@ public class QnaContoroller {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"수정 실패"));
         }
         else
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 성공"));
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"수정 성공"));
     }
 
 
 
 //    DELETE_________________________________________
+    @Transactional
+    @ApiOperation(value = "문의 글 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "삭제 성공"),
+            @ApiResponse(code = 404, message = "삭제 실패")
+    })
+    @DeleteMapping("/{qnaSeq}")
+    public ResponseEntity<BaseResponseBody> qnaRemove(@ApiParam(value = "qna 번호") @PathVariable Long qnaSeq){
+        log.info("qnaDelete - 호출");
+
+        if(qnaService.qnaRemove(qnaSeq)){
+            log.error("qnaDelete - This qnaSeq doesn't exist");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"삭제 실패"));
+        }
+        else
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제 성공"));
+    }
 
 }

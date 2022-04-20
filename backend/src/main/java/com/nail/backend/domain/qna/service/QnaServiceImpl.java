@@ -91,4 +91,14 @@ public class QnaServiceImpl implements QnaService {
     }
 //    DELETE_________________________________________
 
+    @Override
+    @Transactional
+    public boolean qnaRemove(Long qnaSeq){
+
+        if(qnaRepository.findById(qnaSeq).isPresent()){
+            qnaRepository.deleteById(qnaSeq);
+            return true;
+        }
+        return false;
+    }
 }
