@@ -115,38 +115,42 @@ const Input = (props:any) => {
   const [color,setColor] = useState('')
   const handleChangeComplete = (col:any,event:any) => {
     
-    setColor(col.hex)
+  let colorName = ''
+  if (col.hex === '#ff0000') {
+    colorName = 'red'
+  } else if (col.hex === '#ffa500') {
+    colorName = 'orange'
+  } else if (col.hex === '#ffff00') {
+    colorName = 'yellow'
+  } else if (col.hex === '#008000') {
+    colorName = 'green'
+  } else if (col.hex === '#0000ff') {
+    colorName = 'blue'
+  } else if (col.hex === '#000080') {
+    colorName = 'navy'
+  } else if (col.hex === '#800080') {
+    colorName = 'purple'
+  } else if (col.hex === '#87ceeb') {
+    colorName = 'skyblue'
+  } else if (col.hex === '#a52a2a') {
+    colorName = 'brown'
+  } else if (col.hex === '#ffc0cb') {
+    colorName = 'pink'
+  } else if (col.hex === '#ffd700') {
+    colorName = 'gold'
+  } else if (col.hex === '#c0c0c0') {
+    colorName = 'silver'
+  }
+    setColor(colorName)
+    setInputStatus({
+      ...inputStatus, colorType : colorName
+    })
   }
   useEffect(() => {
     console.log(color)
   }, [color])
   
-  let colorName = ''
-  if (color === '#ff0000') {
-    colorName = 'red'
-  } else if (color === '#ffa500') {
-    colorName = 'orange'
-  } else if (color === '#ffff00') {
-    colorName = 'yellow'
-  } else if (color === '#008000') {
-    colorName = 'green'
-  } else if (color === '#0000ff') {
-    colorName = 'blue'
-  } else if (color === '#000080') {
-    colorName = 'navy'
-  } else if (color === '#800080') {
-    colorName = 'purple'
-  } else if (color === '#87ceeb') {
-    colorName = 'skyblue'
-  } else if (color === '#a52a2a') {
-    colorName = 'brown'
-  } else if (color === '#ffc0cb') {
-    colorName = 'pink'
-  } else if (color === '#ffd700') {
-    colorName = 'gold'
-  } else if (color === '#c0c0c0') {
-    colorName = 'silver'
-  }
+  
 
   
 
@@ -155,6 +159,7 @@ const Input = (props:any) => {
     type : '',
     season : '',
     price : '',
+    colorType : '',
     detailColor : '',
   })
 
@@ -166,20 +171,20 @@ const Input = (props:any) => {
   };
 
   useEffect(() => {
-    let test = 0
-    if (inputStatus.type != '') {
-      test += 1
-    }
-    if (inputStatus.season != '') {
-      test += 1
-    }
-    if (inputStatus.price != '') {
-      test += 1
-    }
-    if (inputStatus.detailColor != '') {
-      test += 1
-    } 
-    props.setInfoProcess(test)
+    // let test = 0
+    // if (inputStatus.type != '') {
+    //   test += 1
+    // }
+    // if (inputStatus.season != '') {
+    //   test += 1
+    // }
+    // if (inputStatus.price != '') {
+    //   test += 1
+    // }
+    // if (inputStatus.detailColor != '') {
+    //   test += 1
+    // } 
+    props.setInfoProcess(inputStatus)
   }, [inputStatus])
 
   useEffect(() => {
@@ -224,7 +229,7 @@ const Input = (props:any) => {
                 />
             </div>
             <div className="colorBoxRight">
-              <div style={{marginBottom:"20px"}}>선택 색상({colorName.toUpperCase()})</div>
+              <div style={{marginBottom:"20px"}}>선택 색상({color.toUpperCase()})</div>
               <div className="currentColor" style={{backgroundColor:`${color}`}}></div>
 
             </div>

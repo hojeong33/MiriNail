@@ -2,7 +2,9 @@ import styled from 'styled-components'
 import UnderLineInput from '../../Commons/UnderLineInput'
 import FileUpload from './FileUpload'
 import {useState,useEffect} from 'react'
-
+import { create } from 'ipfs-http-client'
+import axios from 'axios'
+import publishToken from '../../BlockChain/PublishNFT'
 
 const Wrapper = styled.div`
   * {
@@ -140,24 +142,62 @@ const MainFrame = styled.div`
 
 
 const PageContent = () => {
-  const [imageProcess,setImageProcess] = useState(0)
-  const [infoProcess,setInfoProcess] = useState(0)
+  const [imageProcess,setImageProcess] = useState([])
+  const [infoProcess,setInfoProcess] = useState({
+    type :'',
+    season : '',
+    price :'',
+    colorType :'',
+    detailColor :''
+  })
+  const [infoProcessNum,setInfoProcessNum] = useState(0)
   const [textProcess,setTextProcess] = useState('')
   useEffect(() => {
     console.log(imageProcess)
   },[imageProcess])
-  useEffect(() => {
-    console.log(infoProcess)
-  },[infoProcess])
+
 
   const onChangeText = (e:any) => {
     setTextProcess(e.target.value) 
 
   }
-  
   // useEffect(() => {
-  //   console.log(textProcess)
-  // },[textProcess])
+  //   console.log(infoProcess)
+  // },[infoProcess])
+  useEffect(() => {
+    let abc = 0
+    if (infoProcess.type != '') {
+      abc += 1
+    } 
+    if (infoProcess.season != '') {
+      abc += 1
+    } 
+    if (infoProcess.price != '') {
+      abc += 1
+    } 
+    if (infoProcess.colorType != '') {
+      abc += 1
+    } 
+    if (infoProcess.detailColor != '') {
+      abc += 1
+    }
+    setInfoProcessNum(abc)
+    console.log(infoProcess)
+
+  },[infoProcess])
+
+  // ipfs 등록 및 nft 발급
+  const abc:any = 'http://127.0.0.1:5002'
+  const client = create(abc)
+  const nftFunc = async () => {
+    const nailData:any = {images:imageProcess,...infoProcess}
+    console.log(nailData)
+    const response = await client.add(JSON.stringify(nailData))
+    const ipfsHash = response.path
+    console.log(ipfsHash)
+    publishToken(ipfsHash)
+  }
+
   return (
     <>
       <Wrapper>
@@ -165,16 +205,16 @@ const PageContent = () => {
         <div className="MainPadding">
           <div className="ItemList">
             <div className="LeftBox">
-              
+         
               <div className="OrderFilter">
                 <a>정렬</a>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb1" checked={imageProcess === 2 ? true : false}/>
-                  <label htmlFor="cb1">이미지 등록 ({imageProcess}/2)</label>
+                  <input type="checkbox" id="cb1" checked={imageProcess.length === 2 ? true : false}/>
+                  <label htmlFor="cb1">이미지 등록 ({imageProcess.length}/2)</label>
                 </div>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb2" checked={infoProcess === 4 ? true : false}/>
-                  <label htmlFor="cb2">네일정보 등록 ({infoProcess}/4)</label>
+                  <input type="checkbox" id="cb2" checked={infoProcessNum === 5 ? true : false}/>
+                  <label htmlFor="cb2">네일정보 등록 ({infoProcessNum}/5)</label>
                 </div>
                 <div className="CheckBox">
                   <input type="checkbox" id="cb3" checked={textProcess.length >= 10 ? true : false}/>
@@ -202,7 +242,7 @@ const PageContent = () => {
               </div>
               <textarea name="textVal" id="" onChange={onChangeText}>asdfsd</textarea>
               <div className="buttons">
-                <div className="btn1">
+                <div className="btn1" onClick={nftFunc}>
                   등록
                 </div>
                 <div className="btn2">
