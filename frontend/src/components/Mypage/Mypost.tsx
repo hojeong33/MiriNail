@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useState } from "react";
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -26,7 +27,7 @@ const TableWrapper = styled.div`
       border-top: 1px solid #3d3c3a;
       color: #3d3c3a;
       thead {
-       font-weight: 500;
+        font-weight: 500;
       }
       th {
         font-size: 14px;
@@ -35,16 +36,80 @@ const TableWrapper = styled.div`
         padding: 20px 0px;
         font-weight: 500;
       }
-      
+      tbody {
+        .title {
+          cursor: pointer;
+        }
+      }
     }
   }
   .pagination {
-        margin: 20px 0;
-      }
+    margin: 20px 0;
+  }
 `;
 
+interface IState {
+  post: {
+    no: number;
+    title: string;
+    date: string;
+  }
+}
 
 const Mypost = () => {
+  const [posts, setPosts] = useState<IState["post"][]>([
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "네일자랑글",
+      date: "2022.03.28"
+    }
+  ]);
+
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event)
     console.log(page)
@@ -68,56 +133,15 @@ const Mypost = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>네일자랑글</th>
-              <th>2022.03.28</th>
-            </tr>
+            {posts.map((post, idx) => {
+              return (
+                <tr key={idx}>
+                  <th>{post.no}</th>
+                  <th className="title">{post.title}</th>
+                  <th>{post.date}</th>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

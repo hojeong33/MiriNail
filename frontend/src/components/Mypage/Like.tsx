@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useState } from "react";
 
 const ItemCards = styled.div`
   display: flex ;
@@ -42,64 +43,86 @@ const ItemCard = styled.div`
   }
 `;
 
+interface IState {
+  item: {
+    title: string;
+    price: number;
+    category: string[];
+  };
+}
+
 const Like = () => {
+  const [items, setItems] = useState<IState["item"][]>([
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+  ])
+
   return (
     <>
       <ItemCards>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <FavoriteIcon color="error" />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="price">50,000원</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <FavoriteIcon color="error" />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="price">50,000원</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <FavoriteIcon color="error" />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="price">50,000원</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <FavoriteIcon color="error" />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="price">50,000원</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <FavoriteIcon color="error" />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="price">50,000원</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <FavoriteIcon color="error" />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="price">50,000원</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
+          {items.map((item, idx) => {
+            return (
+              <ItemCard key={idx}>
+                <div className="cardwrapper">
+                  <img src="/assets/images/원숭이.png" alt="" />
+                  <FavoriteIcon color="error" />
+                </div>
+                <div className="title">{item.title}</div>
+                <div className="price">{item.price.toLocaleString()}원</div>
+                <div className="category">{item.category.map((category, idx) => {
+                  return <span key={idx}>#{category} </span>
+                })}</div>
+              </ItemCard>
+            );
+          })}
       </ItemCards>
     </>
   );

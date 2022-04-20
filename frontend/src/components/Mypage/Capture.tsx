@@ -2,6 +2,7 @@ import styled from "styled-components";
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useState } from "react";
 
 const ItemCards = styled.div`
   display: flex ;
@@ -43,58 +44,89 @@ const ItemCard = styled.div`
   }
 `;
 
+interface IState {
+  item: {
+    title: string;
+    price: number;
+    category: string[];
+  };
+}
+
 const Capture = () => {
-  return <>
-          <ItemCards>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <DeleteOutlineIcon />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <DeleteOutlineIcon />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <DeleteOutlineIcon />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <DeleteOutlineIcon />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <DeleteOutlineIcon />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
-        <ItemCard>
-          <div className="cardwrapper">
-            <img src="/assets/images/원숭이.png" alt="" />
-            <DeleteOutlineIcon />
-          </div>
-          <div className="title">글레이즈 - 루비 레드</div>
-          <div className="category">#겨울 #Designer1</div>
-        </ItemCard>
+  const [items, setItems] = useState<IState["item"][]>([
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+    {
+      title: "글레이즈 - 루비 레드",
+      price: 50000,
+      category: ["겨울", "designer1"]
+    },
+  ])
+
+  return (
+    <>
+      <ItemCards>
+        {items.map((item, idx) => {
+          return (
+            <ItemCard key={idx}>
+              <div className="cardwrapper">
+                <img src="/assets/images/원숭이.png" alt="" />
+                <DeleteOutlineIcon />
+              </div>
+              <div className="title">{item.title}</div>
+              <div className="category">
+                {item.category.map((category, idx) => {
+                  return <span key={idx}>#{category} </span>;
+                })}
+              </div>
+            </ItemCard>
+          );
+        })}
       </ItemCards>
-  </>
+    </>
+  );
 }
 export default Capture

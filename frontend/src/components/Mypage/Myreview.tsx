@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useState } from "react";
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -26,7 +27,7 @@ const TableWrapper = styled.div`
       border-top: 1px solid #3d3c3a;
       color: #3d3c3a;
       thead {
-       font-weight: 500;
+        font-weight: 500;
       }
       th {
         font-size: 14px;
@@ -35,16 +36,81 @@ const TableWrapper = styled.div`
         padding: 20px 0px;
         font-weight: 500;
       }
-      
+      tbody {
+        .title {
+          cursor: pointer;
+        }
+      }
     }
   }
   .pagination {
-        margin: 20px 0;
-      }
+    margin: 20px 0;
+  }
 `;
+
+interface IState {
+  review: {
+    no: number;
+    title: string;
+    date: string;
+  }
+}
 
 
 const MyReview = () => {
+  const [reviews, setReviews] = useState<IState["review"][]>([
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    },
+    {
+      no: 10,
+      title: "리뷰글",
+      date: "2022.03.28"
+    }
+  ]);
+
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event)
     console.log(page)
@@ -68,56 +134,15 @@ const MyReview = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
-            <tr>
-              <th>10</th>
-              <th>리뷰</th>
-              <th>2022.03.28</th>
-            </tr>
+          {reviews.map((review, idx) => {
+              return (
+                <tr key={idx}>
+                  <th>{review.no}</th>
+                  <th className="title">{review.title}</th>
+                  <th>{review.date}</th>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
