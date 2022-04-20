@@ -37,9 +37,12 @@ const TableWrapper = styled.div`
         font-weight: 500;
       }
       tbody {
-        .title {
-          cursor: pointer;
+        tr {
+        cursor: pointer;
+        :hover {
+          background-color: #f8f8fa;
         }
+      }
       }
     }
   }
@@ -61,37 +64,37 @@ const MyAsk = () => {
   const [asks, setAsks] = useState<IState["ask"][]>([
     {
       no: 10,
-      title: "리뷰글",
+      title: "문의글",
       date: "2022.03.28",
       answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "리뷰글",
+      title: "문의글",
       date: "2022.03.28",
       answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "리뷰글",
+      title: "문의글",
       date: "2022.03.28",
       answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "리뷰글",
+      title: "문의글",
       date: "2022.03.28",
       answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "리뷰글",
+      title: "문의글",
       date: "2022.03.28",
       answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "리뷰글",
+      title: "문의글",
       date: "2022.03.28",
       answerstate: "답변완료"
     },
@@ -122,7 +125,7 @@ const MyAsk = () => {
             </tr>
           </thead>
           <tbody>
-          {asks.map((ask, idx) => {
+            {asks.map((ask, idx) => {
               return (
                 <tr key={idx}>
                   <th>{ask.no}</th>
@@ -136,10 +139,9 @@ const MyAsk = () => {
         </table>
       </div>
       <div className="pagination">
-
-      <Stack spacing={2}>
-        <Pagination count={10} shape="rounded" onChange={onchangePage}/>
-      </Stack>
+        <Stack spacing={2}>
+          <Pagination count={10} shape="rounded" onChange={onchangePage} />
+        </Stack>
       </div>
     </TableWrapper>
   );

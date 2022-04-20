@@ -31,7 +31,9 @@ const Wrapper = styled.div`
   }
 
   .pageHeaderTitle {
-    font-family: 'Playfair Display', serif;
+    div {
+      font-family: 'Playfair Display', serif;
+    }
     display: flex;
     flex-direction: column;
     align-items:center;
