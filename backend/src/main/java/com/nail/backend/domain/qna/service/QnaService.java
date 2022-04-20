@@ -2,6 +2,7 @@ package com.nail.backend.domain.qna.service;
 
 import com.nail.backend.domain.qna.db.entity.Qna;
 import com.nail.backend.domain.qna.db.entity.QnaAnswer;
+import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaAnswerRegisterPostReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
@@ -17,6 +18,7 @@ public interface QnaService {
 //    READ___________________________________________
 //    UPDATE_________________________________________
     Long qnaModify(QnaModifyPutReq qnaModifyPutReq);
+    Long qnaAnswerModify(QnaAnswerModifyPutReq qnaAnswerModifyPutReq);
 //    DELETE_________________________________________
     boolean qnaRemove(Long qnaSeq);
 

@@ -6,6 +6,7 @@ import com.nail.backend.domain.qna.db.entity.QnaAnswer;
 import com.nail.backend.domain.qna.db.repository.QnaAnswerRepository;
 import com.nail.backend.domain.qna.db.repository.QnaRepository;
 import com.nail.backend.domain.qna.db.repository.QnaRepositorySupport;
+import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaAnswerRegisterPostReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
@@ -105,6 +106,18 @@ public class QnaServiceImpl implements QnaService {
 
         if(qnaRepository.findById(qnaModifyPutReq.getQnaSeq()).isPresent()){
             Long execute = qnaRepositorySupport.updateQnaByQnaSeq(qnaModifyPutReq);
+            return execute;
+        }
+        else return 0L;
+    }
+
+    @Override
+    @Transactional
+    public  Long qnaAnswerModify(QnaAnswerModifyPutReq qnaAnswerModifyPutReq){
+
+        //해당 QnaAnswer가 존재하면 수정, 존재하지 않으면 0 반환
+        if(qnaAnswerRepository.findById(qnaAnswerModifyPutReq.getQnaAnswerSeq()).isPresent()){
+            Long execute = qnaRepositorySupport.updateQnaAnswerByQnaAnserSeq(qnaAnswerModifyPutReq);
             return execute;
         }
         else return 0L;

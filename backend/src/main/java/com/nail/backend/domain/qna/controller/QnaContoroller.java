@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.qna.db.entity.Qna;
 import com.nail.backend.domain.qna.db.entity.QnaAnswer;
+import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaAnswerRegisterPostReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
@@ -53,7 +54,7 @@ public class QnaContoroller {
             @ApiResponse(code = 201, message = "등록 성공"),
             @ApiResponse(code = 404, message = "등록 실패")
     })
-    @PostMapping
+    @PostMapping("/answer")
     public ResponseEntity<BaseResponseBody> qnaAnswerRegister(@RequestBody QnaAnswerRegisterPostReq qnaAnswerRegisterPostReq){
 
         log.info("qnaAnswerRegister - 호출");
@@ -93,7 +94,23 @@ public class QnaContoroller {
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"수정 성공"));
     }
 
+    @Transactional
+    @ApiOperation(value ="문의 답변 수정")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "수정 성공"),
+            @ApiResponse(code = 404, message = "수정 실패")
+    })
+    @PutMapping("/answer")
+    public ResponseEntity<BaseResponseBody> qnaAnswerUpdate(@RequestBody QnaAnswerModifyPutReq qnaAnswerModifyPutReq){
+        log.info("qnaAnswerModify - 호출");
 
+        if(qnaService.qnaAnswerModify(qnaAnswerModifyPutReq)== 0) {
+            log.error("qnaAnswerModify - This qnaSeq doesn't exist");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"수정 실패"));
+        }
+        else
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"수정 성공"));
+    }
 
 //    DELETE_________________________________________
     @Transactional
