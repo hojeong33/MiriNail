@@ -2,6 +2,7 @@ import styled from "styled-components"
 import {useState} from 'react'
 import Slider from "react-slick";
 import DesignerCarousel from "./DesignerCarousel";
+import Cards from "../Commons/Cards";
 
 export interface hotDesignersProps {
   designer_seq : number;
@@ -14,6 +15,8 @@ export interface hotDesignersProps {
 export interface Props {
   items : hotDesignersProps[];
 }
+
+
 
 const Wrapper = styled.div`
 * {
@@ -35,59 +38,33 @@ const MainFrame = styled.div`
   height: 100%;
   margin : 0 auto;
 
- 
-  
-
   .clear {
+    width:100%;
     zoom : 1;
-    margin-top:100px;
     li {
 
       float: left;
-      width: 25%;
+      width: 20%;
       text-align: center;
       cursor: pointer;
       margin-bottom: 80px;
-      .ItemBox {
-        width : 100%;
-        display:block;
-        .imx {
-          margin : 0px 10px;
-          img {
-            width :100%;
-            max-width:100%;
-          }
-          .itemName {
-            color: #3D3C3A;
-            font-size: 16px;
-            font-weight: 500;
-            word-break: keep-all;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-          .itemPrice {
-            color: #3D3C3A;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 10px;
-          }
-          .hashTag {
-            color: #6E6E6E;
-            font-size: 14px;
-            margin-bottom: 20px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        }
-      }
+      
     }
   }
+  .subtitle {
+    font-size: 32px;
+    font-weight : bold;
+    margin-bottom : 12px;
+  }
+
+  .listGroup { 
+    margin-top:100px;
+  }
+
 `
 
 
-const PageContent = () => {
+const PageContentAll = () => {
   const settings = {
     dots: true,
     infinite: true,
@@ -194,7 +171,26 @@ const PageContent = () => {
       <Wrapper>
         
         <MainFrame>
-          <DesignerCarousel items={hotDesigners} />
+          <div className="listGroup">
+            <div className="subtitle">All Designers</div>
+            <ul className="clear">
+                  {hotDesigners.map((item, idx) => {
+                    return (
+                      <li className="ItemListType">
+                        <a className="ItemBox">
+                          <div className="imx">
+                            <div key={idx}>
+                              <Cards info={item}/>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    );
+                  })}
+                  
+            </ul>
+          </div>
+          
         </MainFrame>
         
       </Wrapper>
@@ -202,4 +198,4 @@ const PageContent = () => {
   )
 }
 
-export default PageContent
+export default PageContentAll

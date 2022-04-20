@@ -90,8 +90,9 @@ const Wrapper = styled.div`
 
 `
 
-function PageHeader() {
-  
+function PageHeader({changeThema,changeAll}:any) {
+  console.log(changeThema)
+  console.log(changeAll)
 
   return (
     <>
@@ -101,10 +102,10 @@ function PageHeader() {
           SHOPPING
         </div>
         <div className="pageHeaderLinks">
-          <span>
+          <span onClick={changeThema}>
             테마보기
           </span>
-          <span>
+          <span onClick={changeAll}>
             전체보기
           </span>
         </div>

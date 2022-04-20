@@ -63,7 +63,7 @@ body {
     position: absolute;
     top: 10px;
     left: 10px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     color: #FFF;
     padding: 5px 20px 25px 20px;
@@ -104,7 +104,7 @@ body {
 
 .profile-card-6:hover .profile-name {
     padding-left: 25px;
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 .profile-card-6:hover .profile-position {

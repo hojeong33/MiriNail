@@ -33,7 +33,6 @@ const Cards = ({info}: Prop) => {
               <div className="profile-overview">
                 <div className="row text-center">
                   <div className="col">
-
                   </div>
                   <div className="col">
                     <h3>{info.follow_follower_length}</h3>
