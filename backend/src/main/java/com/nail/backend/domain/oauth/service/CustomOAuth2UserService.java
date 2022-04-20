@@ -40,7 +40,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
 
-
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(user.getAttributes());
         User savedUser = userRepository.findByUserId(userInfo.getUserId());
 
@@ -54,7 +53,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User createUser(OAuth2UserInfo userInfo) {
-        LocalDateTime now = LocalDateTime.now();
         User user = User.builder()
                 .userId(userInfo.getUserId())
                 .userNickname(userInfo.getUserNickname())
