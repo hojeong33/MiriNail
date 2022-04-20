@@ -38,7 +38,7 @@ public class FollowController {
 
         log.info("getFollowerList - 호출");
 
-        List<User> follow = followService.FolloweeList(userId);
+        List<User> follow = followService.getFolloweeList(userId);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);
@@ -61,7 +61,7 @@ public class FollowController {
 
         log.info("getFolloweeList - 호출");
 
-        List<User> follow = followService.FollowerList(userId);
+        List<User> follow = followService.getFollowerList(userId);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);
@@ -71,50 +71,51 @@ public class FollowController {
         }
     }
 
-//    @PostMapping("/{followFollowee}")
-//    @ApiOperation(value = "팔로우 신청", notes = "<strong>팔로우 신청</strong>한다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 201, message = "신청 성공"),
-//            @ApiResponse(code = 404, message = "신청 실패")
-//    })
-//    public ResponseEntity<BaseResponseBody> followRegister(@PathVariable(value = "followFollowee") Long followeeId,
-//                                                           Principal principal){
-//
-//        // 0. 토큰으로부터 내 userId와 팔로우 신청할 유저의 Id(followeeId)를 받아온다.
-//        // 1. Follow 테이블에 추가.
-//
-//        log.info("FollowRegister - 호출");
+    @PostMapping("/{followFollowee}")
+    @ApiOperation(value = "팔로우 신청", notes = "<strong>팔로우 신청</strong>한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "신청 성공"),
+            @ApiResponse(code = 404, message = "신청 실패")
+    })
+    public ResponseEntity<BaseResponseBody> followRegister(@PathVariable(value = "followFollowee") Long followeeId,
+                                                           Principal principal){
+
+        // 0. 토큰으로부터 내 userId와 팔로우 신청할 유저의 Id(followeeId)를 받아온다.
+        // 1. Follow 테이블에 추가.
+
+        log.info("FollowRegister - 호출");
+
 //        Long userId = Long.valueOf(principal.getName());
-//        Follow follow = followService.FollowRegister(followeeId,userId);
-//
-//        if(null != follow) {
-//            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "신청 성공"));
-//        }
-//        else {
-//            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "신청 실패"));
-//        }
-//    }
-//
-//    @DeleteMapping("/{followFollowee}")
-//    @ApiOperation(value = "팔로우 취소", notes = "<strong>팔로우 취소</strong>한다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 201, message = "취소 성공"),
-//            @ApiResponse(code = 404, message = "취소 실패")
-//    })
-//    public ResponseEntity<BaseResponseBody> followRemove(@PathVariable(value = "followFollowee") Long followeeId,
-//                                                         Principal principal){
-//
-//        // 0. 토큰으로부터 내 userId와 팔로우 신청할 유저의 Id(followeeId)를 받아온다.
-//        // 1. Follow 테이블에서 삭제.
-//        log.info("followRemove - 호출");
+        Follow follow = followService.followRegister(followeeId,principal.getName());
+
+        if(null != follow) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "신청 성공"));
+        }
+        else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "신청 실패"));
+        }
+    }
+
+    @DeleteMapping("/{followFollowee}")
+    @ApiOperation(value = "팔로우 취소", notes = "<strong>팔로우 취소</strong>한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "취소 성공"),
+            @ApiResponse(code = 404, message = "취소 실패")
+    })
+    public ResponseEntity<BaseResponseBody> followRemove(@PathVariable(value = "followFollowee") Long followeeId,
+                                                         Principal principal){
+
+        // 0. 토큰으로부터 내 userId와 팔로우 신청할 유저의 Id(followeeId)를 받아온다.
+        // 1. Follow 테이블에서 삭제.
+        log.info("followRemove - 호출");
 //        Long userId = Long.valueOf(principal.getName());
-//        Follow follow = followService.FollowRemove(followeeId,userId);
-//
-//        if(null != follow) {
-//            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "취소 성공"));
-//        }
-//        else {
-//            return ResponseEntity.status(201).body(BaseResponseBody.of(404, "취소 실패"));
-//        }
-//    }
+        Follow follow = followService.followRemove(followeeId,principal.getName());
+
+        if(null != follow) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "취소 성공"));
+        }
+        else {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(404, "취소 실패"));
+        }
+    }
 }
