@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.nft.ncity.common.model.response.VerifyResult;
+import com.nail.backend.common.model.response.VerifyResult;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -49,11 +49,11 @@ public class JwtTokenUtil {
             JwtTokenUtil.refreshTokenExpiration = refreshTokenExpiration;
 	}
     
-    public static String createAccessToken(long userId, String userAddress) {
+    public static String createAccessToken(long userId, String userEmail) {
     	Date expires = JwtTokenUtil.getTokenExpiration(accessTokenExpiration);
         return JWT.create()
                 .withClaim("userId", userId)   // 아이디 저장
-                .withClaim("userAddress", userAddress)   // 주소 저장
+                .withClaim("userEmail", userEmail)   // 주소 저장
                 .withExpiresAt(expires)     // 만료시간
                 .withIssuer(ISSUER)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))    // 토큰 발행 시간 정보
@@ -95,8 +95,8 @@ public class JwtTokenUtil {
     }
 
     // 토큰에서 userAddress 가져오기
-    public String getUserAddress(String token) {
-        return extractAllClaims(token).get("userAddress", String.class);
+    public String getUserEmail(String token) {
+        return extractAllClaims(token).get("userEmail", String.class);
     }
 
     // 토큰 검증하기

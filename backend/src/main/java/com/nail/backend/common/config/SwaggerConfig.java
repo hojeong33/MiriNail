@@ -91,12 +91,11 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("N-City API")
-                .description("SSAFY 6th Specialized PJT N-City")
+        return new ApiInfoBuilder().title("Nail API")
+                .description("SSAFY 6th Specialized PJT Nail")
                 .termsOfServiceUrl("https://edu.ssafy.com")
                 .contact(new Contact("SSAFY", "https://edu.ssafy.com", "ssafy@ssafy.com"))
                 .license("SSAFY License")
                 .licenseUrl("ssafy@ssafy.com").version("3.3").build();
     }
-
 }

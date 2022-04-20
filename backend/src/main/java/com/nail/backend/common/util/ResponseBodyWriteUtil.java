@@ -2,7 +2,7 @@ package com.nail.backend.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.nft.ncity.common.model.response.BaseResponseBody;
+import com.nail.backend.common.model.response.BaseResponseBody;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;

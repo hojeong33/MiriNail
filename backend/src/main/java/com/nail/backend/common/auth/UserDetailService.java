@@ -1,7 +1,7 @@
 package com.nail.backend.common.auth;
 
-import com.nft.ncity.domain.log.service.LogService;
-import com.nft.ncity.domain.user.db.entity.User;
+import com.nail.backend.domain.user.db.entity.User;
+import com.nail.backend.domain.user.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,10 +20,10 @@ public class UserDetailService implements UserDetailsService{
     @Override
     public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String userAddress) throws UsernameNotFoundException {
 
-    		User user = logService.getUserDetailByAddress(userAddress);
+    		User user = logService.getUserDetailByEmail(userAddress);
     		if(user != null) {
-    			UserDetails userDetails = new UserDetails(user);
-    			return userDetails;
+    			JwtUserDetails jwtUserDetails = new JwtUserDetails(user);
+    			return jwtUserDetails;
     		}
     		return null;
     }
