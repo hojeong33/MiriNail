@@ -22,6 +22,7 @@
     "react": "^18.0.0",
     "react-bootstrap": "^2.2.3",
     "react-calendar": "^3.7.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.0.0",
     "react-kakao-login": "^2.1.0",
     "react-material-ui-carousel": "^3.3.3",
