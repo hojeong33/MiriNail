@@ -22,6 +22,7 @@ import Myreview from './components/Mypage/Myreview';
 import Myask from './components/Mypage/Myask';
 import FollowingDesigner from './components/Mypage/FollowingDesigner';
 import MyReservation from './components/Mypage/MyReservation';
+import Test from './components/Commons/Test';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           <Route path="/nft/register" element={<NFTRegister />} />
           <Route path="/designer" element={<DesignerList />} />
           <Route path="/api/users/login" element={<KakaoRedirect />} />
+          <Route path="/test" element={<Test />} />
      
       
         </Routes>
