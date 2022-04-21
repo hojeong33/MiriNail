@@ -13,6 +13,7 @@ const KakaoRedirect = () => {
     return function () {
       axios({
         method: "GET",
+        // url: "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http:/localhost:3000/oauth2/redirect",
         url: `http://localhost:8080/?code=${code}`,
       })
         .then((res) => {
