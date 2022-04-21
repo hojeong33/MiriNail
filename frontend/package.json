@@ -44,6 +44,7 @@
     "react-slick": "^0.29.0",
     "reactstrap": "^9.0.2",
     "recoil": "^0.7.2",
+    "recoil-persist": "^4.1.0",
     "sass": "^1.50.0",
     "slick-carousel": "^1.8.1",
     "stream-browserify": "^3.0.0",
