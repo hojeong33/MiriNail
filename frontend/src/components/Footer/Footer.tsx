@@ -4,8 +4,9 @@ function Footer() {
   return (
     <div
       style={{
+        // position: "absolute",
         width: "100%",
-        height: 250,
+        height: 300,
         // marginTop: 100,
         paddingTop: 50,
         paddingBottom: 50,

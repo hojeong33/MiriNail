@@ -16,13 +16,14 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { KAKAO_AUTH_URL } from "../Login/Auth";
+import axios from "axios";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.common.black, 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.common.black, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
@@ -61,6 +62,31 @@ const Navbar = () => {
   //테스트
   const isLogin = false;
   const username = "@abcdef";
+  //소셜로그인
+  const kakaoLogin = () => {
+    return function () {
+      axios({
+        method: "GET",
+        url: "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http:/localhost:3000/oauth2/redirect",
+        // url: `http://localhost:8080/?code=${code}`,
+      })
+        .then((res) => {
+          console.log(res); // 토큰이 넘어올 것임
+
+          // const ACCESS_TOKEN = res.data.accessToken;
+
+          // localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
+
+          // navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+        })
+        .catch((err: any) => {
+          console.log("소셜로그인 에러", err);
+          window.alert("로그인에 실패하였습니다.");
+          navigate("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
+        });
+    };
+  };
+
   //User 하위 메뉴창
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -90,7 +116,7 @@ const Navbar = () => {
       style={{
         backgroundColor: "rgba( 0, 0, 0, 0 )",
         boxShadow: "none",
-        borderBottom: "0.1rem solid white",
+        borderBottom: "0.1rem solid black",
       }}
     >
       <Container maxWidth="xl">
@@ -107,13 +133,13 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               onClick={() => navigate(`/ar`)}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ my: 2, color: "black", display: "block" }}
             >
               AR
             </Button>
             <Button
               onClick={handleOpenUserMenu2}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ my: 2, color: "black", display: "block" }}
             >
               ART
             </Button>
@@ -133,7 +159,7 @@ const Navbar = () => {
               open={Boolean(anchorElUser2)}
               onClose={handleCloseUserMenu2}
             >
-              <MenuItem onClick={() => navigate(`/nail`)}>
+              <MenuItem onClick={() => navigate(`/nft`)}>
                 <Typography textAlign="center">NAIL NFT</Typography>
               </MenuItem>
               <MenuItem onClick={() => navigate(`/designer`)}>
@@ -141,14 +167,14 @@ const Navbar = () => {
               </MenuItem>
             </Menu>
             <Button
-              onClick={() => navigate(`/community}`)}
-              sx={{ my: 2, color: "white", display: "block" }}
+              onClick={() => navigate(`/community`)}
+              sx={{ my: 2, color: "black", display: "block" }}
             >
               COMMUNITY
             </Button>
             <Button
               onClick={() => navigate(`/event`)}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ my: 2, color: "black", display: "block" }}
             >
               EVENT
             </Button>
@@ -166,8 +192,10 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             {!isLogin ? (
               <Button
-                href={KAKAO_AUTH_URL}
-                sx={{ my: 2, color: "white", display: "block" }}
+                href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http:/localhost:3000/oauth2/redirect"
+                // href={KAKAO_AUTH_URL}
+                // onClick={kakaoLogin}
+                sx={{ my: 2, color: "black", display: "block" }}
               >
                 Kakao Login
               </Button>
@@ -177,7 +205,7 @@ const Navbar = () => {
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                   <Typography
                     textAlign="center"
-                    style={{ color: "white", marginLeft: "5px" }}
+                    style={{ color: "black", marginLeft: "5px" }}
                   >
                     {username}
                   </Typography>
@@ -198,7 +226,7 @@ const Navbar = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  <MenuItem onClick={() => navigate(`/mypage`)}>
                     <Typography textAlign="center">Mypage</Typography>
                   </MenuItem>
                   <MenuItem onClick={handleCloseUserMenu}>
