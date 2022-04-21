@@ -11,7 +11,7 @@ const ImageUploadBox = (props:any) => {
 
   useEffect(() => {
     console.log(uploadedImages)
-    props.setImageProcess(uploadedImages.length)
+    props.setImageProcess(uploadedImages)
     // props.setImageProcess(uploadedImages.length)
   }, [uploadedImages])
 

@@ -103,13 +103,45 @@ const Input = (props: any) => {
   console.log(props);
 
   // 색깔 선택
-  const [color, setColor] = useState("");
-  const handleChangeComplete = (col: any, event: any) => {
-    setColor(col.hex);
-  };
+  const [color,setColor] = useState('')
+  const handleChangeComplete = (col:any,event:any) => {
+    
+  let colorName = ''
+  if (col.hex === '#ff0000') {
+    colorName = 'red'
+  } else if (col.hex === '#ffa500') {
+    colorName = 'orange'
+  } else if (col.hex === '#ffff00') {
+    colorName = 'yellow'
+  } else if (col.hex === '#008000') {
+    colorName = 'green'
+  } else if (col.hex === '#0000ff') {
+    colorName = 'blue'
+  } else if (col.hex === '#000080') {
+    colorName = 'navy'
+  } else if (col.hex === '#800080') {
+    colorName = 'purple'
+  } else if (col.hex === '#87ceeb') {
+    colorName = 'skyblue'
+  } else if (col.hex === '#a52a2a') {
+    colorName = 'brown'
+  } else if (col.hex === '#ffc0cb') {
+    colorName = 'pink'
+  } else if (col.hex === '#ffd700') {
+    colorName = 'gold'
+  } else if (col.hex === '#c0c0c0') {
+    colorName = 'silver'
+  }
+    setColor(colorName)
+    setInputStatus({
+      ...inputStatus, colorType : colorName
+    })
+  }
   useEffect(() => {
-    console.log(color);
-  }, [color]);
+    console.log(color)
+  }, [color])
+  
+  
 
   let colorName = "";
   if (color === "#ff0000") {
@@ -140,11 +172,12 @@ const Input = (props: any) => {
 
   // 인풋 상태 관리
   const [inputStatus, setInputStatus] = useState({
-    type: "",
-    season: "",
-    price: "",
-    detailColor: "",
-  });
+    type : '',
+    season : '',
+    price : '',
+    colorType : '',
+    detailColor : '',
+  })
 
   const onChangeInput = (e: any) => {
     setInputStatus({
@@ -154,21 +187,21 @@ const Input = (props: any) => {
   };
 
   useEffect(() => {
-    let test = 0;
-    if (inputStatus.type != "") {
-      test += 1;
-    }
-    if (inputStatus.season != "") {
-      test += 1;
-    }
-    if (inputStatus.price != "") {
-      test += 1;
-    }
-    if (inputStatus.detailColor != "") {
-      test += 1;
-    }
-    props.setInfoProcess(test);
-  }, [inputStatus]);
+    // let test = 0
+    // if (inputStatus.type != '') {
+    //   test += 1
+    // }
+    // if (inputStatus.season != '') {
+    //   test += 1
+    // }
+    // if (inputStatus.price != '') {
+    //   test += 1
+    // }
+    // if (inputStatus.detailColor != '') {
+    //   test += 1
+    // } 
+    props.setInfoProcess(inputStatus)
+  }, [inputStatus])
 
   useEffect(() => {
     console.log(inputStatus);
@@ -242,13 +275,9 @@ const Input = (props: any) => {
               />
             </div>
             <div className="colorBoxRight">
-              <div style={{ marginBottom: "20px" }}>
-                선택 색상({colorName.toUpperCase()})
-              </div>
-              <div
-                className="currentColor"
-                style={{ backgroundColor: `${color}` }}
-              ></div>
+              <div style={{marginBottom:"20px"}}>선택 색상({color.toUpperCase()})</div>
+              <div className="currentColor" style={{backgroundColor:`${color}`}}></div>
+
             </div>
           </div>
         </div>
