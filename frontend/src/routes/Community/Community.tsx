@@ -1,5 +1,13 @@
-const Community = () => {
-  return <div>Community</div>
-}
+import CommunityBox from "../../components/Community/CommunityBox";
+import CommunityTitle from "../../components/Community/CommunityTitle";
 
-export default Community
+const Community = () => {
+  return (
+    <div>
+      <CommunityTitle></CommunityTitle>
+      <CommunityBox></CommunityBox>
+    </div>
+  );
+};
+
+export default Community;
