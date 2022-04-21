@@ -23,6 +23,13 @@ import Myask from './components/Mypage/Myask';
 import FollowingDesigner from './components/Mypage/FollowingDesigner';
 import MyReservation from './components/Mypage/MyReservation';
 import Test from './components/Commons/Test';
+import DesignerPage from './routes/Designerpage/Designerpage';
+import New from './components/Designerpage/New';
+import Introduction from './components/Designerpage/Introduction';
+import NFTs from './components/Designerpage/NFTs';
+import Reviews from './components/Designerpage/Reviews';
+import ReservationCheck from './components/Designerpage/ReservationCheck';
+import Ask from './components/Designerpage/Ask';
 
 function App() {
   return (
@@ -40,6 +47,14 @@ function App() {
             <Route path="myask" element={<Myask />}></Route>
             <Route path="followingdesigner" element={<FollowingDesigner />}></Route>
             <Route path="myreservation" element={<MyReservation />}></Route>
+          </Route >
+          <Route path="/designerpage" element={<DesignerPage />}>
+            <Route path="new" element={<New />}></Route>
+            <Route path="introduction" element={<Introduction />}></Route>
+            <Route path="NFTs" element={<NFTs />}></Route>
+            <Route path="reviews" element={<Reviews />}></Route>
+            <Route path="reservation" element={<ReservationCheck />}></Route>
+            <Route path="ask" element={<Ask />}></Route>
           </Route>
           <Route path="/Community" element={<Community />}/>
           <Route path="/tutorial" element={<Tutorial />}/>
