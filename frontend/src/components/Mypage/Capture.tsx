@@ -3,6 +3,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useState } from "react";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+const Wrapper = styled.div`
+  .pagination {
+    display: flex;
+    margin: 20px 0;
+    justify-content: center;
+    align-items: center;
+  }
+`;
 
 const ItemCards = styled.div`
   display: flex ;
@@ -106,8 +117,13 @@ const Capture = () => {
     },
   ])
 
+  const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    console.log(event)
+    console.log(page)
+  }
+  
   return (
-    <>
+    <Wrapper>
       <ItemCards>
         {items.map((item, idx) => {
           return (
@@ -126,7 +142,12 @@ const Capture = () => {
           );
         })}
       </ItemCards>
-    </>
+      <div className="pagination">
+        <Stack spacing={2}>
+          <Pagination count={10} shape="rounded" onChange={onchangePage} />
+        </Stack>
+      </div>
+    </Wrapper>
   );
 }
 export default Capture

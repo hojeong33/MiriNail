@@ -31,7 +31,9 @@ const Wrapper = styled.div`
   }
 
   .pageHeaderTitle {
-    font-family: 'Playfair Display', serif;
+    div {
+      font-family: 'Playfair Display', serif;
+    }
     display: flex;
     flex-direction: column;
     align-items:center;
@@ -46,7 +48,7 @@ const Wrapper = styled.div`
     line-height: 80px;
     text-align: center;
     color: #3d3c3a;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .pageHeaderNavigation {

@@ -37,9 +37,12 @@ const TableWrapper = styled.div`
         font-weight: 500;
       }
       tbody {
-        .title {
-          cursor: pointer;
+        tr {
+        cursor: pointer;
+        :hover {
+          background-color: #f8f8fa;
         }
+      }
       }
     }
   }
@@ -134,7 +137,7 @@ const MyReview = () => {
             </tr>
           </thead>
           <tbody>
-          {reviews.map((review, idx) => {
+            {reviews.map((review, idx) => {
               return (
                 <tr key={idx}>
                   <th>{review.no}</th>
@@ -147,10 +150,9 @@ const MyReview = () => {
         </table>
       </div>
       <div className="pagination">
-
-      <Stack spacing={2}>
-        <Pagination count={10} shape="rounded" onChange={onchangePage}/>
-      </Stack>
+        <Stack spacing={2}>
+          <Pagination count={10} shape="rounded" onChange={onchangePage} />
+        </Stack>
       </div>
     </TableWrapper>
   );

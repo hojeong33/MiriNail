@@ -40,6 +40,12 @@ const TableWrapper = styled.div`
         .title {
           cursor: pointer;
         }
+        tr {
+        cursor: pointer;
+        :hover {
+          background-color: #f8f8fa;
+        }
+      }
       }
     }
   }

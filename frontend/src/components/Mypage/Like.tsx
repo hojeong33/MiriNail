@@ -2,6 +2,17 @@ import styled from "styled-components";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useState } from "react";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+const Wrapper = styled.div`
+  .pagination {
+    display: flex;
+    margin: 20px 0;
+    justify-content: center;
+    align-items: center;
+  }
+`;
 
 const ItemCards = styled.div`
   display: flex ;
@@ -11,6 +22,7 @@ const ItemCards = styled.div`
   /* &:last-child {
     margin-right: auto;
   } */
+
 `
 
 const ItemCard = styled.div`
@@ -105,26 +117,38 @@ const Like = () => {
     },
   ])
 
+  const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    console.log(event)
+    console.log(page)
+  }
+  
   return (
-    <>
+    <Wrapper>
       <ItemCards>
-          {items.map((item, idx) => {
-            return (
-              <ItemCard key={idx}>
-                <div className="cardwrapper">
-                  <img src="/assets/images/원숭이.png" alt="" />
-                  <FavoriteIcon color="error" />
-                </div>
-                <div className="title">{item.title}</div>
-                <div className="price">{item.price.toLocaleString()}원</div>
-                <div className="category">{item.category.map((category, idx) => {
-                  return <span key={idx}>#{category} </span>
-                })}</div>
-              </ItemCard>
-            );
-          })}
+        {items.map((item, idx) => {
+          return (
+            <ItemCard key={idx}>
+              <div className="cardwrapper">
+                <img src="/assets/images/원숭이.png" alt="" />
+                <FavoriteIcon color="error" />
+              </div>
+              <div className="title">{item.title}</div>
+              <div className="price">{item.price.toLocaleString()}원</div>
+              <div className="category">
+                {item.category.map((category, idx) => {
+                  return <span key={idx}>#{category} </span>;
+                })}
+              </div>
+            </ItemCard>
+          );
+        })}
       </ItemCards>
-    </>
+      <div className="pagination">
+        <Stack spacing={2}>
+          <Pagination count={10} shape="rounded" onChange={onchangePage} />
+        </Stack>
+      </div>
+    </Wrapper>
   );
 }
 export default Like
