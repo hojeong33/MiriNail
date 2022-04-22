@@ -23,6 +23,7 @@ public class NailartController {
     // Nailart 리스트 전체 조회
     @GetMapping("/list")
     public Page<Nailart> nailartList(@RequestParam int page, @RequestParam int size){
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!");
         return nailartService.nailartList(page, size);
     }
 
@@ -38,7 +39,8 @@ public class NailartController {
     @PostMapping
     public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestBody NailartRegisterPostReq nailartRegisterPostReq, @RequestPart(value = "filename") List<MultipartFile> multipartFiles){
         nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
-        return null;
+
+        return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
     }
 
     // Nailart 수정

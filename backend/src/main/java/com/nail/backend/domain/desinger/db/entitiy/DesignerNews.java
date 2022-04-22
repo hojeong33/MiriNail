@@ -22,7 +22,7 @@ public class DesignerNews implements Serializable {
     @ApiModelProperty(value = "새 소식 구분 번호")
     private long designerNewsSeq;
     // 유저 번호를 외래 키로 가져 와야한다.( 지금 좀 헷갈린다. 컬럼이랑 조인 컬럼 이름이 같아도 되나? 인식을 우째 하지?)
-    @Id
+    //@Id
     @Column(name = "designer_seq")
     @ApiModelProperty(value = "디자이너 번호")
     private long designerSeq;
