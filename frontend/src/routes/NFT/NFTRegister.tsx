@@ -4,7 +4,7 @@ import PageContent from "../../components/Layout/RegisterComponents/PageContent"
 // import PageHeader from '../../Layout/PageHeader'
 const NFTRegister = () => {
   return (
-    <div style={{ marginBottom: "800px" }}>
+    <div>
       <PageHeader />
       <PageContent />
     </div>

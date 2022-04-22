@@ -12,8 +12,6 @@ const Wrapper = styled.div`
     text-decoration: none;
     box-sizing: border-box;
   }
-
-  height: 100vh;
 `;
 const MainFrame = styled.div`
   width :1300px;

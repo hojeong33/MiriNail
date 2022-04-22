@@ -12,15 +12,15 @@ const Wrapper = styled.div`
     box-sizing: border-box;
   }
 
-  height: 100vh;
+  // height: 100vh;
 `;
 const MainFrame = styled.div`
   width: 1300px;
-  height: 100%;
+  // height: 100%;
   margin: 0 auto;
 
   .MainPadding {
-    height: 100%;
+    // height: 100%;
     margin: 0px 10px;
 
     .ItemList {
