@@ -1,10 +1,7 @@
 import styled from "styled-components";
-import UnderLineInput from "../../Commons/UnderLineInput";
-import FileUpload from "./FileUpload";
+import FileUpload2 from "./FileUpload2";
 import { useState, useEffect } from "react";
-import { create } from "ipfs-http-client";
 import axios from "axios";
-import publishToken from "../../BlockChain/PublishNFT";
 
 const Wrapper = styled.div`
   * {
@@ -83,7 +80,7 @@ const MainFrame = styled.div`
 
       .RightBox {
         padding-left :80px;
-        // height :100%;
+        
         padding-top: 75px;
         width: 100%;
         border-left: 1px solid #d2d2d0;
@@ -101,6 +98,10 @@ const MainFrame = styled.div`
         }
         .infoBox {
           margin-top : 48px;
+        }
+        input{
+          width:90%;
+          margin-top:24px;
         }
        
         textarea {
@@ -137,17 +138,10 @@ const MainFrame = styled.div`
   }
 `;
 
-const PageContent = () => {
+const CreateCommunityContent = () => {
   const [imageProcess, setImageProcess] = useState([]);
-  const [infoProcess, setInfoProcess] = useState({
-    type: "",
-    season: "",
-    price: "",
-    colorType: "",
-    detailColor: "",
-  });
-  const [infoProcessNum, setInfoProcessNum] = useState(0);
   const [textProcess, setTextProcess] = useState("");
+  const [textProcess2, setTextProcess2] = useState("");
   useEffect(() => {
     console.log(imageProcess);
   }, [imageProcess]);
@@ -155,40 +149,8 @@ const PageContent = () => {
   const onChangeText = (e: any) => {
     setTextProcess(e.target.value);
   };
-  // useEffect(() => {
-  //   console.log(infoProcess)
-  // },[infoProcess])
-  useEffect(() => {
-    let abc = 0;
-    if (infoProcess.type != "") {
-      abc += 1;
-    }
-    if (infoProcess.season != "") {
-      abc += 1;
-    }
-    if (infoProcess.price != "") {
-      abc += 1;
-    }
-    if (infoProcess.colorType != "") {
-      abc += 1;
-    }
-    if (infoProcess.detailColor != "") {
-      abc += 1;
-    }
-    setInfoProcessNum(abc);
-    console.log(infoProcess);
-  }, [infoProcess]);
-
-  // ipfs 등록 및 nft 발급
-  const abc: any = "http://127.0.0.1:5002";
-  const client = create(abc);
-  const nftFunc = async () => {
-    const nailData: any = { images: imageProcess, ...infoProcess };
-    console.log(nailData);
-    const response = await client.add(JSON.stringify(nailData));
-    const ipfsHash = response.path;
-    console.log(ipfsHash);
-    publishToken(ipfsHash);
+  const onChangeText2 = (e: any) => {
+    setTextProcess2(e.target.value);
   };
 
   return (
@@ -204,20 +166,20 @@ const PageContent = () => {
                     <input
                       type="checkbox"
                       id="cb1"
-                      checked={imageProcess.length === 2 ? true : false}
+                      checked={imageProcess.length >= 1 ? true : false}
                     />
                     <label htmlFor="cb1">
-                      이미지 등록 ({imageProcess.length}/2)
+                      이미지 등록 ({imageProcess.length >= 1 ? 1 : 0}/1)
                     </label>
                   </div>
                   <div className="CheckBox">
                     <input
                       type="checkbox"
                       id="cb2"
-                      checked={infoProcessNum === 5 ? true : false}
+                      checked={textProcess2.length >= 1 ? true : false}
                     />
                     <label htmlFor="cb2">
-                      네일정보 등록 ({infoProcessNum}/5)
+                      글제목 작성 ({textProcess2.length >= 1 ? 1 : 0}/1)
                     </label>
                   </div>
                   <div className="CheckBox">
@@ -227,7 +189,7 @@ const PageContent = () => {
                       checked={textProcess.length >= 10 ? true : false}
                     />
                     <label htmlFor="cb3">
-                      소개글 등록 ({textProcess.length >= 10 ? 1 : 0}/1)
+                      글내용 작성 ({textProcess.length >= 10 ? 1 : 0}/1)
                     </label>
                   </div>
                 </div>
@@ -237,24 +199,23 @@ const PageContent = () => {
                   이미지 등록
                 </div>
                 <div className="fileBox">
-                  <FileUpload setImageProcess={setImageProcess} />
+                  <FileUpload2 setImageProcess={setImageProcess} />
                 </div>
                 <div className="subTitle" style={{ marginTop: "120px" }}>
-                  네일정보 등록
+                  글제목 작성
                 </div>
-                <div className="infoBox">
-                  <UnderLineInput setInfoProcess={setInfoProcess} />
-                </div>
+                <input type="text" onChange={onChangeText2}></input>
+
                 <div className="subTitle" style={{ marginTop: "120px" }}>
-                  소개글 등록 (10자 이상 입력해주세요.)
+                  글내용 작성 (10자 이상 입력해주세요.)
                 </div>
-                <textarea name="textVal" id="" onChange={onChangeText}>
-                  asdfsd
-                </textarea>
+                <textarea
+                  name="textVal"
+                  id=""
+                  onChange={onChangeText}
+                ></textarea>
                 <div className="buttons">
-                  <div className="btn1" onClick={nftFunc}>
-                    등록
-                  </div>
+                  <div className="btn1">작성</div>
                   <div className="btn2">취소</div>
                 </div>
               </div>
@@ -267,4 +228,4 @@ const PageContent = () => {
   );
 };
 
-export default PageContent;
+export default CreateCommunityContent;
