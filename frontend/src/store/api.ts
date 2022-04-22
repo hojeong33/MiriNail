@@ -9,3 +9,8 @@ export const fetchDesigns = async() => {
   console.log(response.data.content)
   return response.data.content
 }
+
+export const registDesign = async(item:any) => {
+  const response = await axios.post(base_url+'nailart',item)
+  console.log(response)
+}

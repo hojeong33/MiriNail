@@ -6,6 +6,7 @@ import { create } from 'ipfs-http-client'
 import axios from 'axios'
 import publishToken from '../../BlockChain/PublishNFT'
 import DoneIcon from '@mui/icons-material/Done';
+import {registDesign} from '../../../store/api'
 
 const Wrapper = styled.div`
   * {
@@ -178,31 +179,32 @@ const MainFrame = styled.div`
 
 const PageContent = () => {
   // 리모컨 
-window.addEventListener("scroll", () => {
-  let scrollTop = document.documentElement.scrollTop;
-  let clientHeight = document.documentElement.clientHeight;
-  let remote:any = document.getElementById('remote')
-  if (scrollTop+clientHeight >= 1337) { 
-    remote.style.position="fixed"
-    remote.style.top="180px"
-  } else {
-    remote.style.position="relative"
-    remote.style.top=""
-  }
-})
-  const [imageProcess,setImageProcess] = useState([])
-  const [infoProcess,setInfoProcess] = useState({
-    type :'',
-    season : '',
-    price :'',
-    colorType :'',
-    detailColor :''
+  window.addEventListener("scroll", () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let clientHeight = document.documentElement.clientHeight;
+    let remote:any = document.getElementById('remote')
+    if (scrollTop+clientHeight >= 1337) { 
+      remote.style.position="fixed"
+      remote.style.top="180px"
+    } else {
+      remote.style.position="relative"
+      remote.style.top=""
+    }
   })
-  const [infoProcessNum,setInfoProcessNum] = useState(0)
-  const [textProcess,setTextProcess] = useState('')
-  useEffect(() => {
-    console.log(imageProcess)
-  },[imageProcess])
+    const [imageProcess,setImageProcess] = useState([])
+    const [infoProcess,setInfoProcess] = useState({
+      type :'',
+      season : '',
+      price :'',
+      colorType :'',
+      detailColor :''
+    })
+    const [infoProcessNum,setInfoProcessNum] = useState(0)
+    const [textProcess,setTextProcess] = useState('')
+    const [postImages,setPostImages] = useState<any[]>([])
+    useEffect(() => {
+      console.log(imageProcess)
+    },[imageProcess])
 
 
   const onChangeText = (e:any) => {
@@ -236,13 +238,15 @@ window.addEventListener("scroll", () => {
   const abc:any = 'http://127.0.0.1:5002'
   const client = create(abc)
   const nftFunc = async () => {
-    const nailData:any = {images:imageProcess,...infoProcess}
+    const nailData:any = {images:postImages,...infoProcess}
     console.log(nailData)
-    const response = await client.add(JSON.stringify(nailData))
-    const ipfsHash = response.path
-    console.log(ipfsHash)
-    publishToken(ipfsHash)
+    registDesign(nailData)
+    // const response = await client.add(JSON.stringify(nailData))
+    // const ipfsHash = response.path
+    // console.log(ipfsHash)
+    // publishToken(ipfsHash)
   }
+
 
   return (
     <>
@@ -278,7 +282,7 @@ window.addEventListener("scroll", () => {
                 이미지 등록
               </div>
               <div className='fileBox'>
-                <FileUpload setImageProcess={setImageProcess}/>
+                <FileUpload setImageProcess={setImageProcess} setPostImages={setPostImages}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}}>
                 네일정보 등록

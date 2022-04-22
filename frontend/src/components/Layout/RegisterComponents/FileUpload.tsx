@@ -3,30 +3,42 @@ import ImagePreview from './ImagePreview';
 import './File.scss';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-const ImageUploadBox = (props:any) => {
+const ImageUploadBox = (props:any ) => {
+  console.log(props)
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [previewImages, setPreviewImages] = useState([]);
   const uploadBoxRef = useRef<any>();
   const inputRef = useRef<any>();
+  const [testImages, setTestImages] = useState<any[]>([])
+
 
   useEffect(() => {
     console.log(uploadedImages)
     props.setImageProcess(uploadedImages)
-    // props.setImageProcess(uploadedImages.length)
+
   }, [uploadedImages])
+
+  useEffect(() => {
+    console.log(testImages)
+    props.setPostImages(testImages)
+  })
 
   useEffect(() => {
     const uploadBox = uploadBoxRef.current;
     const input = inputRef.current;
     
     const handleFiles = (files:any) => {
+      
       for (const file of files) {
         if (!file.type.startsWith("image/")) continue;
         const reader = new FileReader();
         reader.onloadend = (e:any) => {
           const result:any = e.target.result ;
+          
           if (result) {
             setUploadedImages((state:any) => [...state, result].slice(0, 2));
+            setTestImages((state:any) => [...state, file].slice(0, 2));
+            
             
           }
         };
@@ -36,6 +48,7 @@ const ImageUploadBox = (props:any) => {
     
     const changeHandler = (event:any) => {
       const files = event.target.files;
+      console.log(files)
       handleFiles(files);
     };
     
@@ -70,9 +83,11 @@ const ImageUploadBox = (props:any) => {
       const deleteFunc = () => {
         uploadedImages.splice(uploadedImages.findIndex(isDeleteImage), 1);
         setUploadedImages([...uploadedImages]);
+        setTestImages([...testImages]);
       };
       return <ImagePreview image={image} deleteFunc={deleteFunc} test={index} key={index} />;
     });
+
     setPreviewImages(imageJSXs);
   }, [uploadedImages]);
 
