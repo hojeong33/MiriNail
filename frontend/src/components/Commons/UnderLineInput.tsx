@@ -135,7 +135,7 @@ const Input = (props: any) => {
   }
     setColor(colorName)
     setInputStatus({
-      ...inputStatus, colorType : colorName
+      ...inputStatus, nailartColor : colorName
     })
   }
   useEffect(() => {
@@ -173,11 +173,11 @@ const Input = (props: any) => {
 
   // 인풋 상태 관리
   const [inputStatus, setInputStatus] = useState({
-    type : '',
-    season : '',
-    price : '',
-    colorType : '',
-    detailColor : '',
+    nailartType : '',
+    nailartWeather : '',
+    nailartPrice : '',
+    nailartColor : '',
+    nailartDetailColor : '',
   })
 
   const onChangeInput = (e: any) => {
@@ -213,14 +213,14 @@ const Input = (props: any) => {
       <Wrapper>
         <div className="inputBox">
           <div className="inputBoxLeft">
-            <select name="type" id="lang" onChange={onChangeInput}>
+            <select name="nailartType" id="lang" onChange={onChangeInput}>
               <option value="">타입 선택</option>
               <option value="gel">GEL NAIL</option>
               <option value="french">FRENCH NAIL</option>
               <option value="linestone">LINESTONE NANIL</option>
             </select>
             <select
-              name="season"
+              name="nailartWeather"
               id="lang"
               style={{ marginLeft: "20px" }}
               onChange={onChangeInput}
@@ -234,7 +234,7 @@ const Input = (props: any) => {
             <div className="inputs">
               <div>
                 <input
-                  name="price"
+                  name="nailartPrice"
                   className="underline"
                   type="text"
                   placeholder="가격"
@@ -243,7 +243,7 @@ const Input = (props: any) => {
               </div>
               <div>
                 <input
-                  name="detailColor"
+                  name="nailartDetailColor"
                   className="underline"
                   type="text"
                   placeholder="세부 색상"

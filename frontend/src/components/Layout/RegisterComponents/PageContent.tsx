@@ -175,6 +175,7 @@ const MainFrame = styled.div`
 
 const PageContent = () => {
   // 리모컨 
+  const nailartName = 'dummysibal'
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
     let clientHeight = document.documentElement.clientHeight;
@@ -189,14 +190,14 @@ const PageContent = () => {
   })
     const [imageProcess,setImageProcess] = useState([])
     const [infoProcess,setInfoProcess] = useState({
-      type :'',
-      season : '',
-      price :'',
-      colorType :'',
-      detailColor :''
+      nailartType :'',
+      nailartWeather : '',
+      nailartPrice :'',
+      nailartColor :'',
+      nailartDetailColor : '',
     })
     const [infoProcessNum,setInfoProcessNum] = useState(0)
-    const [textProcess,setTextProcess] = useState('')
+    const [nailartDesc,setnailartDesc] = useState('')
     const [postImages,setPostImages] = useState<any[]>([])
     useEffect(() => {
       console.log(imageProcess)
@@ -204,25 +205,25 @@ const PageContent = () => {
 
 
   const onChangeText = (e:any) => {
-    setTextProcess(e.target.value) 
+    setnailartDesc(e.target.value) 
 
   }
 
   useEffect(() => {
     let abc = 0;
-    if (infoProcess.type != "") {
+    if (infoProcess.nailartType != '') {
       abc += 1;
     }
-    if (infoProcess.season != "") {
+    if (infoProcess.nailartWeather != '') {
       abc += 1;
     }
-    if (infoProcess.price != "") {
+    if (infoProcess.nailartPrice != '') {
       abc += 1;
     }
-    if (infoProcess.colorType != "") {
+    if (infoProcess.nailartColor != '') {
       abc += 1;
     }
-    if (infoProcess.detailColor != "") {
+    if (infoProcess.nailartDetailColor != '') {
       abc += 1;
     }
     setInfoProcessNum(abc);
@@ -234,20 +235,25 @@ const PageContent = () => {
   const client = create(abc);
   const nftFunc = async () => {
     const formData = new FormData()
+    const multipartFiles = new FormData()
+    
     // type :'',
     //   season : '',
     //   price :'',
     //   colorType :'',
     //   detailColor :''
-    formData.append("nailartName",infoProcess.type+'-'+infoProcess.detailColor)
-    formData.append("nailartDesc",textProcess)
-    formData.append("nailartType",infoProcess.type)
-    formData.append("nailartColor",infoProcess.colorType)
-    formData.append("nailartDetailColor",infoProcess.detailColor)
-    formData.append("nailartWeather",infoProcess.season)
+    // formData.append("nailartName",infoProcess.type+'-'+infoProcess.detailColor)
+    // formData.append("nailartDesc",nailartDesc)
+    // formData.append("nailartType",infoProcess.type)
+    // formData.append("nailartColor",infoProcess.colorType)
+    // formData.append("nailartDetailColor",infoProcess.detailColor)
+    // formData.append("nailartWeather",infoProcess.season)
+    const nailData:any = {...infoProcess,nailartDesc,nailartName}
+    formData.append("nailartRegisterPostReq",new Blob([JSON.stringify(nailData)], {type: "application/json"}))
     for (const file in postImages) {
-      formData.append("filename",file)
+      multipartFiles.append("multipartFiles",file)
     } 
+    
 
     registDesign(formData)
     // const response = await client.add(JSON.stringify(nailData))
@@ -276,10 +282,10 @@ const PageContent = () => {
                   <label htmlFor="cb2">네일정보 등록 ({infoProcessNum}/5)</label>
                 </div>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb3" checked={textProcess.length >= 10 ? true : false}/>
-                  <label htmlFor="cb3">소개글 등록 ({textProcess.length >= 10 ? 1 : 0}/1)</label>
+                  <input type="checkbox" id="cb3" checked={nailartDesc.length >= 10 ? true : false}/>
+                  <label htmlFor="cb3">소개글 등록 ({nailartDesc.length >= 10 ? 1 : 0}/1)</label>
                 </div>
-                { imageProcess.length ===2 && infoProcessNum ===5 && textProcess.length >= 10 ? <div className="finBox">
+                { imageProcess.length ===2 && infoProcessNum ===5 && nailartDesc.length >= 10 ? <div className="finBox">
                   <DoneIcon fontSize="large" style={{color:"green",fontWeight:"bold"}}/> <button>등록</button>
                 </div> : <div style={{marginTop:"25px"}}>과정을 완료해주세요</div>}
               </div>

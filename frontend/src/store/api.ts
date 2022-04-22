@@ -11,6 +11,13 @@ export const fetchDesigns = async() => {
 }
 
 export const registDesign = async(item:any) => {
-  const response = await axios.post(base_url+'nailart',item)
+  console.log(item)
+  const response = await axios.post(base_url+'nailart',item,
+   {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+    
   console.log(response)
 }
