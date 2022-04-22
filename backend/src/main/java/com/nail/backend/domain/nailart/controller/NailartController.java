@@ -38,6 +38,7 @@ public class NailartController {
     // Nailart 등록
     @PostMapping
     public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestBody NailartRegisterPostReq nailartRegisterPostReq, @RequestPart(value = "filename") List<MultipartFile> multipartFiles){
+
         nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
 
         return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));

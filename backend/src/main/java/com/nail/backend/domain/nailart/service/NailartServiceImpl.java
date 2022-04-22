@@ -119,25 +119,7 @@ public class NailartServiceImpl implements NailartService{
             index++;
         }
 
-//        for (int i = 0; i < multipartFiles.size(); i++) {
-//            if(i == 0){
-//                nailart.setNailartName(nailartRegisterPostReq.getNailartName());
-//                nailart.setNailartDesc(nailartRegisterPostReq.getNailartDesc());
-//                nailart.setNailartType(nailartRegisterPostReq.getNailartType());
-//                nailart.setNailartColor(nailartRegisterPostReq.getNailartColor());
-//                nailart.setNailartDetailColor(nailartRegisterPostReq.getNailartDetailColor());
-//                nailart.setNailartWeather(nailartRegisterPostReq.getNailartWeather());
-//                nailart.setNailartPrice(nailartRegisterPostReq.getNailartPrice());
-////                nailart.setNailartThumbnailUrl();
-//                nailartSaved = nailartRepository.save(nailart);
-//
-//            }else{
-//                nailartImg.setNailartSeq(nailartSaved.getNailartSeq());
-////                nailartImg.setNailartImgUrl("이미지 url");
-//            }
-//        }
-
-        return null;
+        return nailart;
     }
 
     @Override
