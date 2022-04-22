@@ -1,10 +1,7 @@
 package com.nail.backend.domain.oauth.entity;
 
 import com.nail.backend.domain.user.db.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +18,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     private final String userId;
 //    private final String password;

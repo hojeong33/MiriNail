@@ -55,6 +55,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User createUser(OAuth2UserInfo userInfo) {
         User user = User.builder()
                 .userId(userInfo.getUserId())
+                .userProfileImg(userInfo.getUserProfileImg())
                 .userNickname(userInfo.getUserNickname())
                 .userEmail(userInfo.getUserEmail())
                 .userGender(userInfo.getUserGender())
@@ -71,10 +72,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setUserNickname(userInfo.getUserNickname());
         }
 
-//        if (userInfo.getUserProfileImg() != null && !user.getUserProfileImg().equals(userInfo.getUserProfileImg())) {
-//            user.setUserProfileImg(userInfo.getUserProfileImg());
-//        }
+        if (userInfo.getUserProfileImg() != null && !user.getUserProfileImg().equals(userInfo.getUserProfileImg())) {
+            user.setUserProfileImg(userInfo.getUserProfileImg());
+        }
 
+        userRepository.save(user);
         return user;
     }
 }
