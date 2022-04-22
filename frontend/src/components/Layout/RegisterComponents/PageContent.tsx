@@ -10,19 +10,16 @@ import {registDesign} from '../../../store/api'
 
 const Wrapper = styled.div`
   * {
-  margin: 0px;
-  padding: 0px;
-  position: relative;
-  list-style: none;
-  text-decoration: none;
-  box-sizing: border-box;
-  
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
   }
 
-  height : 100vh;
-
-  
-`
+  // height: 100vh;
+`;
 const MainFrame = styled.div`
   width :1300px;
   height: 100%;
@@ -115,7 +112,7 @@ const MainFrame = styled.div`
 
       .RightBox {
         padding-left :80px;
-        height :100%;
+        // height :100%;
         padding-top: 75px;
         width: 100%;
         border-left: 1px solid #d2d2d0;
@@ -168,8 +165,7 @@ const MainFrame = styled.div`
       
     }
   }
-`
-
+`;
 
 
 
@@ -213,34 +209,47 @@ const PageContent = () => {
   }
 
   useEffect(() => {
-    let abc = 0
-    if (infoProcess.type != '') {
-      abc += 1
-    } 
-    if (infoProcess.season != '') {
-      abc += 1
-    } 
-    if (infoProcess.price != '') {
-      abc += 1
-    } 
-    if (infoProcess.colorType != '') {
-      abc += 1
-    } 
-    if (infoProcess.detailColor != '') {
-      abc += 1
+    let abc = 0;
+    if (infoProcess.type != "") {
+      abc += 1;
     }
-    setInfoProcessNum(abc)
-    console.log(infoProcess)
-
-  },[infoProcess])
+    if (infoProcess.season != "") {
+      abc += 1;
+    }
+    if (infoProcess.price != "") {
+      abc += 1;
+    }
+    if (infoProcess.colorType != "") {
+      abc += 1;
+    }
+    if (infoProcess.detailColor != "") {
+      abc += 1;
+    }
+    setInfoProcessNum(abc);
+    console.log(infoProcess);
+  }, [infoProcess]);
 
   // ipfs 등록 및 nft 발급
-  const abc:any = 'http://127.0.0.1:5002'
-  const client = create(abc)
+  const abc: any = "http://127.0.0.1:5002";
+  const client = create(abc);
   const nftFunc = async () => {
-    const nailData:any = {images:postImages,...infoProcess}
-    console.log(nailData)
-    registDesign(nailData)
+    const formData = new FormData()
+    // type :'',
+    //   season : '',
+    //   price :'',
+    //   colorType :'',
+    //   detailColor :''
+    formData.append("nailartName",infoProcess.type+'-'+infoProcess.detailColor)
+    formData.append("nailartDesc",textProcess)
+    formData.append("nailartType",infoProcess.type)
+    formData.append("nailartColor",infoProcess.colorType)
+    formData.append("nailartDetailColor",infoProcess.detailColor)
+    formData.append("nailartWeather",infoProcess.season)
+    for (const file in postImages) {
+      formData.append("filename",file)
+    } 
+
+    registDesign(formData)
     // const response = await client.add(JSON.stringify(nailData))
     // const ipfsHash = response.path
     // console.log(ipfsHash)
@@ -274,8 +283,6 @@ const PageContent = () => {
                   <DoneIcon fontSize="large" style={{color:"green",fontWeight:"bold"}}/> <button>등록</button>
                 </div> : <div style={{marginTop:"25px"}}>과정을 완료해주세요</div>}
               </div>
-
-           
             </div>
             <div className="RightBox">
               <div className='subTitle' style={{marginTop:"48px"}}>
@@ -306,17 +313,11 @@ const PageContent = () => {
             </div>
           
           </div>
-          
-        </div>
-        <div>
-          
         </div>
         </MainFrame>
-        
       </Wrapper>
-      
     </>
-  )
-}
+  );
+};
 
-export default PageContent
+export default PageContent;
