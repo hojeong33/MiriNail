@@ -34,14 +34,14 @@ import static com.google.common.collect.Lists.newArrayList;
 public class SwaggerConfig implements WebMvcConfigurer {
     TypeResolver typeResolver = new TypeResolver();
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        //spring-security와 연결할 때 이 부분을 작성하지 않으면 404에러가 뜬다.
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        //spring-security와 연결할 때 이 부분을 작성하지 않으면 404에러가 뜬다.
+//        registry.addResourceHandler("swagger-ui.html")
+//                .addResourceLocations("classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//    }
 
     @Bean
     public Docket api() {

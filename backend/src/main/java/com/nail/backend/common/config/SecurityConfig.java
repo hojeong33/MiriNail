@@ -66,10 +66,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // stateless한 세션 정책 설정, 우리는 세션 사용 X
                 .and()
                 .csrf().disable()
-                .formLogin().disable()
+                .formLogin().disable() // 폼 기반 인증 비활성화
                 .httpBasic().disable() // Http basic Auth 기반으로 로그인 인증창 사용여부, disable : 사용안함
                 .exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -39,12 +39,11 @@ public class AuthController {
     private final static String REFRESH_TOKEN = "refresh_token";
 
     @PostMapping("/login")
-    public ApiResponse login(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestBody AuthReqModel authReqModel) {
+    public ApiResponse login(HttpServletRequest request, HttpServletResponse response, @RequestBody AuthReqModel authReqModel) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authReqModel.getId(),authReqModel.getPassword()));
 
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        System.out.println("authReqModel.getId : "+authReqModel.getId());
         String userId = authReqModel.getId();
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

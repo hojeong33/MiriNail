@@ -33,7 +33,7 @@ public class JwtTokenUtil {
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
-    
+
     @Autowired
 	public JwtTokenUtil(@Value("${jwt.secret}") String secretKey,
                         @Value("${jwt.accessTokenExpiration}") Integer accessTokenExpiration,
@@ -42,13 +42,13 @@ public class JwtTokenUtil {
         this.accessTokenExpiration = accessTokenExpiration;
 		this.refreshTokenExpiration = refreshTokenExpiration;
 	}
-    
+
 	public void setExpirationTime() {
     		//JwtTokenUtil.expirationTime = Integer.parseInt(expirationTime);
     		JwtTokenUtil.accessTokenExpiration = accessTokenExpiration;
             JwtTokenUtil.refreshTokenExpiration = refreshTokenExpiration;
 	}
-    
+
     public static String createAccessToken(long userId, String userEmail) {
     	Date expires = JwtTokenUtil.getTokenExpiration(accessTokenExpiration);
         return JWT.create()

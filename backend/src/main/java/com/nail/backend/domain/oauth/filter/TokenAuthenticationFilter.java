@@ -20,15 +20,20 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final AuthTokenProvider tokenProvider;
 
+    // 토큰 유효성 검사
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain)  throws ServletException, IOException {
 
+        // 토큰 값 받아옴
         String tokenStr = HeaderUtil.getAccessToken(request);
+
+        // 인증 토큰으로 변환
         AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
+        log.info("jwt - 인증토큰 변환");
         if (token.validate()) {
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);

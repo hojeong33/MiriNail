@@ -49,6 +49,7 @@ public class AuthToken {
         return this.getTokenClaims() != null;
     }
 
+    // 토큰에 담긴 payload 값 가져오기
     public Claims getTokenClaims() {
         try {
             return Jwts.parserBuilder()

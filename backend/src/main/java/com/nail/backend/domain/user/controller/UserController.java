@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/users")
@@ -48,11 +50,14 @@ public class UserController {
             @io.swagger.annotations.ApiResponse(code = 201, message = "성공", response = User.class),
             @io.swagger.annotations.ApiResponse(code = 404, message = "해당 유저 없음.")
     })
-    public ResponseEntity<User> getUserDetailByUserId(@PathVariable("userSeq") Long userSeq) {
+    public ResponseEntity<User> getUserDetailByUserId(@PathVariable("userSeq") Long userSeq,
+                                                      Principal principal) {
 
         // 0. 받아올 유저 Seq를 받음
         // 1. 해당 하는 유저에 대한 정보를 넘겨준다.
-
+        /**
+         *  principal.getName() => userId 값을 토큰에서 불러온다.
+         */
         log.info("getUserDetailByUserId - 호출");
         User user = userRepository.findByUserSeq(userSeq);
         if(null == user) {

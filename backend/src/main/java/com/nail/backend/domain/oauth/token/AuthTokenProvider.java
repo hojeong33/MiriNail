@@ -43,6 +43,7 @@ public class AuthTokenProvider {
 
         if(authToken.validate()) {
 
+            // 토큰에 담긴 payload 값 가져오기
             Claims claims = authToken.getTokenClaims();
             Collection<? extends GrantedAuthority> authorities =
                     Arrays.stream(new String[]{claims.get(AUTHORITIES_KEY).toString()})
@@ -50,6 +51,8 @@ public class AuthTokenProvider {
                             .collect(Collectors.toList());
 
             log.debug("claims subject := [{}]", claims.getSubject());
+
+            log.info("jwt - AuthTokenProvider 유효");
             User principal = new User(claims.getSubject(), "", authorities);
             return new UsernamePasswordAuthenticationToken(principal, authToken, authorities);
         } else {
