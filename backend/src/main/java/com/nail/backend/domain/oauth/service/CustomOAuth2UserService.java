@@ -60,6 +60,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .userGender(userInfo.getUserGender())
                 .userAgeRange(userInfo.getUserAgeRange())
                 .userRegedAt(LocalDateTime.now())
+                .userRole("ROLE_USER")
                 .build();
 
         return userRepository.saveAndFlush(user);
@@ -70,9 +71,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setUserNickname(userInfo.getUserNickname());
         }
 
-        if (userInfo.getUserProfileImg() != null && !user.getUserProfileImg().equals(userInfo.getUserProfileImg())) {
-            user.setUserProfileImg(userInfo.getUserProfileImg());
-        }
+//        if (userInfo.getUserProfileImg() != null && !user.getUserProfileImg().equals(userInfo.getUserProfileImg())) {
+//            user.setUserProfileImg(userInfo.getUserProfileImg());
+//        }
 
         return user;
     }

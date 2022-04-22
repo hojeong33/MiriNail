@@ -42,14 +42,8 @@ public class AuthController {
     public ApiResponse login(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestBody AuthReqModel authReqModel
-    ) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authReqModel.getId(),
-                        authReqModel.getPassword()
-                )
-        );
+            @RequestBody AuthReqModel authReqModel) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authReqModel.getId(),authReqModel.getPassword()));
 
         String userId = authReqModel.getId();
         SecurityContextHolder.getContext().setAuthentication(authentication);
