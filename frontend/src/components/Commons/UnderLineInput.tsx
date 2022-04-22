@@ -41,6 +41,7 @@ const Wrapper = styled.div`
         border-right-width: 0;
         border-top-width: 0;
         border-bottom-width: 2px;
+        cursor:pointer;
         option {
           color: black;
         }

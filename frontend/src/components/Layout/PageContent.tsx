@@ -46,8 +46,9 @@ const MainFrame = styled.div`
             transition:all 0.3s; 
             font-size:14px; 
             margin-bottom:20px;
+            cursor : pointer;
           }
-          a.active{ opacity:1;}
+          a:active{ opacity:1;}
           a:hover{ opacity:1;}
         }
         
@@ -67,6 +68,7 @@ const MainFrame = styled.div`
             display:block;
             font-size:14px; 
             color:#3D3C3A; 
+            margin-top :15px;
             label {
               margin-left: 7px;
             }

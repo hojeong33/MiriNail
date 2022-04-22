@@ -106,7 +106,7 @@ function PageHeader() {
         <div className="pageHeaderNavigation">
           <div className="NavElement">
             <span>제품</span>
-            <ChevronRightIcon />
+            <ChevronRightIcon style={{top:"0"}}/>
             <span>REGISTER</span>
           </div>
         </div>

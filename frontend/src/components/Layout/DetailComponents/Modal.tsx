@@ -62,7 +62,11 @@ const Content = styled.div`
       textarea {
         width:100%;
         height : 150px;
+        border: 1px solid gray;
+        resize="none";
       }
+      
+      
     }
   }
   
@@ -135,7 +139,7 @@ export default function BasicModal(modalStatus:any) {
   }
   return (
     <Rating onClick={handleRating} ratingValue={ratingValue} showTooltip
-    tooltipArray={['별로에요', '그냥 그래요', '보통이에요', '맘에 들어요', '아주 좋아요']} />
+    tooltipArray={['별로에요', '그냥 그래요', '보통이에요', '맘에 들어요', '아주 좋아요']} style={{color:"#F8E71C"}}></Rating>
   )
   }
 
@@ -172,7 +176,7 @@ export default function BasicModal(modalStatus:any) {
             <div className="reviewWrite">
               <label htmlFor="goods_text" className="label">디자인에 대한 평가를 20자 이상 작성해 주세요</label>
               <div className="inputArea">
-                <textarea id="goods_text" placeholder="내용을 입력해주세요" name="goods_text"></textarea>
+                <textarea id="goods_text" placeholder="내용을 입력해주세요" name="goods_text" ></textarea>
               </div>
             </div>
             <div className='uploadWrap'>

@@ -6,7 +6,7 @@ const Paginations = () => {
     <>
       <Stack spacing={2} className="dd">
         <Pagination count={5} shape="rounded" />
-        <Pagination count={5} variant="outlined" shape="rounded" />
+        {/* <Pagination count={5} variant="outlined" shape="rounded" /> */}
       </Stack>
     </>
   );

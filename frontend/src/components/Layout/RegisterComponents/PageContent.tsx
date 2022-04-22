@@ -5,6 +5,7 @@ import {useState,useEffect} from 'react'
 import { create } from 'ipfs-http-client'
 import axios from 'axios'
 import publishToken from '../../BlockChain/PublishNFT'
+import DoneIcon from '@mui/icons-material/Done';
 
 const Wrapper = styled.div`
   * {
@@ -57,7 +58,11 @@ const MainFrame = styled.div`
         }
         
         .OrderFilter {
-          margin-top:100px;
+          height : 225px;
+          border : 1px solid black;
+          border-radius :10px;
+          padding :10px;
+          margin-top:50px;
           a { 
             display:block; 
             color:#3D3C3A; 
@@ -72,8 +77,31 @@ const MainFrame = styled.div`
             display:block;
             font-size:14px; 
             color:#3D3C3A; 
+            margin-top:15px;
             label {
               margin-left: 7px;
+            }
+          }
+          
+          .finBox {
+            animation: 0.7s ease-in-out loadEffect1;
+
+            @keyframes loadEffect1 {
+                0%{
+                    opacity: 0;
+                }
+                100%{
+                    opacity: 1;
+                }
+            }
+            margin-left:15px;
+            margin-top:25px;
+            button {
+              border : 1px solid rgb(51, 51, 51);
+              color:rgb(51, 51, 51);
+              padding: 3px 10px 3px 10px;
+              // margin : 10px 20px 10px 30px;
+              border-radius :5px;
             }
           }
           
@@ -101,6 +129,7 @@ const MainFrame = styled.div`
         }
         .fileBox {
           margin-top :48px;
+          
         }
         .infoBox {
           margin-top : 48px;
@@ -141,7 +170,26 @@ const MainFrame = styled.div`
 `
 
 
+
+
+
+
+
+
 const PageContent = () => {
+  // 리모컨 
+window.addEventListener("scroll", () => {
+  let scrollTop = document.documentElement.scrollTop;
+  let clientHeight = document.documentElement.clientHeight;
+  let remote:any = document.getElementById('remote')
+  if (scrollTop+clientHeight >= 1337) { 
+    remote.style.position="fixed"
+    remote.style.top="180px"
+  } else {
+    remote.style.position="relative"
+    remote.style.top=""
+  }
+})
   const [imageProcess,setImageProcess] = useState([])
   const [infoProcess,setInfoProcess] = useState({
     type :'',
@@ -161,9 +209,7 @@ const PageContent = () => {
     setTextProcess(e.target.value) 
 
   }
-  // useEffect(() => {
-  //   console.log(infoProcess)
-  // },[infoProcess])
+
   useEffect(() => {
     let abc = 0
     if (infoProcess.type != '') {
@@ -206,8 +252,8 @@ const PageContent = () => {
           <div className="ItemList">
             <div className="LeftBox">
          
-              <div className="OrderFilter">
-                <a>정렬</a>
+              <div className="OrderFilter" id="remote">
+                <a>등록 과정</a>
                 <div className="CheckBox">
                   <input type="checkbox" id="cb1" checked={imageProcess.length === 2 ? true : false}/>
                   <label htmlFor="cb1">이미지 등록 ({imageProcess.length}/2)</label>
@@ -220,6 +266,9 @@ const PageContent = () => {
                   <input type="checkbox" id="cb3" checked={textProcess.length >= 10 ? true : false}/>
                   <label htmlFor="cb3">소개글 등록 ({textProcess.length >= 10 ? 1 : 0}/1)</label>
                 </div>
+                { imageProcess.length ===2 && infoProcessNum ===5 && textProcess.length >= 10 ? <div className="finBox">
+                  <DoneIcon fontSize="large" style={{color:"green",fontWeight:"bold"}}/> <button>등록</button>
+                </div> : <div style={{marginTop:"25px"}}>과정을 완료해주세요</div>}
               </div>
 
            
@@ -238,9 +287,9 @@ const PageContent = () => {
                 <UnderLineInput setInfoProcess={setInfoProcess}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}} >
-                소개글 등록 (10자 이상 입력해주세요.)
+                소개글 등록 
               </div>
-              <textarea name="textVal" id="" onChange={onChangeText}>asdfsd</textarea>
+              <textarea name="textVal" id="" onChange={onChangeText} style={{resize:"none"}} placeholder="10자 이상 입력해주세요."></textarea>
               <div className="buttons">
                 <div className="btn1" onClick={nftFunc}>
                   등록
