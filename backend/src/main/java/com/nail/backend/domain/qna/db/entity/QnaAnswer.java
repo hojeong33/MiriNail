@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,18 +20,19 @@ public class QnaAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long qnaAnswerSeq;
+    private Long qnaAnswerSeq;
 
 
+    @JoinColumn(name = "qna_seq")
     @ApiModelProperty(value = "문의 Seq")
-    Long qnaSeq;
+    private Long qnaSeq;
 
     @ApiModelProperty(value = "문의 답변 내용")
-    Long qnaAnswerDesc;
+    private Long qnaAnswerDesc;
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    LocalDateTime qnaAnswerRegedAt;
+    private LocalDateTime qnaAnswerRegedAt;
 
 
 

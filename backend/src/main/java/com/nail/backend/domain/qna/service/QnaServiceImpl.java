@@ -13,6 +13,8 @@ import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,6 +101,16 @@ public class QnaServiceImpl implements QnaService {
 
 
 //    READ___________________________________________
+    @Override
+    @Transactional
+    public Page<Qna> getQnaListByUser(Pageable pageable, Long userSeq){
+        Page<Qna> qnaList = qnaRepository.findAllByUserSeq(pageable,userSeq);
+        if (qnaList.stream().count() == 0) {  // Qna 없으면
+            return null;
+        }
+        return qnaList;
+    }
+
 //    UPDATE_________________________________________
 
     @Override

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
-public class QnaRepositorySupport {
+public class QnaRepositorySupport{
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;

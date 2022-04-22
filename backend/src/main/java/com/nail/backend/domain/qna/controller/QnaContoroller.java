@@ -7,10 +7,14 @@ import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaAnswerRegisterPostReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
+import com.nail.backend.domain.qna.response.QnaListGetRes;
 import com.nail.backend.domain.qna.service.QnaService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +77,25 @@ public class QnaContoroller {
 
 //    READ___________________________________________
 
+    @ApiOperation(value = "유저가 작성한 1:1 문의 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/user/{userSeq}")
+    public ResponseEntity<Page<Qna>> getQnaListByUser(@PageableDefault(page=0, size =10) Pageable pageable,
+                                                                @ApiParam(value = "유저Seq") @PathVariable("userSeq") Long userSeq){
+
+        log.info("getQnaListByUser - 호출");
+        Page<Qna> qnaList = qnaService.getQnaListByUser(pageable,userSeq);
+
+        // 값이 없으면 에러가 아니라 빈 리스트를 리턴
+//        if(qnaList.isEmpty()){
+//            log.error("getQnaListByUser - qnaList doesn't exist on this user");
+//            return ResponseEntity.status(404).body(null);
+//        }
+        return ResponseEntity.status(200).body(qnaList);
+    }
 
 //    UPDATE_________________________________________
     @Transactional

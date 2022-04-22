@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
@@ -23,36 +20,39 @@ public class Qna {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long qnaSeq;
+    private Long qnaSeq;
 
     @ApiModelProperty(value = "유저 번호")
-    Long userSeq;
+    private Long userSeq;
 
     @ApiModelProperty(value = "QnA 제목")
-    String qnaTitle;
+    private String qnaTitle;
 
     @ApiModelProperty(value = "QnA 내용")
-    String qnaDesc;
+    private String qnaDesc;
 
     @ApiModelProperty(value = "QnA 사진 url")
-    String qnaImgUrl;
+    private String qnaImgUrl;
 
     @ApiModelProperty(value = "QnA 디자이너Seq")
-    Long qnaDesignerSeq;
+    private Long qnaDesignerSeq;
 
     @ApiModelProperty(value = "QnA nailart Seq")
-    Long qnaNailartSeq;
+    private Long qnaNailartSeq;
 
     @ApiModelProperty(value = "QnA 답변 여부")
-    boolean qnaIsAnswered;
+    private boolean qnaIsAnswered;
 
     //false :공개, true : 비공개
     @ApiModelProperty(value = "QnA 비공개 여부")
-    boolean qnaIsPrivated;
+    private boolean qnaIsPrivated;
 
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    LocalDateTime qnaRegedAt;
+    private LocalDateTime qnaRegedAt;
 
+    @OneToOne
+    @JoinColumn(name = "qnaSeq")
+    private QnaAnswer qnaAnswer;
 }
