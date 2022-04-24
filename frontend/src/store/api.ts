@@ -10,14 +10,28 @@ export const fetchDesigns = async() => {
   return response.data.content
 }
 
-export const registDesign = async(item:any) => {
-  console.log(item)
-  const response = await axios.post(base_url+'nailart',item,
-   {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+export const registDesign = async(files:any) => {
+  for (let key of files.keys()) {
+    console.log(key);
+}
+
+/* value 확인하기 */
+for (let value of files.values()) {
+     console.log(value);
+}
+  axios.post('http://localhost:8080/api/nailart', files, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+  })
+  .then((response) => {
+    // 응답 처리
+    console.log(response)
+  })
+  .catch((error) => {
+    // 예외 처리
+    console.log(error)
   })
     
-  console.log(response)
+  // console.log(response)
 }

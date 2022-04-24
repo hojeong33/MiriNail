@@ -23,3 +23,8 @@ public class NailartRegisterPostReq {
 
 
 }
+//@Data
+//public class NailartRegisterPostReq {
+//    String name;
+//    String gender;
+//}

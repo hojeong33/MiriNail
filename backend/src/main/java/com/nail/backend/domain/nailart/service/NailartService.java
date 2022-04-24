@@ -15,7 +15,7 @@ public interface NailartService {
     Nailart nailartDetail(long nailartSeq);
 
     // 네일 아트 등록
-    Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq, List<MultipartFile> multipartFiles);
+    Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq, List<MultipartFile> files);
 
     // 네일 아트 수정
 
