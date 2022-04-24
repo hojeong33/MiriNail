@@ -1,6 +1,10 @@
 package com.nail.backend.domain.nailart.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
@@ -9,14 +13,16 @@ import com.nail.backend.domain.nailart.db.entity.Nailart;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.plaf.multi.MultiListUI;
 import java.util.List;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/nailart")
 @Slf4j
@@ -45,18 +51,58 @@ public class NailartController {
 
 
 
-    @PostMapping(consumes = {"multipart/form-data" })
-    public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestPart NailartRegisterPostReq nailartRegisterPostReq, @RequestPart(required = false) List<MultipartFile> multipartFiles){
-        log.info("디자이너 번호 : {}, 작품 이름 : {}, 작품 설명 : {}, 작품 타입 : {}, 작품 색상 : {}, 작품 상세 색상 : {}, 작품 날씨 : {}, 작품 가격{}"
-                    , nailartRegisterPostReq.getDesignerSeq() , nailartRegisterPostReq.getNailartName(), nailartRegisterPostReq.getNailartDesc()
-                    , nailartRegisterPostReq.getNailartType(), nailartRegisterPostReq.getNailartColor(), nailartRegisterPostReq.getNailartDetailColor()
-                    , nailartRegisterPostReq.getNailartWeather(), nailartRegisterPostReq.getNailartPrice());
+//    @PostMapping(consumes = {"multipart/form-data" })
+//    public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestPart NailartRegisterPostReq nailartRegisterPostReq, @RequestPart(required = false) List<MultipartFile> multipartFiles){
+//        log.info("디자이너 번호 : {}, 작품 이름 : {}, 작품 설명 : {}, 작품 타입 : {}, 작품 색상 : {}, 작품 상세 색상 : {}, 작품 날씨 : {}, 작품 가격{}"
+//                    , nailartRegisterPostReq.getDesignerSeq() , nailartRegisterPostReq.getNailartName(), nailartRegisterPostReq.getNailartDesc()
+//                    , nailartRegisterPostReq.getNailartType(), nailartRegisterPostReq.getNailartColor(), nailartRegisterPostReq.getNailartDetailColor()
+//                    , nailartRegisterPostReq.getNailartWeather(), nailartRegisterPostReq.getNailartPrice());
+//
+//        System.out.println("test");
+//        nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
 
-        System.out.println("test");
-        nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
 
-        return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
+    // 이건 리스트 목록만 받아짐
+//    @PostMapping(consumes = {"multipart/form-data" })
+//    public String uploadMulti(@RequestParam("files") List<MultipartFile> files) {
+//        System.out.println(files);
+//        return "uploaded";
+//    }
+
+    //이건 테스트중
+//    @PostMapping(consumes = {"multipart/form-data" })
+//    public ResponseEntity<Void> test(@RequestPart(value = "files",required = false) List<MultipartFile> files, @RequestParam(value="nailartRegisterPostReq",required = false) String nailartRegisterPostReq) {
+//        System.out.println(nailartRegisterPostReq);
+//        System.out.println(files.size());
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<Void> test(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
+        NailartRegisterPostReq nailartRegisterPostReq = objectMapper.readValue(jsonList, new TypeReference<NailartRegisterPostReq>() {});
+        nailartRegisterPostReq.setDesignerSeq(1);
+        log.info("files count : {}",files);
+        log.info("json text) : {}",nailartRegisterPostReq);
+        nailartService.nailartRegister(nailartRegisterPostReq, files);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+
+//    @PostMapping(consumes = {"multipart/form-data" })
+//    public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestParam(required = false) NailartRegisterPostReq nailartRegisterPostReq, @RequestParam("files") List<MultipartFile> files){
+//        log.info("디자이너 번호 : {}, 작품 이름 : {}, 작품 설명 : {}, 작품 타입 : {}, 작품 색상 : {}, 작품 상세 색상 : {}, 작품 날씨 : {}, 작품 가격{}"
+//                    , nailartRegisterPostReq.getDesignerSeq() , nailartRegisterPostReq.getNailartName(), nailartRegisterPostReq.getNailartDesc()
+//                    , nailartRegisterPostReq.getNailartType(), nailartRegisterPostReq.getNailartColor(), nailartRegisterPostReq.getNailartDetailColor()
+//                    , nailartRegisterPostReq.getNailartWeather(), nailartRegisterPostReq.getNailartPrice());
+//        log.info("images : {} " ,files);
+//        System.out.println(nailartRegisterPostReq);
+//        System.out.println(files);
+//        nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
+//
+//        return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
+//    }
 
     // Nailart 수정
 

@@ -200,8 +200,8 @@ const PageContent = () => {
     const [nailartDesc,setnailartDesc] = useState('')
     const [postImages,setPostImages] = useState<any[]>([])
     useEffect(() => {
-      console.log(imageProcess)
-    },[imageProcess])
+      console.log(postImages)
+    },[postImages])
 
 
   const onChangeText = (e:any) => {
@@ -234,7 +234,7 @@ const PageContent = () => {
   const abc: any = "http://127.0.0.1:5002";
   const client = create(abc);
   const nftFunc = async () => {
-    const formData = new FormData()
+    const files= new FormData()
     const multipartFiles = new FormData()
     
     // type :'',
@@ -249,13 +249,21 @@ const PageContent = () => {
     // formData.append("nailartDetailColor",infoProcess.detailColor)
     // formData.append("nailartWeather",infoProcess.season)
     const nailData:any = {...infoProcess,nailartDesc,nailartName}
-    formData.append("nailartRegisterPostReq",new Blob([JSON.stringify(nailData)], {type: "application/json"}))
-    for (const file in postImages) {
-      multipartFiles.append("multipartFiles",file)
-    } 
+    // files.append("jsonList",new Blob([JSON.stringify(nailData)], {type: "application/json"}))
+    files.append("jsonList",JSON.stringify(nailData))
+    console.log(postImages)
+
+    postImages.forEach(e => {
+      files.append('files',e)}
+      )
+
+    // for (const file in postImages) {
+    //   console.log(file)
+    //   files.append("files",file)
+    // } 
     
 
-    registDesign(formData)
+    registDesign(files)
     // const response = await client.add(JSON.stringify(nailData))
     // const ipfsHash = response.path
     // console.log(ipfsHash)

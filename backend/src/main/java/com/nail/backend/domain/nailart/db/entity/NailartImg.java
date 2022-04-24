@@ -2,6 +2,7 @@ package com.nail.backend.domain.nailart.db.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.persistence.*;
 

@@ -3,13 +3,17 @@ package com.nail.backend.domain.nailart.db.entity;
 import com.nail.backend.domain.desinger.db.entitiy.DesignerInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name ="nailart")
 @ApiModel(value = "NailArt", description = "NailArt 작품")
 public class Nailart {
@@ -18,9 +22,12 @@ public class Nailart {
     @ApiModelProperty(value = "NailArt 작품 번호")
     private long nailartSeq;
 
-    @ManyToOne
-    @JoinColumn(name = "designer_seq", updatable = false, insertable = false)
-    private DesignerInfo designerInfo;
+//    @ManyToOne
+//    @JoinColumn(name = "designer_seq", updatable = false, insertable = false)
+//    private DesignerInfo designerInfo;
+
+    @Column
+    private long designerSeq;
 
     @Column(name = "token_id")
     private long tokenId;
@@ -57,6 +64,8 @@ public class Nailart {
 
     @Column(name = "nailart_rating")
     private float nailartRating;
+
+
 
 
 }

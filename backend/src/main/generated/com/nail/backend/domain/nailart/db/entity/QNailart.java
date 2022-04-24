@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,11 +17,9 @@ public class QNailart extends EntityPathBase<Nailart> {
 
     private static final long serialVersionUID = 333822028L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QNailart nailart = new QNailart("nailart");
 
-    public final com.nail.backend.domain.desinger.db.entitiy.QDesignerInfo designerInfo;
+    public final NumberPath<Long> designerSeq = createNumber("designerSeq", Long.class);
 
     public final BooleanPath nailartAvailable = createBoolean("nailartAvailable");
 
@@ -51,24 +48,15 @@ public class QNailart extends EntityPathBase<Nailart> {
     public final NumberPath<Long> tokenId = createNumber("tokenId", Long.class);
 
     public QNailart(String variable) {
-        this(Nailart.class, forVariable(variable), INITS);
+        super(Nailart.class, forVariable(variable));
     }
 
     public QNailart(Path<? extends Nailart> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QNailart(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QNailart(PathMetadata metadata, PathInits inits) {
-        this(Nailart.class, metadata, inits);
-    }
-
-    public QNailart(Class<? extends Nailart> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.designerInfo = inits.isInitialized("designerInfo") ? new com.nail.backend.domain.desinger.db.entitiy.QDesignerInfo(forProperty("designerInfo"), inits.get("designerInfo")) : null;
+        super(Nailart.class, metadata);
     }
 
 }

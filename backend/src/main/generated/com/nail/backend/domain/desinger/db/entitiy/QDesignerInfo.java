@@ -22,6 +22,8 @@ public class QDesignerInfo extends EntityPathBase<DesignerInfo> {
 
     public static final QDesignerInfo designerInfo = new QDesignerInfo("designerInfo");
 
+    public final NumberPath<Long> designerSeq = createNumber("designerSeq", Long.class);
+
     public final com.nail.backend.domain.user.db.entity.QUser user;
 
     public QDesignerInfo(String variable) {
