@@ -1,5 +1,6 @@
 package com.nail.backend.domain.nailart.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/nailart")
 @Slf4j
@@ -39,12 +41,18 @@ public class NailartController {
     // Nailart designerSeq로 전체 조회
 
     // Nailart 등록
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestPart NailartRegisterPostReq nailartRegisterPostReq, @RequestPart(value = "filename") List<MultipartFile> multipartFiles){
+
+
+
+
+    @PostMapping(consumes = {"multipart/form-data" })
+    public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestPart NailartRegisterPostReq nailartRegisterPostReq, @RequestPart(required = false) List<MultipartFile> multipartFiles){
         log.info("디자이너 번호 : {}, 작품 이름 : {}, 작품 설명 : {}, 작품 타입 : {}, 작품 색상 : {}, 작품 상세 색상 : {}, 작품 날씨 : {}, 작품 가격{}"
                     , nailartRegisterPostReq.getDesignerSeq() , nailartRegisterPostReq.getNailartName(), nailartRegisterPostReq.getNailartDesc()
                     , nailartRegisterPostReq.getNailartType(), nailartRegisterPostReq.getNailartColor(), nailartRegisterPostReq.getNailartDetailColor()
                     , nailartRegisterPostReq.getNailartWeather(), nailartRegisterPostReq.getNailartPrice());
+
+        System.out.println("test");
         nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
 
         return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
