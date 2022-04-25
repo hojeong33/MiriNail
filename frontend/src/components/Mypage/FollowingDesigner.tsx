@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -22,9 +24,9 @@ const Wrapper = styled.div`
     position: relative;
     display: flex;
     flex-direction: row;
-    width: 420px;
-    height: 200px;
-    margin: 10px 40px 30px 20px;
+    width: 450px;
+    height: 220px;
+    margin: 10px 20px 30px 20px;
     padding: 20px 0;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     cursor: pointer;
@@ -33,7 +35,6 @@ const Wrapper = styled.div`
     }
     .cardleft {
       border-right: 1px solid #d2d2d0;
-
       width: 180px;
       height: 100%;
       display: flex;
@@ -41,23 +42,24 @@ const Wrapper = styled.div`
       justify-content: center;
       img {
         border-radius: 50%;
-        width: 100px;
-        height: 100px;
+        width: 110px;
+        height: 110px;
       }
     }
     .cardright {
       padding: 0 10px 0 0;
-      width: 220px;
+      width: 260px;
       height: 100%;
       text-align: left;
       .cardright-top {
-        padding-left: 15px;
+        padding-left: 25px;
         padding-top: 10px;
-        height: 72px;
+        /* padding: 10px 0 10px 15px; */
+        height: 80px;
         border-bottom: 1px solid #d2d2d0;
         font-weight: 500;
         .name {
-          font-size: 20px;
+          font-size: 22px;
         }
         .shop {
           color: #717171;
@@ -65,29 +67,21 @@ const Wrapper = styled.div`
       }
       .cardright-bottom {
         position: relative;
-        padding: 8px 0 0 15px;
-        height: 90px;
+        padding: 15px 0 0 25px;
+        height: 100px;
+        font-size: 18px;
         div {
           display: flex;
           align-items: center;
         }
         svg {
-          width: 10px;
-          height: 10px;
-          margin-right: 5px;
-        }
-        button {
           position: absolute;
-          left: 15px;
-          bottom: 15px;
-          padding: 5px 10px;
-          color: white;
-          background-color: #3d3c3a;
+          width: 25px;
+          height: 25px;
+          bottom: 10px;
+          right: 10px;
           :hover {
-            background-color: #5d5b58;
-          }
-          :active {
-            background-color: #3d3c3a;
+            transform:scale(1.1); 
           }
         }
       }
@@ -180,7 +174,7 @@ const FollowingDesigner = () => {
                 </div>
                 <div className="cardright-bottom">
                   <div>팔로워 : {designer.follower}명</div>
-                  <button>언팔로우</button>
+                  <FavoriteIcon color="error"/>
                 </div>
               </div>
             </div>

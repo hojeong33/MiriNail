@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
+import Feed from './Feed';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,7 +33,7 @@ interface IState {
     date: string;
     imgurl: string;
     content: string;
-  }
+  };
 }
 
 function New() {
@@ -39,32 +41,31 @@ function New() {
     {
       title: "신상공지",
       date: "2022-04-14",
-      imgurl: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA4MDlfMjYw%2FMDAxNjI4NTAwNDU3NjQ2.y6HMk-12DUgv3FSOysuLr0GYz9OdQkSq6-VVPiQmxi8g.NvqUANKYigGgV6v-ysx4GotLQxFl384ExMedS_S_nAkg.JPEG.hery3436%2FIMG_4464.jpg&type=sc960_832",
-      content: "dadaism__official\n🐯\n안녕하세요.\n다다이즘입니다 ✋🏻\n\n수많은 조언과 아이디어로\n생각한게\n루미원장 마음대로 !\n\n \"오마카세 아트\"\n\n선보일까 하는데 저렴한 가격으로 할거에오 👼🏻 🤍\n\n너낌은 알아야 하니까 동영상 첨부 해봅니다..!\n\n많관부〰️🖤"
+      imgurl:
+        "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA4MDlfMjYw%2FMDAxNjI4NTAwNDU3NjQ2.y6HMk-12DUgv3FSOysuLr0GYz9OdQkSq6-VVPiQmxi8g.NvqUANKYigGgV6v-ysx4GotLQxFl384ExMedS_S_nAkg.JPEG.hery3436%2FIMG_4464.jpg&type=sc960_832",
+      content:
+        'dadaism__official\n🐯\n안녕하세요.\n다다이즘입니다 ✋🏻\n\n수많은 조언과 아이디어로\n생각한게\n루미원장 마음대로 !\n\n "오마카세 아트"\n\n선보일까 하는데 저렴한 가격으로 할거에오 👼🏻 🤍\n\n너낌은 알아야 하니까 동영상 첨부 해봅니다..!\n\n많관부〰️🖤',
     },
     {
       title: "휴무공지",
       date: "2022-04-14",
       imgurl: "",
-      content: "코로나 이슈로 인해 임시 휴업 하겠습니다 ㅠㅠ"
-    }
+      content: "코로나 이슈로 인해 임시 휴업 하겠습니다 ㅠㅠ",
+    },
   ]);
 
   return (
     <Wrapper>
-      <button className="createbutton"><AddIcon />새 소식 작성</button>
+      <Link to="/designerpage/createfeed">
+        <button className="createbutton"><AddIcon />새 소식 작성</button>
+      </Link>
       {feeds.map((feed, idx) => {
         return (
-          <div className="feed">
-            <div>{feed.title}</div>
-            <div>{feed.date}</div>
-            <img src={feed.imgurl} alt="" />
-            <div>{feed.content}</div>
-          </div>
+          <Feed feed={feed} key={idx}/>
         )
       })}
     </Wrapper>
-  )
+  );
 }
 
-export default New
+export default New;

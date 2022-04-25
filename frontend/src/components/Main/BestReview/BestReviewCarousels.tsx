@@ -7,7 +7,8 @@ import { useEffect, useRef, useState } from "react";
 
 const Container = styled("div")({
   marginLeft: "600px",
-  width: "60%",
+  width: "70%",
+  position: "absolute",
 });
 export interface BestReviewProps {
   name: string;
@@ -19,11 +20,30 @@ export interface Props {
   items: BestReviewProps[];
 }
 const StyledSlider = styled(Slider)`
-  .slick-dots {
-    bottom: 10px;
-    right: 80%;
+  bottom: 200px;
+  right: 150px;
+  .slick-prev {
+    display: none !important;
+  }
+  .slick-next {
+    display: none !important;
   }
 `;
+const StyledSlider2 = styled(Slider)`
+  width: 300px;
+  right: -100px;
+  bottom: -100px;
+  .slick-prev {
+    display: none !important;
+  }
+  .slick-next {
+    display: none !important;
+  }
+  .slick-dots {
+    right: 10px;
+  }
+`;
+
 function BestReviewCarousels({ items }: Props) {
   const [mainSlick, setMainSlick] = useState(null);
   const [pagingSlick, setPagingSlick] = useState(null);
@@ -42,6 +62,7 @@ function BestReviewCarousels({ items }: Props) {
 
   const mainSettings = {
     dots: true,
+    fade: true,
     infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -50,7 +71,7 @@ function BestReviewCarousels({ items }: Props) {
     pauseOnHover: true,
   };
   const pagingSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -62,7 +83,7 @@ function BestReviewCarousels({ items }: Props) {
     <>
       {pagingSlick !== null && mainSlick !== null ? (
         <>
-          <StyledSlider
+          <StyledSlider2
             ref={mainSlickRef}
             asNavFor={pagingSlick}
             {...mainSettings}
@@ -71,15 +92,18 @@ function BestReviewCarousels({ items }: Props) {
               return (
                 <div key={idx}>
                   <h1>{idx}</h1>
-                  <Typography>{item.name}</Typography>
-                  <Typography>{item.price}원</Typography>
+                  <Typography variant="h4">{item.name}</Typography>
+                  <Typography variant="h5">{item.price}원</Typography>
                   {item.tags.map((tag, i) => (
-                    <Typography key={i}>{tag}</Typography>
+                    <Typography variant="h5" key={i}>
+                      {tag}
+                    </Typography>
                   ))}
+                  <button>자세히 보러가기</button>
                 </div>
               );
             })}
-          </StyledSlider>
+          </StyledSlider2>
           <Container>
             <StyledSlider
               ref={pagingSlickRef}
@@ -92,7 +116,7 @@ function BestReviewCarousels({ items }: Props) {
                     <h1>{idx}</h1>
                     <img
                       src={item.img}
-                      style={{ width: "200px", height: "200px" }}
+                      style={{ width: "32vh", height: "32vh" }}
                       alt=""
                     />
                   </div>

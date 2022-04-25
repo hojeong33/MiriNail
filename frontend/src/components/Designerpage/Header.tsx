@@ -119,7 +119,7 @@ const Header:React.FC<IProps> = ({designer}) => {
             <img src={designer?.imgurl} alt="" />
             <div className="designername">{designer?.name}</div>
             <div className="buttons">
-              <Link to="ask">
+              <Link to="createask">
                 <button>1:1 문의하기</button>
               </Link>
               <Link to="reservation">

@@ -1,7 +1,10 @@
 import styled from 'styled-components'
-import {useState} from 'react'
-import { Paginations } from './Paginations'
-
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { page } from '../../store/atoms';
+import { fetchDesigns } from '../../store/api';
+import { nftItems } from '../../store/atoms';
+import { useQuery, useQueryClient } from 'react-query';
 const Wrapper = styled.div`
 
 
@@ -53,98 +56,45 @@ const Wrapper = styled.div`
 `
 
 const NFTItems = () => {
+  const currentPage = useRecoilValue(page)
+  
+  const [mypage,setMyPage] = useRecoilState(page)
+  const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",mypage], fetchDesigns)
+
+  useEffect(() => {
+    setMyPage(1)
+  },[])
+
   return (
     <>
-      
+  
       <Wrapper>
+      {/* {items.map((item, idx) => {
+          return (
+            <div key={idx}>
+              <Cards info={item}/>
+            </div>
+          );
+        })} */}
       <ul className="clear">
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
+        {nftLoading ? null : nftData.map((e:any, idx:any) => {
+          return (
+            <div>
+              <li className="ItemListType">
+               <a href="" className="ItemBox">
+                 <div className="imx">
+                   <img src={e.nailartThumbnailUrl} alt="" />
+                   <div className="itemName">{e.nailartType} - {e.nailartDetailColor}</div>
+                   <div className="itemPrice">{e.nailartPrice}</div>
+                   {/* <div className="hashTag">#{e.nailartWeather} #{e.designerInfo.user.userNickname}</div> */}
+                 </div>
+               </a>
+             </li>
             </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-              <div className="itemName">글레이즈 - 루비 레드</div>
-              <div className="itemPrice">50,000원</div>
-              <div className="hashTag">#겨울 #Designer1</div>
-            </div>
-          </a>
-        </li>
-        
-        
-        
+          )
+        })}
       </ul>
-      <div>
-        
-      </div>
+  
       </Wrapper>
       
     </>
