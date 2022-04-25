@@ -3,13 +3,11 @@ package com.nail.backend.domain.authentication.db.entity;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import jdk.internal.net.http.common.Log;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -23,10 +21,14 @@ import java.time.LocalDateTime;
 public class DesignerApplication implements Serializable {
 
     @Id
+    @Column(name = "designer_seq")
+    Long designerSeq;
+
+    @MapsId
     @ApiModelProperty(value = "유저 정보")
     @OneToOne
     @JoinColumn(name = "designer_seq")
-    private User designerSeq;
+    private User user;
 
     // 유저 포트폴리오
     @ApiModelProperty(value = "유저 포트폴리오 url")

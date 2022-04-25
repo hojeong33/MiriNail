@@ -87,7 +87,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
         User user = userRepository.findByUserId(userId);
         DesignerApplication designerApplication = DesignerApplication.builder()
-                .designerSeq(user)
+                .designerSeq(user.getUserSeq())
                 .designerCertification(registrationFileUrl)
                 .designerPortfolio(portfolioUrl)
                 .designerShopName(artistRegisterPostReq.getDesignerShopName())
