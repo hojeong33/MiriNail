@@ -32,7 +32,7 @@ const Wrapper = styled.div`
           
           svg {
             font-size:60px;
-            color:yellow;
+            color:#F8E71C;
           }
         }
 
@@ -224,7 +224,7 @@ const DesignReview = () => {
   const ratingCal = (rate:number) => {
       const array2 = []; 
       for (let i=0; i <rate; i++) {
-        array2.push(<StarIcon style={{color:"yellow"}} />)
+        array2.push(<StarIcon style={{color:"#F8E71C"}} />)
       }
       return array2
     
@@ -302,10 +302,10 @@ const DesignReview = () => {
             <div className="reviewBox">
               <div className='reviewBoxLeft'>
                 <div>{ratingCal(e.rating)}</div>
-                <div>
+                <div style={{marginTop:"10px"}}>
                   {e.replyContent}
                 </div>
-                <img src="https://kouve.kr/web/product/small/202203/fd9264794a352a353b844ff75c9455c8.jpg" alt="" width="200" height="200"/>
+                <img src="https://kouve.kr/web/product/small/202203/fd9264794a352a353b844ff75c9455c8.jpg" alt="" width="200" height="200" style={{marginTop:"10px"}}/>
                 <div className="reviewReplyBox">
                   <Collapse replyList={e.reviewReplyList}/>
                 </div>

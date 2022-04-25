@@ -15,7 +15,7 @@ import { styled, alpha } from "@mui/material/styles";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { KAKAO_AUTH_URL } from "../Login/Auth";
+// import { KAKAO_AUTH_URL } from "../Login/Auth";
 import axios from "axios";
 
 const Search = styled("div")(({ theme }) => ({
@@ -192,7 +192,7 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             {!isLogin ? (
               <Button
-                href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http:/localhost:3000/oauth2/redirect"
+                href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
                 // href={KAKAO_AUTH_URL}
                 // onClick={kakaoLogin}
                 sx={{ my: 2, color: "black", display: "block" }}

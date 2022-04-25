@@ -4,7 +4,7 @@ import PageContent from "../../components/Layout/PageContent";
 const NFTList = () => {
   return (
     <>
-      <div style={{ marginBottom: "250px" }}>
+      <div>
         <PageHeader />
         <PageContent />
       </div>

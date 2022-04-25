@@ -5,22 +5,21 @@ import {useState,useEffect} from 'react'
 import { create } from 'ipfs-http-client'
 import axios from 'axios'
 import publishToken from '../../BlockChain/PublishNFT'
+import DoneIcon from '@mui/icons-material/Done';
+import {registDesign} from '../../../store/api'
 
 const Wrapper = styled.div`
   * {
-  margin: 0px;
-  padding: 0px;
-  position: relative;
-  list-style: none;
-  text-decoration: none;
-  box-sizing: border-box;
-  
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
   }
 
-  height : 100vh;
-
-  
-`
+  // height: 100vh;
+`;
 const MainFrame = styled.div`
   width :1300px;
   height: 100%;
@@ -57,7 +56,11 @@ const MainFrame = styled.div`
         }
         
         .OrderFilter {
-          margin-top:100px;
+          height : 225px;
+          border : 1px solid black;
+          border-radius :10px;
+          padding :10px;
+          margin-top:50px;
           a { 
             display:block; 
             color:#3D3C3A; 
@@ -72,8 +75,31 @@ const MainFrame = styled.div`
             display:block;
             font-size:14px; 
             color:#3D3C3A; 
+            margin-top:15px;
             label {
               margin-left: 7px;
+            }
+          }
+          
+          .finBox {
+            animation: 0.7s ease-in-out loadEffect1;
+
+            @keyframes loadEffect1 {
+                0%{
+                    opacity: 0;
+                }
+                100%{
+                    opacity: 1;
+                }
+            }
+            margin-left:15px;
+            margin-top:25px;
+            button {
+              border : 1px solid rgb(51, 51, 51);
+              color:rgb(51, 51, 51);
+              padding: 3px 10px 3px 10px;
+              // margin : 10px 20px 10px 30px;
+              border-radius :5px;
             }
           }
           
@@ -86,7 +112,7 @@ const MainFrame = styled.div`
 
       .RightBox {
         padding-left :80px;
-        height :100%;
+        // height :100%;
         padding-top: 75px;
         width: 100%;
         border-left: 1px solid #d2d2d0;
@@ -101,6 +127,7 @@ const MainFrame = styled.div`
         }
         .fileBox {
           margin-top :48px;
+          
         }
         .infoBox {
           margin-top : 48px;
@@ -138,65 +165,111 @@ const MainFrame = styled.div`
       
     }
   }
-`
+`;
+
+
+
+
+
 
 
 const PageContent = () => {
-  const [imageProcess,setImageProcess] = useState([])
-  const [infoProcess,setInfoProcess] = useState({
-    type :'',
-    season : '',
-    price :'',
-    colorType :'',
-    detailColor :''
+  // 리모컨 
+  const nailartName = 'dummysibal'
+  window.addEventListener("scroll", () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let clientHeight = document.documentElement.clientHeight;
+    let remote:any = document.getElementById('remote')
+    if (scrollTop+clientHeight >= 1337) { 
+      remote.style.position="fixed"
+      remote.style.top="180px"
+    } else {
+      remote.style.position="relative"
+      remote.style.top=""
+    }
   })
-  const [infoProcessNum,setInfoProcessNum] = useState(0)
-  const [textProcess,setTextProcess] = useState('')
-  useEffect(() => {
-    console.log(imageProcess)
-  },[imageProcess])
+    const [imageProcess,setImageProcess] = useState([])
+    const [infoProcess,setInfoProcess] = useState({
+      nailartType :'',
+      nailartWeather : '',
+      nailartPrice :'',
+      nailartColor :'',
+      nailartDetailColor : '',
+    })
+    const [infoProcessNum,setInfoProcessNum] = useState(0)
+    const [nailartDesc,setnailartDesc] = useState('')
+    const [postImages,setPostImages] = useState<any[]>([])
+    useEffect(() => {
+      console.log(postImages)
+    },[postImages])
 
 
   const onChangeText = (e:any) => {
-    setTextProcess(e.target.value) 
+    setnailartDesc(e.target.value) 
 
   }
-  // useEffect(() => {
-  //   console.log(infoProcess)
-  // },[infoProcess])
-  useEffect(() => {
-    let abc = 0
-    if (infoProcess.type != '') {
-      abc += 1
-    } 
-    if (infoProcess.season != '') {
-      abc += 1
-    } 
-    if (infoProcess.price != '') {
-      abc += 1
-    } 
-    if (infoProcess.colorType != '') {
-      abc += 1
-    } 
-    if (infoProcess.detailColor != '') {
-      abc += 1
-    }
-    setInfoProcessNum(abc)
-    console.log(infoProcess)
 
-  },[infoProcess])
+  useEffect(() => {
+    let abc = 0;
+    if (infoProcess.nailartType != '') {
+      abc += 1;
+    }
+    if (infoProcess.nailartWeather != '') {
+      abc += 1;
+    }
+    if (infoProcess.nailartPrice != '') {
+      abc += 1;
+    }
+    if (infoProcess.nailartColor != '') {
+      abc += 1;
+    }
+    if (infoProcess.nailartDetailColor != '') {
+      abc += 1;
+    }
+    setInfoProcessNum(abc);
+    console.log(infoProcess);
+  }, [infoProcess]);
 
   // ipfs 등록 및 nft 발급
-  const abc:any = 'http://127.0.0.1:5002'
-  const client = create(abc)
+  const abc: any = "http://127.0.0.1:5002";
+  const client = create(abc);
   const nftFunc = async () => {
-    const nailData:any = {images:imageProcess,...infoProcess}
-    console.log(nailData)
-    const response = await client.add(JSON.stringify(nailData))
-    const ipfsHash = response.path
-    console.log(ipfsHash)
-    publishToken(ipfsHash)
+    const files= new FormData()
+    const multipartFiles = new FormData()
+    
+    // type :'',
+    //   season : '',
+    //   price :'',
+    //   colorType :'',
+    //   detailColor :''
+    // formData.append("nailartName",infoProcess.type+'-'+infoProcess.detailColor)
+    // formData.append("nailartDesc",nailartDesc)
+    // formData.append("nailartType",infoProcess.type)
+    // formData.append("nailartColor",infoProcess.colorType)
+    // formData.append("nailartDetailColor",infoProcess.detailColor)
+    // formData.append("nailartWeather",infoProcess.season)
+    const nailData:any = {...infoProcess,nailartDesc,nailartName}
+    // files.append("jsonList",new Blob([JSON.stringify(nailData)], {type: "application/json"}))
+    files.append("jsonList",JSON.stringify(nailData))
+    console.log(postImages)
+
+    postImages.forEach(e => {
+      files.append('files',e)}
+      )
+
+    // for (const file in postImages) {
+    //   console.log(file)
+    //   files.append("files",file)
+    // } 
+    
+
+    registDesign(files)
+    // const response = await client.add(JSON.stringify(nailData))
+    // const ipfsHash = response.path
+    // console.log(ipfsHash)
+    // publishToken(ipfsHash)
   }
+
 
   return (
     <>
@@ -206,8 +279,8 @@ const PageContent = () => {
           <div className="ItemList">
             <div className="LeftBox">
          
-              <div className="OrderFilter">
-                <a>정렬</a>
+              <div className="OrderFilter" id="remote">
+                <a>등록 과정</a>
                 <div className="CheckBox">
                   <input type="checkbox" id="cb1" checked={imageProcess.length === 2 ? true : false}/>
                   <label htmlFor="cb1">이미지 등록 ({imageProcess.length}/2)</label>
@@ -217,19 +290,20 @@ const PageContent = () => {
                   <label htmlFor="cb2">네일정보 등록 ({infoProcessNum}/5)</label>
                 </div>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb3" checked={textProcess.length >= 10 ? true : false}/>
-                  <label htmlFor="cb3">소개글 등록 ({textProcess.length >= 10 ? 1 : 0}/1)</label>
+                  <input type="checkbox" id="cb3" checked={nailartDesc.length >= 10 ? true : false}/>
+                  <label htmlFor="cb3">소개글 등록 ({nailartDesc.length >= 10 ? 1 : 0}/1)</label>
                 </div>
+                { imageProcess.length ===2 && infoProcessNum ===5 && nailartDesc.length >= 10 ? <div className="finBox">
+                  <DoneIcon fontSize="large" style={{color:"green",fontWeight:"bold"}}/> <button onClick={nftFunc}>등록</button>
+                </div> : <div style={{marginTop:"25px"}}>과정을 완료해주세요</div>}
               </div>
-
-           
             </div>
             <div className="RightBox">
               <div className='subTitle' style={{marginTop:"48px"}}>
                 이미지 등록
               </div>
               <div className='fileBox'>
-                <FileUpload setImageProcess={setImageProcess}/>
+                <FileUpload setImageProcess={setImageProcess} setPostImages={setPostImages}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}}>
                 네일정보 등록
@@ -238,9 +312,9 @@ const PageContent = () => {
                 <UnderLineInput setInfoProcess={setInfoProcess}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}} >
-                소개글 등록 (10자 이상 입력해주세요.)
+                소개글 등록 
               </div>
-              <textarea name="textVal" id="" onChange={onChangeText}>asdfsd</textarea>
+              <textarea name="textVal" id="" onChange={onChangeText} style={{resize:"none"}} placeholder="10자 이상 입력해주세요."></textarea>
               <div className="buttons">
                 <div className="btn1" onClick={nftFunc}>
                   등록
@@ -253,17 +327,11 @@ const PageContent = () => {
             </div>
           
           </div>
-          
-        </div>
-        <div>
-          
         </div>
         </MainFrame>
-        
       </Wrapper>
-      
     </>
-  )
-}
+  );
+};
 
-export default PageContent
+export default PageContent;
