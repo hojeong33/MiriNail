@@ -20,15 +20,15 @@ const Auth = () => {
       });
       console.log(result);
       // sessionStorage에 저장
-      // sessionStorage.setItem("user_id",result.data)
-      // sessionStorage.setItem("user_profile",result.data)
-      // sessionStorage.setItem("user_nickname",result.data)
+      sessionStorage.setItem("userId", result.data.userId);
+      sessionStorage.setItem("userProfileImg", result.data.userProfileImg);
+      sessionStorage.setItem("userNickname", result.data.userNickname);
     }
   };
   if (ACCESS_TOKEN) {
     localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-    navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
     fetchData();
+    navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
   }
   console.log("auth 페이지", { ACCESS_TOKEN });
 
