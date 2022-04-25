@@ -7,10 +7,12 @@ import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
+@Repository
 public class QnaRepositorySupport{
 
     @Autowired

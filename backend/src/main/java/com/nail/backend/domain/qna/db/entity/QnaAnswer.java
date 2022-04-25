@@ -28,7 +28,7 @@ public class QnaAnswer {
     private Long qnaSeq;
 
     @ApiModelProperty(value = "문의 답변 내용")
-    private Long qnaAnswerDesc;
+    private String qnaAnswerDesc;
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)

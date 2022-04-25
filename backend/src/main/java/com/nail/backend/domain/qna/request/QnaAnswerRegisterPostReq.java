@@ -17,5 +17,5 @@ public class QnaAnswerRegisterPostReq {
     Long qnaSeq;
 
     @ApiModelProperty(value = "문의 답변내용")
-    Long qnaAnswerDesc;
+    String qnaAnswerDesc;
 }

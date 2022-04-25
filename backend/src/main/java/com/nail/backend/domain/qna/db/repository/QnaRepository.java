@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface QnaRepository extends JpaRepository<Qna,Long> {
 
     Page<Qna> findAllByUserSeq(Pageable pageable, Long userSeq);
-
+    Page<Qna> findAllByQnaNailartSeq(Pageable pageable, Long nailartSeq);
+    Page<Qna> findAllByQnaDesignerSeq(Long designerSeq, Pageable pageable );
 
 }

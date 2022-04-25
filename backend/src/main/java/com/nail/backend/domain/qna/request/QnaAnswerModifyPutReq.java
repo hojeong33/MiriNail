@@ -15,5 +15,5 @@ public class QnaAnswerModifyPutReq {
     Long qnaAnswerSeq;
 
     @ApiModelProperty(value = "문의 답변내용")
-    Long qnaAnswerDesc;
+    String qnaAnswerDesc;
 }

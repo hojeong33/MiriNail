@@ -36,42 +36,42 @@ public class QnaServiceImpl implements QnaService {
     @Autowired
     QnaAnswerRepository qnaAnswerRepository;
 
-    @Autowired
-    AwsS3Service awsS3Service;
+//    @Autowired
+//    AwsS3Service awsS3Service;
 
 //    CREATE_________________________________________
     @Override
     @Transactional
-    public Qna qnaRegister(QnaRegisterPostReq qnaRegisterPostReq, Long userId) {
+    public Qna qnaRegister(QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) {
 
-        // file 업로드
-        MultipartFile uploadFile = qnaRegisterPostReq.getFile();
-        String fileName  = awsS3Service.createFileName(uploadFile.getOriginalFilename());
-
-        //파일 객체 생성
-        //System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
-        File file = new File(System.getProperty("user.dir")+ fileName);
-
-        //파일 저장
-        uploadFile.transferTo(file);
-
-        //S3 파일 업로드
-        awsS3Service.uploadOnS3(fileName, file);
-
-        //주소 할당
-        String uploadFileUrl = amazonS3Client.getUrl(bucket,fileName).toString();
-
-        //파일 삭제
-        file.delete();
+//        // file 업로드
+//        MultipartFile uploadFile = qnaRegisterPostReq.getFile();
+//        String fileName  = awsS3Service.createFileName(uploadFile.getOriginalFilename());
+//
+//        //파일 객체 생성
+//        //System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
+//        File file = new File(System.getProperty("user.dir")+ fileName);
+//
+//        //파일 저장
+//        uploadFile.transferTo(file);
+//
+//        //S3 파일 업로드
+//        awsS3Service.uploadOnS3(fileName, file);
+//
+//        //주소 할당
+//        String uploadFileUrl = amazonS3Client.getUrl(bucket,fileName).toString();
+//
+//        //파일 삭제
+//        file.delete();
 
 
         // 나머지 객체 만들기
 
         Qna qna = Qna.builder()
-                .userSeq(userId)
+                .userSeq(userSeq)
                 .qnaTitle(qnaRegisterPostReq.getQnaTitle())
                 .qnaDesc(qnaRegisterPostReq.getQnaDesc())
-                .qnaImgUrl(uploadFileUrl)
+//                .qnaImgUrl(uploadFileUrl)
                 .qnaDesignerSeq(qnaRegisterPostReq.getQnaDesignerSeq())
                 .qnaNailartSeq(qnaRegisterPostReq.getQnaNailartSeq())
                 .qnaIsPrivated(qnaRegisterPostReq.isQnaIsPrivated())
@@ -103,6 +103,13 @@ public class QnaServiceImpl implements QnaService {
 //    READ___________________________________________
     @Override
     @Transactional
+    public Qna getQna(Long qnaSeq){
+        Qna qna = qnaRepository.findById(qnaSeq).orElse(null);
+        return qna;
+    }
+
+    @Override
+    @Transactional
     public Page<Qna> getQnaListByUser(Pageable pageable, Long userSeq){
         Page<Qna> qnaList = qnaRepository.findAllByUserSeq(pageable,userSeq);
         if (qnaList.stream().count() == 0) {  // Qna 없으면
@@ -110,6 +117,27 @@ public class QnaServiceImpl implements QnaService {
         }
         return qnaList;
     }
+
+    @Override
+    @Transactional
+    public Page<Qna> getQnaListByDesignerSeq(Pageable pageable, Long designerSeq){
+        Page<Qna> qnaList = qnaRepository.findAllByQnaDesignerSeq(designerSeq, pageable);
+        if (qnaList.stream().count() == 0) {  // Qna 없으면
+            return null;
+        }
+        return qnaList;
+    }
+
+    @Override
+    @Transactional
+    public Page<Qna> getQnaListByNailart(Pageable pageable, Long nailartSeq){
+        Page<Qna> qnaList = qnaRepository.findAllByQnaNailartSeq(pageable,nailartSeq);
+        if (qnaList.stream().count() == 0) {  // Qna 없으면
+            return null;
+        }
+        return qnaList;
+    }
+
 
 //    UPDATE_________________________________________
 

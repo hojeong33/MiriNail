@@ -7,7 +7,6 @@ import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaAnswerRegisterPostReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
-import com.nail.backend.domain.qna.response.QnaListGetRes;
 import com.nail.backend.domain.qna.service.QnaService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +76,21 @@ public class QnaContoroller {
 
 //    READ___________________________________________
 
+    @ApiOperation(value = "1:1 문의 상세조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/{qnaSeq}")
+    public ResponseEntity<Qna> getQna(@ApiParam(value = "qnaSeq") @PathVariable("qnaSeq") Long qnaSeq){
+
+        log.info("getQna - 호출");
+        Qna qna = qnaService.getQna(qnaSeq);
+
+        return ResponseEntity.status(200).body(qna);
+    }
+
+
     @ApiOperation(value = "유저가 작성한 1:1 문의 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
@@ -97,6 +111,36 @@ public class QnaContoroller {
         return ResponseEntity.status(200).body(qnaList);
     }
 
+    @ApiOperation(value = "디자이너에게 작성된 1:1 문의 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/designer/{designerSeq}")
+    public ResponseEntity<Page<Qna>> getQnaListByDesignerSeq(@PageableDefault(page=0, size =10) Pageable pageable,
+                                                      @ApiParam(value = "디자이너Seq") @PathVariable("designerSeq") Long designerSeq){
+
+        log.info("getQnaListByDesignerSeq - 호출");
+        Page<Qna> qnaList = qnaService.getQnaListByDesignerSeq(pageable,designerSeq);
+
+        return ResponseEntity.status(200).body(qnaList);
+    }
+
+
+    @ApiOperation(value = "작품별 작성된 1:1 문의 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/nailart/{nailartSeq}")
+    public ResponseEntity<Page<Qna>> getQnaListByNailart(@PageableDefault(page=0, size =10) Pageable pageable,
+                                                      @ApiParam(value = "작품Seq") @PathVariable("nailartSeq") Long nailartSeq){
+
+        log.info("getQnaListByNailart - 호출");
+        Page<Qna> qnaList = qnaService.getQnaListByNailart(pageable,nailartSeq);
+
+        return ResponseEntity.status(200).body(qnaList);
+    }
 //    UPDATE_________________________________________
     @Transactional
     @ApiOperation(value = "문의 글 수정")
@@ -105,7 +149,7 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "수정 실패")
     })
     @PutMapping
-    public ResponseEntity<BaseResponseBody> qnaUpdate(@RequestPart QnaModifyPutReq qnaModifyPutReq){
+    public ResponseEntity<BaseResponseBody> qnaUpdate(@RequestBody QnaModifyPutReq qnaModifyPutReq){
         log.info("qnaModify - 호출");
 
         if(qnaService.qnaModify(qnaModifyPutReq)== 0) {

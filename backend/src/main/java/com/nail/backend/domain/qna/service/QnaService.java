@@ -18,7 +18,11 @@ public interface QnaService {
     QnaAnswer qnaAnswerRegister(QnaAnswerRegisterPostReq qnaAnswerRegisterPostReq);
 
 //    READ___________________________________________
+    Qna getQna(Long qnaSeq);
     Page<Qna> getQnaListByUser(Pageable pageable, Long userSeq);
+    Page<Qna> getQnaListByDesignerSeq(Pageable pageable, Long designerSeq);
+    Page<Qna> getQnaListByNailart(Pageable pageable, Long nailartSeq);
+
 //    UPDATE_________________________________________
     Long qnaModify(QnaModifyPutReq qnaModifyPutReq);
     Long qnaAnswerModify(QnaAnswerModifyPutReq qnaAnswerModifyPutReq);
