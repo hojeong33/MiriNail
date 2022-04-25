@@ -5,21 +5,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
+import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
+import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.nailart.service.NailartService;
-import com.nail.backend.domain.nailart.db.entity.Nailart;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.plaf.multi.MultiListUI;
 import java.util.List;
 
 //@CrossOrigin("*")
@@ -33,14 +31,13 @@ public class NailartController {
 
     // Nailart 리스트 전체 조회
     @GetMapping("/list")
-    public Page<Nailart> nailartList(@RequestParam int page, @RequestParam int size){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!");
+    public List<NailartListGetRes> nailartList(@RequestParam int page, @RequestParam int size){
         return nailartService.nailartList(page, size);
     }
 
     // Nailart nailartSeq로 작품 상세 조회
     @GetMapping("/detail/{nailartSeq}")
-    public Nailart nailartDetail(@PathVariable("nailartSeq") long nailartSeq){
+    public NailartDetailGetRes nailartDetail(@PathVariable("nailartSeq") long nailartSeq){
         return nailartService.nailartDetail(nailartSeq);
     }
 

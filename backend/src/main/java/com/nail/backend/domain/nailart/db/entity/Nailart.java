@@ -65,7 +65,4 @@ public class Nailart {
     @Column(name = "nailart_rating")
     private float nailartRating;
 
-
-
-
 }
