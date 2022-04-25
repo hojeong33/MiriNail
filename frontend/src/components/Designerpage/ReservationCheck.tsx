@@ -107,132 +107,65 @@ const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  .timetable {
-    width: 100%;
-    border: 1px solid #d1d1d1;
-    padding: 20px;
-    margin-top: 20px;
-    .bundle {
-      display: flex;
-      /* align-items: center; */
-      font-weight: 500;
-      .kinds {
-        width: 100px;
-        font-size: 18px;
-        margin-right: 20px;
-      }
-      .pmkinds {
-        margin-top: 12px;
-      }
-      .content {
-        font-size: 18px;
-        .timetiles {
-          display: flex;
-          width: 500px;
-          flex-wrap: wrap;
-          .selected {
-            background-color: #cacaca;
-          }
-        }
-        .timetile {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100px;
-          height: 45px;
-          background-color: #e9e9e9;
-          color: #333;
-          margin: 5px;
-          cursor: pointer;
-          :hover {
-            /* background-color: #e0e0e0; */
-          }
-          :active {
-            background-color: #d2d2d0;
-          }
-        }
-      }
-      .selectedtime {
-        font-size: 20px;
-        font-weight: 600;
-      }
-    }
-    .align {
-      align-items: center;
-    }
-  }
-  .helperbox {
-    margin-right: 30px;
-    display: flex;
-    justify-content: flex-end;
-    .helper {
-      display: flex;
-      align-items: center;
-      margin: 0 10px;
-    }
-    .possiblecolor {
-      width: 15px;
-      height: 15px;
-      background-color: #797979;
-      border: 1px solid #797979;
-      margin-right: 5px;
-    }
-    .impossiblecolor {
-      width: 15px;
-      height: 15px;
-      background-color: #e9e9e9;
-      border: 1px solid #797979;
-      margin-right: 5px;
-    }
-  }
-  .menu {
-    margin-top: 20px;
-    width: 100%;
-    border: 1px solid #d1d1d1;
-    padding: 20px;
-    .menuSelectText {
-      display: flex;
-      font-size: 22px;
-      margin: 10px;
-      font-weight: 600;
-    }
-    .typebox {
-      display: flex;
-      button {
-        padding: 20px;
-      }
-    }
-    .menucontent {
-      padding: 30px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      height: 150px;
-      border-top: 1px solid black;
-      input {
-        position: absolute;
-        left: 10px;
-      }
-    }
-  }
-  .submitbutton {
-    margin-top: 20px;
-    width: 100%;
-    background-color: rgb(51, 51, 51);
-    padding: 20px;
-    color: white;
-    font-size: 18px;
-    font-weight: 500;
-    :hover {
-      background-color: #1d1d1d;
-    }
-  }
+  border: 1px solid #d1d1d1;
+  padding: 20px;
+  margin-top: 20px;
   .rvtext {
     display: flex;
     font-size: 22px;
-    margin: 10px 0 30px 10px;
+    margin: 10px 0 10px 10px;
     font-weight: 600;
+  }
+`;
+
+const TableWrapper = styled.div`
+  width: 100%;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .count {
+    text-align: start;
+    padding: 10px;
+    font-size: 20px;
+    margin: 0px;
+    position: relative;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+  .table {
+    width: 90%;
+    /* border: 1px solid black; */
+    table {
+      width: 100%;
+      border-top: 1px solid #3d3c3a;
+      color: #3d3c3a;
+      thead {
+        font-weight: 500;
+      }
+      th {
+        font-size: 14px;
+        text-align: center;
+        border-bottom: 1px solid #d2d2d0;
+        padding: 20px 0px;
+        font-weight: 500;
+      }
+      tbody {
+        .title {
+          cursor: pointer;
+        }
+        tr {
+        cursor: pointer;
+        :hover {
+          background-color: #f8f8fa;
+        }
+      }
+      }
+    }
+  }
+  .pagination {
+    margin: 20px 0;
   }
 `;
 
@@ -242,13 +175,45 @@ const Divider = styled.div`
   border-bottom: 1px solid #bcbcbc;
 `;
 
+interface IState {
+  reservation: {
+    ID: string;
+    nailart: string;
+    time: string;
+  }
+}
+
 const ReservationCheck = () => {
   const [value, setValue] = useState(new Date());
   const [mark, setMark] = useState(["2022-04-20", "2022-04-02"]);
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  const [menuType, setMenuType] = useState<number>(0);
-  const amTime = ["10:00", "10:30", "11:00", "11:30"]
-  const pmTime = ["12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00",]
+  const [reservations, setReservations] = useState<IState["reservation"][]>([
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    }
+  ]);
+  
   // const { data } = useQuery(
   //   ["logDate", month],
   //   async () => {
@@ -265,9 +230,7 @@ const ReservationCheck = () => {
   //   }
   // );
 
-  const onclickTimeTile = (time:string) => {
-    setSelectedTime(time)
-  }
+
 
   return (
     <Wrapper>
@@ -298,93 +261,44 @@ const ReservationCheck = () => {
       </div>
 
       <FormWrapper>
-        <div className="timetable">
-        <div className="rvtext">예약 정보</div>
-          <div className="bundle align">
-            <div className="kinds">날짜: </div>
-            <div className="content selectedtime">
-              {moment(value).format("YYYY년 MM월 DD일")}
-            </div>
+
+          <div className="rvtext">
+            {moment(value).format("YYYY년 MM월 DD일")} 예약 정보
           </div>
+
           <Divider></Divider>
-          <div className="bundle align">
-            <div className="kinds">시간: </div>
-            <div className="content selectedtime">{selectedTime}</div>
-          </div>
-          <Divider></Divider>
-          <div className="bundle align">
-            <div className="kinds">오전</div>
-            <div className="content">
-              <div className="timetiles">
-                {amTime.map((time, idx) => {
-                  return (
-                    <div
-                      className={`timetile ${
-                        time === selectedTime ? "selected" : ""
-                      }`}
-                      key={idx}
-                      onClick={() => setSelectedTime(time)}
-                    >
-                      {time}
-                    </div>
-                  );
-                })}
-              </div>
+          <TableWrapper>
+            <div className="table">
+              <div className="count">총 10 건</div>
+              <table>
+                <colgroup>
+                  <col width="15%" />
+                  <col width="70%" />
+                  <col width="15%" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>네일아트</th>
+                    <th>예약시간</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reservations.map((reservation, idx) => {
+                    return (
+                      <tr key={idx}>
+                        <th>{reservation.ID}</th>
+                        <th className="title">{reservation.nailart}</th>
+                        <th>{reservation.time}</th>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          </div>
-          <Divider></Divider>
-          <div className="bundle">
-            <div className="kinds pmkinds">오후</div>
-            <div className="content">
-              <div className="timetiles">
-                {pmTime.map((time, idx) => {
-                  return (
-                    <div
-                    className={`timetile ${
-                      time === selectedTime ? "selected" : ""
-                    }`}
-                      key={idx}
-                      onClick={() => onclickTimeTile(time)}
-                    >
-                      {time}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          <div className="helperbox">
-            <div className="helper">
-              <div className="possiblecolor"></div>
-              <div>선택가능</div>
-            </div>
-            <div className="helper">
-              <div className="impossiblecolor"></div>
-              <div>선택불가</div>
-            </div>
-          </div>
-        </div>
-        <div className="menu">
-          <div className="menuSelectText">네일아트 선택</div>
-          <div className="typebox">
-            <button onClick={() => setMenuType(0)}>글레이즈</button>
-            <button onClick={() => setMenuType(1)}>프렌치</button>
-            <button onClick={() => setMenuType(2)}>라인스톤</button>
-          </div>
-          <div className="menucontent">
-            <CheckCircleOutlineIcon />
-            <div>글레이즈 - 딥다크</div>
-            <div>시크한 매력을 더해보세요!</div>
-            <div>50,000원</div>
-          </div>
-          <div className="menucontent">
-            <RadioButtonUncheckedIcon />
-            <div>글레이즈 - 딥다크</div>
-            <div>시크한 매력을 더해보세요!</div>
-            <div>50,000원</div>
-          </div>
-        </div>
-        <button className="submitbutton">예약하기</button>
+            <div className="pagination"></div>
+          </TableWrapper>
+
       </FormWrapper>
     </Wrapper>
   );

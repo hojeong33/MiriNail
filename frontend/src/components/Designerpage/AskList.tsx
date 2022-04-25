@@ -37,9 +37,6 @@ const TableWrapper = styled.div`
         font-weight: 500;
       }
       tbody {
-        .title {
-          cursor: pointer;
-        }
         tr {
         cursor: pointer;
         :hover {
@@ -55,65 +52,52 @@ const TableWrapper = styled.div`
 `;
 
 interface IState {
-  review: {
+  ask: {
     no: number;
     title: string;
     date: string;
+    answerstate: string;
   }
 }
 
-const Reviews = () => {
-  const [reviews, setReviewss] = useState<IState["review"][]>([
+const AskList = () => {
+  const [asks, setAsks] = useState<IState["ask"][]>([
     {
       no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
+      title: "문의글",
+      date: "2022.03.28",
+      answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
+      title: "문의글",
+      date: "2022.03.28",
+      answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
+      title: "문의글",
+      date: "2022.03.28",
+      answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
+      title: "문의글",
+      date: "2022.03.28",
+      answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
+      title: "문의글",
+      date: "2022.03.28",
+      answerstate: "답변완료"
     },
     {
       no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
+      title: "문의글",
+      date: "2022.03.28",
+      answerstate: "답변완료"
     },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    }
   ]);
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
@@ -128,7 +112,8 @@ const Reviews = () => {
         <table>
           <colgroup>
             <col width="15%" />
-            <col width="70%" />
+            <col width="55%" />
+            <col width="15%" />
             <col width="15%" />
           </colgroup>
           <thead>
@@ -136,15 +121,17 @@ const Reviews = () => {
               <th>No</th>
               <th>제목</th>
               <th>작성일</th>
+              <th>답변상태</th>
             </tr>
           </thead>
           <tbody>
-            {reviews.map((review, idx) => {
+            {asks.map((ask, idx) => {
               return (
                 <tr key={idx}>
-                  <th>{review.no}</th>
-                  <th className="title">{review.title}</th>
-                  <th>{review.date}</th>
+                  <th>{ask.no}</th>
+                  <th className="title">{ask.title}</th>
+                  <th>{ask.date}</th>
+                  <th>{ask.answerstate}</th>
                 </tr>
               );
             })}
@@ -152,13 +139,12 @@ const Reviews = () => {
         </table>
       </div>
       <div className="pagination">
-
-      <Stack spacing={2}>
-        <Pagination count={10} shape="rounded" onChange={onchangePage}/>
-      </Stack>
+        <Stack spacing={2}>
+          <Pagination count={10} shape="rounded" onChange={onchangePage} />
+        </Stack>
       </div>
     </TableWrapper>
   );
   
 }
-export default Reviews;
+export default AskList;

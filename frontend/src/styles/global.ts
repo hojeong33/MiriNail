@@ -33,7 +33,9 @@ const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
   }
   li {
-    list-style-type : none 
+    list-style-type : none ;
   }
+  input:focus {outline:none;}
+  textarea:focus {outline:none;}
 `;
 export default GlobalStyle;
