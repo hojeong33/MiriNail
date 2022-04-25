@@ -84,6 +84,11 @@ const MainFrame = styled.div`
         border-left: 1px solid #d2d2d0;
         padding-bottom: 160px;
         text-align: center;
+        display:flex;
+        flex-direction : column;
+        .pagination {
+          margin : 0 auto;
+        }
       }
     }
   }
@@ -117,15 +122,13 @@ const PageContent = () => {
               </div>
               <div className="RightBox">
                 <NFTItems />
-
-                <div style={{ visibility: "hidden" }}>sdsf</div>
-                <div style={{ left: "35%" }}>
+                <div className="pagination">
                   <Paginations />
                 </div>
               </div>
+              
             </div>
           </div>
-          <div></div>
         </MainFrame>
       </Wrapper>
     </>

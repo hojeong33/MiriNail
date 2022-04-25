@@ -294,7 +294,7 @@ const PageContent = () => {
                   <label htmlFor="cb3">소개글 등록 ({nailartDesc.length >= 10 ? 1 : 0}/1)</label>
                 </div>
                 { imageProcess.length ===2 && infoProcessNum ===5 && nailartDesc.length >= 10 ? <div className="finBox">
-                  <DoneIcon fontSize="large" style={{color:"green",fontWeight:"bold"}}/> <button>등록</button>
+                  <DoneIcon fontSize="large" style={{color:"green",fontWeight:"bold"}}/> <button onClick={nftFunc}>등록</button>
                 </div> : <div style={{marginTop:"25px"}}>과정을 완료해주세요</div>}
               </div>
             </div>

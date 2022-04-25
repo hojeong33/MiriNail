@@ -73,7 +73,7 @@ function App() {
           <Route path="/community/create" element={<CreateCommunity />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   );
