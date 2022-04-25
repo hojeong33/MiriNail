@@ -15,6 +15,6 @@ public interface AuthenticationService {
                                        String userId) throws IOException;
 
     Page<DesignerApplication> getDesignerApplicationList(Pageable pageable);
-
     DesignerApplication getDesignerApplicationDetail(Long designerSeq);
+    DesignerApplication getDesignerApplicationStatus(Long designerSeq);
 }

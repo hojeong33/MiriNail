@@ -113,4 +113,12 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         DesignerApplication designerApplication = designerApplicationRepository.findByDesignerSeq(designerSeq);
         return designerApplication;
     }
+
+    @Override
+    public DesignerApplication getDesignerApplicationStatus(Long designerSeq) {
+        DesignerApplication designerApplication = designerApplicationRepository.findByDesignerSeq(designerSeq);
+        return designerApplication;
+    }
+
+
 }

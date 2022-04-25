@@ -73,7 +73,7 @@ public class AuthenticationController {
      인증신청 전체 정보 조회
      */
     @GetMapping("/list")
-    @ApiOperation(value = "전체 유저 정보 조회", notes = "<strong>전체 유저 정보</strong>를 넘겨준다.")
+    @ApiOperation(value = "인증 등록 전체 정보 조회", notes = "<strong>인증 등록 전체 정보</strong>를 넘겨준다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
             @ApiResponse(code = 404, message = "유저 없음.")
@@ -97,7 +97,7 @@ public class AuthenticationController {
      인증신청 상세 정보 조회
      */
     @GetMapping("/detail/{designerSeq}")
-    @ApiOperation(value = "전체 유저 정보 조회", notes = "<strong>전체 유저 정보</strong>를 넘겨준다.")
+    @ApiOperation(value = "인증 등록 상세 정보 조회", notes = "<strong>인증 등록 상세 정보</strong>를 넘겨준다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
             @ApiResponse(code = 404, message = "유저 없음.")
@@ -112,6 +112,30 @@ public class AuthenticationController {
 
         if(applications == null) {
             log.error("getDesignerApplicationDetail - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
+    }
+
+    /**
+     인증신청 진행상황 조회
+     */
+    @GetMapping("/{designerSeq}")
+    @ApiOperation(value = "인증 등록 상세 정보 조회", notes = "<strong>인증 등록 상세 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<DesignerApplication>getDesignerApplicationStatus(@PathVariable("designerSeq") Long designerSeq) {
+
+        // 0. 받아올 유저 ID를 받음
+        // 1. 해당 유저가 가진 작품 목록을 넘겨준다.
+
+        log.info("getDesignerApplicationStatus - 호출");
+        DesignerApplication applications = authenticationService.getDesignerApplicationStatus(designerSeq);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationStatus - User doesn't exist.");
             return ResponseEntity.status(404).body(null);
         }
         return ResponseEntity.status(201).body(applications);
