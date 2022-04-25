@@ -54,12 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        // swagger 관련 리소스 시큐리티 필터 제거
-        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**","/swagger-ui.html", "/webjars/**", "/swagger/**");
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
