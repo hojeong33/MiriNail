@@ -17,4 +17,5 @@ public interface AuthenticationService {
     Page<DesignerApplication> getDesignerApplicationList(Pageable pageable);
     DesignerApplication getDesignerApplicationDetail(Long designerSeq);
     DesignerApplication getDesignerApplicationStatus(Long designerSeq);
+    boolean deleteDesignerApplicationDetailByUserSeq(Long userSeq);
 }

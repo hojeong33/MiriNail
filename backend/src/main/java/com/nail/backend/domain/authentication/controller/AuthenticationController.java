@@ -80,9 +80,6 @@ public class AuthenticationController {
     })
     public ResponseEntity<Page<DesignerApplication>>getDesignerApplicationList(@PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        // 0. 받아올 유저 ID를 받음
-        // 1. 해당 유저가 가진 작품 목록을 넘겨준다.
-
         log.info("getDesignerApplicationList - 호출");
         Page<DesignerApplication> applications = authenticationService.getDesignerApplicationList(pageable);
 
@@ -103,9 +100,6 @@ public class AuthenticationController {
             @ApiResponse(code = 404, message = "유저 없음.")
     })
     public ResponseEntity<DesignerApplication>getDesignerApplicationDetail(@PathVariable("designerSeq") Long designerSeq) {
-
-        // 0. 받아올 유저 ID를 받음
-        // 1. 해당 유저가 가진 작품 목록을 넘겨준다.
 
         log.info("getDesignerApplicationDetail - 호출");
         DesignerApplication applications = authenticationService.getDesignerApplicationDetail(designerSeq);
@@ -128,10 +122,7 @@ public class AuthenticationController {
     })
     public ResponseEntity<DesignerApplication>getDesignerApplicationStatus(@PathVariable("designerSeq") Long designerSeq) {
 
-        // 0. 받아올 유저 ID를 받음
-        // 1. 해당 유저가 가진 작품 목록을 넘겨준다.
-
-        log.info("getDesignerApplicationStatus - 호출");
+         log.info("getDesignerApplicationStatus - 호출");
         DesignerApplication applications = authenticationService.getDesignerApplicationStatus(designerSeq);
 
         if(applications == null) {
@@ -139,5 +130,44 @@ public class AuthenticationController {
             return ResponseEntity.status(404).body(null);
         }
         return ResponseEntity.status(201).body(applications);
+    }
+
+    /**
+     유저가 작성한 디자이너 인증 신청 조회
+     */
+    @GetMapping("/user/{userSeq}")
+    @ApiOperation(value = "유저가 작성한 디자이너 인증 신청 조회", notes = "<strong>유저가 작성한 디자이너 인증 신청 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<DesignerApplication>getDesignerApplicationDetailByUserSeq(@PathVariable("userSeq") Long userSeq) {
+
+        log.info("getDesignerApplicationDetailByUserSeq - 호출");
+        DesignerApplication applications = authenticationService.getDesignerApplicationDetail(userSeq);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationDetailByUserSeq - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
+    }
+
+    @DeleteMapping("/user/{userSeq}")
+    @ApiOperation(value = "유저가 작성한 디자이너 인증 신청 삭제", notes = "<strong>유저가 작성한 디자이너 인증 신청 삭제</strong>.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "삭제 성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "삭제 실패.")
+    })
+    public ResponseEntity<BaseResponseBody>deleteDesignerApplicationDetailByUserSeq(@PathVariable("userSeq") Long userSeq) {
+
+        log.info("deleteDesignerApplicationDetailByUserSeq - 호출");
+        boolean isDeleted = authenticationService.deleteDesignerApplicationDetailByUserSeq(userSeq);
+
+        if(!isDeleted) {
+            log.error("deleteDesignerApplicationDetailByUserSeq - User doesn't exist.");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "삭제 실패"));
+        }
+        return ResponseEntity.status(201).body(BaseResponseBody.of(201, "삭제 성공"));
     }
 }

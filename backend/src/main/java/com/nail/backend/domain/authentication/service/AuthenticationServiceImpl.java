@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -120,5 +121,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         return designerApplication;
     }
 
-
+    @Override
+    @Transactional
+    public boolean deleteDesignerApplicationDetailByUserSeq(Long DesignerSeq) {
+        boolean isDeleted = designerApplicationRepositorySupport.deleteByDesignerSeq(DesignerSeq);
+        return isDeleted;
+    }
 }

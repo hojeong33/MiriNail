@@ -18,6 +18,9 @@ public class DesignerApplicationRepositorySupport {
     @Autowired
     JPAQueryFactory jpaQueryFactory;
 
+    @Autowired
+    DesignerApplicationRepository designerApplicationRepository;
+
     QDesignerApplication qDesignerApplication = QDesignerApplication.designerApplication;
 
     public Page<DesignerApplication> findDesignerApplicationList(Pageable pageable) {
@@ -30,5 +33,19 @@ public class DesignerApplicationRepositorySupport {
         if(designerApplications.isEmpty()) return Page.empty();
 
         return new PageImpl<DesignerApplication>(designerApplications,pageable,designerApplications.size());
+    }
+
+    public boolean deleteByDesignerSeq(Long designerSeq) {
+
+        DesignerApplication designerApplication = jpaQueryFactory.select(qDesignerApplication)
+                .from(qDesignerApplication)
+                .where(qDesignerApplication.designerSeq.eq(designerSeq))
+                .fetchFirst();
+
+        if(designerApplication != null) {
+            designerApplicationRepository.delete(designerApplication);
+            return true;
+        }
+        return false;
     }
 }
