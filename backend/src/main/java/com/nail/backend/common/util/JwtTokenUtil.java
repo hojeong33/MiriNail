@@ -127,52 +127,123 @@ public class JwtTokenUtil {
 //        JWTVerifier verifier = JWT
 //                .require(Algorithm.HMAC512(secretKey.getBytes()))
 //                .withIssuer(ISSUER)
-//                .build();
+//                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))    // 토큰 발행 시간 정보
+//                .sign(Algorithm.HMAC512(secretKey.getBytes())); // 사용할 암호화 알고리즘
+//    }
 //
-//        try {
-//            verifier.verify(token.replace(TOKEN_PREFIX, ""));
-//        } catch (AlgorithmMismatchException ex) {
-//            throw ex;
-//        } catch (InvalidClaimException ex) {
-//            throw ex;
-//        } catch (SignatureGenerationException ex) {
-//            throw ex;
-//        } catch (SignatureVerificationException ex) {
-//            throw ex;
-//        } catch (TokenExpiredException ex) {
-//            throw ex;
-//        } catch (JWTCreationException ex) {
-//            throw ex;
-//        } catch (JWTDecodeException ex) {
-//            throw ex;
-//        } catch (JWTVerificationException ex) {
-//            throw ex;
-//        } catch (Exception ex) {
-//            throw ex;
+//    public static String createRefreshToken() {
+//        Date expires = JwtTokenUtil.getTokenExpiration(refreshTokenExpiration);
+//        return JWT.create()
+//                .withExpiresAt(expires)     // 만료시간
+//                .withIssuer(ISSUER)
+//                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))    // 토큰 발행 시간 정보
+//                .sign(Algorithm.HMAC512(secretKey.getBytes())); // 사용할 암호화 알고리즘
+//    }
+//
+//    private Key getSigningKey() {
+//        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+//        return Keys.hmacShaKeyFor(keyBytes);
+//    }
+//
+//    // 토큰에 담긴 payload 값 가져오기
+//    public Claims extractAllClaims(String token) throws ExpiredJwtException {
+//        return Jwts.parserBuilder()
+//                .setSigningKey(getSigningKey())
+//                .build()
+//                .parseClaimsJws(token)
+//                .getBody();
+//    }
+//
+//    // 토큰 만료 됐는지 안됐는지 확인
+//    public Boolean isTokenExpired(String token) {
+//        final Date expiration = extractAllClaims(token).getExpiration();
+//        return expiration.before(new Date());
+//    }
+//
+//    // 토큰에서 userId 가져오기
+//    public long getUserId(String token) {
+//        return extractAllClaims(token).get("userId", Integer.class);
+//    }
+//
+//    // 토큰에서 userAddress 가져오기
+//    public String getUserAddress(String token) {
+//        return extractAllClaims(token).get("userAddress", String.class);
+//    }
+//
+//    // 토큰 검증하기
+//    public VerifyResult verify(String token){
+//        try{
+//            DecodedJWT decode = JWT.require(Algorithm.HMAC512(secretKey.getBytes())).build().verify(token);
+//            return VerifyResult.builder().userId(String.valueOf(decode.getClaim("userId"))).result(true).build();
+//        }catch(JWTVerificationException ex){
+//            DecodedJWT decode = JWT.decode(token);
+//            return VerifyResult.builder().userId(String.valueOf(decode.getClaim("userId"))).result(false).build();
 //        }
 //    }
 //
-//    public static void handleError(JWTVerifier verifier, String token) {
-//        try {
-//            verifier.verify(token.replace(TOKEN_PREFIX, ""));
-//        } catch (AlgorithmMismatchException ex) {
-//            throw ex;
-//        } catch (InvalidClaimException ex) {
-//            throw ex;
-//        } catch (SignatureGenerationException ex) {
-//            throw ex;
-//        } catch (SignatureVerificationException ex) {
-//            throw ex;
-//        } catch (TokenExpiredException ex) {
-//            throw ex;
-//        } catch (JWTCreationException ex) {
-//            throw ex;
-//        } catch (JWTDecodeException ex) {
-//            throw ex;
-//        } catch (JWTVerificationException ex) {
-//            throw ex;
-//        } catch (Exception ex) {
-//            throw ex;
-//        }
+//    public static Date getTokenExpiration(int expirationTime) {
+//    		Date now = new Date();
+//    		return new Date(now.getTime() + expirationTime);
 //    }
-}
+//
+//    public Long getTokenExpirationAsLong(String token) {
+//        // 남은 유효시간
+//        Date expiration = extractAllClaims(token).getExpiration();
+//        // 현재 시간
+//        Long now = new Date().getTime();
+//        return (expiration.getTime() - now);
+//    }
+////
+////    public static void handleError(String token) {
+////        JWTVerifier verifier = JWT
+////                .require(Algorithm.HMAC512(secretKey.getBytes()))
+////                .withIssuer(ISSUER)
+////                .build();
+////
+////        try {
+////            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+////        } catch (AlgorithmMismatchException ex) {
+////            throw ex;
+////        } catch (InvalidClaimException ex) {
+////            throw ex;
+////        } catch (SignatureGenerationException ex) {
+////            throw ex;
+////        } catch (SignatureVerificationException ex) {
+////            throw ex;
+////        } catch (TokenExpiredException ex) {
+////            throw ex;
+////        } catch (JWTCreationException ex) {
+////            throw ex;
+////        } catch (JWTDecodeException ex) {
+////            throw ex;
+////        } catch (JWTVerificationException ex) {
+////            throw ex;
+////        } catch (Exception ex) {
+////            throw ex;
+////        }
+////    }
+////
+////    public static void handleError(JWTVerifier verifier, String token) {
+////        try {
+////            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+////        } catch (AlgorithmMismatchException ex) {
+////            throw ex;
+////        } catch (InvalidClaimException ex) {
+////            throw ex;
+////        } catch (SignatureGenerationException ex) {
+////            throw ex;
+////        } catch (SignatureVerificationException ex) {
+////            throw ex;
+////        } catch (TokenExpiredException ex) {
+////            throw ex;
+////        } catch (JWTCreationException ex) {
+////            throw ex;
+////        } catch (JWTDecodeException ex) {
+////            throw ex;
+////        } catch (JWTVerificationException ex) {
+////            throw ex;
+////        } catch (Exception ex) {
+////            throw ex;
+////        }
+////    }
+//}
