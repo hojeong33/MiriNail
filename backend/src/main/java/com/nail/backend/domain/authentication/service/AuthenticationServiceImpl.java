@@ -5,6 +5,7 @@ import com.nail.backend.domain.authentication.db.entity.DesignerApplication;
 import com.nail.backend.domain.authentication.db.repository.DesignerApplicationRepository;
 import com.nail.backend.domain.authentication.db.repository.DesignerApplicationRepositorySupport;
 import com.nail.backend.domain.authentication.request.ArtistRegisterPostReq;
+import com.nail.backend.domain.authentication.request.UpdateDesignerApplicationPatchReq;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -126,5 +127,11 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     public boolean deleteDesignerApplicationDetailByUserSeq(Long DesignerSeq) {
         boolean isDeleted = designerApplicationRepositorySupport.deleteByDesignerSeq(DesignerSeq);
         return isDeleted;
+    }
+
+    @Override
+    public boolean updateDesignerApplication(UpdateDesignerApplicationPatchReq updateDesignerApplicationPatchReq) {
+        boolean isAccepted = designerApplicationRepositorySupport.updateDesignerApplication(updateDesignerApplicationPatchReq);
+        return isAccepted;
     }
 }

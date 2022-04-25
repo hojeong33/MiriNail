@@ -3,6 +3,7 @@ package com.nail.backend.domain.authentication.controller;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.authentication.db.entity.DesignerApplication;
 import com.nail.backend.domain.authentication.request.ArtistRegisterPostReq;
+import com.nail.backend.domain.authentication.request.UpdateDesignerApplicationPatchReq;
 import com.nail.backend.domain.authentication.service.AuthenticationService;
 import com.nail.backend.domain.authentication.service.AwsS3Service;
 import io.swagger.annotations.Api;
@@ -169,5 +170,22 @@ public class AuthenticationController {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "삭제 실패"));
         }
         return ResponseEntity.status(201).body(BaseResponseBody.of(201, "삭제 성공"));
+    }
+
+    @PatchMapping("/confirm")
+    @ApiOperation(value = "인증 수락 거절", notes = "<strong>인증 수락 거절</strong>.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "인증 처리 성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "인증 처리 실패.")
+    })
+    public ResponseEntity<BaseResponseBody> updateDesignerApplication(@RequestBody UpdateDesignerApplicationPatchReq updateDesignerApplicationPatchReq) {
+
+        log.info("updateDesignerApplication - 호출");
+        boolean isDeleted = authenticationService.updateDesignerApplication(updateDesignerApplicationPatchReq);
+
+        if(!isDeleted) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "인증 거절"));
+        }
+        return ResponseEntity.status(201).body(BaseResponseBody.of(201, "인증 성공"));
     }
 }
