@@ -58,5 +58,11 @@ public class AuthenticationController {
         }
     }
 
+    @GetMapping("/download/file")
+    @ApiOperation(value = "인증 파일 다운로드", notes = "<strong>인증 파일 다운로드</strong>")
+    public ResponseEntity<byte[]> authenticationFileDownload(@RequestParam String authUrl) throws IOException{
+        log.info("authenticationFileDownload - 호출");
 
+        return awsS3Service.downloadOnS3(authUrl);
+    }
 }
