@@ -12,6 +12,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,5 +67,53 @@ public class AuthenticationController {
         log.info("authenticationFileDownload - 호출");
 
         return awsS3Service.downloadOnS3(authUrl);
+    }
+
+    /**
+     인증신청 전체 정보 조회
+     */
+    @GetMapping("/list")
+    @ApiOperation(value = "전체 유저 정보 조회", notes = "<strong>전체 유저 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<Page<DesignerApplication>>getDesignerApplicationList(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+
+        // 0. 받아올 유저 ID를 받음
+        // 1. 해당 유저가 가진 작품 목록을 넘겨준다.
+
+        log.info("getDesignerApplicationList - 호출");
+        Page<DesignerApplication> applications = authenticationService.getDesignerApplicationList(pageable);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationList - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
+    }
+
+    /**
+     인증신청 상세 정보 조회
+     */
+    @GetMapping("/detail/{designerSeq}")
+    @ApiOperation(value = "전체 유저 정보 조회", notes = "<strong>전체 유저 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<DesignerApplication>getDesignerApplicationDetail(@PathVariable("designerSeq") Long designerSeq) {
+
+        // 0. 받아올 유저 ID를 받음
+        // 1. 해당 유저가 가진 작품 목록을 넘겨준다.
+
+        log.info("getDesignerApplicationDetail - 호출");
+        DesignerApplication applications = authenticationService.getDesignerApplicationDetail(designerSeq);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationDetail - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
     }
 }

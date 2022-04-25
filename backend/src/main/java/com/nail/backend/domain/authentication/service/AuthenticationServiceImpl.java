@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,5 +100,17 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
         DesignerApplication savedDesignerApplication = designerApplicationRepository.save(designerApplication);
         return savedDesignerApplication;
+    }
+
+    @Override
+    public Page<DesignerApplication> getDesignerApplicationList(Pageable pageable) {
+        Page<DesignerApplication> designerApplications = designerApplicationRepositorySupport.findDesignerApplicationList(pageable);
+        return designerApplications;
+    }
+
+    @Override
+    public DesignerApplication getDesignerApplicationDetail(Long designerSeq) {
+        DesignerApplication designerApplication = designerApplicationRepository.findByDesignerSeq(designerSeq);
+        return designerApplication;
     }
 }
