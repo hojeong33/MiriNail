@@ -3,6 +3,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import {useState} from 'react'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useQuery } from 'react-query';
+import { designDetail } from '../../store/api';
+import { useParams } from 'react-router-dom';
 // import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
@@ -141,6 +144,8 @@ const Wrapper = styled.div`
 `
 
 const UpperFrame = () => {
+  let params = useParams()
+
   const [detailInfo,setDetailInfo] = useState (
     {
       type : '프렌치네일',
@@ -153,6 +158,10 @@ const UpperFrame = () => {
       title : '프렌치 - 딥다크'
     }
   )
+
+  
+
+  const {isLoading, data } = useQuery("detail", () => designDetail(params.id?.slice(1,params.id.length)))
 
   return (
     <>
@@ -175,21 +184,21 @@ const UpperFrame = () => {
                     <ShareIcon />
                   </div>
                   <div className="boxs">
-                    {detailInfo.type}
+                    {data?.nailartType}
                   </div>
                   <div className='name'>
                     {detailInfo.title}
                   </div>
                   <div className="price">
-                    {detailInfo.price}
+                    {data?.nailartPrice}
                   </div>
                   <div className="tags">
-                    {detailInfo.tags}
+                    #{data?.nailartWeather} #{data?.designerNickname}
                   </div>
                   <div className="info">
                     <div>
                       <p>제품소개</p>
-                      <span>{detailInfo.info}</span>
+                      <span>{data?.nailartDesc}</span>
                     </div>
                   </div>
                   <div className='designerInfo'>
@@ -199,7 +208,7 @@ const UpperFrame = () => {
                     </div> 
                     <div className='designerName'>
                       <div style={{fontSize:"1.2em"}}>
-                        Designer1
+                        {data?.designerNickname}
                       </div>
                       <div style={{color:'gray'}}>
                         Nailshop1

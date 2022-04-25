@@ -215,9 +215,9 @@ const Input = (props: any) => {
           <div className="inputBoxLeft">
             <select name="nailartType" id="lang" onChange={onChangeInput}>
               <option value="">타입 선택</option>
-              <option value="gel">GEL NAIL</option>
-              <option value="french">FRENCH NAIL</option>
-              <option value="linestone">LINESTONE NANIL</option>
+              <option value="젤">GEL NAIL</option>
+              <option value="프렌치">FRENCH NAIL</option>
+              <option value="라인스톤">LINESTONE NANIL</option>
             </select>
             <select
               name="nailartWeather"

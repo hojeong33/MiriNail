@@ -75,6 +75,7 @@ public class NailartServiceImpl implements NailartService{
         PageRequest pageReuest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
         nailartRepository.findAll(pageReuest).forEach(art -> {
             NailartListGetRes tmp = new NailartListGetRes();
+            tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignserNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
@@ -84,6 +85,7 @@ public class NailartServiceImpl implements NailartService{
             tmp.setNailartDetailColor(art.getNailartDetailColor());
             tmp.setNailartWeather(art.getNailartWeather());
             tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
+            tmp.setNailartType(art.getNailartType());
 //            tmp.setNailartAvailable(art.get);
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
@@ -172,7 +174,7 @@ public class NailartServiceImpl implements NailartService{
                 }
                 //
                 System.out.println("과연여기까지?");
-                nailart.setNailartThumbnailUrl(fileName);
+                nailart.setNailartThumbnailUrl(amazonS3.getUrl(bucket, fileName).toString());
                 System.out.println(nailart);
                 nailartSaved = nailartRepository.save(nailart);
             }else{
@@ -192,7 +194,7 @@ public class NailartServiceImpl implements NailartService{
                 }
                 //
                 nailartImg.setNailartSeq(nailartSaved.getNailartSeq());
-                nailartImg.setNailartImgUrl(fileName);
+                nailartImg.setNailartImgUrl(amazonS3.getUrl(bucket, fileName).toString());
 
                 System.out.println(nailartImg);
                 nailartImgRepository.save(nailartImg);

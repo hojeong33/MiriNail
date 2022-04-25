@@ -5,15 +5,16 @@ const base_url = 'http://localhost:8080/api/'
 
 export const fetchDesigns = async({queryKey}:any) => {
   console.log(queryKey)
+ 
   const response = await axios.get(base_url+'nailart/list',{params : {page: queryKey[1],size:10}})
-  console.log(response.data.content)
-  return response.data.content
+  console.log(response)
+  return response.data
 }
 
 export const registDesign = async(files:any) => {
   for (let key of files.keys()) {
     console.log(key);
-}
+  }
 
 /* value 확인하기 */
 for (let value of files.values()) {
@@ -34,4 +35,12 @@ for (let value of files.values()) {
   })
     
   // console.log(response)
+}
+
+export const designDetail = async(param:any) => {
+  console.log(param)
+  const response = await axios.get(base_url+`nailart/detail/${param}`)
+  console.log(response.data)
+  return response.data
+  
 }
