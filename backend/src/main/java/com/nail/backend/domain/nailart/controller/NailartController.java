@@ -44,7 +44,7 @@ public class NailartController {
     // Nailart designerSeq로 전체 조회
     @PostMapping("/designer/{designerSeq}")
     public NailartDetailGetRes anotherNailart(@PathVariable("designerSeq") long designerSeq){
-        return
+        return null;
     }
 
     // Nailart 등록
