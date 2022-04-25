@@ -9,17 +9,15 @@ import org.springframework.data.domain.Pageable;
 public interface FavoriteService {
 
     //Create
-    Favorite favoriteRegister(String userSeq, Long productId);
+    Favorite favoriteRegister(String userId, Long nailartSeq);
 
     //Read
-    boolean getFavoriteUserUse(String userSeq, Long productId);
+    boolean getIsFavorited(String userId, Long nailartSeq);
     Long getFavoriteCount(Long productId);
 
     //Delete
-    Favorite favoriteRemove(String userSeq, Long productId);
+    Favorite favoriteRemove(String userId, Long nailartSeq);
 
-    Page<Favorite> getFavoriteListByUserSeq(String userSeq, Pageable pageable);
+    Page<Favorite> getFavoriteListByUserSeq(Long userSeq, Pageable pageable);
 
-    //user쪽에서 구현됨
-//    List<Product> getFavoriteList(Long userId);
 }
