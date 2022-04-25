@@ -41,10 +41,10 @@ public class NailartController {
         return nailartService.nailartDetail(nailartSeq);
     }
 
-    // Nailart designerSeq로 전체 조회
+    // Nailart designerSeq로 최대 10개 조회
     @PostMapping("/designer/{designerSeq}")
-    public NailartDetailGetRes anotherNailart(@PathVariable("designerSeq") long designerSeq){
-        return null;
+    public List<NailartListGetRes> anotherNailart(@PathVariable("designerSeq") long designerSeq){
+        return nailartService.anotherNailart(designerSeq);
     }
 
     // Nailart 등록
