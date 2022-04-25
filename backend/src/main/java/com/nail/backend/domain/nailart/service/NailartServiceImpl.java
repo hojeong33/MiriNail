@@ -4,17 +4,18 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.nail.backend.domain.desinger.db.entitiy.DesignerInfo;
-import com.nail.backend.domain.desinger.db.repository.DesignerRepository;
+import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.entity.NailartImg;
 import com.nail.backend.domain.nailart.db.repository.NailartImgRepository;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
+import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
+import com.nail.backend.domain.nailart.response.NailartListGetRes;
+import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +53,8 @@ public class NailartServiceImpl implements NailartService{
     @Autowired
     DesignerRepository designerRepository;
 
+    @Autowired
+    UserRepository userRepository;
 
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
@@ -66,17 +70,54 @@ public class NailartServiceImpl implements NailartService{
 
 
     @Override
-    public Page<Nailart> nailartList(int page, int size) {
+    public List<NailartListGetRes> nailartList(int page, int size) {
+        List<NailartListGetRes> nailart = new ArrayList<>();
         PageRequest pageReuest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
-        Page<Nailart> nailart = nailartRepository.findAll(pageReuest);
+        nailartRepository.findAll(pageReuest).forEach(art -> {
+            NailartListGetRes tmp = new NailartListGetRes();
+            tmp.setDesignserNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerSeq(art.getDesignerSeq());
+            tmp.setTokenId(art.getTokenId());
+            tmp.setNailartName(art.getNailartName());
+            tmp.setNailartDesc(art.getNailartDesc());
+            tmp.setNailartColor(art.getNailartColor());
+            tmp.setNailartDetailColor(art.getNailartDetailColor());
+            tmp.setNailartWeather(art.getNailartWeather());
+            tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
+//            tmp.setNailartAvailable(art.get);
+            tmp.setNailartPrice(art.getNailartPrice());
+            tmp.setNailartRegedAt(art.getNailartRegedAt());
+            tmp.setNailartRating(art.getNailartRating());
+            nailart.add(tmp);
+        });
+
+
         return nailart;
     }
 
     @Override
-    public Nailart nailartDetail(long nailartSeq) {
+    public NailartDetailGetRes nailartDetail(long nailartSeq) {
         // 만약 해당 작가의 다른 작품도 같이 보여주려면 여기다가 다른 객체를 생성해서 반환?
-        // 아니면 각각 다른 곳에서 호춯하고 controller에서 합치기?
-        return nailartRepository.findById(nailartSeq).get();
+        // 아니면 각각 다른 곳에서 호춯하고 controller에서 합치기?\
+        NailartDetailGetRes nailartDetailGetRes = new NailartDetailGetRes();
+        Nailart nailart = nailartRepository.findByNailartSeq(nailartSeq);
+        nailartDetailGetRes.setNailartSeq(nailart.getNailartSeq());
+        nailartDetailGetRes.setDesignerNickname(userRepository.findByUserSeq(nailart.getDesignerSeq()).getUserNickname());
+        nailartDetailGetRes.setDesignerSeq(nailart.getDesignerSeq());
+        nailartDetailGetRes.setNailartName(nailart.getNailartName());
+        nailartDetailGetRes.setNailartDesc(nailart.getNailartDesc());
+        nailartDetailGetRes.setNailartType(nailart.getNailartType());
+        nailartDetailGetRes.setNailartColor(nailart.getNailartColor());
+        nailartDetailGetRes.setNailartDetailColor(nailart.getNailartDetailColor());
+        nailartDetailGetRes.setNailartWeather(nailart.getNailartWeather());
+        nailartDetailGetRes.setNailartAvailable(nailart.isNailartAvailable());
+        nailartDetailGetRes.setNailartThumbnailUrl(nailart.getNailartThumbnailUrl());
+        nailartDetailGetRes.setNailartPrice(nailart.getNailartPrice());
+        nailartDetailGetRes.setNailartRegedAt(nailart.getNailartRegedAt());
+        nailartDetailGetRes.setNailartRating(nailart.getNailartRating());
+        nailartDetailGetRes.setNailartImgUrl(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgUrl());
+
+        return nailartDetailGetRes;
     }
 
 //    @Override

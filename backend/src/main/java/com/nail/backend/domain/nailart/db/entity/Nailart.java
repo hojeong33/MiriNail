@@ -1,6 +1,6 @@
 package com.nail.backend.domain.nailart.db.entity;
 
-import com.nail.backend.domain.desinger.db.entitiy.DesignerInfo;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -64,8 +64,5 @@ public class Nailart {
 
     @Column(name = "nailart_rating")
     private float nailartRating;
-
-
-
 
 }
