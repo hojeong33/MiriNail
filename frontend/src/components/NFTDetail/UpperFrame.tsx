@@ -1,10 +1,15 @@
 import styled from 'styled-components'
 import ShareIcon from '@mui/icons-material/Share';
+import {useState} from 'react'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+// import FavoriteIcon from '@mui/icons-material/Favorite';
+
 
 const Wrapper = styled.div`
   padding-top : 140px;
   overflow:hidden;
-  height:605px;
+  height:705px;
   .row {
   
     max-width: 1300px;
@@ -48,17 +53,16 @@ const Wrapper = styled.div`
             }
             .price {
               margin-bottom : 15px;
+              font-size: 1.5em;
             }
             .tags {
               margin-bottom: 25px;
-              font-size: 12px;
+              font-size: 14px;
+              color : gray;
             }
             .info {
               position : relative;
-              // padding: 20px 0px 20px;
               margin-bottom: 30px;
-              // border-top: 1px solid rgba(61,60,58,0.2);
-              // border-bottom: 1px solid rgba(61,60,58,0.2);
               height:60px;
               
 
@@ -66,8 +70,8 @@ const Wrapper = styled.div`
               div {
                 
                 padding-left: 120px;
-                padding-top : 5px;
-                padding-bottom : 5px;
+                padding-top : 15px;
+                padding-bottom : 25px;
                 font-size: 14px;
                 margin-bottom: 10px;
                 border-top: 1px solid rgba(61,60,58,0.2);
@@ -89,10 +93,12 @@ const Wrapper = styled.div`
               }
             }
             .designerInfo {
+              margin-top: 60px;
               display:flex;
         
               .designerImg {
                 img {
+                  margin-top:5px;
                   width :70px;
                   height :70px;
                   border-radius :100%;
@@ -100,7 +106,7 @@ const Wrapper = styled.div`
                 }
               }
               .designerName {
-                margin-top : 10px;
+                margin-top : 12px;
                 margin-left : 38px;
         
               }
@@ -108,17 +114,15 @@ const Wrapper = styled.div`
             .btns {
               margin-top : 40px;
               position : relative;
-              
-            
               zoom : 1;
               width:100%;
-        
+          
               a {
                 float:left;
                 font-size: 16px;
                 padding: 2% 1.2%;
                 text-align: center;
-                width: 30%;
+                width: 33%;
                 border-left: 1px solid rgba(61,60,58,0.4);
                 border-top: 1px solid rgba(61,60,58,0.4);
                 border-bottom: 1px solid rgba(61,60,58,0.4);
@@ -137,6 +141,18 @@ const Wrapper = styled.div`
 `
 
 const UpperFrame = () => {
+  const [detailInfo,setDetailInfo] = useState (
+    {
+      type : '프렌치네일',
+      price : '50,000원',
+      tags : '#봄 #태그123 #태그 456',
+      info : '모든 피부타입dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+      name : 'Designer1',
+      shop : 'Nailshop1',
+      color : '딥 다크',
+      title : '프렌치 - 딥다크'
+    }
+  )
 
   return (
     <>
@@ -147,7 +163,7 @@ const UpperFrame = () => {
             <div className="leftBox">
               <div className="imHarf">
                 <div className="mainImg">
-                  <img style={{width:"100%", height:"500px"}} src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
+                  <img style={{width:"95%", height:"500px"}} src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
                 </div>
               </div>
 
@@ -159,21 +175,21 @@ const UpperFrame = () => {
                     <ShareIcon />
                   </div>
                   <div className="boxs">
-                    프렌치네일
+                    {detailInfo.type}
                   </div>
                   <div className='name'>
-                    프렌치 - 딥다크
+                    {detailInfo.title}
                   </div>
                   <div className="price">
-                    50,000 원
+                    {detailInfo.price}
                   </div>
                   <div className="tags">
-                    #봄 #태그123 #태그 456
+                    {detailInfo.tags}
                   </div>
                   <div className="info">
                     <div>
                       <p>제품소개</p>
-                      <span>모든 피부타입dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</span>
+                      <span>{detailInfo.info}</span>
                     </div>
                   </div>
                   <div className='designerInfo'>
@@ -191,9 +207,9 @@ const UpperFrame = () => {
                     </div>
                   </div>
                   <div className='btns'>
-                    <a >AR 피팅하기</a>
-                    <a >예약하기</a>
-                    <a  style={{backgroundColor:"#3D3C3A",color:"#fff",border:"1px #3D3C3A solid"}}>115556</a>
+                    <a style={{backgroundColor:"red",color:"white",}}><CalendarMonthIcon style={{visibility:"hidden",width:"0px"}}></CalendarMonthIcon>AR 피팅하기</a>
+                    <a style={{backgroundColor:'white'}}><CalendarMonthIcon />예약하기</a>
+                    <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}}><FavoriteBorderIcon />115556</a>
 
                   </div>
                 </div>

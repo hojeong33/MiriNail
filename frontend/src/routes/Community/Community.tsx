@@ -1,4 +1,5 @@
 import CommunityBox from "../../components/Community/CommunityBox";
+import CommunityContent from "../../components/Community/CommunityContent";
 import CommunityTitle from "../../components/Community/CommunityTitle";
 
 const Community = () => {
@@ -6,6 +7,7 @@ const Community = () => {
     <div>
       <CommunityTitle></CommunityTitle>
       <CommunityBox></CommunityBox>
+      <CommunityContent></CommunityContent>
     </div>
   );
 };
