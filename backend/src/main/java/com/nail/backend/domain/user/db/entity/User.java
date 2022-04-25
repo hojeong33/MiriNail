@@ -22,10 +22,7 @@ public class User {
     @ApiModelProperty(value = "회원 id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< HEAD
-=======
     @Column(name = "user_seq")
->>>>>>> 260bc69408855a851e0ed3201a298b0f2efa695e
     // 회원 id
     Long userSeq;
 

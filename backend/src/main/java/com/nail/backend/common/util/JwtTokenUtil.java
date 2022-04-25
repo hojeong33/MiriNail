@@ -35,22 +35,22 @@ public class JwtTokenUtil {
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
 
     @Autowired
-	public JwtTokenUtil(@Value("${jwt.secret}") String secretKey,
+    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey,
                         @Value("${jwt.accessTokenExpiration}") Integer accessTokenExpiration,
                         @Value("${jwt.refreshTokenExpiration}") Integer refreshTokenExpiration) {
-		this.secretKey = secretKey;
+        this.secretKey = secretKey;
         this.accessTokenExpiration = accessTokenExpiration;
-		this.refreshTokenExpiration = refreshTokenExpiration;
-	}
+        this.refreshTokenExpiration = refreshTokenExpiration;
+    }
 
-	public void setExpirationTime() {
-    		//JwtTokenUtil.expirationTime = Integer.parseInt(expirationTime);
-    		JwtTokenUtil.accessTokenExpiration = accessTokenExpiration;
-            JwtTokenUtil.refreshTokenExpiration = refreshTokenExpiration;
-	}
+    public void setExpirationTime() {
+        //JwtTokenUtil.expirationTime = Integer.parseInt(expirationTime);
+        JwtTokenUtil.accessTokenExpiration = accessTokenExpiration;
+        JwtTokenUtil.refreshTokenExpiration = refreshTokenExpiration;
+    }
 
     public static String createAccessToken(long userId, String userEmail) {
-    	Date expires = JwtTokenUtil.getTokenExpiration(accessTokenExpiration);
+        Date expires = JwtTokenUtil.getTokenExpiration(accessTokenExpiration);
         return JWT.create()
                 .withClaim("userId", userId)   // 아이디 저장
                 .withClaim("userEmail", userEmail)   // 주소 저장
@@ -111,8 +111,8 @@ public class JwtTokenUtil {
     }
 
     public static Date getTokenExpiration(int expirationTime) {
-    		Date now = new Date();
-    		return new Date(now.getTime() + expirationTime);
+        Date now = new Date();
+        return new Date(now.getTime() + expirationTime);
     }
 
     public Long getTokenExpirationAsLong(String token) {
@@ -122,6 +122,7 @@ public class JwtTokenUtil {
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
+}
 //
 //    public static void handleError(String token) {
 //        JWTVerifier verifier = JWT
