@@ -114,6 +114,7 @@ const Content:React.FC<IProps> = ({designer}) => {
                   <Link to="introduction">디자이너 소개</Link>
                   <Link to="NFTs">네일아트 목록</Link>
                   <Link to="reviews">시술 후기들</Link>
+                  <Link to="asklist">문의 내역</Link>
                 </div>
               </div>
               <div className="RightBox">

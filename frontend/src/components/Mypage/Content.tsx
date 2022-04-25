@@ -319,6 +319,7 @@ const Content = () => {
                   </HistoryTab>
                   <Link to="followingdesigner">팔로우한 디자이너</Link>
                   <Link to="myreservation">나의 예약</Link>
+                  <Link to="apply">디자이너 신청</Link>
                 </div>
                 {/* <div className="OrderFilter">
                   <a>정렬</a>
