@@ -1,36 +1,64 @@
 package com.nail.backend.common.util;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Base64;
+import java.util.Optional;
 
-@Service
 public class CookieUtil {
 
-    public Cookie createCookie(String cookieName, String value){
-        Cookie cookie = new Cookie(cookieName,value);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(JwtTokenUtil.accessTokenExpiration);
-        cookie.setPath("/");
-        return cookie;
-    }
+    public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
 
-    public Cookie getCookie(HttpServletRequest request, String cookieName){
-        final Cookie[] cookies = request.getCookies();
-        if(cookies == null) return null;
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals(cookieName))
-                return cookie;
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if (name.equals(cookie.getName())) {
+                    return Optional.of(cookie);
+                }
+            }
         }
-        return null;
+        return Optional.empty();
     }
 
-    public Cookie removeCookie(String cookieName){
-        Cookie expiredCookie = new Cookie(cookieName, null);
-        expiredCookie.setMaxAge(0); // expiration 타임 0으로 하여 삭제
-        expiredCookie.setPath("/"); // 모든 경로에서 삭제
-        return expiredCookie;
+    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(maxAge);
+
+        response.addCookie(cookie);
+    }
+
+    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if (name.equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+        }
+    }
+
+    public static String serialize(Object obj) {
+        return Base64.getUrlEncoder()
+                .encodeToString(SerializationUtils.serialize(obj));
+    }
+
+    public static <T> T deserialize(Cookie cookie, Class<T> cls) {
+        return cls.cast(
+                SerializationUtils.deserialize(
+                        Base64.getUrlDecoder().decode(cookie.getValue())
+                )
+        );
     }
 
 }

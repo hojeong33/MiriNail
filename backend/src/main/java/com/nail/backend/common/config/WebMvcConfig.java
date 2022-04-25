@@ -1,6 +1,6 @@
 package com.nail.backend.common.config;
 
-import com.nail.backend.common.util.JwtTokenUtil;
+//import com.nail.backend.common.util.JwtTokenUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.addExposedHeader(JwtTokenUtil.HEADER_STRING);
+//        configuration.addExposedHeader(JwtTokenUtil.HEADER_STRING);
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -49,17 +49,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
             registry.addResourceHandler("/EmailConfirmGetRes.html")
                             .addResourceLocations("classpath:/static/");
-    		
+
     		registry.addResourceHandler("swagger-ui.html")
     				.addResourceLocations("classpath:/META-INF/resources/");
 
     		registry.addResourceHandler("/webjars/**")
     				.addResourceLocations("classpath:/META-INF/resources/webjars/");
-    		
+
     		/*
-    		 * 
+    		 *
     		 * Front-end에서 참조하는 URL을 /dist로 매핑
-    		 * 
+    		 *
     		 */
         registry.addResourceHandler("/css/**")
         			.addResourceLocations("classpath:/dist/css/");
