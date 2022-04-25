@@ -12,6 +12,9 @@ public interface NailartService {
     // 네일 아트 리스트 전체 조회
     List<NailartListGetRes> nailartList(int limit, int offset);
 
+    // 디자리너의 다른 작품 조회
+    List<NailartListGetRes> anotherNailart(long designerSeq);
+
     // 네일 아트 상세 조회
     NailartDetailGetRes nailartDetail(long nailartSeq);
 

@@ -42,43 +42,22 @@ public class NailartController {
     }
 
     // Nailart designerSeq로 전체 조회
+    @PostMapping("/designer/{designerSeq}")
+    public NailartDetailGetRes anotherNailart(@PathVariable("designerSeq") long designerSeq){
+        return
+    }
 
     // Nailart 등록
 
 
 
 
-//    @PostMapping(consumes = {"multipart/form-data" })
-//    public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestPart NailartRegisterPostReq nailartRegisterPostReq, @RequestPart(required = false) List<MultipartFile> multipartFiles){
-//        log.info("디자이너 번호 : {}, 작품 이름 : {}, 작품 설명 : {}, 작품 타입 : {}, 작품 색상 : {}, 작품 상세 색상 : {}, 작품 날씨 : {}, 작품 가격{}"
-//                    , nailartRegisterPostReq.getDesignerSeq() , nailartRegisterPostReq.getNailartName(), nailartRegisterPostReq.getNailartDesc()
-//                    , nailartRegisterPostReq.getNailartType(), nailartRegisterPostReq.getNailartColor(), nailartRegisterPostReq.getNailartDetailColor()
-//                    , nailartRegisterPostReq.getNailartWeather(), nailartRegisterPostReq.getNailartPrice());
-//
-//        System.out.println("test");
-//        nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
-
-
-    // 이건 리스트 목록만 받아짐
-//    @PostMapping(consumes = {"multipart/form-data" })
-//    public String uploadMulti(@RequestParam("files") List<MultipartFile> files) {
-//        System.out.println(files);
-//        return "uploaded";
-//    }
-
-    //이건 테스트중
-//    @PostMapping(consumes = {"multipart/form-data" })
-//    public ResponseEntity<Void> test(@RequestPart(value = "files",required = false) List<MultipartFile> files, @RequestParam(value="nailartRegisterPostReq",required = false) String nailartRegisterPostReq) {
-//        System.out.println(nailartRegisterPostReq);
-//        System.out.println(files.size());
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
     public ResponseEntity<Void> test(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         NailartRegisterPostReq nailartRegisterPostReq = objectMapper.readValue(jsonList, new TypeReference<NailartRegisterPostReq>() {});
-        nailartRegisterPostReq.setDesignerSeq(1);
+        nailartRegisterPostReq.setDesignerSeq(3);
         log.info("files count : {}",files);
         log.info("json text) : {}",nailartRegisterPostReq);
         nailartService.nailartRegister(nailartRegisterPostReq, files);

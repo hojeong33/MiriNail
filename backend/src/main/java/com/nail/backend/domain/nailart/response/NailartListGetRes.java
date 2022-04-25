@@ -11,6 +11,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class NailartListGetRes {
 
+    private long nailartSeq;
+
     private long designerSeq;
 
     private String designserNickname;
