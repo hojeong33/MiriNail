@@ -60,7 +60,6 @@ public class DesignerInfo implements Serializable {
     @ApiModelProperty(value = "디자이너 샵 마감 시간")
     String designerShopClose;
 
-
     // 인증신청 등록날짜
     @ApiModelProperty(value = "인증신청 등록날짜")
     @CreatedDate

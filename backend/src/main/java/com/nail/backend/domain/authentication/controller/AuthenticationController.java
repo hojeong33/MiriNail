@@ -3,6 +3,7 @@ package com.nail.backend.domain.authentication.controller;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.authentication.db.entity.DesignerApplication;
 import com.nail.backend.domain.authentication.request.ArtistRegisterPostReq;
+import com.nail.backend.domain.authentication.request.UpdateDesignerApplicationPatchReq;
 import com.nail.backend.domain.authentication.service.AuthenticationService;
 import com.nail.backend.domain.authentication.service.AwsS3Service;
 import io.swagger.annotations.Api;
@@ -12,6 +13,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,5 +68,124 @@ public class AuthenticationController {
         log.info("authenticationFileDownload - 호출");
 
         return awsS3Service.downloadOnS3(authUrl);
+    }
+
+    /**
+     인증신청 전체 정보 조회
+     */
+    @GetMapping("/list")
+    @ApiOperation(value = "인증 등록 전체 정보 조회", notes = "<strong>인증 등록 전체 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<Page<DesignerApplication>>getDesignerApplicationList(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+
+        log.info("getDesignerApplicationList - 호출");
+        Page<DesignerApplication> applications = authenticationService.getDesignerApplicationList(pageable);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationList - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
+    }
+
+    /**
+     인증신청 상세 정보 조회
+     */
+    @GetMapping("/detail/{designerSeq}")
+    @ApiOperation(value = "인증 등록 상세 정보 조회", notes = "<strong>인증 등록 상세 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<DesignerApplication>getDesignerApplicationDetail(@PathVariable("designerSeq") Long designerSeq) {
+
+        log.info("getDesignerApplicationDetail - 호출");
+        DesignerApplication applications = authenticationService.getDesignerApplicationDetail(designerSeq);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationDetail - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
+    }
+
+    /**
+     인증신청 진행상황 조회
+     */
+    @GetMapping("/{designerSeq}")
+    @ApiOperation(value = "인증 등록 상세 정보 조회", notes = "<strong>인증 등록 상세 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<DesignerApplication>getDesignerApplicationStatus(@PathVariable("designerSeq") Long designerSeq) {
+
+         log.info("getDesignerApplicationStatus - 호출");
+        DesignerApplication applications = authenticationService.getDesignerApplicationStatus(designerSeq);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationStatus - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
+    }
+
+    /**
+     유저가 작성한 디자이너 인증 신청 조회
+     */
+    @GetMapping("/user/{userSeq}")
+    @ApiOperation(value = "유저가 작성한 디자이너 인증 신청 조회", notes = "<strong>유저가 작성한 디자이너 인증 신청 정보</strong>를 넘겨준다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "유저 없음.")
+    })
+    public ResponseEntity<DesignerApplication>getDesignerApplicationDetailByUserSeq(@PathVariable("userSeq") Long userSeq) {
+
+        log.info("getDesignerApplicationDetailByUserSeq - 호출");
+        DesignerApplication applications = authenticationService.getDesignerApplicationDetail(userSeq);
+
+        if(applications == null) {
+            log.error("getDesignerApplicationDetailByUserSeq - User doesn't exist.");
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(201).body(applications);
+    }
+
+    @DeleteMapping("/user/{userSeq}")
+    @ApiOperation(value = "유저가 작성한 디자이너 인증 신청 삭제", notes = "<strong>유저가 작성한 디자이너 인증 신청 삭제</strong>.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "삭제 성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "삭제 실패.")
+    })
+    public ResponseEntity<BaseResponseBody>deleteDesignerApplicationDetailByUserSeq(@PathVariable("userSeq") Long userSeq) {
+
+        log.info("deleteDesignerApplicationDetailByUserSeq - 호출");
+        boolean isDeleted = authenticationService.deleteDesignerApplicationDetailByUserSeq(userSeq);
+
+        if(!isDeleted) {
+            log.error("deleteDesignerApplicationDetailByUserSeq - User doesn't exist.");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "삭제 실패"));
+        }
+        return ResponseEntity.status(201).body(BaseResponseBody.of(201, "삭제 성공"));
+    }
+
+    @PatchMapping("/confirm")
+    @ApiOperation(value = "인증 수락 거절", notes = "<strong>인증 수락 거절</strong>.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "인증 처리 성공", response = DesignerApplication.class),
+            @ApiResponse(code = 404, message = "인증 처리 실패.")
+    })
+    public ResponseEntity<BaseResponseBody> updateDesignerApplication(@RequestBody UpdateDesignerApplicationPatchReq updateDesignerApplicationPatchReq) {
+
+        log.info("updateDesignerApplication - 호출");
+        boolean isDeleted = authenticationService.updateDesignerApplication(updateDesignerApplicationPatchReq);
+
+        if(!isDeleted) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "인증 거절"));
+        }
+        return ResponseEntity.status(201).body(BaseResponseBody.of(201, "인증 성공"));
     }
 }
