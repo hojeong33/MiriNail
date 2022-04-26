@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import ShareIcon from '@mui/icons-material/Share';
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -8,6 +8,8 @@ import { designDetail, nailCount, nailLike, isLike, nailDislike  } from '../../s
 import { useParams } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { designerId } from '../../store/atoms';
 
 
 const Wrapper = styled.div`
@@ -165,7 +167,12 @@ const UpperFrame = () => {
   const {isLoading:isLikeLoading , data:likeData} = useQuery('like',() => nailCount(params.id?.slice(1,params.id.length)))
   const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params.id?.slice(1,params.id.length)))
   const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params.id?.slice(1,params.id.length)))
+  const [designerSeq,setDesignerSeq] = useRecoilState<any>(designerId)
   
+  useEffect(():any => {
+    if (nailData) {setDesignerSeq(nailData.designerSeq)}
+  },[nailData])
+
   const ACCESS_TOKEN = localStorage.getItem('token')
   const likeFunc:any = useMutation((param:any) => 
     nailLike(param)

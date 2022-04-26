@@ -1,8 +1,9 @@
 import axios from 'axios'
 const ACCESS_TOKEN = localStorage.getItem('token')
 const base_url = 'http://localhost:8080/api/'
-console.log(ACCESS_TOKEN)
 
+
+// 디자인 관련
 export const fetchDesigns = async({queryKey}:any) => {
   console.log(queryKey)
  
@@ -16,25 +17,25 @@ export const registDesign = async(files:any) => {
     console.log(key);
   }
 
-/* value 확인하기 */
-for (let value of files.values()) {
-     console.log(value);
-}
-  axios.post('http://localhost:8080/api/nailart', files, {
-  headers: {
-    'Content-Type': 'multipart/form-data'
+  /* value 확인하기 */
+  for (let value of files.values()) {
+      console.log(value);
   }
-  })
-  .then((response) => {
-    // 응답 처리
-    console.log(response)
-  })
-  .catch((error) => {
-    // 예외 처리
-    console.log(error)
-  })
-    
-  // console.log(response)
+    axios.post(base_url + 'nailart', files, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+    })
+    .then((response) => {
+      // 응답 처리
+      console.log(response)
+    })
+    .catch((error) => {
+      // 예외 처리
+      console.log(error)
+    })
+      
+    // console.log(response)
 }
 
 export const designDetail = async(param:any) => {
@@ -44,10 +45,14 @@ export const designDetail = async(param:any) => {
   
 }
 
-// 문의글 작성
-// export const postInquiry = async() => {
-//   const response = await axios.post
-// }
+
+export const otherDesign = async(param:any) => {
+  const response = await axios.get(base_url+`nailart/designer/${param}`)
+  console.log(response)
+  return response.data
+}
+
+
 
 
 // 좋아요

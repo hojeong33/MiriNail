@@ -1,6 +1,9 @@
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
+import { otherDesign } from '../../../store/api'
+import { designerId } from '../../../store/atoms'
 
 
 const Wrapper = styled.div`
@@ -59,8 +62,10 @@ const Wrapper = styled.div`
 }
 `
 const Gallery = () => {
-  const params = useParams()
-  // const {isLoading:otherDesignLoading, data:otherDesign } = useQuery(["nfts",mypage], fetchDesigns)
+  
+  const param = useRecoilValue(designerId)
+  console.log(param)
+  otherDesign(param)
   return (
     <Wrapper>
       <div className='description'>

@@ -129,9 +129,9 @@ export default function OneOneOneWrite(modalStatus:any) {
     setFiles(file)
   }
   
-  const formdata = new FormData
+  
+
   const submitData = {
-    file:formdata,
     ...inputStatus,
     qnaNailartSeq:params.id?.slice(1,params.id.length),
     qnaDesignerSeq:1
@@ -158,12 +158,33 @@ export default function OneOneOneWrite(modalStatus:any) {
   }
   useEffect(() => {
    preview()
-    formdata.append('file',files[0])
+
   },[files])
 
   
   const submit = async() => {
-    axios.post('http://localhost:8080/api/qna',submitData).then(console.log).catch(console.log)
+    const formdata = new FormData()
+    const testData:any = {
+      qnaDesc : '내용',
+      qnaDesignerSeq : 1,
+      qnaIsPrivated : true,
+      qnaNailartSeq : 2,
+      qnaTitle : '제목',
+    }
+    formdata.append('qnaFile',files[0])
+    // formdata.append('qnaRegisterPostReq',testData)
+    formdata.append('qnaDesc','내용')
+    formdata.append('qnaDesignerSeq','1')
+    formdata.append('qnaIsPrivated','true')
+    formdata.append('qnaNailartSeq','2')
+    formdata.append('qnaTitle','제목')
+    
+    //  스트링으로 보내야 함.
+    axios.post('http://localhost:8080/api/qna',formdata,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+      }).then(console.log).catch(console.log)
   }
   
 
