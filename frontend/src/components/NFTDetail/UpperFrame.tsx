@@ -4,7 +4,7 @@ import {useState} from 'react'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useQuery } from 'react-query';
-import { designDetail } from '../../store/api';
+import { designDetail, nailLike } from '../../store/api';
 import { useParams } from 'react-router-dom';
 // import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -145,7 +145,7 @@ const Wrapper = styled.div`
 
 const UpperFrame = () => {
   let params = useParams()
-
+  console.log(params)
   const [detailInfo,setDetailInfo] = useState (
     {
       type : '프렌치네일',
@@ -161,7 +161,8 @@ const UpperFrame = () => {
 
   
 
-  const {isLoading, data } = useQuery("detail", () => designDetail(params.id?.slice(1,params.id.length)))
+  const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params.id?.slice(1,params.id.length)))
+  
 
   return (
     <>
@@ -184,21 +185,21 @@ const UpperFrame = () => {
                     <ShareIcon />
                   </div>
                   <div className="boxs">
-                    {data?.nailartType}
+                    {nailData?.nailartType}
                   </div>
                   <div className='name'>
                     {detailInfo.title}
                   </div>
                   <div className="price">
-                    {data?.nailartPrice}
+                    {nailData?.nailartPrice}
                   </div>
                   <div className="tags">
-                    #{data?.nailartWeather} #{data?.designerNickname}
+                    #{nailData?.nailartWeather} #{nailData?.designerNickname}
                   </div>
                   <div className="info">
                     <div>
                       <p>제품소개</p>
-                      <span>{data?.nailartDesc}</span>
+                      <span>{nailData?.nailartDesc}</span>
                     </div>
                   </div>
                   <div className='designerInfo'>
@@ -208,7 +209,7 @@ const UpperFrame = () => {
                     </div> 
                     <div className='designerName'>
                       <div style={{fontSize:"1.2em"}}>
-                        {data?.designerNickname}
+                        {nailData?.designerNickname}
                       </div>
                       <div style={{color:'gray'}}>
                         Nailshop1
@@ -218,7 +219,7 @@ const UpperFrame = () => {
                   <div className='btns'>
                     <a style={{backgroundColor:"red",color:"white",}}><CalendarMonthIcon style={{visibility:"hidden",width:"0px"}}></CalendarMonthIcon>AR 피팅하기</a>
                     <a style={{backgroundColor:'white'}}><CalendarMonthIcon />예약하기</a>
-                    <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}}><FavoriteBorderIcon />115556</a>
+                    <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}} onClick={() => nailLike(params.id?.slice(1,params.id.length))}><FavoriteBorderIcon />115556</a>
 
                   </div>
                 </div>

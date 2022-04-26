@@ -44,3 +44,17 @@ export const designDetail = async(param:any) => {
   return response.data
   
 }
+
+// 문의글 작성
+// export const postInquiry = async() => {
+//   const response = await axios.post
+// }
+
+
+// 좋아요
+
+export const nailLike = async(param:any) => {
+  console.log(param)
+  const response = await axios.post(base_url+`favorite/${Number(param)}`)
+  console.log(response)
+}

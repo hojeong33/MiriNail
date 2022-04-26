@@ -15,7 +15,7 @@ public class NailartListGetRes {
 
     private long designerSeq;
 
-    private String designserNickname;
+    private String designerNickname;
 
     private long tokenId;
 
