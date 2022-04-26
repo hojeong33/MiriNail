@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,8 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+import static com.google.common.io.Files.getFileExtension;
 @RequiredArgsConstructor
+
 @Service
+@Component
 public class NailartServiceImpl implements NailartService{
 
     @Value("${cloud.aws.s3.bucket}")
@@ -40,6 +45,7 @@ public class NailartServiceImpl implements NailartService{
 
     @Autowired
     NailartRepository nailartRepository;
+
 
     @Autowired
     NailartImgRepository nailartImgRepository;
@@ -62,13 +68,14 @@ public class NailartServiceImpl implements NailartService{
         }
     }
 
+
     @Override
     public List<NailartListGetRes> nailartList(int page, int size) {
         List<NailartListGetRes> nailart = new ArrayList<>();
         PageRequest pageReuest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
         nailartRepository.findAll(pageReuest).forEach(art -> {
             NailartListGetRes tmp = new NailartListGetRes();
-            tmp.setDesignserNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+//            tmp.setdesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -120,7 +127,6 @@ public class NailartServiceImpl implements NailartService{
 
     @Override
     public Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq, List<MultipartFile> files) {
-
         Nailart nailart = new Nailart();
         NailartImg nailartImg = new NailartImg();
         Nailart nailartSaved = new Nailart();
@@ -153,9 +159,6 @@ public class NailartServiceImpl implements NailartService{
                 System.out.println(fileName);
                 try(InputStream inputStream = file.getInputStream()) {
                     System.out.println("s3 진입");
-//                    s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
-//                            .withCannedAcl(CannedAccessControlList.PublicRead));
-//                    return s3Client.getUrl(bucket, fileName).toString();
                     System.out.println("bucket :  " + bucket);
                     System.out.println("fileName : " + fileName);
                     System.out.println("inputStream : " + file.getInputStream());

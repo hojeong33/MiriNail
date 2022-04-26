@@ -15,8 +15,6 @@ import { styled, alpha } from "@mui/material/styles";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-// import { KAKAO_AUTH_URL } from "../Login/Auth";
-import axios from "axios";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,34 +57,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  //테스트
-  const isLogin = false;
-  const username = "@abcdef";
-  //소셜로그인
-  const kakaoLogin = () => {
-    return function () {
-      axios({
-        method: "GET",
-        url: "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http:/localhost:3000/oauth2/redirect",
-        // url: `http://localhost:8080/?code=${code}`,
-      })
-        .then((res) => {
-          console.log(res); // 토큰이 넘어올 것임
-
-          // const ACCESS_TOKEN = res.data.accessToken;
-
-          // localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-
-          // navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
-        })
-        .catch((err: any) => {
-          console.log("소셜로그인 에러", err);
-          window.alert("로그인에 실패하였습니다.");
-          navigate("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
-        });
-    };
+  const [isLogin, setIsLogin] = React.useState<boolean>(false);
+  //회원정보
+  const userNickname = sessionStorage.getItem("userNickname");
+  const userProfileImg = sessionStorage.getItem("userProfileImg");
+  useEffect(() => {
+    if (userNickname) {
+      setIsLogin(true);
+    }
+  }, []);
+  const logout = () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    setIsLogin(false);
   };
-
   //User 하위 메뉴창
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -190,7 +174,7 @@ const Navbar = () => {
           </Search>
 
           <Box sx={{ flexGrow: 0 }}>
-            {!isLogin ? (
+            {!userProfileImg ? (
               <Button
                 href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
                 // href={KAKAO_AUTH_URL}
@@ -202,12 +186,12 @@ const Navbar = () => {
             ) : (
               <>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" src={userProfileImg} />
                   <Typography
                     textAlign="center"
                     style={{ color: "black", marginLeft: "5px" }}
                   >
-                    {username}
+                    {userNickname}
                   </Typography>
                 </IconButton>
                 <Menu
@@ -229,7 +213,7 @@ const Navbar = () => {
                   <MenuItem onClick={() => navigate(`/mypage`)}>
                     <Typography textAlign="center">Mypage</Typography>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  <MenuItem onClick={logout}>
                     <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
                 </Menu>

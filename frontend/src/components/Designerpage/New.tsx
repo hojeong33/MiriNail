@@ -1,6 +1,8 @@
-import styled from "styled-components";
-import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import styled from 'styled-components'
+import AddIcon from '@mui/icons-material/Add';
+import { useState } from 'react';
+import Feed from './Feed';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -54,18 +56,13 @@ function New() {
 
   return (
     <Wrapper>
-      <button className="createbutton">
-        <AddIcon />새 소식 작성
-      </button>
+      <Link to="/designerpage/createfeed">
+        <button className="createbutton"><AddIcon />새 소식 작성</button>
+      </Link>
       {feeds.map((feed, idx) => {
         return (
-          <div className="feed">
-            <div>{feed.title}</div>
-            <div>{feed.date}</div>
-            <img src={feed.imgurl} alt="" />
-            <div>{feed.content}</div>
-          </div>
-        );
+          <Feed feed={feed} key={idx}/>
+        )
       })}
     </Wrapper>
   );

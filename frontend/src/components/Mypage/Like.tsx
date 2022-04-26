@@ -44,7 +44,7 @@ const ItemCard = styled.div`
     svg {
       position: absolute;
       right: 10px;
-      top: 190px;
+      top: 10px;
       width: 30px;
       height: 30px;
       cursor: pointer;
@@ -60,6 +60,7 @@ interface IState {
     title: string;
     price: number;
     category: string[];
+    isfollow: boolean;
   };
 }
 
@@ -68,52 +69,62 @@ const Like = () => {
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
     {
       title: "글레이즈 - 루비 레드",
       price: 50000,
-      category: ["겨울", "designer1"]
+      category: ["겨울", "designer1"],
+      isfollow: true
     },
   ])
 
@@ -130,7 +141,11 @@ const Like = () => {
             <ItemCard key={idx}>
               <div className="cardwrapper">
                 <img src="/assets/images/원숭이.png" alt="" />
-                <FavoriteIcon color="error" />
+                {item.isfollow ? (
+                  <FavoriteIcon color="error" />
+                ) : (
+                  <FavoriteBorderIcon color="error" />
+                )}
               </div>
               <div className="title">{item.title}</div>
               <div className="price">{item.price.toLocaleString()}원</div>

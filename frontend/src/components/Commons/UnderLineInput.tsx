@@ -226,10 +226,10 @@ const Input = (props: any) => {
               onChange={onChangeInput}
             >
               <option value="">계절 선택</option>
-              <option value="spring">봄</option>
-              <option value="summer">여름</option>
-              <option value="autumn">가을</option>
-              <option value="winter">겨울</option>
+              <option value="봄">봄</option>
+              <option value="여름">여름</option>
+              <option value="가을">가을</option>
+              <option value="겨울">겨울</option>
             </select>
             <div className="inputs">
               <div>

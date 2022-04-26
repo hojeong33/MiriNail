@@ -2,6 +2,8 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // css import
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import moment from 'moment'
 
 const Wrapper = styled.div`
@@ -9,22 +11,27 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   .react-calendar {
-    width: 85%;
-    max-width: 100%;
+    width: 768px;
     background-color: #fff;
     color: #222;
-    box-shadow: rgba(122, 122, 122, 0.1) 0px 1px 3px 0px,
-      rgba(118, 118, 118, 0.06) 0px 1px 2px 0px;
+    border: 1px solid #d1d1d1;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.125em;
     padding: 10px;
   }
   .react-calendar__navigation button {
-    color: #6f48eb;
+    color: #222;
     min-width: 44px;
-    background: none;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 500;
     margin-top: 8px;
+    cursor: default;
+    background-color: #fff;
+  }
+  .react-calendar__month-view__weekdays__weekday {
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 700;
   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
@@ -35,46 +42,46 @@ const Wrapper = styled.div`
   }
   abbr[title] {
     text-decoration: none;
+    cursor: default;
   }
   /* .react-calendar__month-view__days__day--weekend {
  color: #d10000;
 } */
   .react-calendar__tile {
-    padding: 10px 0;
+    padding: 18px 0;
     position: relative;
   }
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
     background: #f8f8fa;
-    color: #6f48eb;
+    /* color: #797979; */
     border-radius: 6px;
   }
   .react-calendar__tile--now {
-    background: #6f48eb33;
+    background: #E9E9E9;
     border-radius: 6px;
     font-weight: bold;
-    color: #6f48eb;
   }
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: #6f48eb33;
+    background: #eeeeee;
     border-radius: 6px;
     font-weight: bold;
-    color: #6f48eb;
+    color: #797979;
   }
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
     background: #f8f8fa;
   }
   .react-calendar__tile--active {
-    background: #6f48eb;
+    background: #797979;
     border-radius: 6px;
     font-weight: bold;
     color: white;
   }
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
-    background: #6f48eb;
+    background: #797979;
     color: white;
   }
 
@@ -84,8 +91,8 @@ const Wrapper = styled.div`
     justify-content: center;
   }
   .dot {
-    height: 5px;
-    width: 5px;
+    height: 7px;
+    width: 7px;
     background-color: #ffa7a7;
     border-radius: 50%;
     display: flex;
@@ -96,134 +103,117 @@ const Wrapper = styled.div`
 `;
 
 const FormWrapper = styled.div`
-  width: 85%;
+  width: 768px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  .timetable {
-    width: 100%;
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    .bundle {
-      display: flex;
-      /* align-items: center; */
-      font-weight: 500;
-      .kinds {
-        width: 100px;
-        font-size: 18px;
-        margin-right: 20px;
-      }
-      .pmkinds {
-        /* height: inherit; */
-      }
-      .content {
-        font-size: 18px;
-        .timetiles {
-          display: flex;
-          width: 500px;
-          flex-wrap: wrap;
-          .selected {
-          background-color: #b098fc;
-        }
-        }
-        .timetile {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100px;
-          height: 40px;
-          background-color: #E9E9E9;
-          margin: 5px;
-          cursor: pointer;
-          :hover {
-            /* background-color: #e0e0e0; */
-          }
-          :active {
-            background-color: #d2d2d0;
-          }
-        }
-      }
-    }
-  }
-  .helperbox {
-    margin-right: 30px;
+  border: 1px solid #d1d1d1;
+  padding: 20px;
+  margin-top: 20px;
+  .rvtext {
     display: flex;
-    justify-content: flex-end;
-    .helper {
-      display: flex;
-      align-items: center;
-      margin: 0 10px;
-    }
-    .possiblecolor {
-      width: 15px;
-      height: 15px;
-      background-color: #797979;
-      border: 1px solid #797979;
-      margin-right: 5px;
-    }
-    .impossiblecolor {
-      width: 15px;
-      height: 15px;
-      background-color: #E9E9E9;
-      border: 1px solid #797979;
-      margin-right: 5px;
-    }
+    font-size: 22px;
+    margin: 10px 0 10px 10px;
+    font-weight: 600;
   }
-  .menu {
-    margin-top: 20px;
-    width: 100%;
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    .menuSelectText {
-      display: flex;
-      font-size: 20px;
-      margin: 10px;
-      font-weight: 600;
-    }
-    .typebox {
-      display: flex;
-      button {
-        padding: 20px;
+`;
+
+const TableWrapper = styled.div`
+  width: 100%;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .count {
+    text-align: start;
+    padding: 10px;
+    font-size: 20px;
+    margin: 0px;
+    position: relative;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+  .table {
+    width: 90%;
+    /* border: 1px solid black; */
+    table {
+      width: 100%;
+      border-top: 1px solid #3d3c3a;
+      color: #3d3c3a;
+      thead {
+        font-weight: 500;
+      }
+      th {
+        font-size: 14px;
+        text-align: center;
+        border-bottom: 1px solid #d2d2d0;
+        padding: 20px 0px;
+        font-weight: 500;
+      }
+      tbody {
+        .title {
+          cursor: pointer;
+        }
+        tr {
+        cursor: pointer;
+        :hover {
+          background-color: #f8f8fa;
+        }
+      }
       }
     }
-    .menucontent {
-      padding: 30px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      height: 150px;
-      border-top: 1px solid black;
-      input {
-        position: absolute;
-        left: 10px;
-      }
-    }
   }
-  .submitbutton {
-    margin-top: 20px;
-    width: 100%;
-    background-color: #797979;
-    padding: 20px;
-    color: white;
-    font-size: 18px;
-    font-weight: 500;
+  .pagination {
+    margin: 20px 0;
   }
 `;
 
 const Divider = styled.div`
-  margin: 10px auto;
+  margin: 20px auto;
   width: 95%;
   border-bottom: 1px solid #bcbcbc;
 `;
 
+interface IState {
+  reservation: {
+    ID: string;
+    nailart: string;
+    time: string;
+  }
+}
+
 const ReservationCheck = () => {
   const [value, setValue] = useState(new Date());
   const [mark, setMark] = useState(["2022-04-20", "2022-04-02"]);
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  const amTime = ["10:00", "10:30", "11:00", "11:30"]
-  const pmTime = ["12:00", "12:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00",]
-
+  const [reservations, setReservations] = useState<IState["reservation"][]>([
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    },
+    {
+      ID: "dami123",
+      nailart: "글레이즈-딥다크",
+      time: "13:00"
+    }
+  ]);
+  
   // const { data } = useQuery(
   //   ["logDate", month],
   //   async () => {
@@ -240,9 +230,7 @@ const ReservationCheck = () => {
   //   }
   // );
 
-  const onclickTimeTile = (time:string) => {
-    setSelectedTime(time)
-  }
+
 
   return (
     <Wrapper>
@@ -273,92 +261,44 @@ const ReservationCheck = () => {
       </div>
 
       <FormWrapper>
-        <div className="timetable">
-          <div className="bundle">
-            <div className="kinds">날짜: </div>
-            <div className="content">
-              {moment(value).format("YYYY년 MM월 DD일")}
-            </div>
+
+          <div className="rvtext">
+            {moment(value).format("YYYY년 MM월 DD일")} 예약 정보
           </div>
+
           <Divider></Divider>
-          <div className="bundle">
-            <div className="kinds">시간: </div>
-            <div className="content">{selectedTime}</div>
-          </div>
-          <Divider></Divider>
-          <div className="bundle">
-            <div className="kinds">오전</div>
-            <div className="content">
-              <div className="timetiles">
-                {amTime.map((time, idx) => {
-                  return (
-                    <div
-                      className={`timetile ${
-                        time === selectedTime ? "selected" : ""
-                      }`}
-                      key={idx}
-                      onClick={() => setSelectedTime(time)}
-                    >
-                      {time}
-                    </div>
-                  );
-                })}
-              </div>
+          <TableWrapper>
+            <div className="table">
+              <div className="count">총 10 건</div>
+              <table>
+                <colgroup>
+                  <col width="15%" />
+                  <col width="70%" />
+                  <col width="15%" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>네일아트</th>
+                    <th>예약시간</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reservations.map((reservation, idx) => {
+                    return (
+                      <tr key={idx}>
+                        <th>{reservation.ID}</th>
+                        <th className="title">{reservation.nailart}</th>
+                        <th>{reservation.time}</th>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          </div>
-          <Divider></Divider>
-          <div className="bundle">
-            <div className="kinds pmkinds">오후</div>
-            <div className="content">
-              <div className="timetiles">
-                {pmTime.map((time, idx) => {
-                  return (
-                    <div
-                    className={`timetile ${
-                      time === selectedTime ? "selected" : ""
-                    }`}
-                      key={idx}
-                      onClick={() => onclickTimeTile(time)}
-                    >
-                      {time}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          <div className="helperbox">
-            <div className="helper">
-              <div className="possiblecolor"></div>
-              <div>선택가능</div>
-            </div>
-            <div className="helper">
-              <div className="impossiblecolor"></div>
-              <div>선택불가</div>
-            </div>
-          </div>
-        </div>
-        <div className="menu">
-          <div className="menuSelectText">네일아트 선택</div>
-          <div className="typebox">
-            <button>글레이즈</button>
-            <button>프렌치</button>
-            <button>라인스톤</button>
-          </div>
-          <div className="menucontent">
-            <input type="checkbox" />
-            <div>글레이즈 - 딥다크</div>
-            <div>시크한 매력을 더해보세요!</div>
-            <div>50,000원</div>
-          </div>
-          <div className="menucontent">
-            <input type="checkbox" />
-            <div>글레이즈 - 딥다크</div>
-            <div>시크한 매력을 더해보세요!</div>
-            <div>50,000원</div>
-          </div>
-        </div>
-        <button className="submitbutton">예약하기</button>
+            <div className="pagination"></div>
+          </TableWrapper>
+
       </FormWrapper>
     </Wrapper>
   );

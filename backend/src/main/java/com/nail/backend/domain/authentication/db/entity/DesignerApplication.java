@@ -3,7 +3,6 @@ package com.nail.backend.domain.authentication.db.entity;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jdk.internal.net.http.common.Log;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
