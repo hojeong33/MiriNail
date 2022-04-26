@@ -99,7 +99,7 @@ function CreateCommunityHeader() {
           <div className="pageHeaderNavigation">
             <div className="NavElement">
               <span>Community</span>
-              <ChevronRightIcon />
+              <ChevronRightIcon style={{ top: "0" }} />
               <span>작성하기</span>
             </div>
           </div>
