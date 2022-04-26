@@ -5,13 +5,13 @@ import com.nail.backend.domain.community.db.entity.Community;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
 import com.nail.backend.domain.community.service.CommunityService;
 import com.nail.backend.domain.qna.db.entity.Qna;
-import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,6 +53,19 @@ public class CommunityController {
     }
 
 //    READ___________________________________________
+    @ApiOperation(value = "커뮤니티 글 전체조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping
+    public ResponseEntity<Page<Community>> getCommunity(@PageableDefault(page=0, size =10,sort = "communitySeq",direction = Sort.Direction.DESC) Pageable pageable){
+
+        log.info("getCommunity - 호출");
+        Page<Community> communityList = communityService.getCommunity(pageable);
+
+        return ResponseEntity.status(200).body(communityList);
+    }
 
 //    UPDATE_________________________________________
 

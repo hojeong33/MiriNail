@@ -13,22 +13,23 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@ToString
 public class Follow {
 
-    @ApiModelProperty(value = "팔로우 Id")
+    @ApiModelProperty(value = "팔로우 Seq")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // 회원 id
-    Long followId;
+    // 팔로우 Seq
+    Long followSeq;
 
     @ManyToOne
-    @JoinColumn(name = "follow_follower")
-    @ApiModelProperty(value = "팔로우 요청하는 사람 id")
+    @JoinColumn(name = "follow_follower", referencedColumnName = "user_seq")
+    @ApiModelProperty(value = "팔로우 요청하는 사람 Seq")
     User followFollower;
 
     @ManyToOne
-    @JoinColumn(name = "follow_followee")
-    @ApiModelProperty(value = "팔로우 요청받는 사람 id")
+    @JoinColumn(name = "follow_followee", referencedColumnName = "user_seq")
+    @ApiModelProperty(value = "팔로우 요청받는 사람 Seq")
     User followFollowee;
 
 }

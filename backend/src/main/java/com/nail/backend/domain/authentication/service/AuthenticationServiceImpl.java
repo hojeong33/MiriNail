@@ -5,15 +5,19 @@ import com.nail.backend.domain.authentication.db.entity.DesignerApplication;
 import com.nail.backend.domain.authentication.db.repository.DesignerApplicationRepository;
 import com.nail.backend.domain.authentication.db.repository.DesignerApplicationRepositorySupport;
 import com.nail.backend.domain.authentication.request.ArtistRegisterPostReq;
+import com.nail.backend.domain.authentication.request.UpdateDesignerApplicationPatchReq;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -98,5 +102,36 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
         DesignerApplication savedDesignerApplication = designerApplicationRepository.save(designerApplication);
         return savedDesignerApplication;
+    }
+
+    @Override
+    public Page<DesignerApplication> getDesignerApplicationList(Pageable pageable) {
+        Page<DesignerApplication> designerApplications = designerApplicationRepositorySupport.findDesignerApplicationList(pageable);
+        return designerApplications;
+    }
+
+    @Override
+    public DesignerApplication getDesignerApplicationDetail(Long designerSeq) {
+        DesignerApplication designerApplication = designerApplicationRepository.findByDesignerSeq(designerSeq);
+        return designerApplication;
+    }
+
+    @Override
+    public DesignerApplication getDesignerApplicationStatus(Long designerSeq) {
+        DesignerApplication designerApplication = designerApplicationRepository.findByDesignerSeq(designerSeq);
+        return designerApplication;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteDesignerApplicationDetailByUserSeq(Long DesignerSeq) {
+        boolean isDeleted = designerApplicationRepositorySupport.deleteByDesignerSeq(DesignerSeq);
+        return isDeleted;
+    }
+
+    @Override
+    public boolean updateDesignerApplication(UpdateDesignerApplicationPatchReq updateDesignerApplicationPatchReq) {
+        boolean isAccepted = designerApplicationRepositorySupport.updateDesignerApplication(updateDesignerApplicationPatchReq);
+        return isAccepted;
     }
 }
