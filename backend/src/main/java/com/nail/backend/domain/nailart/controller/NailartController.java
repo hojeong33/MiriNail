@@ -42,16 +42,12 @@ public class NailartController {
     }
 
     // Nailart designerSeq로 최대 10개 조회
-    @PostMapping("/designer/{designerSeq}")
+    @GetMapping("/designer/{designerSeq}")
     public List<NailartListGetRes> anotherNailart(@PathVariable("designerSeq") long designerSeq){
         return nailartService.anotherNailart(designerSeq);
     }
 
     // Nailart 등록
-
-
-
-
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
     public ResponseEntity<Void> test(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
@@ -64,21 +60,6 @@ public class NailartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
-
-//    @PostMapping(consumes = {"multipart/form-data" })
-//    public ResponseEntity<BaseResponseBody> nailartRegisterPost(@RequestParam(required = false) NailartRegisterPostReq nailartRegisterPostReq, @RequestParam("files") List<MultipartFile> files){
-//        log.info("디자이너 번호 : {}, 작품 이름 : {}, 작품 설명 : {}, 작품 타입 : {}, 작품 색상 : {}, 작품 상세 색상 : {}, 작품 날씨 : {}, 작품 가격{}"
-//                    , nailartRegisterPostReq.getDesignerSeq() , nailartRegisterPostReq.getNailartName(), nailartRegisterPostReq.getNailartDesc()
-//                    , nailartRegisterPostReq.getNailartType(), nailartRegisterPostReq.getNailartColor(), nailartRegisterPostReq.getNailartDetailColor()
-//                    , nailartRegisterPostReq.getNailartWeather(), nailartRegisterPostReq.getNailartPrice());
-//        log.info("images : {} " ,files);
-//        System.out.println(nailartRegisterPostReq);
-//        System.out.println(files);
-//        nailartService.nailartRegister(nailartRegisterPostReq, multipartFiles);
-//
-//        return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
-//    }
 
     // Nailart 수정
 

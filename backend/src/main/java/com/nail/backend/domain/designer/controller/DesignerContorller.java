@@ -40,4 +40,7 @@ public class DesignerContorller {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This designerNewsSeq doesn't exist."));
         }
     }
+
+    // 이름 ,매장, 팔로워 수, 작품 개수
+
 }
