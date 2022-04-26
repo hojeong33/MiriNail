@@ -26,7 +26,7 @@ const ImageUploadBox = (props: any) => {
         reader.onloadend = (e: any) => {
           const result: any = e.target.result;
           if (result) {
-            setUploadedImages((state: any) => [...state, result].slice(0, 4));
+            setUploadedImages((state: any) => [...state, result].slice(0, 5));
           }
         };
         reader.readAsDataURL(file);
@@ -85,7 +85,16 @@ const ImageUploadBox = (props: any) => {
   return (
     <div className="ImageUploadBox2">
       <div>
-        <label className="drag_or_click" htmlFor="1" ref={uploadBoxRef}>
+        <label
+          className="drag_or_click"
+          htmlFor="1"
+          ref={uploadBoxRef}
+          style={{
+            border: "5px dashed rgb(181,181,181)",
+            backgroundColor: "white",
+            cursor: "pointer",
+          }}
+        >
           <div className="text_box">
             <h3>드래그 또는 클릭하여 업로드</h3>
             <span>권장사항: oooMB 이하 고화질</span>

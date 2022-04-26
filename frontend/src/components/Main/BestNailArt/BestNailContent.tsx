@@ -43,11 +43,17 @@ const BestNailContent = () => {
             alt=""
             style={{ width: "250px", height: "250px" }}
           />
-          <Typography>{item.name}</Typography>
-          <Typography>{item.price}원</Typography>
-          {item.tags.map((tag, i) => (
-            <Typography key={i}>{tag}</Typography>
-          ))}
+          <div style={{ textAlign: "center", marginTop: "10px" }}>
+            <Typography>{item.name}</Typography>
+            <Typography>{item.price}원</Typography>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {item.tags.map((tag, i) => (
+                <Typography style={{ margin: "0px 2px" }} key={i}>
+                  {tag}
+                </Typography>
+              ))}
+            </div>
+          </div>
         </Grid>
       ))}
     </div>
