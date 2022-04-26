@@ -1,7 +1,7 @@
 import axios from 'axios'
-
+const ACCESS_TOKEN = localStorage.getItem('token')
 const base_url = 'http://localhost:8080/api/'
-
+console.log(ACCESS_TOKEN)
 
 export const fetchDesigns = async({queryKey}:any) => {
   console.log(queryKey)
@@ -38,9 +38,8 @@ for (let value of files.values()) {
 }
 
 export const designDetail = async(param:any) => {
-  console.log(param)
   const response = await axios.get(base_url+`nailart/detail/${param}`)
-  console.log(response.data)
+  // console.log(response.data)
   return response.data
   
 }
@@ -55,6 +54,33 @@ export const designDetail = async(param:any) => {
 
 export const nailLike = async(param:any) => {
   console.log(param)
-  const response = await axios.post(base_url+`favorite/${Number(param)}`)
+  const response = await axios.post(base_url+`favorite/${Number(param)}`,{},{headers: {
+    Authorization: `Bearer ${ACCESS_TOKEN}`,
+  },})
+  
+}
+
+export const nailDislike = async(param:any) => {
+  const response = await axios.delete(base_url+`favorite/${Number(param)}`,{headers: {
+    Authorization: `Bearer ${ACCESS_TOKEN}`,
+  },})
+}
+
+export const nailCount = async(param:any) => {
+  
+  const response = await axios.get(base_url+`favorite/${Number(param)}/count`,{headers: {
+    Authorization: `Bearer ${ACCESS_TOKEN}`,
+  },})
   console.log(response)
+
+  return response.data
+}
+
+export const isLike = async(param:any) => {
+  console.log('ㅇ으으으',param)
+  const response = await axios.get(base_url+`favorite/${Number(param)}`,{headers: {
+    Authorization: `Bearer ${ACCESS_TOKEN}`,
+  },})
+  console.log(response.data)
+  return response.data
 }

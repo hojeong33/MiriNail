@@ -1,3 +1,5 @@
+import { useQuery } from 'react-query'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 
@@ -57,7 +59,8 @@ const Wrapper = styled.div`
 }
 `
 const Gallery = () => {
-
+  const params = useParams()
+  // const {isLoading:otherDesignLoading, data:otherDesign } = useQuery(["nfts",mypage], fetchDesigns)
   return (
     <Wrapper>
       <div className='description'>

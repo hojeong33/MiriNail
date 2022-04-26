@@ -39,6 +39,7 @@ public class FavoriteController {
         /**
          * 카카오 id 값이 토큰에 저장된다는 전제조건.
          */
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");         System.out.println(principal.getName());
         Favorite favorite = favoriteService.favoriteRegister(principal.getName(), nailartSeq);
 
         if(null != favorite){
@@ -61,7 +62,7 @@ public class FavoriteController {
     public boolean getFavoriteUserUse ( Principal principal,
                                  @ApiParam(value = "네일아트 seq") @PathVariable("nailartSeq") Long nailartSeq){
         log.info("favoriteGet - 호출");
-
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");         System.out.println(principal.getName());
         if( favoriteService.getIsFavorited(principal.getName(), nailartSeq)){
             return true;
         }else{
