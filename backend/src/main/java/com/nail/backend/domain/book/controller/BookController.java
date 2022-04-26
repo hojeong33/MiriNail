@@ -22,7 +22,7 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-    @PostMapping
+    @PatchMapping
     @ApiOperation(value = "네일아트 예약 등록", notes = "<strong>네일아트 예약 등록한다.</strong>")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공", response = User.class),
@@ -34,9 +34,10 @@ public class BookController {
         // 1. 해당 하는 유저에 대한 정보를 넘겨준다.
 
         log.info("bookRegister - 호출");
-        Book book = null;
-        if(null == book) {
-            log.error("bookRegister - This userId doesn't exist.");
+        boolean isBooked = bookService.bookRegister(bookPostReq);
+
+        if(!isBooked) {
+            log.error("bookRegister - This book doesn't exist.");
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "예약 등록 실패했습니다."));
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "예약 등록 성공했습니다."));
