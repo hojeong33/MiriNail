@@ -44,6 +44,14 @@ public class DesignerInfo implements Serializable {
     @ApiModelProperty(value = "유저 디자이너 샵 주소")
     String designerAddress;
 
+    // 디자이너 소개 글
+    @ApiModelProperty(value = "유저 디자이너 소개 글")
+    String designerInfoDesc;
+
+    // 디자이너 소개 이미지
+    @ApiModelProperty(value = "유저 디자이너 소개 이미지")
+    String designerInfoImgUrl;
+
     // 인증신청 등록날짜
     @ApiModelProperty(value = "인증신청 등록날짜")
     @CreatedDate
