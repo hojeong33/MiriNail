@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.security.Principal;
-import java.util.List;
 
 @Slf4j
 @Api(value ="좋아요")

@@ -15,11 +15,11 @@ import javax.persistence.*;
 @Builder
 public class Follow {
 
-    @ApiModelProperty(value = "팔로우 Id")
+    @ApiModelProperty(value = "팔로우 Seq")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // 회원 id
-    Long followId;
+    Long followSeq;
 
     @ManyToOne
     @JoinColumn(name = "follow_follower")

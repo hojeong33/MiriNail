@@ -3,6 +3,8 @@ package com.nail.backend.domain.designer.controller;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
 import com.nail.backend.domain.designer.request.DesignerNewsRegisterPostReq;
+import com.nail.backend.domain.designer.response.DesignerInfoGetRes;
+import com.nail.backend.domain.designer.service.DesignerInfoService;
 import com.nail.backend.domain.designer.service.DesignerNewsService;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +20,14 @@ public class DesignerContorller {
 
     @Autowired
     DesignerNewsService designerNewsService;
+
+    @Autowired
+    DesignerInfoService designerInfoService;
+
+    @GetMapping("/profile/{designerSeq}")
+    public DesignerInfoGetRes designerInfoGetRes (@PathVariable("designerSeq") long designerSeq){
+        return designerInfoService.designerInfo(designerSeq);
+    }
 
     @ApiOperation(value = "디자이너 news 조회")
     @GetMapping("/news/{designerSeq}")
