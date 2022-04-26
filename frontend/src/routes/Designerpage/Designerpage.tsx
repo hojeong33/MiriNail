@@ -4,6 +4,7 @@ import Content from "../../components/Designerpage/Content"
 import { designerAtom } from "../../store/atoms"
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom";
 
 export interface IDesigner {
   id: number;
@@ -39,8 +40,12 @@ const DesignerPage = () => {
     designerShopOpen: "10:00",
     designerShopClose: "19:00"
   })
-
+  const { userSeq } = useParams();
+  console.log(userSeq)
   const setterFn = useSetRecoilState(designerAtom)
+
+
+
   useEffect(() => {
     setterFn(designer)
   }, [])

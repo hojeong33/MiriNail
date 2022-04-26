@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Map from '../Commons/Map';
 import { useRecoilValue } from 'recoil';
 import { designerAtom } from '../../store/atoms';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -78,10 +78,11 @@ function Introduction() {
       content: "dadaism__official\n🐯\n안녕하세요.\n다다이즘입니다 ✋🏻\n\n수많은 조언과 아이디어로\n생각한게\n루미원장 마음대로 !\n\n \"오마카세 아트\"\n\n선보일까 하는데 저렴한 가격으로 할거에오 👼🏻 🤍\n\n너낌은 알아야 하니까 동영상 첨부 해봅니다..!\n\n많관부〰️🖤"
     },
   )
+  const {userSeq} = useParams();
   const designer = useRecoilValue(designerAtom)  
   return (
     <Wrapper>
-      <Link to={`/designerpage/updateintroduction`}>
+      <Link to={`/designerpage/${userSeq}/updateintroduction`}>
         <button className="updatebutton">
           <CreateIcon />
           소개 수정

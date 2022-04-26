@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
 import Feed from './Feed';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -53,10 +53,12 @@ function New() {
       content: "코로나 이슈로 인해 임시 휴업 하겠습니다 ㅠㅠ",
     },
   ]);
+  const { userSeq } = useParams();
+
 
   return (
     <Wrapper>
-      <Link to="/designerpage/createfeed">
+      <Link to={`/designerpage/${userSeq}/createfeed`}>
         <button className="createbutton"><AddIcon />새 소식 작성</button>
       </Link>
       {feeds.map((feed, idx) => {

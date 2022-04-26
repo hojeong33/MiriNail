@@ -47,7 +47,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/mypage" element={<Mypage />}>
+          <Route path="/mypage/:userSeq" element={<Mypage />}>
             <Route path="like" element={<Like />}></Route>
             <Route path="capture" element={<Capture />}></Route>
             <Route path="mypost" element={<Mypost />}></Route>
@@ -60,7 +60,7 @@ function App() {
             <Route path="myreservation" element={<MyReservation />}></Route>
             <Route path="apply" element={<Apply />}></Route>
           </Route>
-          <Route path="/designerpage" element={<DesignerPage />}>
+          <Route path="/designerpage/:userSeq" element={<DesignerPage />}>
             <Route path="new" element={<New />}></Route>
             <Route path="introduction" element={<Introduction />}></Route>
             <Route path="NFTs" element={<NFTs />}></Route>
