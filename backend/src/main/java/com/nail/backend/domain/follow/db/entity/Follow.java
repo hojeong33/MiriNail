@@ -19,11 +19,7 @@ public class Follow {
     @ApiModelProperty(value = "팔로우 Seq")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< HEAD
-    // 회원 id
-=======
     // 팔로우 Seq
->>>>>>> 88e46623a78a4336ce4fd2d8c26793db9310f8f8
     Long followSeq;
 
     @ManyToOne

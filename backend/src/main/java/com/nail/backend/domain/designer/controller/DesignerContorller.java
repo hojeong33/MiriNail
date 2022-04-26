@@ -1,18 +1,28 @@
 package com.nail.backend.domain.designer.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
 import com.nail.backend.domain.designer.request.DesignerNewsRegisterPostReq;
 import com.nail.backend.domain.designer.response.DesignerInfoGetRes;
+import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
 import com.nail.backend.domain.designer.service.DesignerInfoService;
 import com.nail.backend.domain.designer.service.DesignerNewsService;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
+import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/designer")
@@ -24,21 +34,25 @@ public class DesignerContorller {
     @Autowired
     DesignerInfoService designerInfoService;
 
+    @ApiOperation(value = "디자이너 정보 조회")
     @GetMapping("/profile/{designerSeq}")
     public DesignerInfoGetRes designerInfoGetRes (@PathVariable("designerSeq") long designerSeq){
         return designerInfoService.designerInfo(designerSeq);
     }
 
     @ApiOperation(value = "디자이너 news 조회")
-    @GetMapping("/news/{designerSeq}")
-    public Page<DesignerNews> designerNewsListByDesignerSeq (@PathVariable("designerSeq") long designerSeq, @RequestParam int page, @RequestParam int size){
+    @GetMapping("/news")
+    public List<DesignerNewsListGetRes> designerNewsListByDesignerSeq (@RequestParam long designerSeq, @RequestParam int page, @RequestParam int size){
         return designerNewsService.designerNewsList(designerSeq, page, size);
     }
 
     @ApiOperation(value = "디자이너 뉴스 작성")
-    @PostMapping("/news")
-    public DesignerNews designerNewsRegister(@RequestBody DesignerNewsRegisterPostReq designerNewsRegisterPostReq, @RequestPart(value = "filename") MultipartFile multipartFile){
-        return null;
+    @PostMapping(value = "/news", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<BaseResponseBody> designerNewsRegister(@RequestParam("jsonList") String jsonList, @RequestPart("files") List<MultipartFile> files) throws JsonProcessingException{
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
+        DesignerNews designerNews = objectMapper.readValue(jsonList, new TypeReference<DesignerNews>() {});
+        designerNewsService.designerNewsRegister(designerNews, files);
+        return new ResponseEntity<BaseResponseBody>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "디자이너 뉴스 삭제")
