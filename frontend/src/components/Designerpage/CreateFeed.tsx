@@ -101,7 +101,7 @@ const UploadBox = styled.div`
     margin-left: 15px;
     font-weight: bold;
     font-size: 18px;
-    color: #6225E6;
+    color: #333;
     text-align: left;
     p {
       margin: 0;
