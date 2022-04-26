@@ -17,7 +17,8 @@ public interface QnaService {
 
 
 //    CREATE_________________________________________
-    Qna qnaRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq, Long userSeq)throws IOException;
+    Qna qnaOfNailRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq, Long userSeq)throws IOException;
+    Qna qnaToDesignerRegister(QnaRegisterPostReq qnaRegisterPostReq, Long userSeq);
     QnaAnswer qnaAnswerRegister(QnaAnswerRegisterPostReq qnaAnswerRegisterPostReq);
 
 //    READ___________________________________________

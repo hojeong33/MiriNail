@@ -51,7 +51,7 @@ public class QnaServiceImpl implements QnaService {
 //    CREATE_________________________________________
     @Override
     @Transactional
-    public Qna qnaRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) throws IOException {
+    public Qna qnaOfNailRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) throws IOException {
 
         // file 업로드
         String fileName  = awsS3Service.createFileName(qnaFile.getOriginalFilename());
@@ -75,11 +75,13 @@ public class QnaServiceImpl implements QnaService {
 
         // 나머지 객체 만들기
 
+        // 문의 유형은 3 -> 작품문의
         Qna qna = Qna.builder()
                 .userSeq(userSeq)
                 .qnaTitle(qnaRegisterPostReq.getQnaTitle())
                 .qnaDesc(qnaRegisterPostReq.getQnaDesc())
                 .qnaImgUrl(qnaFileUrl)
+                .qnaType(3)
                 .qnaDesignerSeq(qnaRegisterPostReq.getQnaDesignerSeq())
                 .qnaNailartSeq(qnaRegisterPostReq.getQnaNailartSeq())
                 .qnaIsPrivated(qnaRegisterPostReq.isQnaIsPrivated())
@@ -90,6 +92,26 @@ public class QnaServiceImpl implements QnaService {
         return saveQna;
     }
 
+
+    @Override
+    @Transactional
+    public Qna qnaToDesignerRegister(QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) {
+
+        // 문의 유형은 0 -> 예약문의
+        // 문의 유형은 1 -> 디자인 문의
+        // 문의 유형은 2 -> 기타 문의
+        Qna qna = Qna.builder()
+                .userSeq(userSeq)
+                .qnaTitle(qnaRegisterPostReq.getQnaTitle())
+                .qnaDesc(qnaRegisterPostReq.getQnaDesc())
+                .qnaType(qnaRegisterPostReq.getQnaType())
+                .qnaDesignerSeq(qnaRegisterPostReq.getQnaDesignerSeq())
+                .qnaRegedAt(LocalDateTime.now())
+                .build();
+
+        Qna saveQna = qnaRepository.save(qna);
+        return saveQna;
+    }
     @Override
     @Transactional
     public QnaAnswer qnaAnswerRegister(QnaAnswerRegisterPostReq qnaAnswerRegisterPostReq){

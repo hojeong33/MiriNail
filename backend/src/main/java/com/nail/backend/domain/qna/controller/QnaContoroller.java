@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,17 +34,36 @@ public class QnaContoroller {
 
 //    CREATE_________________________________________
     @Transactional
-    @ApiOperation(value = "문의 글 작성")
+    @ApiOperation(value = "작품 문의 글 작성")
     @ApiResponses({
             @ApiResponse(code = 201, message = "등록 성공"),
             @ApiResponse(code = 404, message = "등록 실패")
     })
-    @PostMapping
-    public ResponseEntity<BaseResponseBody> qnaRegister(@RequestPart MultipartFile qnaFile, @ModelAttribute QnaRegisterPostReq qnaRegisterPostReq)throws IOException {
+    @PostMapping("/nailart")
+    public ResponseEntity<BaseResponseBody> qnaOfNailRegister(@RequestPart MultipartFile qnaFile, @ModelAttribute QnaRegisterPostReq qnaRegisterPostReq)throws IOException {
 
-        log.info("qnaRegister - 호출");
+        log.info("qnaOfNailRegister - 호출");
         Long userId = Long.valueOf(1L);
-        Qna res = qnaService.qnaRegister(qnaFile, qnaRegisterPostReq,userId);
+        Qna res = qnaService.qnaOfNailRegister(qnaFile, qnaRegisterPostReq,userId);
+        if(!res.equals(null)){
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
+        }
+        else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"등록실패"));
+        }
+    }
+    @Transactional
+    @ApiOperation(value = "디자이너 개인 문의 글 작성")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "등록 성공"),
+            @ApiResponse(code = 404, message = "등록 실패")
+    })
+    @PostMapping("/designer")
+    public ResponseEntity<BaseResponseBody> qnaToDesignerRegister(@RequestBody QnaRegisterPostReq qnaRegisterPostReq) {
+
+        log.info("qnaToDesignerRegister - 호출");
+        Long userId = Long.valueOf(1L);
+        Qna res = qnaService.qnaToDesignerRegister(qnaRegisterPostReq,userId);
         if(!res.equals(null)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
         }
@@ -99,7 +119,7 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "조회 실패")
     })
     @GetMapping("/user/{userSeq}")
-    public ResponseEntity<Page<Qna>> getQnaListByUser(@PageableDefault(page=0, size =10) Pageable pageable,
+    public ResponseEntity<Page<Qna>> getQnaListByUser(@PageableDefault(page=0, size =10,sort= "qnaSeq",direction = Sort.Direction.DESC) Pageable pageable,
                                                                 @ApiParam(value = "유저Seq") @PathVariable("userSeq") Long userSeq){
 
         log.info("getQnaListByUser - 호출");
@@ -119,7 +139,7 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "조회 실패")
     })
     @GetMapping("/designer/{designerSeq}")
-    public ResponseEntity<Page<Qna>> getQnaListByDesignerSeq(@PageableDefault(page=0, size =10) Pageable pageable,
+    public ResponseEntity<Page<Qna>> getQnaListByDesignerSeq(@PageableDefault(page=0, size =10,sort= "qnaSeq",direction = Sort.Direction.DESC) Pageable pageable,
                                                       @ApiParam(value = "디자이너Seq") @PathVariable("designerSeq") Long designerSeq){
 
         log.info("getQnaListByDesignerSeq - 호출");
@@ -135,7 +155,7 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "조회 실패")
     })
     @GetMapping("/nailart/{nailartSeq}")
-    public ResponseEntity<Page<Qna>> getQnaListByNailart(@PageableDefault(page=0, size =10) Pageable pageable,
+    public ResponseEntity<Page<Qna>> getQnaListByNailart(@PageableDefault(page=0, size =10,sort= "qnaSeq",direction = Sort.Direction.DESC) Pageable pageable,
                                                       @ApiParam(value = "작품Seq") @PathVariable("nailartSeq") Long nailartSeq){
 
         log.info("getQnaListByNailart - 호출");

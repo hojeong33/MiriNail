@@ -47,6 +47,9 @@ public class Qna {
     @ApiModelProperty(value = "QnA 비공개 여부")
     private boolean qnaIsPrivated;
 
+    @Column(name = "qna_type", columnDefinition = "TINYINT")
+    @ApiModelProperty(value = "문의 종류")
+    private int qnaType;
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
