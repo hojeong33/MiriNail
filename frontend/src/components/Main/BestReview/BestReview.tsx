@@ -75,7 +75,14 @@ const BestReview = () => {
     },
   ];
   return (
-    <div style={{ backgroundColor: "#333333", paddingBottom: "200px" }}>
+    <div
+      style={{
+        backgroundColor: "#1f1f1f",
+        paddingBottom: "250px",
+        paddingTop: "50px",
+        paddingLeft: "20%",
+      }}
+    >
       <BestReviewTitle></BestReviewTitle>
       <BestReviewCarousels items={bestReview}></BestReviewCarousels>
     </div>

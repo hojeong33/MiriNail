@@ -13,6 +13,7 @@ const Item = styled(Paper)(({ theme }) => ({
   height: "200px",
   border: "0.1rem solid #C4C4C4",
   borderRadius: "0",
+  boxShadow: "none",
 }));
 
 const CommunityBox = () => {

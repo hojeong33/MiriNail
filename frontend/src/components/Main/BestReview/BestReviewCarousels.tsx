@@ -20,13 +20,21 @@ export interface Props {
   items: BestReviewProps[];
 }
 const StyledSlider = styled(Slider)`
-  bottom: 200px;
+  bottom: 100px;
   right: 150px;
   .slick-prev {
     display: none !important;
   }
   .slick-next {
     display: none !important;
+  }
+  img {
+    filter: brightness(30%);
+  }
+  .slick-current {
+    img {
+      filter: brightness(100%);
+    }
   }
 `;
 const StyledSlider2 = styled(Slider)`
@@ -41,23 +49,22 @@ const StyledSlider2 = styled(Slider)`
   }
   .slick-dots {
     right: 10px;
+    bottom: -10vh;
   }
+  color: white;
 `;
 
 function BestReviewCarousels({ items }: Props) {
-  const [mainSlick, setMainSlick] = useState(null);
-  const [pagingSlick, setPagingSlick] = useState(null);
+  const [mainSlick, setMainSlick] = useState(undefined || null);
+  const [pagingSlick, setPagingSlick] = useState(undefined || null);
   const mainSlickRef = useRef(null);
   const pagingSlickRef = useRef(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setMainSlick(mainSlickRef.current);
-      setPagingSlick(pagingSlickRef.current);
-    };
-    fetchData();
-    console.log(mainSlickRef);
-    console.log(pagingSlickRef);
+    setMainSlick(mainSlickRef.current);
+    setPagingSlick(pagingSlickRef.current);
+    console.log("메인", mainSlickRef);
+    console.log("사진", pagingSlickRef);
   }, []);
 
   const mainSettings = {
@@ -91,7 +98,7 @@ function BestReviewCarousels({ items }: Props) {
             {items.map((item, idx) => {
               return (
                 <div key={idx}>
-                  <h1>{idx}</h1>
+                  {/* <h1>{idx}</h1> */}
                   <Typography variant="h4">{item.name}</Typography>
                   <Typography variant="h5">{item.price}원</Typography>
                   {item.tags.map((tag, i) => (
@@ -99,7 +106,17 @@ function BestReviewCarousels({ items }: Props) {
                       {tag}
                     </Typography>
                   ))}
-                  <button>자세히 보러가기</button>
+                  <button
+                    style={{
+                      color: "white",
+                      border: "1px solid white",
+                      borderRadius: "12px",
+                      padding: "10px 20px",
+                      marginTop: "30px",
+                    }}
+                  >
+                    자세히 보러가기
+                  </button>
                 </div>
               );
             })}
@@ -113,7 +130,7 @@ function BestReviewCarousels({ items }: Props) {
               {items.map((item, idx) => {
                 return (
                   <div key={idx}>
-                    <h1>{idx}</h1>
+                    {/* <h1>{idx}</h1> */}
                     <img
                       src={item.img}
                       style={{ width: "32vh", height: "32vh" }}
@@ -126,7 +143,40 @@ function BestReviewCarousels({ items }: Props) {
           </Container>
         </>
       ) : (
-        <div> ?</div>
+        <>
+          <StyledSlider2 ref={mainSlickRef} {...mainSettings}>
+            {items.map((item, idx) => {
+              return (
+                <div key={idx}>
+                  {/* <h1>{idx}</h1> */}
+                  <Typography variant="h4">{item.name}</Typography>
+                  <Typography variant="h5">{item.price}원</Typography>
+                  {item.tags.map((tag, i) => (
+                    <Typography variant="h5" key={i}>
+                      {tag}
+                    </Typography>
+                  ))}
+                  <button style={{ color: "white" }}>자세히 보러가기</button>
+                </div>
+              );
+            })}
+          </StyledSlider2>
+          <Container>
+            <StyledSlider ref={pagingSlickRef} {...pagingSettings}>
+              {items.map((item, idx) => {
+                return (
+                  <div key={idx}>
+                    <img
+                      src={item.img}
+                      style={{ width: "32vh", height: "32vh" }}
+                      alt=""
+                    />
+                  </div>
+                );
+              })}
+            </StyledSlider>
+          </Container>
+        </>
       )}
     </>
   );
