@@ -27,19 +27,30 @@ public class FollowRepositorySupport {
 
     QFollow qFollow = QFollow.follow;
 
-    public List<User> FollowerList(String userId) {
+    public List<User> FollowerList(Long userSeq) {
+
         List<User> userList = jpaQueryFactory.select(qUser)
-                .from(qFollow)
-                .where(qFollow.followFollowee.userId.eq(userId))
+                .from(qUser)
+                .where(qUser.userSeq.in(
+                        jpaQueryFactory.select(qFollow.followFollower.userSeq)
+                                .from(qFollow)
+                                .where(qFollow.followFollowee.userSeq.eq(userSeq))
+                ))
                 .fetch();
 
         return userList;
+
     }
 
-    public List<User> FolloweeList(String userId) {
+    public List<User> FolloweeList(Long userSeq) {
+
         List<User> userList = jpaQueryFactory.select(qUser)
-                .from(qFollow)
-                .where(qFollow.followFollower.userId.eq(userId))
+                .from(qUser)
+                .where(qUser.userSeq.in(
+                        jpaQueryFactory.select(qFollow.followFollowee.userSeq)
+                                .from(qFollow)
+                                .where(qFollow.followFollower.userSeq.eq(userSeq))
+                ))
                 .fetch();
 
         return userList;

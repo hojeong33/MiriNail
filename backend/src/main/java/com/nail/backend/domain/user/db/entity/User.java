@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 public class User {
     @ApiModelProperty(value = "회원 id")
     @Id
