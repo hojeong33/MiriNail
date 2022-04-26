@@ -16,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 
 @Slf4j
 @Api(value = "문의 관리 Api")
@@ -37,11 +39,11 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "등록 실패")
     })
     @PostMapping
-    public ResponseEntity<BaseResponseBody> qnaRegister(@RequestPart QnaRegisterPostReq qnaRegisterPostReq){
+    public ResponseEntity<BaseResponseBody> qnaRegister(@RequestPart MultipartFile qnaFile, @ModelAttribute QnaRegisterPostReq qnaRegisterPostReq)throws IOException {
 
         log.info("qnaRegister - 호출");
         Long userId = Long.valueOf(1L);
-        Qna res = qnaService.qnaRegister(qnaRegisterPostReq,userId);
+        Qna res = qnaService.qnaRegister(qnaFile, qnaRegisterPostReq,userId);
         if(!res.equals(null)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
         }
