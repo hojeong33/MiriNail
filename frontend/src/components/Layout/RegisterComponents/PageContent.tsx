@@ -7,6 +7,7 @@ import axios from 'axios'
 import publishToken from '../../BlockChain/PublishNFT'
 import DoneIcon from '@mui/icons-material/Done';
 import {registDesign} from '../../../store/api'
+import { useNavigate } from 'react-router-dom'
 
 const Wrapper = styled.div`
   * {
@@ -175,6 +176,7 @@ const MainFrame = styled.div`
 
 const PageContent = () => {
   // 리모컨 
+  const navigate = useNavigate();
   const nailartName = 'dummysibal'
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
@@ -263,11 +265,12 @@ const PageContent = () => {
     // } 
     
 
-    registDesign(files)
+    await registDesign(files)
     // const response = await client.add(JSON.stringify(nailData))
     // const ipfsHash = response.path
     // console.log(ipfsHash)
     // publishToken(ipfsHash)
+    navigate('/nft')
   }
 
 

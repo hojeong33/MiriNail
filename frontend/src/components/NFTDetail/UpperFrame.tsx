@@ -1,9 +1,15 @@
 import styled from 'styled-components'
 import ShareIcon from '@mui/icons-material/Share';
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { designDetail, nailCount, nailLike, isLike, nailDislike  } from '../../store/api';
+import { useParams } from 'react-router-dom';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { designerId } from '../../store/atoms';
 
 
 const Wrapper = styled.div`
@@ -141,6 +147,9 @@ const Wrapper = styled.div`
 `
 
 const UpperFrame = () => {
+  const queryClient = useQueryClient();
+  let params = useParams()
+  // console.log(params)
   const [detailInfo,setDetailInfo] = useState (
     {
       type : '프렌치네일',
@@ -153,6 +162,54 @@ const UpperFrame = () => {
       title : '프렌치 - 딥다크'
     }
   )
+
+  
+  const {isLoading:isLikeLoading , data:likeData} = useQuery('like',() => nailCount(params.id?.slice(1,params.id.length)))
+  const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params.id?.slice(1,params.id.length)))
+  const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params.id?.slice(1,params.id.length)))
+  const [designerSeq,setDesignerSeq] = useRecoilState<any>(designerId)
+  
+  useEffect(():any => {
+    if (nailData) {setDesignerSeq(nailData.designerSeq)}
+  },[nailData])
+
+  const ACCESS_TOKEN = localStorage.getItem('token')
+  const likeFunc:any = useMutation((param:any) => 
+    nailLike(param)
+  ,{
+    onSuccess: () => {
+    console.log('성공')
+    isLike(Number(params.id?.slice(1,params.id.length)))
+    queryClient.invalidateQueries('isLike')
+  },
+  onError: (error) => { // 요청에 에러가 발생된 경우
+    console.log('onError',error);
+  },}
+  )
+
+  const disLikeFunc:any = useMutation((param:any) => 
+    nailDislike(param)
+  ,{
+    onSuccess: () => {
+    console.log('성공')
+    isLike(Number(params.id?.slice(1,params.id.length)))
+    queryClient.invalidateQueries('isLike')
+  },
+  onError: (error) => { // 요청에 에러가 발생된 경우
+    console.log('onError',error);
+  },}
+  )
+
+  const likeHandler = async() => {
+    console.log('핸들러실행')
+    if (isLikeData) {
+      console.log('싫어요 실행')
+      disLikeFunc.mutate(Number(params.id?.slice(1,params.id.length)))
+    } else {
+      console.log('좋아요 실행')
+      likeFunc.mutate(Number(params.id?.slice(1,params.id.length)))
+    }
+  }
 
   return (
     <>
@@ -175,21 +232,21 @@ const UpperFrame = () => {
                     <ShareIcon />
                   </div>
                   <div className="boxs">
-                    {detailInfo.type}
+                    {nailData?.nailartType}
                   </div>
                   <div className='name'>
                     {detailInfo.title}
                   </div>
                   <div className="price">
-                    {detailInfo.price}
+                    {nailData?.nailartPrice}
                   </div>
                   <div className="tags">
-                    {detailInfo.tags}
+                    #{nailData?.nailartWeather} #{nailData?.designerNickname}
                   </div>
                   <div className="info">
                     <div>
                       <p>제품소개</p>
-                      <span>{detailInfo.info}</span>
+                      <span>{nailData?.nailartDesc}</span>
                     </div>
                   </div>
                   <div className='designerInfo'>
@@ -199,7 +256,7 @@ const UpperFrame = () => {
                     </div> 
                     <div className='designerName'>
                       <div style={{fontSize:"1.2em"}}>
-                        Designer1
+                        {nailData?.designerNickname}
                       </div>
                       <div style={{color:'gray'}}>
                         Nailshop1
@@ -209,8 +266,13 @@ const UpperFrame = () => {
                   <div className='btns'>
                     <a style={{backgroundColor:"red",color:"white",}}><CalendarMonthIcon style={{visibility:"hidden",width:"0px"}}></CalendarMonthIcon>AR 피팅하기</a>
                     <a style={{backgroundColor:'white'}}><CalendarMonthIcon />예약하기</a>
-                    <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}}><FavoriteBorderIcon />115556</a>
-
+                    <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}} onClick={() => likeHandler()}>
+                      { isLikeData ? <span><FavoriteIcon /><span></span></span> : <span><FavoriteBorderIcon /><span></span></span>}
+                      
+                    </a>
+                    <div>
+                      
+                    </div>
                   </div>
                 </div>
               </div>

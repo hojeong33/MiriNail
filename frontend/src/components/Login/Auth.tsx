@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
+  console.log(ACCESS_TOKEN)
   const navigate = useNavigate();
   const fetchData = async () => {
     if (ACCESS_TOKEN) {

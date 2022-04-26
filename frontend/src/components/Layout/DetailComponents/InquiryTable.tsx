@@ -2,6 +2,8 @@
 import styled from 'styled-components'
 import {useState} from 'react'
 import { Paginations2 } from '../Paginations'
+import OneOneOneWrite from './OneOnOneWrite'
+import { useParams } from 'react-router-dom'
 
 const Wrapper = styled.div`
   margin-top : 100px;
@@ -119,7 +121,8 @@ export interface DummyData {
 }
 
 const InquiryTable = () => {
-
+  let params = useParams()
+  
 
  
   const [dummy, setDummy] = useState<DummyData[]>(
@@ -308,7 +311,7 @@ const InquiryTable = () => {
       <div className="box">
         <div className="boxLeft">
           <div className="btn">
-            글작성
+            <OneOneOneWrite />
           </div>
         </div>
         <div className="boxRight">

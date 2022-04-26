@@ -26,7 +26,6 @@ import java.time.format.DateTimeFormatter;
  * Spring Data JPA 관련 추가 설정 정의.
  */
 @Configuration
-@EnableJpaAuditing
 public class JpaConfig {
     @PersistenceContext
     EntityManager entityManager;

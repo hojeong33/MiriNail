@@ -38,3 +38,9 @@ export const getNftItems = selector({
   
 })
 
+export const designerId = atom({
+  key : "designerId",
+  default : '',
+  effects_UNSTABLE : [persistAtom]
+})
+
