@@ -13,16 +13,26 @@ const Auth = () => {
     if (ACCESS_TOKEN) {
       const result = await axios({
         method: "get",
-        url: `http://localhost:8080/api/users/1`,
+        url: `http://localhost:8080/api/users/`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       });
-      console.log(result);
+      console.log(result)
+
+      const test = await axios({
+        method: "get",
+        url: `http://localhost:8080/api/users/${result.data.body.user.userSeq}`,
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+      console.log(test)
+      
       // sessionStorage에 저장
-      sessionStorage.setItem("userId", result.data.userId);
-      sessionStorage.setItem("userProfileImg", result.data.userProfileImg);
-      sessionStorage.setItem("userNickname", result.data.userNickname);
+      sessionStorage.setItem("userId", test.data.userId);
+      sessionStorage.setItem("userProfileImg", test.data.userProfileImg);
+      sessionStorage.setItem("userNickname", test.data.userNickname);
     }
   };
   if (ACCESS_TOKEN) {

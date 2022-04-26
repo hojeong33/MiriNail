@@ -37,6 +37,7 @@ import CreateFeed from "./components/Designerpage/CreateFeed";
 import AskList from "./components/Designerpage/AskList";
 import CreateAsk from "./components/Designerpage/CreateAsk";
 import Apply from "./components/Mypage/Apply";
+import UpdateIntroduction from "./components/Designerpage/UpdateIntroduction";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
             <Route path="asklist" element={<AskList />}></Route>
             <Route path="createfeed" element={<CreateFeed />}></Route>
             <Route path="createask" element={<CreateAsk />}></Route>
+            <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>
           </Route>
           <Route path="/community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />

@@ -106,7 +106,7 @@ function Accordion(props: AccordionProps) {
           </div>
         ))}
       </>
-    ); 
+    );
   }
 
   return (

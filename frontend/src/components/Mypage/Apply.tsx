@@ -244,7 +244,7 @@ const Apply = () => {
               className="underline"
               type="text"
               onChange={onChangeShopName}
-              value={shopName}
+              defaultValue={shopName}
               spellCheck="false"
               placeholder="네일 샵 명"
             />
@@ -252,7 +252,7 @@ const Apply = () => {
               className="underline"
               type="text"
               onChange={onChangePhoneNumber}
-              value={phonNumber}
+              defaultValue={phonNumber}
               spellCheck="false"
               placeholder="연락처 (000-0000-0000)"
             />
@@ -263,7 +263,7 @@ const Apply = () => {
                 placeholder="주소 입력"
                 spellCheck="false"
                 onClick={handleModalOpen}
-                value={addressDetail}
+                defaultValue={addressDetail}
               />
               <button className="addressbtn" onClick={handleModalOpen}>
                 주소찾기

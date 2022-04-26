@@ -35,6 +35,23 @@ export const getNftItems = selector({
     const data = await fetchDesigns(1)
     return data
   },
-  
 })
 
+export interface IDesigner {
+  id: number;
+  name: string;
+  imgurl: string;
+  isfollow: boolean;
+  new: any[];
+  reservations: any[];
+  asks: any[];
+  reviews: any[];
+  location: string;
+}
+
+
+export const designerAtom = atom({
+  key : "designeratom",
+  default : {},
+  effects_UNSTABLE : [persistAtom],
+})
