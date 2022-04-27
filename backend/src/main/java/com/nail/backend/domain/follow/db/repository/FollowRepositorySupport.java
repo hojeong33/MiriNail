@@ -108,7 +108,6 @@ public class FollowRepositorySupport {
         list.forEach( num -> {
             FollowCountRes tmp = new FollowCountRes();
             User utmp = num.get(qFollow.followFollowee);
-            System.out.println(utmp);
             tmp.setFollowFollowee(utmp.getUserSeq());
             tmp.setCount(num.get(qFollow.count()));
             result.add(tmp);

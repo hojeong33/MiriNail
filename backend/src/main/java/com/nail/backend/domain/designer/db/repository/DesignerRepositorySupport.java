@@ -59,9 +59,10 @@ public class DesignerRepositorySupport {
         designerSeqList.forEach( num -> {
             DesignerListConditionGetRes tmp = new DesignerListConditionGetRes();
             User user = userRepository.findByUserSeq(num);
-            System.out.println(user);
+            DesignerInfo designerInfo = designerRepository.findByDesignerSeq(num);
             tmp.setDesignerSeq(user.getUserSeq());
             tmp.setDesignerImgUrl(user.getUserProfileImg());
+            tmp.setDesignerShopName(designerInfo.getDesignerShopName());
             tmp.setDesignerNickName(user.getUserNickname());
             tmp.setNailartCount(nailartRepository.countByDesignerSeq(num));
             tmp.setFollowerNum(getFollowerCount(num));
@@ -83,9 +84,10 @@ public class DesignerRepositorySupport {
         designerSeqList.forEach( num -> {
             DesignerListConditionGetRes tmp = new DesignerListConditionGetRes();
             User user = userRepository.findByUserSeq(num);
-            System.out.println(user);
+            DesignerInfo designerInfo = designerRepository.findByDesignerSeq(num);
             tmp.setDesignerSeq(user.getUserSeq());
             tmp.setDesignerImgUrl(user.getUserProfileImg());
+            tmp.setDesignerShopName(designerInfo.getDesignerShopName());
             tmp.setDesignerNickName(user.getUserNickname());
             tmp.setNailartCount(nailartRepository.countByDesignerSeq(num));
             tmp.setFollowerNum(getFollowerCount(num));

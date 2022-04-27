@@ -1,5 +1,7 @@
 package com.nail.backend.domain.designer.service;
 
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
+import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.designer.db.repository.DesignerRepositorySupport;
 import com.nail.backend.domain.designer.response.DesignerListConditionGetRes;
 import com.nail.backend.domain.follow.db.repository.FollowRepositorySupport;
@@ -31,6 +33,9 @@ public class DesignerServiceImpl implements DesignerService{
     @Autowired
     NailartRepository nailartRepository;
 
+    @Autowired
+    DesignerRepository designerRepository;
+
     @Override
     public List<DesignerListConditionGetRes> getDesignerListbyFollowCount() {
         List<DesignerListConditionGetRes> result = new ArrayList<>();
@@ -41,6 +46,8 @@ public class DesignerServiceImpl implements DesignerService{
             tmp.setDesignerSeq(num.getFollowFollowee());
             tmp.setFollowerNum(num.getCount());
             User user = userRepository.findByUserSeq(num.getFollowFollowee());
+            DesignerInfo designerInfo = designerRepository.findByDesignerSeq(user.getUserSeq());
+            tmp.setDesignerShopName(designerInfo.getDesignerShopName());
             tmp.setDesignerImgUrl(user.getUserProfileImg());
             tmp.setDesignerNickName(user.getUserNickname());
             List<Nailart> nailart = nailartRepository.findAllByDesignerSeq(user.getUserSeq());
