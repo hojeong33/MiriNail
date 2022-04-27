@@ -1,8 +1,9 @@
 package com.nail.backend.domain.designer.service;
 
-import com.nail.backend.domain.designer.response.DesignerListCountFollowerGetRes;
-import com.nail.backend.domain.follow.db.entity.Follow;
-import com.nail.backend.domain.follow.db.repository.FollowRepository;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
+import com.nail.backend.domain.designer.db.repository.DesignerRepository;
+import com.nail.backend.domain.designer.db.repository.DesignerRepositorySupport;
+import com.nail.backend.domain.designer.response.DesignerListConditionGetRes;
 import com.nail.backend.domain.follow.db.repository.FollowRepositorySupport;
 import com.nail.backend.domain.follow.response.FollowCountRes;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -24,21 +25,29 @@ public class DesignerServiceImpl implements DesignerService{
     FollowRepositorySupport followRepositorySupport;
 
     @Autowired
+    DesignerRepositorySupport designerRepositorySupport;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
     NailartRepository nailartRepository;
 
+    @Autowired
+    DesignerRepository designerRepository;
+
     @Override
-    public List<DesignerListCountFollowerGetRes> getDesignerListbyFollowCount() {
-        List<DesignerListCountFollowerGetRes> result = new ArrayList<>();
+    public List<DesignerListConditionGetRes> getDesignerListbyFollowCount() {
+        List<DesignerListConditionGetRes> result = new ArrayList<>();
         List<FollowCountRes> follow = followRepositorySupport.getDesignerTop10ByFolloweeCnt();
         int count = 0;
-        follow.forEach(num ->{
-            DesignerListCountFollowerGetRes tmp = new DesignerListCountFollowerGetRes();
+        follow.forEach(num -> {
+            DesignerListConditionGetRes tmp = new DesignerListConditionGetRes();
             tmp.setDesignerSeq(num.getFollowFollowee());
             tmp.setFollowerNum(num.getCount());
             User user = userRepository.findByUserSeq(num.getFollowFollowee());
+            DesignerInfo designerInfo = designerRepository.findByDesignerSeq(user.getUserSeq());
+            tmp.setDesignerShopName(designerInfo.getDesignerShopName());
             tmp.setDesignerImgUrl(user.getUserProfileImg());
             tmp.setDesignerNickName(user.getUserNickname());
             List<Nailart> nailart = nailartRepository.findAllByDesignerSeq(user.getUserSeq());
@@ -47,5 +56,15 @@ public class DesignerServiceImpl implements DesignerService{
             result.add(tmp);
         });
         return result;
+    }
+
+    @Override
+    public List<DesignerListConditionGetRes> getDesignerListbylatest() {
+        return designerRepositorySupport.DesignerLatestList();
+    }
+
+    @Override
+    public List<DesignerListConditionGetRes> getDesignerAllList(int page, int size) {
+        return designerRepositorySupport.DesignerAllList(page, size);
     }
 }

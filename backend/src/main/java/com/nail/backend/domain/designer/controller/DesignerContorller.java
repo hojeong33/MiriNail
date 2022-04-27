@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.designer.response.DesignerListCountFollowerGetRes;
+import com.nail.backend.domain.designer.response.DesignerListConditionGetRes;
 import com.nail.backend.domain.designer.response.DesignerInfoGetRes;
 import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
 import com.nail.backend.domain.designer.service.DesignerInfoService;
@@ -69,11 +69,19 @@ public class DesignerContorller {
     // 디자이너 조건별 조회
     // 1. 팔로워 수
     @GetMapping("/list/countFollower")
-    public List<DesignerListCountFollowerGetRes> deisgnerListCountFollowerGetRe(){
+    public List<DesignerListConditionGetRes> deisgnerListCountFollower(){
         return designerService.getDesignerListbyFollowCount();
     }
     // 2. 최신등록 순
+    @GetMapping("/list/latest")
+    public List<DesignerListConditionGetRes> designerListLatest(){
+        return designerService.getDesignerListbylatest();
+    }
     // 3. 리뷰 점수 높은 순
     // 4. 디자이너 전체 조회
+    @GetMapping("/list/all")
+    public List<DesignerListConditionGetRes> designerListAll(int page, int size){
+        return designerService.getDesignerListbylatest();
+    }
 
 }
