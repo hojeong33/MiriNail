@@ -1,30 +1,33 @@
-package com.nail.backend.domain.qna.db.entity;
+package com.nail.backend.domain.qna.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nail.backend.domain.qna.db.entity.QnaAnswer;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
-@ApiModel(value = "QnA", description = "문의")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity
-@ToString
-public class Qna {
+@Setter
+@ApiModel(value = "QnaGetRes", description = "qna 반환하는 정보")
+public class QnaGetRes {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @ApiModelProperty(value = "qna 번호")
     private Long qnaSeq;
 
     @ApiModelProperty(value = "유저 번호")
     private Long userSeq;
+
+    @ApiModelProperty(value = "유저 닉네임")
+    private String userNickname;
 
     @ApiModelProperty(value = "QnA 제목")
     private String qnaTitle;
@@ -52,9 +55,12 @@ public class Qna {
     @ApiModelProperty(value = "문의 종류")
     private int qnaType;
 
-    @CreationTimestamp
+    @ApiModelProperty(value = "QnA 작성일")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime qnaRegedAt;
+
+    @ApiModelProperty(value = "QnA 답변")
+    private QnaAnswer qnaAnswer;
 
 
 }

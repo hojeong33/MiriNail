@@ -7,6 +7,7 @@ import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaAnswerRegisterPostReq;
 import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
+import com.nail.backend.domain.qna.response.QnaGetRes;
 import com.nail.backend.domain.qna.service.QnaService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -155,11 +156,11 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "조회 실패")
     })
     @GetMapping("/nailart/{nailartSeq}")
-    public ResponseEntity<Page<Qna>> getQnaListByNailart(@PageableDefault(page=0, size =10,sort= "qnaSeq",direction = Sort.Direction.DESC) Pageable pageable,
-                                                      @ApiParam(value = "작품Seq") @PathVariable("nailartSeq") Long nailartSeq){
+    public ResponseEntity<Page<QnaGetRes>> getQnaListByNailart(@PageableDefault(page=0, size =10,sort= "qnaSeq",direction = Sort.Direction.DESC) Pageable pageable,
+                                                               @ApiParam(value = "작품Seq") @PathVariable("nailartSeq") Long nailartSeq){
 
         log.info("getQnaListByNailart - 호출");
-        Page<Qna> qnaList = qnaService.getQnaListByNailart(pageable,nailartSeq);
+        Page<QnaGetRes> qnaList = qnaService.getQnaListByNailart(pageable,nailartSeq);
 
         return ResponseEntity.status(200).body(qnaList);
     }
