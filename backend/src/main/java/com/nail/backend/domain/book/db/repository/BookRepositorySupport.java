@@ -3,6 +3,7 @@ package com.nail.backend.domain.book.db.repository;
 import com.nail.backend.domain.book.db.entity.Book;
 import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.entity.QBook;
+import com.nail.backend.domain.book.db.entity.QBookCheck;
 import com.nail.backend.domain.book.request.BookPostReq;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
@@ -10,11 +11,14 @@ import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
+import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -37,6 +41,8 @@ public class BookRepositorySupport {
 
     QBook qBook = QBook.book;
 
+    QBookCheck qBookCheck = QBookCheck.bookCheck;
+
     public Book bookRegister(BookPostReq bookPostReq) {
 
         User user = userRepository.findByUserSeq(bookPostReq.getUserSeq());
@@ -53,6 +59,75 @@ public class BookRepositorySupport {
                 .build();
 
         bookRepository.save(book);
+
+        // 해당 예약 찾기
+        BookCheck bookCheck = jpaQueryFactory.select(qBookCheck)
+                .where(qBookCheck.designerSeq.eq(bookPostReq.getDesignerSeq())
+                        .and(qBookCheck.bookCheckDate.eq(bookPostReq.getBookDatetime().toLocalDate())))
+                .fetchFirst();
+        // 예약한 시간
+        String bookTime = bookPostReq.getBookDatetime().toLocalTime().toString();
+
+        // 해당시간 예약 처리 -> 이게 맞나..?
+        switch (bookTime) {
+            case "10:00":
+                bookCheck.setAm1000(true);
+                break;
+            case "10:30":
+                bookCheck.setAm1030(true);
+                break;
+            case "11:00":
+                bookCheck.setAm1100(true);
+                break;
+            case "11:30":
+                bookCheck.setAm1130(true);
+                break;
+            case "12:00":
+                bookCheck.setPm1200(true);
+                break;
+            case "12:30":
+                bookCheck.setPm1230(true);
+                break;
+            case "13:00":
+                bookCheck.setPm1300(true);
+                break;
+            case "13:30":
+                bookCheck.setPm1330(true);
+                break;
+            case "14:00":
+                bookCheck.setPm1400(true);
+                break;
+            case "14:30":
+                bookCheck.setPm1430(true);
+                break;
+            case "15:00":
+                bookCheck.setPm1500(true);
+                break;
+            case "15:30":
+                bookCheck.setPm1530(true);
+                break;
+            case "16:00":
+                bookCheck.setPm1600(true);
+                break;
+            case "16:30":
+                bookCheck.setPm1630(true);
+                break;
+            case "17:00":
+                bookCheck.setPm1700(true);
+                break;
+            case "17:30":
+                bookCheck.setPm1730(true);
+                break;
+            case "18:00":
+                bookCheck.setPm1800(true);
+                break;
+            case "18:30":
+                bookCheck.setPm1830(true);
+                break;
+            case "19:00":
+                bookCheck.setPm1900(true);
+                break;
+        }
         return book;
     }
 
@@ -84,6 +159,76 @@ public class BookRepositorySupport {
                 .fetchFirst();
 
         if(book == null) return false;
+
+        Long deignerSeq = book.getDesignerInfo().getDesignerSeq();
+        LocalDate bookDate = book.getBookDatetime().toLocalDate();
+        String bookTime = book.getBookDatetime().toLocalTime().toString();
+
+        // 해당 예약 찾기
+        BookCheck bookCheck = jpaQueryFactory.select(qBookCheck)
+                .where(qBookCheck.designerSeq.eq(deignerSeq)
+                        .and(qBookCheck.bookCheckDate.eq(bookDate)))
+                .fetchFirst();
+
+        switch (bookTime) {
+            case "10:00":
+                bookCheck.setAm1000(false);
+                break;
+            case "10:30":
+                bookCheck.setAm1030(false);
+                break;
+            case "11:00":
+                bookCheck.setAm1100(false);
+                break;
+            case "11:30":
+                bookCheck.setAm1130(false);
+                break;
+            case "12:00":
+                bookCheck.setPm1200(false);
+                break;
+            case "12:30":
+                bookCheck.setPm1230(false);
+                break;
+            case "13:00":
+                bookCheck.setPm1300(false);
+                break;
+            case "13:30":
+                bookCheck.setPm1330(false);
+                break;
+            case "14:00":
+                bookCheck.setPm1400(false);
+                break;
+            case "14:30":
+                bookCheck.setPm1430(false);
+                break;
+            case "15:00":
+                bookCheck.setPm1500(false);
+                break;
+            case "15:30":
+                bookCheck.setPm1530(false);
+                break;
+            case "16:00":
+                bookCheck.setPm1600(false);
+                break;
+            case "16:30":
+                bookCheck.setPm1630(false);
+                break;
+            case "17:00":
+                bookCheck.setPm1700(false);
+                break;
+            case "17:30":
+                bookCheck.setPm1730(false);
+                break;
+            case "18:00":
+                bookCheck.setPm1800(false);
+                break;
+            case "18:30":
+                bookCheck.setPm1830(false);
+                break;
+            case "19:00":
+                bookCheck.setPm1900(false);
+                break;
+        }
 
         bookRepository.delete(book);
         return true;

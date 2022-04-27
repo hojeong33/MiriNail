@@ -13,10 +13,6 @@ import java.time.LocalDateTime;
 @ApiModel(value = "BookPostReq", description = "예약 등록시 필요한 정보")
 public class BookPostReq {
 
-    // 예약 번호
-    @ApiModelProperty(value = "유저 번호", example = "1")
-    Long bookSeq;
-
     // 유저 번호
     @ApiModelProperty(value = "유저 번호", example = "1")
     Long userSeq;
