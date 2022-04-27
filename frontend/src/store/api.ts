@@ -66,6 +66,7 @@ export const nailLike = async(param:any) => {
 }
 
 export const nailDislike = async(param:any) => {
+
   const response = await axios.delete(base_url+`favorite/${Number(param)}`,{headers: {
     Authorization: `Bearer ${ACCESS_TOKEN}`,
   },})
@@ -82,10 +83,37 @@ export const nailCount = async(param:any) => {
 }
 
 export const isLike = async(param:any) => {
-  console.log('ㅇ으으으',param)
+
   const response = await axios.get(base_url+`favorite/${Number(param)}`,{headers: {
     Authorization: `Bearer ${ACCESS_TOKEN}`,
   },})
   console.log(response.data)
   return response.data
+}
+
+
+//작품 1대1 문의
+
+
+export const inquiryList = async({queryKey}:any) => {
+  console.log(queryKey)
+  const response = await axios.get(base_url+`qna/nailart/${queryKey[1]}`,{params : {page: queryKey[2],size:10}})
+  console.log(response.data.content)
+  return response.data.content
+}
+
+
+export const postInquiry = async(data:any) => {
+  for (let key of data.keys()) {
+    console.log(key);
+  }
+
+  /* value 확인하기 */
+  for (let value of data.values()) {
+      console.log(value);
+  }
+  const response = await axios.post(base_url+`qna`,data,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }})
 }

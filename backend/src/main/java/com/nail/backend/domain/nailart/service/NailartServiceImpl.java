@@ -103,7 +103,7 @@ public class NailartServiceImpl implements NailartService{
         List<Nailart> nailart = nailartRepository.findAllByDesignerSeq(designerSeq);
         int count = 0;
         for (Nailart art: nailart) {
-            if(count > 10) break;
+            if(count > 9) break;
             NailartListGetRes tmp = new NailartListGetRes();
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());

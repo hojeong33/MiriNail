@@ -236,40 +236,27 @@ const PageContent = () => {
   const abc: any = "http://127.0.0.1:5002";
   const client = create(abc);
   const nftFunc = async () => {
+    const contentsReplace = () => {
+      return nailartDesc.replaceAll("<br>", "\r\n"); 
+    }
     const files= new FormData()
     const multipartFiles = new FormData()
-    
-    // type :'',
-    //   season : '',
-    //   price :'',
-    //   colorType :'',
-    //   detailColor :''
-    // formData.append("nailartName",infoProcess.type+'-'+infoProcess.detailColor)
-    // formData.append("nailartDesc",nailartDesc)
-    // formData.append("nailartType",infoProcess.type)
-    // formData.append("nailartColor",infoProcess.colorType)
-    // formData.append("nailartDetailColor",infoProcess.detailColor)
-    // formData.append("nailartWeather",infoProcess.season)
     const nailData:any = {...infoProcess,nailartDesc,nailartName}
-    // files.append("jsonList",new Blob([JSON.stringify(nailData)], {type: "application/json"}))
     files.append("jsonList",JSON.stringify(nailData))
     console.log(postImages)
-
+    console.log(nailData)
     postImages.forEach(e => {
       files.append('files',e)}
       )
 
-    // for (const file in postImages) {
-    //   console.log(file)
-    //   files.append("files",file)
-    // } 
-    
+   
 
     await registDesign(files)
     // const response = await client.add(JSON.stringify(nailData))
     // const ipfsHash = response.path
     // console.log(ipfsHash)
     // publishToken(ipfsHash)
+
     navigate('/nft')
   }
 

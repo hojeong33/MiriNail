@@ -1,9 +1,14 @@
 
 import styled from 'styled-components'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { Paginations2 } from '../Paginations'
 import OneOneOneWrite from './OneOnOneWrite'
 import { useParams } from 'react-router-dom'
+import { useQuery } from 'react-query'
+import { inquiryList } from '../../../store/api'
+import { useRecoilState } from 'recoil'
+import { page2 } from '../../../store/atoms'
+import LockIcon from '@mui/icons-material/Lock';
 
 const Wrapper = styled.div`
   margin-top : 100px;
@@ -111,6 +116,7 @@ const Wrapper = styled.div`
 
   
 `
+
 export interface DummyData {
   id : number
   isAnswer : string
@@ -122,7 +128,14 @@ export interface DummyData {
 
 const InquiryTable = () => {
   let params = useParams()
+  const [mypage,setMyPage] = useRecoilState(page2)
+  const [myData,setMyData] = useState<any>([])
+  console.log(params.id?.slice(1,params.id.length))
+  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery(['inquiry',params.id?.slice(1,params.id.length),mypage], inquiryList)
   
+  useEffect(() => {
+    setMyPage(1)
+  },[])
 
  
   const [dummy, setDummy] = useState<DummyData[]>(
@@ -252,7 +265,57 @@ const InquiryTable = () => {
     }
   }
 
+  const AnswerFunc = (e:any) => {
+    const role = sessionStorage.getItem("userRole")
+    console.log(role)
+    if (e.qnaIsAnswered === true) {
+      return "답변 완료"
+    } else {
+      if (role === 'ROLE_ARTIST') {
+        return '작성 대기'
+      } else {
+        return '답변 대기'
+      }
+    }
+    
+  }
 
+  const AnswerFrame = (e:any) => {
+    const role = sessionStorage.getItem("userRole")
+    if (e.qnaIsAnswered === false) {
+      return (
+      <>
+      {/* <div>sadfasd</div> */}
+        <div className='replyInfo'>
+          <div className='replyCharger'>담당자</div>
+          <div className='replyContent'>안녕하세요. 아니 사실 안녕하지 않아</div>
+          <div className='replyDate'>2022.04.14</div>
+        </div>
+      </>
+    )} else {
+      if (role === "ROLE_ARTIST") {
+        return (
+          <div className='replyInfo'>
+            <div className='replyCharger'>담당자</div>
+            <div className='replyContent' style={{width:"90%",marginLeft:"5%"}}>
+              <textarea name="" id="" style={{width:"100%", height:"100%",resize:"none"}}></textarea>
+            </div>
+            <div className='replyDate' style={{paddingRight:"45px"}}> 
+              <span style={{
+                backgroundColor:"rgb(51, 51, 51)",
+                color:"white",
+                padding: "10px 15px 10px 15px",
+                margin : "10px 5px 10px 10px",
+                borderRadius :"5px",
+                fontSize:"20px"
+                }}>등록
+              </span>
+            </div>
+          </div>
+        )
+      }
+    }
+  }
 
   return (
     <Wrapper>
@@ -269,7 +332,7 @@ const InquiryTable = () => {
           <tr>
             <th scope="col">번호</th>
             <th scope="col">답변여부</th>
-            <th scope="col">내용</th>
+            <th scope="col">제목</th>
             <th scope="col">작성자</th>
             <th scope="col">등록일자</th>
           </tr>
@@ -282,26 +345,32 @@ const InquiryTable = () => {
             <td colSpan={6}>ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</td>
           </tr>
         </tbody> */}
-        {dummy.map(e =>
-        <tbody key={e.id}>
+        {InquiryData?.map((e:any) =>
+        <tbody key={e.qnaSeq}>
             <tr>
-              <td>{e.id}</td>
-              <td>{e.isAnswer}</td>
-              <td style={{cursor:"pointer"}} onClick={() => { testFunc(e.id.toString())}}>{e.content}</td>
-              <td>{e.writer}</td>
-              <td>{e.date}</td>
+              <td>{e.qnaSeq}</td>
+              <td>{AnswerFunc(e.qnaIsAnswered)}</td>
+              <td style={{cursor:"pointer"}} onClick={() => { testFunc(e.qnaSeq.toString())}}>
+                {e.qnaTitle}
+                {e.qnaIsPrivated ? <LockIcon style={{marginLeft:"15px", color:"black"}}/> : null}
+              </td>
+              <td>{e.userSeq}</td>
+              <td>{e.qnaRegedAt.slice(0,10)}</td>
             </tr>
             <tr>
-              <td id={e.id.toString()} colSpan={6} style={{display:'none', }} className="reply">
+              <td id={e.qnaSeq.toString()} colSpan={6} style={{display:'none', }} className="reply">
                 <div className="questionName">프렌치 - 딥 다크(해당 상품 이름)</div>
                 <hr />
-                <div className='questionContent'>{e.reply.content}</div>
-                <div className='replyInfo'>
+                <div className='questionContent'>
+                  <img src={e.qnaImgUrl} alt="" width="150" height="150"/>
+                  <div style={{marginTop:"15px"}}>{e.qnaDesc}</div>
+                </div>
+                {/* <div className='replyInfo'>
                   <div className='replyCharger'>담당자</div>
                   <div className='replyContent'>안녕하세요. 아니 사실 안녕하지 않아</div>
                   <div className='replyDate'>2022.04.14</div>
-                </div>
-            
+                </div> */}
+                {AnswerFrame(e)}
               </td>
             </tr>
         </tbody>

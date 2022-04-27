@@ -44,6 +44,7 @@ public class QnaContoroller {
         log.info("qnaRegister - 호출");
         Long userId = Long.valueOf(1L);
         Qna res = qnaService.qnaRegister(qnaFile, qnaRegisterPostReq,userId);
+        System.out.println(res);
         if(!res.equals(null)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
         }
