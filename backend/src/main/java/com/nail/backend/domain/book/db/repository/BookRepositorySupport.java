@@ -5,12 +5,14 @@ import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.entity.QBook;
 import com.nail.backend.domain.book.db.entity.QBookCheck;
 import com.nail.backend.domain.book.request.BookPostReq;
+import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -137,7 +140,8 @@ public class BookRepositorySupport {
 
         List<Book> bookList = jpaQueryFactory.select(qBook)
                 .from(qBook)
-                .where(qBook.user.userSeq.eq(userSeq))
+                .where(qBook.user.userSeq.eq(userSeq)
+                        .and(qBook.bookDatetime.after(LocalDateTime.now())))
                 .fetch();
 
         return bookList;
@@ -253,5 +257,34 @@ public class BookRepositorySupport {
                 .fetch();
 
         return bookList;
+    }
+
+    public Long findBookCountByUserSeq(Long userSeq) {
+        Long bookCount = jpaQueryFactory.select(qBook.count())
+                .from(qBook)
+                .where(qBook.user.userSeq.eq(userSeq))
+                .fetchFirst();
+
+        return bookCount;
+    }
+
+    public List<BookListByUserSeqGetRes.Designer> findVisitCountGroupByDesigner(Long userSeq) {
+        List<Tuple> list = jpaQueryFactory.select(qBook.designerInfo, qBook.count())
+                .from(qBook)
+                .where(qBook.user.userSeq.eq(userSeq))
+                .groupBy(qBook.designerInfo)
+                .fetch();
+
+        List<BookListByUserSeqGetRes.Designer> designerList = new ArrayList<>(list.size());
+
+        list.forEach(designer -> {
+            BookListByUserSeqGetRes.Designer designer1 = new BookListByUserSeqGetRes.Designer();
+            designer1.setDesignerInfo(designer.get(qBook.designerInfo));
+            designer1.setDesignerCount(designer.get(qBook.count()));
+
+            designerList.add(designer1);
+        });
+
+        return designerList;
     }
 }

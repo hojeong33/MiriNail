@@ -6,11 +6,13 @@ import com.nail.backend.domain.book.db.repository.BookCheckRepositorySupport;
 import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
 import com.nail.backend.domain.book.request.BookPostReq;
 import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
+import com.querydsl.core.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,15 +39,27 @@ public class BookServiceImpl implements BookService{
 
         BookCheck bookCheck =  bookCheckRepositorySupport.findByDesignerSeqAndBookDate(designerSeq, date);
 
-
         return bookCheck;
     }
 
     @Override
     public BookListByUserSeqGetRes getBookLitByUserSeq(Long userSeq) {
+
         // 오늘 날짜 이후로의 예약 내역 받아오기
         List<Book> bookCheckList = bookRepositorySupport.findByUserSeq(userSeq);
-        return null;
+
+        // 총 예약 횟수
+        Long visitCount = bookRepositorySupport.findBookCountByUserSeq(userSeq);
+
+        // 디자이너별 예약 횟수
+        List<BookListByUserSeqGetRes.Designer> visitCountGroupByDesigner = bookRepositorySupport.findVisitCountGroupByDesigner(userSeq);
+
+        BookListByUserSeqGetRes bookListByUserSeqGetRes = BookListByUserSeqGetRes.builder()
+                .bookList(bookCheckList)
+                .visitCount(visitCount)
+                .designerList(visitCountGroupByDesigner)
+                .build();
+        return bookListByUserSeqGetRes;
     }
 
     @Override
