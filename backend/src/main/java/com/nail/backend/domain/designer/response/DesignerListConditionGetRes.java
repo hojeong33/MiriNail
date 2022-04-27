@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DesignerListCountFollowerGetRes {
+public class DesignerListConditionGetRes {
     private long designerSeq;
     private String designerNickName;
     private String designerImgUrl;
