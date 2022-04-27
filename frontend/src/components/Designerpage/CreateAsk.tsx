@@ -5,6 +5,7 @@ import 'react-calendar/dist/Calendar.css'; // css import
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import moment from 'moment'
+import axios from "axios";
 
 const Wrapper = styled.div`
   display: flex;
@@ -118,8 +119,29 @@ const CreateAsk = () => {
     setContent(e.target.value)
   }
 
-  const onClickSubmit = (e:React.FormEvent) => {
+  const onClickSubmit = async (e:React.FormEvent) => {
     e.preventDefault()
+    const formData = new FormData()
+    formData.append("qnaDesc", "수정한내용")
+    formData.append("qnaDesignerSeq", "3")
+    formData.append("qnaTitle", "수정한 제목")
+    try {
+      const data = {
+
+      }
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          processData: false,
+          contentType: false,
+        },
+      };
+      const response = await axios.post("http://localhost:8080/api/qna", formData, config)
+      console.log(response)
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

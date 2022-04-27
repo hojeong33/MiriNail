@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 import React, { useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import FeedCarousels from './FeedCarousels';
+import ImageUploadBox from './FileUpload3';
 
 
 const Container = styled.div`
@@ -123,12 +128,38 @@ const Plus = styled.div`
   height: 80px;
 `;
 
+const StyledSlider = styled(Slider)`
+  .slick-dots {
+    bottom: 10px;
+  }
+`;
+
+const ImageContainer = styled("div")({
+  margin: "0",
+});
+
+const Image = styled("img")({
+  maxWidth: "400px",
+  maxHeight: "400px",
+});
+
 const CreateFeed = () => {
   const [title, setTitle] = useState<string>("");
   const [imgurl, setImgurl] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [file, setFile] = useState<any>();
   const [fileSrc, setFileSrc] = useState<string>("");
+  const [postImages,setPostImages] = useState<any[]>([])
+  const [imageProcess,setImageProcess] = useState([])
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+  };
 
   const onChangeTitle = (e:React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -142,13 +173,15 @@ const CreateFeed = () => {
     setContent(e.target.value)
   }
 
+  const [showImages, setShowImages] = useState([]);
+
   const handleFileOnChange = (e: React.ChangeEvent) => {
     console.log("메인파일변화");
-    setFile((e.target as HTMLInputElement).files?.item(0));
-    console.log((e.target as HTMLInputElement).files?.item(0));
-    if ((e.target as HTMLInputElement).files) {
-      encodeMainFileToBasek64((e.target as HTMLInputElement).files?.item(0));
-    }
+    setFile((e.target as HTMLInputElement).files);
+    console.log((e.target as HTMLInputElement).files);
+    // if ((e.target as HTMLInputElement).files) {
+    //   encodeMainFileToBasek64((e.target as HTMLInputElement).files?.item(0));
+    // }
   };
 
   const encodeMainFileToBasek64 = (fileBlob: any) => {
@@ -183,6 +216,9 @@ const CreateFeed = () => {
       );
     }
   };
+
+
+
   return (
     <Container>
       <Wrapper>
@@ -198,21 +234,31 @@ const CreateFeed = () => {
           </div>
         </div>
         <Divider></Divider>
+
+
+        {/* <Slider {...settings}>
+        {[fileSrc, fileSrc, fileSrc].map((item, idx) => {
+          return (
+            <div key={idx}>
+              <ImageContainer>
+                <Image src={item} />
+              </ImageContainer>
+            </div>
+          );
+        })}
+      </Slider> */}
+        <ImageUploadBox setImageProcess={setImageProcess} setPostImages={setPostImages} />
         <UploadBox>
-          <label className={file?.type.slice(0, 5)} htmlFor="chooseFile">
-            {previewMainImage()}
-          </label>
+          <label htmlFor="chooseFile">{/* {previewMainImage()} */}</label>
           <input
             className="file"
             id="chooseFile"
             type="file"
             accept="image/*"
             onChange={handleFileOnChange}
+            multiple
           ></input>
-          <div className="file-name">
-            <p>{file?.name}</p>
-          </div>
-          
+
           {/* {file?.type.slice(0, 5)} */}
         </UploadBox>
         <div className="feedcontent">
