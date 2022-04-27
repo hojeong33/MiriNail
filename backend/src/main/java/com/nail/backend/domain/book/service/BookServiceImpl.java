@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,5 +38,11 @@ public class BookServiceImpl implements BookService{
 
 
         return bookCheck;
+    }
+
+    @Override
+    public List<Book> getBookLitByUserSeq(Long userSeq) {
+        List<Book> bookCheckList = bookRepositorySupport.findByUserSeq(userSeq);
+        return bookCheckList;
     }
 }

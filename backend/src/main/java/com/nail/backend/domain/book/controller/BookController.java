@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/book")
@@ -32,13 +34,25 @@ public class BookController {
     public ResponseEntity<BookCheck> bookCheck(@RequestParam Long designerSeq,
                                                @RequestParam String bookDate) {
 
-        // 0. 받아올 유저 Seq를 받음
-        // 1. 해당 하는 유저에 대한 정보를 넘겨준다.
-
         log.info("bookCheck - 호출");
         BookCheck bookCheck = bookService.bookCheck(designerSeq, bookDate);
 
         return ResponseEntity.status(200).body(bookCheck);
+    }
+
+    @GetMapping("/user/{userSeq}")
+    @ApiOperation(value = "네일아트 예약 조회", notes = "<strong>네일아트 예약 조회한다.</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "해당 유저 예약 없음.")
+    })
+    public ResponseEntity<List<Book>> getBookListByUserSeq(@PathVariable("userSeq") Long userSeq) {
+
+        log.info("getBookByUserSeq - 호출");
+        List<Book> bookList = bookService.getBookLitByUserSeq(userSeq);
+
+        if(bookList.isEmpty()) return ResponseEntity.status(404).body(null);
+        return ResponseEntity.status(200).body(bookList);
     }
 
     @PostMapping
@@ -48,9 +62,6 @@ public class BookController {
             @ApiResponse(code = 400, message = "실패.")
     })
     public ResponseEntity<BaseResponseBody> bookRegister(@RequestBody BookPostReq bookPostReq) {
-
-        // 0. 받아올 유저 Seq를 받음
-        // 1. 해당 하는 유저에 대한 정보를 넘겨준다.
 
         log.info("bookRegister - 호출");
         Book book = bookService.bookRegister(bookPostReq);

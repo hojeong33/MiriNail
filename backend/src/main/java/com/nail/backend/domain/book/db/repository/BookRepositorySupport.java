@@ -1,6 +1,7 @@
 package com.nail.backend.domain.book.db.repository;
 
 import com.nail.backend.domain.book.db.entity.Book;
+import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.entity.QBook;
 import com.nail.backend.domain.book.request.BookPostReq;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class BookRepositorySupport {
@@ -52,5 +54,15 @@ public class BookRepositorySupport {
 
         bookRepository.save(book);
         return book;
+    }
+
+    public List<Book> findByUserSeq(Long userSeq) {
+
+        List<Book> bookList = jpaQueryFactory.select(qBook)
+                .from(qBook)
+                .where(qBook.user.userSeq.eq(userSeq))
+                .fetch();
+
+        return bookList;
     }
 }
