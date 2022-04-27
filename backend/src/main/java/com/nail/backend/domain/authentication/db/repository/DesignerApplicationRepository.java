@@ -5,4 +5,5 @@ import com.nail.backend.domain.user.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DesignerApplicationRepository extends JpaRepository<DesignerApplication, User> {
+    DesignerApplication findByDesignerSeq(Long designerSeq);
 }
