@@ -14,11 +14,13 @@ import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository
@@ -232,5 +234,24 @@ public class BookRepositorySupport {
 
         bookRepository.delete(book);
         return true;
+    }
+
+    public List<Book> getBookLitByDesignerSeqAndBookDate(Long designerSeq, String bookDate) {
+
+        bookDate += " 00:00";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime localDateTime = LocalDateTime.parse(bookDate,formatter);
+
+        List<Book> bookList = jpaQueryFactory.select(qBook)
+                .from(qBook)
+                .where(qBook.designerInfo.designerSeq.eq(designerSeq)
+                        // 당일 00시 이후
+                        .and(qBook.bookDatetime.after(localDateTime))
+                        // 내일 00시 이전
+                        .and(qBook.bookDatetime.before(localDateTime.plusDays(1L))))
+                .fetch();
+
+        return bookList;
     }
 }

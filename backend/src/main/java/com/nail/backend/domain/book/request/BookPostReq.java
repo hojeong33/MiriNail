@@ -25,6 +25,7 @@ public class BookPostReq {
     @ApiModelProperty(value = "네일아트 번호", example = "1")
     Long nailartSeq;
 
+    // 예약 날짜 및 시간
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
     @ApiModelProperty(value = "예약 날짜 및 시간")
     LocalDateTime bookDatetime;

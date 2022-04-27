@@ -5,6 +5,7 @@ import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.repository.BookCheckRepositorySupport;
 import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
 import com.nail.backend.domain.book.request.BookPostReq;
+import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,20 +42,21 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> getBookLitByUserSeq(Long userSeq) {
+    public BookListByUserSeqGetRes getBookLitByUserSeq(Long userSeq) {
+        // 오늘 날짜 이후로의 예약 내역 받아오기
         List<Book> bookCheckList = bookRepositorySupport.findByUserSeq(userSeq);
-        return bookCheckList;
-    }
-
-    @Override
-    public List<Book> getBookLitByDesignerSeq(Long designerSeq) {
-        List<Book> bookCheckList = bookRepositorySupport.findByDesignerSeq(designerSeq);
-        return bookCheckList;
+        return null;
     }
 
     @Override
     public boolean deleteBookByBookSeq(Long bookSeq) {
         boolean isDeleted = bookRepositorySupport.deleteBookByBookSeq(bookSeq);
         return isDeleted;
+    }
+
+    @Override
+    public List<Book> getBookLitByDesignerSeqAndBookDate(Long designerSeq, String bookDate) {
+        List<Book> bookList = bookRepositorySupport.getBookLitByDesignerSeqAndBookDate(designerSeq, bookDate);
+        return bookList;
     }
 }
