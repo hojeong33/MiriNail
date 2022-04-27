@@ -6,16 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.designer.request.DesignerNewsRegisterPostReq;
+import com.nail.backend.domain.designer.response.DesignerListCountFollowerGetRes;
 import com.nail.backend.domain.designer.response.DesignerInfoGetRes;
 import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
 import com.nail.backend.domain.designer.service.DesignerInfoService;
 import com.nail.backend.domain.designer.service.DesignerNewsService;
-import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
+import com.nail.backend.domain.designer.service.DesignerService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +31,9 @@ public class DesignerContorller {
 
     @Autowired
     DesignerInfoService designerInfoService;
+
+    @Autowired
+    DesignerService designerService;
 
     @ApiOperation(value = "디자이너 정보 조회")
     @GetMapping("/profile/{designerSeq}")
@@ -65,6 +66,14 @@ public class DesignerContorller {
         }
     }
 
-    // 이름 ,매장, 팔로워 수, 작품 개수
+    // 디자이너 조건별 조회
+    // 1. 팔로워 수
+    @GetMapping("/list/countFollower")
+    public List<DesignerListCountFollowerGetRes> deisgnerListCountFollowerGetRe(){
+        return designerService.getDesignerListbyFollowCount();
+    }
+    // 2. 최신등록 순
+    // 3. 리뷰 점수 높은 순
+    // 4. 디자이너 전체 조회
 
 }
