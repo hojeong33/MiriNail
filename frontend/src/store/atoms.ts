@@ -41,11 +41,16 @@ export const getNftItems = selector({
     const data = await fetchDesigns(1)
     return data
   },
-  
 })
 
 export const designerId = atom({
   key : "designerId",
   default : '',
   effects_UNSTABLE : [persistAtom]
+})
+
+export const designerAtom = atom({
+  key : "designeratom",
+  default : {},
+  effects_UNSTABLE : [persistAtom],
 })
