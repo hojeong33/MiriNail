@@ -87,4 +87,19 @@ public class BookController {
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "예약 등록 성공했습니다."));
     }
+
+    @DeleteMapping("/{bookSeq}")
+    @ApiOperation(value = "디자이너 네일아트 예약 조회", notes = "<strong>디자이너 네일아트 예약 조회한다.</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "해당 유저 예약 없음.")
+    })
+    public ResponseEntity<BaseResponseBody> deleteBookByBookSeq(@PathVariable("bookSeq") Long bookSeq) {
+
+        log.info("deleteBookByBookSeq - 호출");
+        boolean isDeleted = bookService.deleteBookByBookSeq(bookSeq);
+
+        if(isDeleted) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "예약 취소 성공했습니다."));
+        return ResponseEntity.status(404).body(BaseResponseBody.of(404, "해당 예약 내역이 존재하지않습니다."));
+    }
 }

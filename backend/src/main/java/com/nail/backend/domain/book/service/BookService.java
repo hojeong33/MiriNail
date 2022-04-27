@@ -11,4 +11,5 @@ public interface BookService {
     BookCheck bookCheck(Long designerSeq, String bookDate);
     List<Book> getBookLitByUserSeq(Long userSeq);
     List<Book> getBookLitByDesignerSeq(Long designerSeq);
+    boolean deleteBookByBookSeq(Long bookSeq);
 }

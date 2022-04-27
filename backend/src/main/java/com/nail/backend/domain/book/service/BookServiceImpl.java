@@ -51,4 +51,10 @@ public class BookServiceImpl implements BookService{
         List<Book> bookCheckList = bookRepositorySupport.findByDesignerSeq(designerSeq);
         return bookCheckList;
     }
+
+    @Override
+    public boolean deleteBookByBookSeq(Long bookSeq) {
+        boolean isDeleted = bookRepositorySupport.deleteBookByBookSeq(bookSeq);
+        return isDeleted;
+    }
 }

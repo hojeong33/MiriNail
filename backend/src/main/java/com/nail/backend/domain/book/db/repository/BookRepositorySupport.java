@@ -75,4 +75,17 @@ public class BookRepositorySupport {
 
         return bookList;
     }
+
+    public boolean deleteBookByBookSeq(Long bookSeq) {
+
+        Book book = jpaQueryFactory.select(qBook)
+                .from(qBook)
+                .where(qBook.bookSeq.eq(bookSeq))
+                .fetchFirst();
+
+        if(book == null) return false;
+
+        bookRepository.delete(book);
+        return true;
+    }
 }
