@@ -17,6 +17,8 @@ import javax.persistence.Column;
 @ToString
 public class QnaRegisterPostReq {
 
+    @ApiModelProperty(value = "유저 seq")
+    private Long userSeq;
 
     @ApiModelProperty(value = "문의 제목")
     private String qnaTitle;

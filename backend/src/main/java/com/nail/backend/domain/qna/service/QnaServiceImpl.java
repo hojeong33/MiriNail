@@ -61,7 +61,7 @@ public class QnaServiceImpl implements QnaService {
 //    CREATE_________________________________________
     @Override
     @Transactional
-    public Qna qnaOfNailRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) throws IOException {
+    public Qna qnaOfNailRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq) throws IOException {
 
         // file 업로드
         String fileName  = awsS3Service.createFileName(qnaFile.getOriginalFilename());
@@ -87,7 +87,7 @@ public class QnaServiceImpl implements QnaService {
 
         // 문의 유형은 3 -> 작품문의
         Qna qna = Qna.builder()
-//                .userSeq(userSeq)
+                .userSeq(qnaRegisterPostReq.getUserSeq())
                 .qnaTitle(qnaRegisterPostReq.getQnaTitle())
                 .qnaDesc(qnaRegisterPostReq.getQnaDesc())
                 .qnaImgUrl(qnaFileUrl)
@@ -105,13 +105,13 @@ public class QnaServiceImpl implements QnaService {
 
     @Override
     @Transactional
-    public Qna qnaToDesignerRegister(QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) {
+    public Qna qnaToDesignerRegister(QnaRegisterPostReq qnaRegisterPostReq) {
 
         // 문의 유형은 0 -> 예약문의
         // 문의 유형은 1 -> 디자인 문의
         // 문의 유형은 2 -> 기타 문의
         Qna qna = Qna.builder()
-//                .userSeq(userSeq)
+                .userSeq(qnaRegisterPostReq.getUserSeq())
                 .qnaTitle(qnaRegisterPostReq.getQnaTitle())
                 .qnaDesc(qnaRegisterPostReq.getQnaDesc())
                 .qnaType(qnaRegisterPostReq.getQnaType())
@@ -150,22 +150,76 @@ public class QnaServiceImpl implements QnaService {
 
     @Override
     @Transactional
-    public Page<Qna> getQnaListByUser(Pageable pageable, Long userSeq){
-        Page<Qna> qnaList = qnaRepository.findAllByUserSeq(pageable,userSeq);
+    public Page<QnaGetRes> getQnaListByUser(Pageable pageable, Long userSeq, int qnaType){
+        Page<Qna> qnaList = qnaRepository.findAllByUserSeqAndQnaType(pageable,userSeq,qnaType);
+        List<QnaGetRes> qnaGetResList = new ArrayList<>();
+        long total = qnaList.getTotalElements();
+
+        for (Qna qna : qnaList) {
+            QnaGetRes qnaGetRes = new QnaGetRes();
+
+            User user = userRepository.findByUserSeq(qna.getUserSeq());
+            QnaAnswer qnaAnswer = qnaAnswerRepository.findQnaAnswerByQnaSeq(qna.getQnaSeq());
+
+            qnaGetRes.setQnaSeq(qna.getQnaSeq());
+            qnaGetRes.setUserSeq(user.getUserSeq());
+            qnaGetRes.setUserNickname(user.getUserNickname());
+            qnaGetRes.setQnaTitle(qna.getQnaTitle());
+            qnaGetRes.setQnaDesc(qna.getQnaDesc());
+            qnaGetRes.setQnaImgUrl(qna.getQnaImgUrl());
+            qnaGetRes.setQnaDesignerSeq(qna.getQnaDesignerSeq());
+            qnaGetRes.setQnaNailartSeq(qna.getQnaNailartSeq());
+            qnaGetRes.setQnaIsAnswered(qna.isQnaIsAnswered());
+            qnaGetRes.setQnaIsPrivated(qna.isQnaIsPrivated());
+            qnaGetRes.setQnaRegedAt(qna.getQnaRegedAt());
+            qnaGetRes.setQnaAnswer(qnaAnswer);
+
+            qnaGetResList.add(qnaGetRes);
+        }
+
         if (qnaList.stream().count() == 0) {  // Qna 없으면
             return null;
         }
-        return qnaList;
+        Page<QnaGetRes> res = new PageImpl<>(qnaGetResList, pageable, total);
+
+        return res;
     }
 
     @Override
     @Transactional
-    public Page<Qna> getQnaListByDesignerSeq(Pageable pageable, Long designerSeq){
-        Page<Qna> qnaList = qnaRepository.findAllByQnaDesignerSeq(designerSeq, pageable);
+    public Page<QnaGetRes> getQnaListByDesignerSeq(Pageable pageable, Long designerSeq, int qnaType){
+        Page<Qna> qnaList = qnaRepository.findAllByQnaDesignerSeqAndQnaType(designerSeq, pageable, qnaType);
+        List<QnaGetRes> qnaGetResList = new ArrayList<>();
+        long total = qnaList.getTotalElements();
+
+        for (Qna qna : qnaList) {
+            QnaGetRes qnaGetRes = new QnaGetRes();
+
+            User user = userRepository.findByUserSeq(qna.getUserSeq());
+            QnaAnswer qnaAnswer = qnaAnswerRepository.findQnaAnswerByQnaSeq(qna.getQnaSeq());
+
+            qnaGetRes.setQnaSeq(qna.getQnaSeq());
+            qnaGetRes.setUserSeq(user.getUserSeq());
+            qnaGetRes.setUserNickname(user.getUserNickname());
+            qnaGetRes.setQnaTitle(qna.getQnaTitle());
+            qnaGetRes.setQnaDesc(qna.getQnaDesc());
+            qnaGetRes.setQnaImgUrl(qna.getQnaImgUrl());
+            qnaGetRes.setQnaDesignerSeq(qna.getQnaDesignerSeq());
+            qnaGetRes.setQnaNailartSeq(qna.getQnaNailartSeq());
+            qnaGetRes.setQnaIsAnswered(qna.isQnaIsAnswered());
+            qnaGetRes.setQnaIsPrivated(qna.isQnaIsPrivated());
+            qnaGetRes.setQnaRegedAt(qna.getQnaRegedAt());
+            qnaGetRes.setQnaAnswer(qnaAnswer);
+
+            qnaGetResList.add(qnaGetRes);
+        }
+
         if (qnaList.stream().count() == 0) {  // Qna 없으면
             return null;
         }
-        return qnaList;
+        Page<QnaGetRes> res = new PageImpl<>(qnaGetResList, pageable, total);
+
+        return res;
     }
 
     @Override

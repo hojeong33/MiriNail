@@ -18,14 +18,14 @@ public interface QnaService {
 
 
 //    CREATE_________________________________________
-    Qna qnaOfNailRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq, Long userSeq)throws IOException;
-    Qna qnaToDesignerRegister(QnaRegisterPostReq qnaRegisterPostReq, Long userSeq);
+    Qna qnaOfNailRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq)throws IOException;
+    Qna qnaToDesignerRegister(QnaRegisterPostReq qnaRegisterPostReq);
     QnaAnswer qnaAnswerRegister(QnaAnswerRegisterPostReq qnaAnswerRegisterPostReq);
 
 //    READ___________________________________________
     Qna getQna(Long qnaSeq);
-    Page<Qna> getQnaListByUser(Pageable pageable, Long userSeq);
-    Page<Qna> getQnaListByDesignerSeq(Pageable pageable, Long designerSeq);
+    Page<QnaGetRes> getQnaListByUser(Pageable pageable, Long userSeq, int qnaType);
+    Page<QnaGetRes> getQnaListByDesignerSeq(Pageable pageable, Long designerSeq, int qnaType);
     Page<QnaGetRes> getQnaListByNailart(Pageable pageable, Long nailartSeq);
 
 //    UPDATE_________________________________________
