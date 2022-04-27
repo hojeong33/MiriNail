@@ -26,6 +26,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +39,7 @@ public class DesignerNewsServiceImpl implements DesignerNewsService{
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private AmazonS3 amazonS3;
+    private final AmazonS3 amazonS3;
 
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
@@ -60,7 +62,8 @@ public class DesignerNewsServiceImpl implements DesignerNewsService{
     @Autowired
     DesignerNewsImgRepository designerNewsImgRepository;
 
-    public DesignerNewsServiceImpl() {
+    public DesignerNewsServiceImpl(AmazonS3 amazonS3) {
+        this.amazonS3 = amazonS3;
     }
 
     @Override
@@ -95,6 +98,7 @@ public class DesignerNewsServiceImpl implements DesignerNewsService{
     @Override
     public DesignerNews designerNewsRegister(DesignerNews designerNews, List<MultipartFile> files) {
         DesignerNews news = new DesignerNews();
+        designerNews.setDesignerNewsRegedAt(Timestamp.valueOf(LocalDateTime.now()));
         news = designerNewsRepository.save(designerNews);
 
         for (MultipartFile file: files) {

@@ -1,8 +1,9 @@
-import styled from 'styled-components'
-import { useState } from 'react';
-import moment from 'moment';
-
-
+import styled from "styled-components";
+import { useState } from "react";
+import moment from "moment";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,10 +32,23 @@ const Divider = styled.div`
 
 const Picture = styled.div`
   img {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
   }
-`
+`;
+
+const StyledSlider = styled(Slider)`
+  .slick-dots {
+    bottom: 10px;
+  }
+  .slick-track {
+
+    display: flex;
+  }
+  .slick-slide {
+
+  }
+`;
 
 interface IState {
   feed: {
@@ -47,10 +61,18 @@ interface IState {
   };
 }
 
+const Feed: React.FC<IState> = ({ feed }) => {
+  console.log(feed.designerNewsImgUrl);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    // autoplay: true,
+    // autoplaySpeed: 2000,
+  };
 
-const Feed:React.FC<IState> = ({ feed }) => {
-  
-  console.log(feed.designerNewsImgUrl)
   return (
     <Wrapper>
       <div className="dividertop">
@@ -59,19 +81,19 @@ const Feed:React.FC<IState> = ({ feed }) => {
       </div>
       <Divider></Divider>
       {feed.designerNewsImgUrl.length !== 0 && (
-        feed.designerNewsImgUrl.map((pic, idx) => {
-          return (
-            <Picture>
-            <img src={pic.designerNewsImgUrl} alt="" />
-          </Picture>
-          )
-        })
-
+        <StyledSlider {...settings}>
+          {feed.designerNewsImgUrl.map((pic, idx) => {
+            return (
+              <Picture key={idx}>
+                <img src={pic.designerNewsImgUrl} alt="" />
+              </Picture>
+            );
+          })}
+        </StyledSlider>
       )}
-
       <div className="feedcontent">{feed.designerNewsDesc}</div>
     </Wrapper>
   );
-}
+};
 
-export default Feed
+export default Feed;
