@@ -39,8 +39,8 @@
 
       @include centerFill(100%);
       position: absolute;
-      top: 30px;
-      right: 8px;
+      top: 5px;
+      right: 5px;
       width: $size;
       height: $size;
       margin: 5px;
@@ -54,7 +54,7 @@
   }
 
   .ImageUploadBox {
-    @include centerFill(90%, row);
+    @include centerFill(100%, row);
 
     > * {
       border-radius: 3px;

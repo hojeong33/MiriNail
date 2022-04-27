@@ -21,7 +21,7 @@ const ImageUploadBox = (props:any ) => {
   useEffect(() => {
     console.log(testImages)
     props.setPostImages(testImages)
-  })
+  }, [testImages])
 
   useEffect(() => {
     const uploadBox = uploadBoxRef.current;

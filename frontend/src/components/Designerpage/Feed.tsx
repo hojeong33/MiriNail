@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useState } from 'react';
+import moment from 'moment';
 
 
 
@@ -37,25 +38,38 @@ const Picture = styled.div`
 
 interface IState {
   feed: {
-    title: string;
-    date: string;
-    imgurl: string;
-    content: string;
-  }
+    designerNewsDesc: string;
+    designerNewsImgUrl: any[];
+    designerNewsRegedAt: any;
+    designerNewsSeq: number;
+    designerNewsTitle: string;
+    designerSeq: number;
+  };
 }
+
 
 const Feed:React.FC<IState> = ({ feed }) => {
   
-
+  console.log(feed.designerNewsImgUrl)
   return (
     <Wrapper>
       <div className="dividertop">
-        <div>{feed.title}</div>
-        <div>{feed.date}</div>
+        <div>{feed.designerNewsTitle}</div>
+        <div>{moment(feed.designerNewsRegedAt).format("YYYY-MM-DD")}</div>
       </div>
       <Divider></Divider>
-      <Picture>{feed.imgurl && <img src={feed.imgurl} alt="" />}</Picture>
-      <div className="feedcontent">{feed.content}</div>
+      {feed.designerNewsImgUrl.length !== 0 && (
+        feed.designerNewsImgUrl.map((pic, idx) => {
+          return (
+            <Picture>
+            <img src={pic.designerNewsImgUrl} alt="" />
+          </Picture>
+          )
+        })
+
+      )}
+
+      <div className="feedcontent">{feed.designerNewsDesc}</div>
     </Wrapper>
   );
 }
