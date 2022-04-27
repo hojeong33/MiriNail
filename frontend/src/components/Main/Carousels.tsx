@@ -1,12 +1,10 @@
 import { styled } from "@mui/material";
-import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Carousel from "react-material-ui-carousel";
-import bg1 from "../../assets/img/bg1.jpg";
-import bg2 from "../../assets/img/bg2.jpg";
-import bg3 from "../../assets/img/bg3.jpg";
+import bg1 from "../../assets/img/new_bg1.jpg";
+import bg2 from "../../assets/img/new_bg2.jpg";
+import bg3 from "../../assets/img/new_bg3.jpg";
 
 const Container = styled("div")({
   overflow: "hidden",
