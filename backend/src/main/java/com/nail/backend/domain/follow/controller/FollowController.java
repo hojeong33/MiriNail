@@ -25,20 +25,20 @@ public class FollowController {
     @Autowired
     FollowService followService;
 
-    @GetMapping("/follower/{userId}")
+    @GetMapping("/follower/{userSeq}")
     @ApiOperation(value = "팔로우 조회", notes = "<strong>팔로우 조회</strong>한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "팔로우 조회 성공"),
             @ApiResponse(code = 404, message = "팔로우 조회 실패")
     })
-    public ResponseEntity<List<User>> getFollowerList(@PathVariable(value = "userId") String userId){
+    public ResponseEntity<List<User>> getFollowerList(@PathVariable(value = "userSeq") Long userSeq){
 
         // 0. 토큰으로부터 내 userId를 받아온다.
         // 1. Follower가 입력받은 userId인 값들을 받아온다.
 
         log.info("getFollowerList - 호출");
 
-        List<User> follow = followService.getFolloweeList(userId);
+        List<User> follow = followService.getFolloweeList(userSeq);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);
@@ -48,20 +48,20 @@ public class FollowController {
         }
     }
 
-    @GetMapping("/followee/{userId}")
+    @GetMapping("/followee/{userSeq}")
     @ApiOperation(value = "팔로워 조회", notes = "<strong>팔로워 조회</strong>한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "팔로우 조회 성공"),
             @ApiResponse(code = 404, message = "팔로우 조회 실패")
     })
-    public ResponseEntity<List<User>> getFolloweeList(@PathVariable(value = "userId") String userId){
+    public ResponseEntity<List<User>> getFolloweeList(@PathVariable(value = "userSeq") Long userSeq){
 
         // 0. 토큰으로부터 내 userId를 받아온다.
         // 1. Followee가 입력받은 userId인 값들을 받아온다.
 
         log.info("getFolloweeList - 호출");
 
-        List<User> follow = followService.getFollowerList(userId);
+        List<User> follow = followService.getFollowerList(userSeq);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);
