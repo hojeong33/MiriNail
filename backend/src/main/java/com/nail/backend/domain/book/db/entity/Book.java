@@ -44,9 +44,8 @@ public class Book {
     @ApiModelProperty(value = "작품 번호")
     Nailart nailart;
 
-//    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
-    @ApiModelProperty(value = "예약 날짜 및 시간 번호")
+    @ApiModelProperty(value = "예약 날짜 및 시간")
     LocalDateTime bookDatetime;
 
     @ApiModelProperty(value = "예약 코멘트")
@@ -56,7 +55,4 @@ public class Book {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "예약 등록한 날짜")
     LocalDateTime bookRegedAt;
-
-    @ApiModelProperty(value = "예약 여부")
-    boolean isBooked;
 }

@@ -30,24 +30,27 @@ public class BookRepositorySupport {
     @Autowired
     NailartRepository nailartRepository;
 
+    @Autowired
+    BookRepository bookRepository;
+
     QBook qBook = QBook.book;
 
-    public boolean bookRegister(BookPostReq bookPostReq) {
+    public Book bookRegister(BookPostReq bookPostReq) {
 
         User user = userRepository.findByUserSeq(bookPostReq.getUserSeq());
         DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(bookPostReq.getDesignerSeq());
         Nailart nailart = nailartRepository.findByNailartSeq(bookPostReq.getNailartSeq());
 
-        Long execute = jpaQueryFactory.update(qBook)
-                .set(qBook.user, user)
-                .set(qBook.designerInfo, designerInfo)
-                .set(qBook.nailart, nailart)
-                .set(qBook.bookComment, bookPostReq.getBookComment())
-                .set(qBook.bookRegedAt, LocalDateTime.now())
-                .where(qBook.bookSeq.eq(bookPostReq.getBookSeq()))
-                .execute();
+        Book book = Book.builder()
+                .user(user)
+                .designerInfo(designerInfo)
+                .nailart(nailart)
+                .bookComment(bookPostReq.getBookComment())
+                .bookDatetime(bookPostReq.getBookDatetime())
+                .bookRegedAt(LocalDateTime.now())
+                .build();
 
-        if(execute < 1) return false;
-        return  true;
+        bookRepository.save(book);
+        return book;
     }
 }

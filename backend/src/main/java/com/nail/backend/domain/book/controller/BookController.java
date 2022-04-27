@@ -2,6 +2,7 @@ package com.nail.backend.domain.book.controller;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.book.db.entity.Book;
+import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.request.BookPostReq;
 import com.nail.backend.domain.book.service.BookService;
 import com.nail.backend.domain.user.db.entity.FittingImg;
@@ -22,11 +23,29 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-    @PatchMapping
+    @GetMapping("/calendar")
+    @ApiOperation(value = "네일아트 예약 조회", notes = "<strong>네일아트 예약 조회한다.</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "해당 유저 없음.")
+    })
+    public ResponseEntity<BookCheck> bookCheck(@RequestParam Long designerSeq,
+                                               @RequestParam String bookDate) {
+
+        // 0. 받아올 유저 Seq를 받음
+        // 1. 해당 하는 유저에 대한 정보를 넘겨준다.
+
+        log.info("bookCheck - 호출");
+        BookCheck bookCheck = bookService.bookCheck(designerSeq, bookDate);
+
+        return ResponseEntity.status(200).body(bookCheck);
+    }
+
+    @PostMapping
     @ApiOperation(value = "네일아트 예약 등록", notes = "<strong>네일아트 예약 등록한다.</strong>")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "성공", response = User.class),
-            @ApiResponse(code = 404, message = "해당 유저 없음.")
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "실패.")
     })
     public ResponseEntity<BaseResponseBody> bookRegister(@RequestBody BookPostReq bookPostReq) {
 
@@ -34,9 +53,9 @@ public class BookController {
         // 1. 해당 하는 유저에 대한 정보를 넘겨준다.
 
         log.info("bookRegister - 호출");
-        boolean isBooked = bookService.bookRegister(bookPostReq);
+        Book book = bookService.bookRegister(bookPostReq);
 
-        if(!isBooked) {
+        if(book == null) {
             log.error("bookRegister - This book doesn't exist.");
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "예약 등록 실패했습니다."));
         }
