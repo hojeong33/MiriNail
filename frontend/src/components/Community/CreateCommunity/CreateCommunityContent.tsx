@@ -145,18 +145,22 @@ const CreateCommunityContent = () => {
   //작성하기
   const ACCESS_TOKEN = localStorage.getItem("token");
   const createCommunity = async () => {
-    const communityData = {
-      user_seq: sessionStorage.getItem("userSeq"),
-      community_title: "",
-      community_desc: "",
-    };
+    console.log(communityDesc);
+    console.log(communityTitle);
+    console.log(communityFiles);
     if (ACCESS_TOKEN) {
-      const result = await axios({
+      axios({
         method: "post",
         url: `http://localhost:8080/api/community`,
-        data: {},
+        params: {
+          communityDesc: { communityDesc },
+          communityTitle: { communityTitle },
+        },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+        data: {
+          communityFiles: { communityFiles },
         },
       })
         .then((res) => {
@@ -184,15 +188,21 @@ const CreateCommunityContent = () => {
   const [imageProcess, setImageProcess] = useState([]);
   const [textProcess, setTextProcess] = useState("");
   const [textProcess2, setTextProcess2] = useState("");
+  const [communityTitle, setCommunityTitle] = useState("");
+  const [communityDesc, setCommunityDesc] = useState("");
+  const [communityFiles, setCommunityFiles] = useState([]);
   useEffect(() => {
     console.log(imageProcess);
+    setCommunityFiles(imageProcess);
   }, [imageProcess]);
 
   const onChangeText = (e: any) => {
     setTextProcess(e.target.value);
+    setCommunityDesc(e.target.value);
   };
   const onChangeText2 = (e: any) => {
     setTextProcess2(e.target.value);
+    setCommunityTitle(e.target.value);
   };
 
   return (
@@ -277,8 +287,11 @@ const CreateCommunityContent = () => {
                   style={{ resize: "none" }}
                   placeholder="10자 이상 입력해주세요."
                 ></textarea>
+
                 <div className="buttons">
-                  <div className="btn1">작성</div>
+                  <div className="btn1" onClick={createCommunity}>
+                    작성
+                  </div>
                   <div className="btn2">취소</div>
                 </div>
               </div>
