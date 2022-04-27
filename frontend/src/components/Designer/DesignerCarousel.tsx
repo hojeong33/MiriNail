@@ -62,21 +62,22 @@ const  DesignerCarousel = ({items}: Props) => {
     centerMode: false,
     infinite: true,
     // centerPadding: "70px",
-    slidesToShow: 5,
+    slidesToShow: 2,
     speed: 500,
     adaptiveHeight : false,
   };
   return (
     <Wrapper>
       <Slider {...settings}>
-        {items.map((item, idx) => {
+        {items?.map((item) => {
           return (
-            <div key={idx}>
+            <div >
               <Cards info={item}/>
             </div>
           );
         })}
       </Slider>
+      
     </Wrapper>
   );
 }

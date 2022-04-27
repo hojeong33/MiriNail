@@ -132,3 +132,23 @@ export const postInquiryAnswer = async(data:any) => {
   const response = await axios.post(base_url+`qna/answer`,data)
   console.log(response)
 }
+
+//디자이너
+
+export const getHotDesigner = async() => {
+  const response = await axios.get(base_url+'designer/list/countFollower')
+  console.log(response)
+  return response.data
+}
+
+export const getRecentDesigner = async() => {
+  const response = await axios.get(base_url+'designer/list/latest')
+  console.log(response)
+  return response.data
+}
+
+// export const getHotDesigner = async() => {
+//   const response = await axios.get(base_url+'designer/list/countFollower')
+//   console.log(response)
+//   return response.data
+// }

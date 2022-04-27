@@ -1,7 +1,8 @@
 import styled from "styled-components"
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Slider from "react-slick";
 import DesignerCarousel from "./DesignerCarousel";
+import { getHotDesigner, getRecentDesigner } from "../../store/api";
 
 export interface hotDesignersProps {
   designer_seq : number;
@@ -59,7 +60,7 @@ const PageContentThema = () => {
     // nextArrow: <SampleNextArrow />,
     // prevArrow: <SamplePrevArrow />,
   };
-  const [hotDesigners,setHotDesigniers] = useState<hotDesignersProps[]>([
+  const [hotDesigners,setHotDesigniers] = useState([
     {
       designer_seq : 1,
       user_nickname : 'Designer1',
@@ -150,7 +151,14 @@ const PageContentThema = () => {
     },
   ])
 
+  const [hotDesigner,setHotDesigner] = useState<any>([])
+  const [latestDesigner,setLatestDesigner] = useState<any>()
 
+  useEffect(() => {
+    getHotDesigner().then((res):any => setHotDesigner(res))  
+    getRecentDesigner().then((res):any => setLatestDesigner(res))
+  },[])
+  
   return (
     <>
       <Wrapper>
@@ -159,16 +167,16 @@ const PageContentThema = () => {
           <div className="carouselGroup">
             <div>
               <div className="subtitle">Hot Designers</div>
-              <DesignerCarousel items={hotDesigners} />
+              <DesignerCarousel items={hotDesigner} />
             </div>
             <div style={{marginTop:"48px"}}>
               <div className="subtitle">New Designers</div>
-              <DesignerCarousel items={hotDesigners} />
+              <DesignerCarousel items={latestDesigner} />
             </div>
-            <div style={{marginTop:"48px"}}>
+            {/* <div style={{marginTop:"48px"}}>
               <div className="subtitle">High Rate Designers</div>
               <DesignerCarousel items={hotDesigners} />
-            </div>
+            </div> */}
           </div>
         </MainFrame>
         

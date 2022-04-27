@@ -2,13 +2,16 @@ package com.nail.backend.domain.follow.db.repository;
 
 import com.nail.backend.domain.follow.db.entity.Follow;
 import com.nail.backend.domain.follow.db.entity.QFollow;
+import com.nail.backend.domain.follow.response.FollowCountRes;
 import com.nail.backend.domain.user.db.entity.QUser;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -92,5 +95,24 @@ public class FollowRepositorySupport {
         followRepository.delete(follow);
 
         return follow;
+    }
+
+    public List<FollowCountRes> getDesignerTop10ByFolloweeCnt(){
+        List<FollowCountRes> result = new ArrayList<>();
+        List<Tuple> list = jpaQueryFactory.select(qFollow.followFollowee, qFollow.count())
+                .from(qFollow)
+                .groupBy(qFollow.followFollowee)
+                .orderBy(qFollow.count().desc())
+                .limit(10)
+                .fetch();
+        list.forEach( num -> {
+            FollowCountRes tmp = new FollowCountRes();
+            User utmp = num.get(qFollow.followFollowee);
+            System.out.println(utmp);
+            tmp.setFollowFollowee(utmp.getUserSeq());
+            tmp.setCount(num.get(qFollow.count()));
+            result.add(tmp);
+        });
+        return result;
     }
 }

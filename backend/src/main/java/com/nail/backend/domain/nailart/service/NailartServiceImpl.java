@@ -16,7 +16,9 @@ import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -127,6 +129,13 @@ public class NailartServiceImpl implements NailartService {
             count ++;
         }
         return nailartList;
+    }
+
+    @Override
+    public Page<Nailart> getdesignerNailartList(long designerSeq, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
+        Page<Nailart> art = nailartRepository.findByDesignerSeq(designerSeq, pageRequest);
+        return art;
     }
 
     @Override
