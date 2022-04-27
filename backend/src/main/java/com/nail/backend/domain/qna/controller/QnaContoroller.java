@@ -44,7 +44,7 @@ public class QnaContoroller {
         log.info("qnaRegister - 호출");
         Long userId = Long.valueOf(1L);
         Qna res = qnaService.qnaRegister(qnaFile, qnaRegisterPostReq,userId);
-        System.out.println(res);
+
         if(!res.equals(null)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
         }
@@ -64,6 +64,7 @@ public class QnaContoroller {
 
         log.info("qnaAnswerRegister - 호출");
         QnaAnswer res = qnaService.qnaAnswerRegister(qnaAnswerRegisterPostReq);
+        System.out.println(res);
         if(!res.equals(null)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
         }
@@ -104,7 +105,7 @@ public class QnaContoroller {
                                                                 @ApiParam(value = "유저Seq") @PathVariable("userSeq") Long userSeq){
 
         log.info("getQnaListByUser - 호출");
-        Page<Qna> qnaList = qnaService.getQnaListByUser(pageable,userSeq);
+            Page<Qna> qnaList = qnaService.getQnaListByUser(pageable,userSeq);
 
         // 값이 없으면 에러가 아니라 빈 리스트를 리턴
 //        if(qnaList.isEmpty()){

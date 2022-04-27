@@ -214,7 +214,8 @@ export default function OneOneOneWrite(modalStatus:any) {
     formdata.append('qnaNailartSeq',submitData.qnaNailartSeq)
     formdata.append('qnaTitle',inputStatus.qnaTitle)
     
-    postInquiryFunc.mutate(formdata)
+    await postInquiryFunc.mutate(formdata)
+    setOpen(false)
     //  스트링으로 보내야 함.
     
     // await axios.post('http://localhost:8080/api/qna',formdata,{
@@ -289,7 +290,7 @@ export default function OneOneOneWrite(modalStatus:any) {
 
             </div>
             <div className="buttons">
-              <button className="btn1" onClick={submit}>작성</button><button className="btn2">취소</button>
+              <button className="btn1" onClick={submit}>작성</button><button className="btn2" onClick={handleClose}>취소</button>
             </div>
           </Content>  
           </Typography>

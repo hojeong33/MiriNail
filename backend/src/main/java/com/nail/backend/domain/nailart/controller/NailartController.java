@@ -53,7 +53,6 @@ public class NailartController {
     public ResponseEntity<Void> test(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         NailartRegisterPostReq nailartRegisterPostReq = objectMapper.readValue(jsonList, new TypeReference<NailartRegisterPostReq>() {});
-        nailartRegisterPostReq.setDesignerSeq(3);
         log.info("files count : {}",files);
         log.info("json text) : {}",nailartRegisterPostReq);
         nailartService.nailartRegister(nailartRegisterPostReq, files);

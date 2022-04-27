@@ -117,3 +117,9 @@ export const postInquiry = async(data:any) => {
       'Content-Type': 'multipart/form-data'
     }})
 }
+
+export const postInquiryAnswer = async(data:any) => {
+  console.log(data)
+  const response = await axios.post(base_url+`qna/answer`,data)
+  console.log(response)
+}
