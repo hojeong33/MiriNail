@@ -9,6 +9,6 @@ import java.util.List;
 public interface BookService {
     Book bookRegister(BookPostReq bookPostReq);
     BookCheck bookCheck(Long designerSeq, String bookDate);
-
     List<Book> getBookLitByUserSeq(Long userSeq);
+    List<Book> getBookLitByDesignerSeq(Long designerSeq);
 }

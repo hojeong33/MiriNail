@@ -45,4 +45,10 @@ public class BookServiceImpl implements BookService{
         List<Book> bookCheckList = bookRepositorySupport.findByUserSeq(userSeq);
         return bookCheckList;
     }
+
+    @Override
+    public List<Book> getBookLitByDesignerSeq(Long designerSeq) {
+        List<Book> bookCheckList = bookRepositorySupport.findByDesignerSeq(designerSeq);
+        return bookCheckList;
+    }
 }

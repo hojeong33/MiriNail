@@ -41,7 +41,7 @@ public class BookController {
     }
 
     @GetMapping("/user/{userSeq}")
-    @ApiOperation(value = "네일아트 예약 조회", notes = "<strong>네일아트 예약 조회한다.</strong>")
+    @ApiOperation(value = "유저 네일아트 예약 조회", notes = "<strong>유저 네일아트 예약 조회한다.</strong>")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공"),
             @ApiResponse(code = 404, message = "해당 유저 예약 없음.")
@@ -50,6 +50,21 @@ public class BookController {
 
         log.info("getBookByUserSeq - 호출");
         List<Book> bookList = bookService.getBookLitByUserSeq(userSeq);
+
+        if(bookList.isEmpty()) return ResponseEntity.status(404).body(null);
+        return ResponseEntity.status(200).body(bookList);
+    }
+
+    @GetMapping("/designer/{designerSeq}")
+    @ApiOperation(value = "디자이너 네일아트 예약 조회", notes = "<strong>디자이너 네일아트 예약 조회한다.</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "해당 유저 예약 없음.")
+    })
+    public ResponseEntity<List<Book>> getBookListByDesignerSeq(@PathVariable("designerSeq") Long designerSeq) {
+
+        log.info("getBookListByDesignerSeq - 호출");
+        List<Book> bookList = bookService.getBookLitByDesignerSeq(designerSeq);
 
         if(bookList.isEmpty()) return ResponseEntity.status(404).body(null);
         return ResponseEntity.status(200).body(bookList);
