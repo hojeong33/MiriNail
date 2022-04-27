@@ -4,11 +4,12 @@ import {useEffect, useState} from 'react'
 import { Paginations2 } from '../Paginations'
 import OneOneOneWrite from './OneOnOneWrite'
 import { useParams } from 'react-router-dom'
-import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query'
-import { inquiryList, postInquiryAnswer } from '../../../store/api'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { deleteInquiry, inquiryList, postInquiryAnswer } from '../../../store/api'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { designerId, page2 } from '../../../store/atoms'
 import LockIcon from '@mui/icons-material/Lock';
+import OneOneOneRevise from './OneOnOneRevise'
 
 const Wrapper = styled.div`
   margin-top : 100px;
@@ -81,10 +82,12 @@ const Wrapper = styled.div`
     padding-top:5px;
     span {
       background-color:rgb(51, 51, 51);
-        color:white;
-        padding: 5px 20px 5px 20px;
-        margin : 10px 5px 10px 10px;
-        border-radius :5px;
+      color:white;
+      padding: 5px 10px 5px 10px;
+      margin : 10px 15px 10px 10px;
+      border-radius :5px;
+      text-align:end;
+      cursor:pointer;
     }
   }
 
@@ -140,7 +143,7 @@ export interface DummyData {
 }
 
 const InquiryTable = () => {
-  let params = useParams()
+  let params = useParams().id
   const queryClient = useQueryClient()
   const [mypage,setMyPage] = useRecoilState(page2)
   const [myData,setMyData] = useState<any>([])
@@ -149,8 +152,8 @@ const InquiryTable = () => {
     qnaSeq : null,
   })
   const writerId = useRecoilValue(designerId)
-  console.log(params.id?.slice(1,params.id.length))
-  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery(['inquiry',params.id?.slice(1,params.id.length),mypage], inquiryList)
+  console.log(params)
+  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery(['inquiry',params,mypage], inquiryList)
   const myId = Number(sessionStorage.getItem('userSeq'))
   useEffect(() => {
     setMyPage(1)
@@ -274,7 +277,7 @@ const InquiryTable = () => {
     
     console.log(e.qnaDesignerSeq,writerId,e.userSeq,Number(myId))
     if (e.qnaIsPrivated) {
-      if (e.qnaDesignerSeq === writerId || e.userSeq === Number(myId) ) {
+      if (Number(myId) === writerId || e.userSeq === Number(myId) ) {
         const mytest:any = document.getElementById(id)
         mytest?.classList.toggle('active')
         console.log(mytest.classList.contains('active'))
@@ -329,6 +332,20 @@ const InquiryTable = () => {
       }
     }
   ) 
+
+  const deleteInquiryFunc:any = useMutation((data:any) => 
+    deleteInquiry(data)
+    ,{
+      onSuccess: () => {
+        queryClient.invalidateQueries('inquiry')
+      }
+    }
+  )
+
+  const deleteSubmit = async(e:any) => {
+    deleteInquiryFunc.mutate(e)
+  }
+
   const answerSubmit = async(e:any) => {
     const submitData = answerData
     submitData.qnaSeq = e.qnaSeq
@@ -422,7 +439,7 @@ const InquiryTable = () => {
                 {e.qnaTitle}
                 {e.qnaIsPrivated ? <LockIcon style={{marginLeft:"15px", color:"black"}}/> : null}
               </td>
-              <td>{e.userSeq}</td>
+              <td>{e.userNickname}</td>
               <td>{e.qnaRegedAt.slice(0,10)}</td>
             </tr>
             <tr>
@@ -430,7 +447,7 @@ const InquiryTable = () => {
                 <div style={{display:"flex"}}>
                   <div className="questionName">프렌치 - 딥 다크(해당 상품 이름)</div>
                   { e.userSeq === myId ? <div className="questionRev">
-                    <span>수정</span><span>삭제</span>
+                    <OneOneOneRevise data={e}/><span onClick={() => deleteSubmit(e.qnaSeq)}>삭제</span>
                   </div>
                   : null }
                 </div>

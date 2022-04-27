@@ -111,7 +111,8 @@ const Content = styled.div`
 `
 
 export default function OneOneOneWrite(modalStatus:any) {
-  let params:any = useParams()
+  let params:any = useParams().id
+  const userSeq:any = sessionStorage.getItem('userSeq')
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -173,7 +174,7 @@ export default function OneOneOneWrite(modalStatus:any) {
 
   const submitData = {
     ...inputStatus,
-    qnaNailartSeq:params.id?.slice(1,params.id.length),
+    qnaNailartSeq:params,
     qnaDesignerSeq:designerSeq
   }
 
@@ -205,7 +206,7 @@ export default function OneOneOneWrite(modalStatus:any) {
   const submit = async() => {
     
     const formdata = new FormData()
-    
+    console.log(userSeq)
     formdata.append('qnaFile',files[0])
     // formdata.append('qnaRegisterPostReq',testData)
     formdata.append('qnaDesc', inputStatus.qnaDesc)
@@ -213,6 +214,7 @@ export default function OneOneOneWrite(modalStatus:any) {
     formdata.append('qnaIsPrivated',submitData.qnaPublic)
     formdata.append('qnaNailartSeq',submitData.qnaNailartSeq)
     formdata.append('qnaTitle',inputStatus.qnaTitle)
+    formdata.append('userSeq',userSeq)
     
     await postInquiryFunc.mutate(formdata)
     setOpen(false)

@@ -148,8 +148,8 @@ const Wrapper = styled.div`
 
 const UpperFrame = () => {
   const queryClient = useQueryClient();
-  let params = useParams()
-  // console.log(params)
+  let params = useParams().id
+  console.log(params)
   const [detailInfo,setDetailInfo] = useState (
     {
       type : '프렌치네일',
@@ -164,9 +164,9 @@ const UpperFrame = () => {
   )
 
   
-  const {isLoading:isLikeLoading , data:likeData} = useQuery('like',() => nailCount(params.id?.slice(1,params.id.length)))
-  const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params.id?.slice(1,params.id.length)))
-  const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params.id?.slice(1,params.id.length)))
+  const {isLoading:isLikeLoading , data:likeData} = useQuery('like',() => nailCount(params))
+  const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params))
+  const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params))
   const [designerSeq,setDesignerSeq] = useRecoilState<any>(designerId)
   
   useEffect(():any => {
@@ -179,7 +179,7 @@ const UpperFrame = () => {
   ,{
     onSuccess: () => {
     console.log('성공')
-    isLike(Number(params.id?.slice(1,params.id.length)))
+    isLike(Number(params))
     queryClient.invalidateQueries('isLike')
     queryClient.invalidateQueries('like')
   },
@@ -193,7 +193,7 @@ const UpperFrame = () => {
   ,{
     onSuccess: () => {
     console.log('성공')
-    isLike(Number(params.id?.slice(1,params.id.length)))
+    isLike(Number(params))
     queryClient.invalidateQueries('isLike')
     queryClient.invalidateQueries('like')
   },
@@ -206,10 +206,10 @@ const UpperFrame = () => {
     console.log('핸들러실행')
     if (isLikeData) {
       console.log('싫어요 실행')
-      disLikeFunc.mutate(Number(params.id?.slice(1,params.id.length)))
+      disLikeFunc.mutate(Number(params))
     } else {
       console.log('좋아요 실행')
-      likeFunc.mutate(Number(params.id?.slice(1,params.id.length)))
+      likeFunc.mutate(Number(params))
     }
   }
 

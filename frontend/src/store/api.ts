@@ -112,10 +112,19 @@ export const postInquiry = async(data:any) => {
   for (let value of data.values()) {
       console.log(value);
   }
-  const response = await axios.post(base_url+`qna`,data,{
+  const response = await axios.post(base_url+`qna/nailart`,data,{
     headers: {
       'Content-Type': 'multipart/form-data'
     }})
+}
+
+export const reviseInquiry = async(data:any) => {
+  const response = await axios.put(base_url +'qna',data)
+  console.log(response)
+}
+
+export const deleteInquiry = async(param:any) => {
+  const response = await axios.delete(base_url+`qna/${param}`)
 }
 
 export const postInquiryAnswer = async(data:any) => {

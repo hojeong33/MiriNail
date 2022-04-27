@@ -80,7 +80,7 @@ const NFTItems = () => {
       <ul className="clear">
         {nftLoading ? null : nftData.map((e:any, idx:any) => {
           return (
-            <div onClick={() => navigate(`/nft/detail/:${e.nailartSeq}`)}>
+            <div onClick={() => navigate(`/nft/${e.nailartSeq}`)}>
               
               {/* <img src="" alt="" /> */}
               <li className="ItemListType">
