@@ -1,6 +1,7 @@
 package com.nail.backend.domain.community.db.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -20,11 +21,16 @@ public class CommunityImg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long communityImgSeq;
 
+    @JsonIgnore
     @JoinColumn(name = "community_seq")
     @ApiModelProperty(value = "소통 글 Seq")
-    private Long communitySeq;
+    @ManyToOne
+    private Community community;
 
     @ApiModelProperty(value = "소통 글 Seq")
     private String communityImgUrl;
+
+
+
 
 }
