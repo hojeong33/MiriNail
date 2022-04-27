@@ -42,12 +42,9 @@ const StyledSlider = styled(Slider)`
     bottom: 10px;
   }
   .slick-track {
-
     display: flex;
   }
-  .slick-slide {
-
-  }
+  width: 300px;
 `;
 
 interface IState {

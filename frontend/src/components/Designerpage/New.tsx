@@ -67,7 +67,7 @@ function New() {
   const [lastState, setLastState] = useState(false);
 
   const fetchNewFeed = async ({ pageParam = 1 }) => {
-    const response = await getNewFeed({ designerSeq: 3, page: pageParam, size: 5 })
+    const response = await getNewFeed({ designerSeq: userSeq, page: pageParam, size: 5 })
     // axios로 받아온 데이터를 다음과 같이 변경! 
     
     return {
@@ -109,7 +109,7 @@ function New() {
         });
       })}
       {lastState ? (
-        <div>마지막입니다.</div>
+        <div>불러올 새소식이 없습니다.</div>
       ) : (
         <button className="addFeedBtn" onClick={() => query.fetchNextPage()}>더 보기</button>
       )}
