@@ -50,7 +50,10 @@ function Carousels() {
           return (
             <div key={item.id}>
               <ImageContainer>
-                <Image src={item.url} />
+                <Image
+                  src={item.url}
+                  // style={{ width: "100%", height: "700px" }}
+                />
               </ImageContainer>
             </div>
           );

@@ -142,6 +142,31 @@ const MainFrame = styled.div`
 `;
 
 const CreateCommunityContent = () => {
+  //작성하기
+  const ACCESS_TOKEN = localStorage.getItem("token");
+  const createCommunity = async () => {
+    const communityData = {
+      user_seq: sessionStorage.getItem("userSeq"),
+      community_title: "",
+      community_desc: "",
+    };
+    if (ACCESS_TOKEN) {
+      const result = await axios({
+        method: "post",
+        url: `http://localhost:8080/api/community`,
+        data: {},
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          console.log(res.data.content);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   //리모컨
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
