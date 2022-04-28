@@ -79,7 +79,7 @@ public class DesignerRepositorySupport {
                 .from(qDesignerInfo)
                 .orderBy(qDesignerInfo.designerSeq.desc())
                 .limit(size)
-                .offset(page)
+                .offset((page-1)*size)
                 .fetch();
         designerSeqList.forEach( num -> {
             DesignerListConditionGetRes tmp = new DesignerListConditionGetRes();

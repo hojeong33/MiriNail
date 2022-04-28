@@ -62,7 +62,7 @@ const  DesignerCarousel = ({items}: Props) => {
     centerMode: false,
     infinite: true,
     // centerPadding: "70px",
-    slidesToShow: 2,
+    slidesToShow: 5,
     speed: 500,
     adaptiveHeight : false,
   };
