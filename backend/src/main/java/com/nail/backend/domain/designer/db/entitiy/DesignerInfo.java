@@ -51,6 +51,14 @@ public class DesignerInfo implements Serializable {
     // 디자이너 소개 이미지
     @ApiModelProperty(value = "유저 디자이너 소개 이미지")
     String designerInfoImgUrl;
+    
+    // 디자이너 샵 오픈 시간
+    @ApiModelProperty(value = "디자이너 샵 오픈 시간")
+    String designerShopOpen;
+    
+    // 디자이너 샴 마감 시간
+    @ApiModelProperty(value = "디자이너 샵 마감 시간")
+    String designerShopClose;
 
     // 인증신청 등록날짜
     @ApiModelProperty(value = "인증신청 등록날짜")
