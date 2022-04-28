@@ -6,10 +6,11 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import moment from 'moment'
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: 768px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 auto;
   .title {
     display: flex;
     width: 90%;
@@ -201,7 +202,6 @@ const MyReservation = () => {
 
   return (
     <Wrapper>
-      <div className="title">나의예약</div>
       <div className="nowRV">
         <div className="subtitle">
           현재 <span>예약</span> 내역

@@ -8,14 +8,45 @@ import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { styled, alpha } from "@mui/material/styles";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 
+const MenuBtn = styled("div")`
+  :hover .menu {
+    opacity: 1;
+  }
+  .menu {
+    opacity: 0;
+  }
+`;
+const MenuBtn2 = styled("div")`
+  :hover .menu2 {
+    opacity: 1;
+  }
+  .menu2 {
+    opacity: 0;
+  }
+`;
+const CustomButton = styled(Button)({
+  "&:hover": {
+    backgroundColor: "rgba( 0, 0, 0, 0 )",
+    color: "black",
+  },
+});
+const CustomMenu = styled(Menu)`
+  .MuiPaper-root {
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 5%);
+  }
+`;
+const CustomIconButton = styled(IconButton)({
+  "&:hover": {
+    backgroundColor: "rgba( 0, 0, 0, 0 )",
+  },
+});
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -70,26 +101,7 @@ const Navbar = () => {
     sessionStorage.clear();
     localStorage.clear();
     setIsLogin(false);
-  };
-  //User 하위 메뉴창
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-  //ART 하위 메뉴창
-  const [anchorElUser2, setAnchorElUser2] = React.useState<null | HTMLElement>(
-    null
-  );
-  const handleOpenUserMenu2 = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser2(event.currentTarget);
-  };
-  const handleCloseUserMenu2 = () => {
-    setAnchorElUser2(null);
+    navigate("/");
   };
   // URL 이동
   const navigate = useNavigate();
@@ -107,6 +119,7 @@ const Navbar = () => {
         <Toolbar disableGutters>
           <Typography
             variant="h6"
+            color="black"
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
@@ -115,53 +128,69 @@ const Navbar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
+            <CustomButton
+              disableRipple
               onClick={() => navigate(`/ar`)}
               sx={{ my: 2, color: "black", display: "block" }}
             >
               AR
-            </Button>
-            <Button
-              onClick={handleOpenUserMenu2}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              ART
-            </Button>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser2}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser2)}
-              onClose={handleCloseUserMenu2}
-            >
-              <MenuItem onClick={() => navigate(`/nft`)}>
-                <Typography textAlign="center">NAIL NFT</Typography>
-              </MenuItem>
-              <MenuItem onClick={() => navigate(`/designer`)}>
-                <Typography textAlign="center">DESIGNER</Typography>
-              </MenuItem>
-            </Menu>
-            <Button
+            </CustomButton>
+            <MenuBtn>
+              <CustomButton
+                disableRipple
+                sx={{
+                  my: 2,
+                  color: "black",
+                  display: "block",
+                }}
+              >
+                ART
+              </CustomButton>
+              <ul
+                className="menu"
+                style={{
+                  position: "absolute",
+                  top: "70px",
+                  left: "130px",
+                  color: "black",
+                  backgroundColor: "rgba(0, 0, 0, 5%)",
+                  padding: "10px",
+                }}
+              >
+                <li>
+                  <button
+                    onClick={() => {
+                      navigate(`/nft`);
+                    }}
+                  >
+                    NFT NAIL
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      navigate(`/designer`);
+                    }}
+                  >
+                    DESIGNER
+                  </button>
+                </li>
+              </ul>
+            </MenuBtn>
+            <CustomButton
+              disableRipple
               onClick={() => navigate(`/community`)}
               sx={{ my: 2, color: "black", display: "block" }}
             >
               COMMUNITY
-            </Button>
-            <Button
+            </CustomButton>
+            <CustomButton
+              disableRipple
               onClick={() => navigate(`/event`)}
               sx={{ my: 2, color: "black", display: "block" }}
             >
               EVENT
-            </Button>
+            </CustomButton>
           </Box>
           <Search>
             <SearchIconWrapper>
@@ -175,48 +204,49 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             {!userProfileImg ? (
-              <Button
+              <CustomButton
+                disableRipple
                 href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
-                // href={KAKAO_AUTH_URL}
-                // onClick={kakaoLogin}
                 sx={{ my: 2, color: "black", display: "block" }}
               >
                 Kakao Login
-              </Button>
+              </CustomButton>
             ) : (
               <>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={userProfileImg} />
-                  <Typography
-                    textAlign="center"
-                    style={{ color: "black", marginLeft: "5px" }}
+                <MenuBtn2>
+                  <CustomIconButton disableRipple sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" src={userProfileImg} />
+                    <Typography
+                      textAlign="center"
+                      style={{ color: "black", marginLeft: "5px" }}
+                    >
+                      {userNickname}
+                    </Typography>
+                  </CustomIconButton>
+                  <ul
+                    className="menu2"
+                    style={{
+                      position: "absolute",
+                      top: "70px",
+                      color: "black",
+                      backgroundColor: "rgba(0, 0, 0, 5%)",
+                      padding: "10px",
+                    }}
                   >
-                    {userNickname}
-                  </Typography>
-                </IconButton>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  <MenuItem onClick={() => navigate(`/mypage`)}>
-                    <Typography textAlign="center">Mypage</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={logout}>
-                    <Typography textAlign="center">Logout</Typography>
-                  </MenuItem>
-                </Menu>
+                    <li>
+                      <button
+                        onClick={() => {
+                          navigate(`/mypage`);
+                        }}
+                      >
+                        Mypage
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={logout}>Logout</button>
+                    </li>
+                  </ul>
+                </MenuBtn2>
               </>
             )}
           </Box>

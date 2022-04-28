@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
-import { designer } from '../../routes/Designerpage/Designerpage';
+import { IDesigner } from '../../routes/Designerpage/Designerpage';
 // import Paginations from '../Layout/Paginations'
 
 
@@ -97,7 +97,7 @@ const MainFrame = styled.div`
 `;
 
 interface IProps {
-  designer?: designer
+  designer?: IDesigner
 }
 
 const Content:React.FC<IProps> = ({designer}) => {

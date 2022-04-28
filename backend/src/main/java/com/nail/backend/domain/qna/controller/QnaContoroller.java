@@ -82,6 +82,7 @@ public class QnaContoroller {
 
         log.info("qnaAnswerRegister - 호출");
         QnaAnswer res = qnaService.qnaAnswerRegister(qnaAnswerRegisterPostReq);
+        System.out.println(res);
         if(!res.equals(null)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
         }

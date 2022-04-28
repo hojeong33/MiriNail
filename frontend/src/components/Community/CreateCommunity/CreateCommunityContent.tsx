@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import FileUpload2 from "./FileUpload2";
 import { useState, useEffect } from "react";
+import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
 
 const Wrapper = styled.div`
@@ -28,6 +29,7 @@ const MainFrame = styled.div`
       height:100%;
 
       .LeftBox {
+       
         position: absolute;
         padding-right: 100px;
         left: 0px;
@@ -49,7 +51,11 @@ const MainFrame = styled.div`
         }
         
         .OrderFilter {
-          margin-top:100px;
+          height : 225px;
+          border : 1px solid black;
+          border-radius :10px;
+          padding :10px;
+          margin-top:50px;
           a { 
             display:block; 
             color:#3D3C3A; 
@@ -77,18 +83,18 @@ const MainFrame = styled.div`
       }
 
       .RightBox {
-        padding-left :80px;
-        
-        padding-top: 75px;
-        width: 100%;
         border-left: 1px solid #d2d2d0;
+        padding-left :200px;
+        padding-top: 75px;
+        width: 968px;
         padding-bottom: 160px;
         text-align: left;
+
         .subTitle {
           font-weight : bold;
           font-size : 18px;
           border-bottom :5px solid #e3e3e3;
-          margin-right: 100px;
+          // margin-right: 100px;
           padding-bottom : 5px;
         }
         .fileBox {
@@ -103,8 +109,7 @@ const MainFrame = styled.div`
         }
        
         textarea {
-          
-          width :90%;
+          width :100%;
           display: block ;
           // margin : 0 auto;
           margin-top : 24px;
@@ -115,7 +120,7 @@ const MainFrame = styled.div`
           margin-top: 48px;
           display : flex;
           justify-content : center;
-          width:90%;
+          width:100%;
           .btn1 {
             background-color:rgb(51, 51, 51);
             color:white;
@@ -137,6 +142,45 @@ const MainFrame = styled.div`
 `;
 
 const CreateCommunityContent = () => {
+  //작성하기
+  const ACCESS_TOKEN = localStorage.getItem("token");
+  const createCommunity = async () => {
+    const communityData = {
+      user_seq: sessionStorage.getItem("userSeq"),
+      community_title: "",
+      community_desc: "",
+    };
+    if (ACCESS_TOKEN) {
+      const result = await axios({
+        method: "post",
+        url: `http://localhost:8080/api/community`,
+        data: {},
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          console.log(res.data.content);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  //리모컨
+  window.addEventListener("scroll", () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let clientHeight = document.documentElement.clientHeight;
+    let remote: any = document.getElementById("remote");
+    if (scrollTop + clientHeight >= 1337) {
+      remote.style.position = "fixed";
+      remote.style.top = "180px";
+    } else {
+      remote.style.position = "relative";
+      remote.style.top = "";
+    }
+  });
+
   const [imageProcess, setImageProcess] = useState([]);
   const [textProcess, setTextProcess] = useState("");
   const [textProcess2, setTextProcess2] = useState("");
@@ -158,8 +202,8 @@ const CreateCommunityContent = () => {
           <div className="MainPadding">
             <div className="ItemList">
               <div className="LeftBox">
-                <div className="OrderFilter">
-                  <a>정렬</a>
+                <div className="OrderFilter" id="remote">
+                  <a>작성 과정</a>
                   <div className="CheckBox">
                     <input
                       type="checkbox"
@@ -189,6 +233,21 @@ const CreateCommunityContent = () => {
                     <label htmlFor="cb3">
                       글내용 작성 ({textProcess.length >= 10 ? 1 : 0}/1)
                     </label>
+                    {imageProcess.length >= 1 &&
+                    textProcess2.length >= 1 &&
+                    textProcess.length >= 10 ? (
+                      <div className="finBox">
+                        <DoneIcon
+                          fontSize="large"
+                          style={{ color: "green", fontWeight: "bold" }}
+                        />{" "}
+                        <button>등록</button>
+                      </div>
+                    ) : (
+                      <div style={{ marginTop: "25px" }}>
+                        과정을 완료해주세요
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -202,15 +261,21 @@ const CreateCommunityContent = () => {
                 <div className="subTitle" style={{ marginTop: "120px" }}>
                   글제목 작성
                 </div>
-                <input type="text" onChange={onChangeText2}></input>
+                <input
+                  type="text"
+                  onChange={onChangeText2}
+                  style={{ width: "100%" }}
+                ></input>
 
                 <div className="subTitle" style={{ marginTop: "120px" }}>
-                  글내용 작성 (10자 이상 입력해주세요.)
+                  글내용 작성
                 </div>
                 <textarea
                   name="textVal"
                   id=""
                   onChange={onChangeText}
+                  style={{ resize: "none" }}
+                  placeholder="10자 이상 입력해주세요."
                 ></textarea>
                 <div className="buttons">
                   <div className="btn1">작성</div>
