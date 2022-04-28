@@ -1,4 +1,10 @@
+import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
+import { useParams } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
+import { otherDesign } from '../../../store/api'
+import { designerId } from '../../../store/atoms'
 
 
 const Wrapper = styled.div`
@@ -57,7 +63,11 @@ const Wrapper = styled.div`
 }
 `
 const Gallery = () => {
+  
+  const param = useRecoilValue(designerId)
 
+  const {isLoading,data} = useQuery('otherDesign',() => otherDesign(param))
+  
   return (
     <Wrapper>
       <div className='description'>
@@ -69,76 +79,18 @@ const Gallery = () => {
         </div>
       </div>
       <ul className="clear">
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
-        <li className="ItemListType">
-          <a href="" className="ItemBox">
-            <div className="imx">
-              <img src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
-            </div>
-          </a>
-        </li>
+        {data?.map((e:any,idx:any) => {
+          return (
+            <li className="ItemListType">
+              <a href="" className="ItemBox">
+                <div className="imx">
+                  <img src={e.nailartThumbnailUrl} alt="" />
+                </div>
+              </a>
+            </li>
+          )
+        })}
+        
       </ul>
     </Wrapper>
   )

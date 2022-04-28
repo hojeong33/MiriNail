@@ -8,6 +8,7 @@ const BestNailArt = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        padding: "100px 0px",
       }}
     >
       <BestNailTitle></BestNailTitle>

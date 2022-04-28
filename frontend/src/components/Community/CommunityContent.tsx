@@ -1,6 +1,7 @@
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import CommunityImgList from "./CommunityImgList";
+import axios from "axios";
 
 const CommunityContent = () => {
   const navigate = useNavigate();

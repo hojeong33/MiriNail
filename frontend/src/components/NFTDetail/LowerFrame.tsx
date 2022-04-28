@@ -17,13 +17,16 @@ const Wrapper = styled.div`
   .menus {
     display:flex;
     justify-content:center;
+    
     .menu {
       border-right :2px solid rgba(61,60,58,0.2);
       margin-right :15px;
       padding: 10px 30px;
+      cursor: pointer;
     }
     .rightMenu {
       padding: 10px 30px;
+      cursor : pointer;
     }
   }
 

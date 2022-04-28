@@ -69,14 +69,15 @@ const  DesignerCarousel = ({items}: Props) => {
   return (
     <Wrapper>
       <Slider {...settings}>
-        {items.map((item, idx) => {
+        {items?.map((item) => {
           return (
-            <div key={idx}>
+            <div >
               <Cards info={item}/>
             </div>
           );
         })}
       </Slider>
+      
     </Wrapper>
   );
 }
