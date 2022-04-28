@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getMyDesignerAsk } from "../../store/apis/qna";
 import moment from "moment";
@@ -118,6 +118,7 @@ const MyAsk = () => {
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
+  const navigate = useNavigate()
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event);
     console.log(page);
@@ -138,6 +139,10 @@ const MyAsk = () => {
       onError: (err: any) => console.log(err),
     }
   );
+
+  const onClickAsk = (qnaSeq:number, designerSeq:number) => {
+    navigate(`/designerpage/${designerSeq}/askdetail/${qnaSeq}`)
+  }
 
   return (
     <TableWrapper>
@@ -166,7 +171,7 @@ const MyAsk = () => {
             <tbody>
               {data.content.map((ask: IState["ask"], idx: number) => {
                 return (
-                  <tr key={idx}>
+                  <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq, ask.qnaDesignerSeq)}>
                     <th>{ask.qnaSeq}</th>
                     <th>{convertQnatypeToText(ask.qnaType)}</th>
                     <th className="title">{ask.qnaTitle}</th>

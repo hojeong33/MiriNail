@@ -59,3 +59,12 @@ export const putAsk = async (qnaDesc:string, qnaSeq:number, qnaTitle:string) => 
   )
   return response.data
 }
+
+// 문의 답변 작성
+export const postAnswer = async (qnaSeq:number, qnaAnswerDesc:string) => {
+  const response = await apiClient.post<any>(
+    `/qna/answer`,
+    { qnaSeq, qnaAnswerDesc }
+  )
+  return response.data
+}

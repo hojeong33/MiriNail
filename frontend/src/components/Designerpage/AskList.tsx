@@ -177,34 +177,32 @@ const AskList = () => {
               <tbody>
                 {data.content.map((ask: IState["ask"], idx: number) => {
                   return (
-                      <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq)}>
-                        <th>{ask.qnaSeq}</th>
-                        <th>{ask.userNickname}</th>
-                        <th>{convertQnatypeToText(ask.qnaType)}</th>
-                        <th className="title">{ask.qnaTitle}</th>
-                        <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
-                        <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
-                      </tr>
+                    <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq)}>
+                      <th>{ask.qnaSeq}</th>
+                      <th>{ask.userNickname}</th>
+                      <th>{convertQnatypeToText(ask.qnaType)}</th>
+                      <th className="title">{ask.qnaTitle}</th>
+                      <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
+                      <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
+                    </tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
-
         </TableWrapper>
       ) : (
         <div>문의가 없습니다.</div>
       )}
-      
       <div className="pagination">
-            <Stack spacing={2}>
-              <Pagination
-                count={lastPage}
-                shape="rounded"
-                onChange={onchangePage}
-              />
-            </Stack>
-          </div>
+        <Stack spacing={2}>
+          <Pagination
+            count={lastPage}
+            shape="rounded"
+            onChange={onchangePage}
+          />
+        </Stack>
+      </div>
     </TableWrapper>
   );
 }
