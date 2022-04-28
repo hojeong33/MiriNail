@@ -144,7 +144,7 @@ const MainFrame = styled.div`
 
 const CreateCommunityContent = () => {
   //작성하기
-  // const ACCESS_TOKEN = localStorage.getItem("token");
+  const ACCESS_TOKEN = localStorage.getItem("token");
   const [files, setFiles] = useState("");
 
   const createCommunity = useMutation<any, Error>(
@@ -155,6 +155,9 @@ const CreateCommunityContent = () => {
       const formdata: any = new FormData();
       formdata.append("communityDesc", communityDesc);
       formdata.append("communityTitle", communityTitle);
+      postImages.forEach((e) => {
+        formdata.append("communityFiles", e);
+      });
       for (let key of formdata.keys()) {
         console.log(key);
       }
@@ -167,15 +170,14 @@ const CreateCommunityContent = () => {
         .post("http://localhost:8080/api/community", formdata, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
         })
         .then(console.log)
         .catch(console.log);
       // const files=[];
       // formdata.append("communityFiles",);
-      // communityImages.forEach((e) => {
-      //   formdata.append("communityFiles", e);
-      // });
+
       // return await postNewCommunity({
       //   formdata,
       // });
@@ -251,6 +253,8 @@ const CreateCommunityContent = () => {
   const [communityTitle, setCommunityTitle] = useState("");
   const [communityDesc, setCommunityDesc] = useState("");
   const [communityImages, setCommunityImages] = useState([]);
+  const [postImages, setPostImages] = useState<any[]>([]);
+
   useEffect(() => {
     console.log(imageProcess);
     setCommunityImages(imageProcess);
@@ -327,7 +331,10 @@ const CreateCommunityContent = () => {
                   이미지 등록
                 </div>
                 <div className="fileBox">
-                  <FileUpload2 setImageProcess={setImageProcess} />
+                  <FileUpload2
+                    setPostImages={setPostImages}
+                    setImageProcess={setImageProcess}
+                  />
                 </div>
                 <div className="subTitle" style={{ marginTop: "120px" }}>
                   글제목 작성

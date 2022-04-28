@@ -8,12 +8,18 @@ const ImageUploadBox = (props: any) => {
   const [previewImages, setPreviewImages] = useState([]);
   const uploadBoxRef = useRef<any>();
   const inputRef = useRef<any>();
+  const [testImages, setTestImages] = useState<any[]>([]);
 
   useEffect(() => {
     console.log(uploadedImages);
     props.setImageProcess(uploadedImages);
     // props.setImageProcess(uploadedImages.length)
   }, [uploadedImages]);
+
+  useEffect(() => {
+    console.log(testImages);
+    props.setPostImages(testImages);
+  });
 
   useEffect(() => {
     const uploadBox = uploadBoxRef.current;
@@ -69,6 +75,7 @@ const ImageUploadBox = (props: any) => {
       const deleteFunc = () => {
         uploadedImages.splice(uploadedImages.findIndex(isDeleteImage), 1);
         setUploadedImages([...uploadedImages]);
+        setTestImages([...testImages]);
       };
       return (
         <ImagePreview
