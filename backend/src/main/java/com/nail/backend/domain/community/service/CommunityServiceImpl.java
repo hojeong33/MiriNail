@@ -157,4 +157,13 @@ public class CommunityServiceImpl implements CommunityService{
 
 //    DELETE_________________________________________
 
+    public boolean communityRemove(Long communitySeq){
+
+        if(communityRepository.findById(communitySeq).isPresent()){
+            communityRepository.deleteById(communitySeq);
+             return true;
+        }
+        return false;
+
+    }
 }

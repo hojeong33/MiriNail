@@ -26,4 +26,5 @@ public interface CommunityService {
 //    UPDATE_________________________________________
 
 //    DELETE_________________________________________
+    boolean communityRemove(Long communitySeq);
 }

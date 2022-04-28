@@ -89,4 +89,23 @@ public class CommunityController {
 //    UPDATE_________________________________________
 
 //    DELETE_________________________________________
+@Transactional
+@ApiOperation(value = "커뮤니티 글 삭제")
+@ApiResponses({
+        @ApiResponse(code = 200, message = "삭제 성공"),
+        @ApiResponse(code = 404, message = "삭제 실패")
+})
+@DeleteMapping("/{communitySeq}")
+public ResponseEntity<BaseResponseBody> communityRemove(@ApiParam(value ="커뮤니티 글 번호") @PathVariable Long communitySeq){
+    log.info("communityRemove - 호출");
+
+    if(communityService.communityRemove(communitySeq)){
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제성공"));
+    }
+    else{
+        log.error("communityRemove - This communitySeq doesn't exist");
+        return ResponseEntity.status(404).body(BaseResponseBody.of(404,"삭제실패"));
+    }
+
+}
 }
