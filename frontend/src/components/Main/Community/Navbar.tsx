@@ -217,7 +217,7 @@ const Navbar = () => {
             {!userProfileImg ? (
               <CustomButton
                 disableRipple
-                href="https://k6e101.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+                href="https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
                 sx={{ my: 2, color: "black", display: "block" }}
               >
                 Kakao Login
