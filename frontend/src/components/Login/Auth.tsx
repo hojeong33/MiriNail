@@ -9,7 +9,7 @@ const Auth = () => {
     if (ACCESS_TOKEN) {
       const result = await axios({
         method: "get",
-        url: `http://k6e101.p.ssafy.io:8080/api/users/`,
+        url: `https://k6e101.p.ssafy.io:8080/api/users/`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
@@ -18,7 +18,7 @@ const Auth = () => {
 
       const test = await axios({
         method: "get",
-        url: `http://k6e101.p.ssafy.io:8080/api/users/${result.data.body.user.userSeq}`,
+        url: `https://k6e101.p.ssafy.io:8080/api/users/${result.data.body.user.userSeq}`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
