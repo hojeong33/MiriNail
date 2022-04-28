@@ -4,8 +4,10 @@ import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getDesignerAsk } from "../../store/apis/qna";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import { Link } from "react-router-dom";
+import { convertQnatypeToText } from "../Commons/functions";
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -41,13 +43,11 @@ const TableWrapper = styled.div`
         padding: 20px 0px;
         font-weight: 500;
       }
-      tbody {
-        tr {
+      tr {
         cursor: pointer;
         :hover {
           background-color: #f8f8fa;
         }
-      }
       }
     }
   }
@@ -118,6 +118,7 @@ const AskList = () => {
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
+  const navigate = useNavigate();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event);
@@ -140,17 +141,10 @@ const AskList = () => {
     }
   );
 
-  const convertQnatypeToText = (type:number) => {
-    switch (type) {
-      case 0:
-        return "예약"
-      case 1:
-        return "디자인"
-      case 2:
-        return "기타"
-      default:
-        return "???"
-    }
+
+
+  const onClickAsk = (qnaSeq:number) => {
+    navigate(`/designerpage/${userSeq}/askdetail/${qnaSeq}`)
   }
 
   return (
@@ -183,14 +177,14 @@ const AskList = () => {
               <tbody>
                 {data.content.map((ask: IState["ask"], idx: number) => {
                   return (
-                    <tr key={idx}>
-                      <th>{ask.qnaSeq}</th>
-                      <th>{ask.userNickname}</th>
-                      <th>{convertQnatypeToText(ask.qnaType)}</th>
-                      <th className="title">{ask.qnaTitle}</th>
-                      <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
-                      <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
-                    </tr>
+                      <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq)}>
+                        <th>{ask.qnaSeq}</th>
+                        <th>{ask.userNickname}</th>
+                        <th>{convertQnatypeToText(ask.qnaType)}</th>
+                        <th className="title">{ask.qnaTitle}</th>
+                        <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
+                        <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
+                      </tr>
                   );
                 })}
               </tbody>

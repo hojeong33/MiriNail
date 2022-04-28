@@ -39,6 +39,7 @@ import CreateAsk from "./components/Designerpage/CreateAsk";
 import Apply from "./components/Mypage/Apply";
 import UpdateIntroduction from "./components/Designerpage/UpdateIntroduction";
 import PageNotFound from "./components/PageNotFound";
+import AskDetail from "./components/Designerpage/AskDetail";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
             <Route path="reservation" element={<CreateReservation />}></Route>
             <Route path="reservationcheck" element={<ReservationCheck />}></Route>
             <Route path="asklist" element={<AskList />}></Route>
+            <Route path="askdetail/:qnaSeq" element={<AskDetail />}></Route>
             <Route path="createfeed" element={<CreateFeed />}></Route>
             <Route path="createask" element={<CreateAsk />}></Route>
             <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>

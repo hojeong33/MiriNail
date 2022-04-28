@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getMyDesignerAsk } from "../../store/apis/qna";
 import moment from "moment";
+import { convertQnatypeToText } from "../Commons/functions";
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -137,19 +138,6 @@ const MyAsk = () => {
       onError: (err: any) => console.log(err),
     }
   );
-
-  const convertQnatypeToText = (type:number) => {
-    switch (type) {
-      case 0:
-        return "예약"
-      case 1:
-        return "디자인"
-      case 2:
-        return "기타"
-      default:
-        return "???"
-    }
-  }
 
   return (
     <TableWrapper>

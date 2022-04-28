@@ -4,7 +4,7 @@ import DaumPostcode from 'react-daum-postcode';
 import AddressModal from "./AddressModal";
 import { useMutation } from "react-query";
 import { postApply } from "../../store/apis/authentication";
-
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -155,6 +155,7 @@ const Apply = () => {
   const [addressDetail, setAddressDetail] = useState(""); // 상세주소
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [file, setFile] = useState<any>();
+  const navigate = useNavigate()
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -225,8 +226,13 @@ const Apply = () => {
     {
       onSuccess: (res) => {
         console.log(res);
+        alert("성공적으로 신청되었습니다")
+        navigate(`/mypage/${sessionStorage.getItem("userSeq")}/like`)
       },
-      onError: (err: any) => console.log(err),
+      onError: (err: any) =>{
+        console.log(err)
+        alert("신청중 오류가 발생하였습니다")
+      },
     }
   );
 

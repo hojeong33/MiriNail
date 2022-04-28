@@ -32,3 +32,21 @@ export const getMyDesignerAsk = async (page:number, size:number, userSeq:number,
   )
   return response.data
 }
+
+// 1:1 문의 상세조회
+export const getAskDetail = async (qnaSeq:number) => {
+  const response = await apiClient.get<any>(
+    `/qna/${qnaSeq}`,
+    { params: { qnaSeq } }
+  )
+  return response.data
+}
+
+// 1:1 문의 삭제
+export const postDeleteAsk = async (qnaSeq:number) => {
+  const response = await apiClient.delete<any>(
+    `/qna/${qnaSeq}`,
+    { params: { qnaSeq } }
+  )
+  return response.data
+}
