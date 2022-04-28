@@ -99,7 +99,7 @@ function PageHeader({changeThema,changeAll}:any) {
     <Wrapper>
       <div className="row">
         <div className="pageHeaderTitle">
-          SHOPPING
+          DESIGNER
         </div>
         <div className="pageHeaderLinks">
           <span onClick={changeThema}>
@@ -111,9 +111,9 @@ function PageHeader({changeThema,changeAll}:any) {
         </div>
         <div className="pageHeaderNavigation">
           <div className="NavElement">
-            <span>제품</span>
+            <span>디자이너</span>
             <ChevronRightIcon />
-            <span>LINE UP</span>
+            <span>목록</span>
           </div>
         </div>
       </div>

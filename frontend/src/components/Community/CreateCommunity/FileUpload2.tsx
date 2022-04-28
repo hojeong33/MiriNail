@@ -8,7 +8,7 @@ const ImageUploadBox = (props: any) => {
   const [previewImages, setPreviewImages] = useState([]);
   const uploadBoxRef = useRef<any>();
   const inputRef = useRef<any>();
-  const [testImages, setTestImages] = useState<any[]>([]);
+  const [testImages, setTestImages] = useState<any[]>([])
 
   useEffect(() => {
     console.log(uploadedImages);
@@ -17,9 +17,9 @@ const ImageUploadBox = (props: any) => {
   }, [uploadedImages]);
 
   useEffect(() => {
-    console.log(testImages);
-    props.setPostImages(testImages);
-  });
+    console.log(testImages)
+    props.setPostImages(testImages)
+  })
 
   useEffect(() => {
     const uploadBox = uploadBoxRef.current;
@@ -33,6 +33,7 @@ const ImageUploadBox = (props: any) => {
           const result: any = e.target.result;
           if (result) {
             setUploadedImages((state: any) => [...state, result].slice(0, 5));
+            setTestImages((state:any) => [...state, file].slice(0, 5));
           }
         };
         reader.readAsDataURL(file);

@@ -253,7 +253,7 @@ const CreateCommunityContent = () => {
   const [communityTitle, setCommunityTitle] = useState("");
   const [communityDesc, setCommunityDesc] = useState("");
   const [communityImages, setCommunityImages] = useState([]);
-  const [postImages, setPostImages] = useState<any[]>([]);
+  const [postImages,setPostImages] = useState<any[]>([])
 
   useEffect(() => {
     console.log(imageProcess);
@@ -331,10 +331,7 @@ const CreateCommunityContent = () => {
                   이미지 등록
                 </div>
                 <div className="fileBox">
-                  <FileUpload2
-                    setPostImages={setPostImages}
-                    setImageProcess={setImageProcess}
-                  />
+                  <FileUpload2 setImageProcess={setImageProcess} setPostImages={setPostImages}/>
                 </div>
                 <div className="subTitle" style={{ marginTop: "120px" }}>
                   글제목 작성
