@@ -24,8 +24,8 @@ public class QnaRegisterPostReq {
     @ApiModelProperty(value = "문의 내용")
     private String qnaDesc;
 
-    @ApiModelProperty(value = "파일")
-    private MultipartFile file;
+//    @ApiModelProperty(value = "파일")
+//    private MultipartFile file;
 
     @ApiModelProperty(value = "문의 남길 디자이너 번호")
     private Long qnaDesignerSeq;

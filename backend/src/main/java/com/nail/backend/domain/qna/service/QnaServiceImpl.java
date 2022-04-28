@@ -1,6 +1,8 @@
 package com.nail.backend.domain.qna.service;
 
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.nail.backend.domain.authentication.service.AwsS3Service;
 import com.nail.backend.domain.qna.db.entity.Qna;
 import com.nail.backend.domain.qna.db.entity.QnaAnswer;
 import com.nail.backend.domain.qna.db.repository.QnaAnswerRepository;
@@ -13,6 +15,7 @@ import com.nail.backend.domain.qna.request.QnaRegisterPostReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,12 +23,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service("QnaService")
 public class QnaServiceImpl implements QnaService {
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    private final AmazonS3Client amazonS3Client;
 
     @Autowired
     QnaRepository qnaRepository;
@@ -36,33 +45,32 @@ public class QnaServiceImpl implements QnaService {
     @Autowired
     QnaAnswerRepository qnaAnswerRepository;
 
-//    @Autowired
-//    AwsS3Service awsS3Service;
+    @Autowired
+    AwsS3Service awsS3Service;
 
 //    CREATE_________________________________________
     @Override
     @Transactional
-    public Qna qnaRegister(QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) {
+    public Qna qnaRegister(MultipartFile qnaFile, QnaRegisterPostReq qnaRegisterPostReq, Long userSeq) throws IOException {
 
-//        // file 업로드
-//        MultipartFile uploadFile = qnaRegisterPostReq.getFile();
-//        String fileName  = awsS3Service.createFileName(uploadFile.getOriginalFilename());
-//
-//        //파일 객체 생성
-//        //System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
-//        File file = new File(System.getProperty("user.dir")+ fileName);
-//
-//        //파일 저장
-//        uploadFile.transferTo(file);
-//
-//        //S3 파일 업로드
-//        awsS3Service.uploadOnS3(fileName, file);
-//
-//        //주소 할당
-//        String uploadFileUrl = amazonS3Client.getUrl(bucket,fileName).toString();
-//
-//        //파일 삭제
-//        file.delete();
+        // file 업로드
+        String fileName  = awsS3Service.createFileName(qnaFile.getOriginalFilename());
+
+        //파일 객체 생성
+//        System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
+        File file = new File(System.getProperty("user.dir")+ fileName);
+
+        //파일 저장
+        qnaFile.transferTo(file);
+
+        //S3 파일 업로드
+        awsS3Service.uploadOnS3(fileName, file);
+
+        //주소 할당
+        String qnaFileUrl = amazonS3Client.getUrl(bucket,fileName).toString();
+
+        //파일 삭제
+        file.delete();
 
 
         // 나머지 객체 만들기
@@ -71,7 +79,7 @@ public class QnaServiceImpl implements QnaService {
                 .userSeq(userSeq)
                 .qnaTitle(qnaRegisterPostReq.getQnaTitle())
                 .qnaDesc(qnaRegisterPostReq.getQnaDesc())
-//                .qnaImgUrl(uploadFileUrl)
+                .qnaImgUrl(qnaFileUrl)
                 .qnaDesignerSeq(qnaRegisterPostReq.getQnaDesignerSeq())
                 .qnaNailartSeq(qnaRegisterPostReq.getQnaNailartSeq())
                 .qnaIsPrivated(qnaRegisterPostReq.isQnaIsPrivated())
