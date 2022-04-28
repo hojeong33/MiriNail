@@ -8,7 +8,7 @@ const base_url = 'http://localhost:8080/api/'
 export const fetchDesigns = async({queryKey}:any) => {
   console.log(queryKey)
  
-  const response = await axios.get(base_url+'nailart/list',{params : {page: queryKey[1],size:10}})
+  const response = await axios.get(base_url+'nailart/list',{params : {page: queryKey[1],size:12}})
   console.log(response)
   return response.data
 }
@@ -148,9 +148,10 @@ export const getRecentDesigner = async() => {
   return response.data
 }
 
-export const getAllDesigner = async(page:any) => {
+export const getAllDesigner = async(pages:number, sizes:number) => {
+  console.log(`실행됨 : ${pages}`)
   const response = await axios.get(base_url+'designer/list/all',{
-    params : {page: page, size : 5}
+    params : {page: pages, size : sizes}
   })
   console.log(response)
   return response.data

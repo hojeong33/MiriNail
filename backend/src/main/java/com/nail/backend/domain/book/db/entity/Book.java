@@ -1,5 +1,6 @@
 package com.nail.backend.domain.book.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.user.db.entity.User;
@@ -11,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,15 +44,15 @@ public class Book {
     @ApiModelProperty(value = "작품 번호")
     Nailart nailart;
 
-    @ApiModelProperty(value = "예약 날짜 및 시간 번호")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
+    @ApiModelProperty(value = "예약 날짜 및 시간")
     LocalDateTime bookDatetime;
 
     @ApiModelProperty(value = "예약 코멘트")
     String bookComment;
 
     @CreatedDate
-    @Column(updatable = false)
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "예약 등록한 날짜")
     LocalDateTime bookRegedAt;
-
 }

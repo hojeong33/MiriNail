@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components"
 import Cards from "../Commons/Cards";
-
+import { IHotDesigner,ILatestDesigner } from "./PageContentThema";
 const Wrapper = styled.div`
   button {
   //  background-color:green;
@@ -35,27 +35,18 @@ const Wrapper = styled.div`
   }
 
 `
-
-
-
-
-export interface hotDesignersProps {
-  designer_seq : number;
-  user_nickname : string;
-  user_profile_img : string;
-  designer_shop_name : string;
-  follow_follower_length : number;
-  designs : number; 
-}
-export interface Props {
-  items : hotDesignersProps[];
+interface IHotDesignerProps {
+  items : IHotDesigner[]
 }
 
-export interface Props2 {
-  item : hotDesignersProps;
+interface ILatestDesignerProps {
+  items : ILatestDesigner[]
 }
 
-const  DesignerCarousel = ({items}: Props) => {
+
+
+
+const  DesignerCarousel = ({items}: IHotDesignerProps|ILatestDesignerProps) => {
   const settings = {
     dots: false,
     className: "center",
@@ -69,13 +60,13 @@ const  DesignerCarousel = ({items}: Props) => {
   return (
     <Wrapper>
       <Slider {...settings}>
-        {items?.map((item) => {
+        {items ? items.map((item:any) => {
           return (
             <div >
               <Cards info={item}/>
             </div>
           );
-        })}
+        }) : null }
       </Slider>
       
     </Wrapper>

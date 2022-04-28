@@ -4,18 +4,19 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import Cards from "../../Commons/Cards";
+import { getHotDesigner } from "../../../store/api";
+import { useQuery } from "react-query";
 
-export interface hotDesignersProps {
-  designer_seq: number;
-  user_nickname: string;
-  user_profile_img: string;
-  designer_shop_name: string;
-  follow_follower_length: number;
-  designs: number;
+
+export interface IHotDesigner {
+  designer_seq : number;
+  designerNickName : string;
+  designerImgUrl : string;
+  // designer_shop_name : string;
+  followerNum : number;
+  nailartCount : number; 
 }
-export interface Props {
-  items: hotDesignersProps[];
-}
+
 
 // export interface DesignersProps {
 //   img: string;
@@ -25,6 +26,7 @@ export interface Props {
 //   designsCnt: number;
 // }
 const HotDesignersContent = () => {
+
   //디자이너 데이터 가져오기
   // const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
   // useEffect(() => {
@@ -43,47 +45,50 @@ const HotDesignersContent = () => {
   //   fetchData();
   //   console.log("디자이너 데이터 가져오기");
   // }, []);
-  const designers: hotDesignersProps[] = [
-    {
-      designer_seq: 1,
-      user_nickname: "Designer1",
-      user_profile_img:
-        "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
-      designer_shop_name: "Nailshop1",
-      follow_follower_length: 50,
-      designs: 40,
-    },
-    {
-      designer_seq: 2,
-      user_nickname: "Designer1",
-      user_profile_img:
-        "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
-      designer_shop_name: "Nailshop1",
-      follow_follower_length: 50,
-      designs: 40,
-    },
-    {
-      designer_seq: 3,
-      user_nickname: "Designer1",
-      user_profile_img:
-        "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
-      designer_shop_name: "Nailshop1",
-      follow_follower_length: 50,
-      designs: 40,
-    },
-    {
-      designer_seq: 4,
-      user_nickname: "Designer1",
-      user_profile_img:
-        "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
-      designer_shop_name: "Nailshop1",
-      follow_follower_length: 50,
-      designs: 40,
-    },
-  ];
+  // const designers: IHotDesigner[] = [
+  //   {
+  //     designer_seq: 1,
+  //     user_nickname: "Designer1",
+  //     user_profile_img:
+  //       "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
+  //     designer_shop_name: "Nailshop1",
+  //     follow_follower_length: 50,
+  //     designs: 40,
+  //   },
+  //   {
+  //     designer_seq: 2,
+  //     user_nickname: "Designer1",
+  //     user_profile_img:
+  //       "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
+  //     designer_shop_name: "Nailshop1",
+  //     follow_follower_length: 50,
+  //     designs: 40,
+  //   },
+  //   {
+  //     designer_seq: 3,
+  //     user_nickname: "Designer1",
+  //     user_profile_img:
+  //       "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
+  //     designer_shop_name: "Nailshop1",
+  //     follow_follower_length: 50,
+  //     designs: 40,
+  //   },
+  //   {
+  //     designer_seq: 4,
+  //     user_nickname: "Designer1",
+  //     user_profile_img:
+  //       "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg",
+  //     designer_shop_name: "Nailshop1",
+  //     follow_follower_length: 50,
+  //     designs: 40,
+  //   },
+  // ];
+
+  const {isLoading:designerLoading, data : designerData} = useQuery('hotDesigner',getHotDesigner)
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      {designers.map((item, idx) => (
+      {designerData && designerData.slice(0,4).map((item:any, idx:string) => (
         <div key={idx} style={{ margin: "10px 20px" }}>
           <Cards info={item} />
         </div>

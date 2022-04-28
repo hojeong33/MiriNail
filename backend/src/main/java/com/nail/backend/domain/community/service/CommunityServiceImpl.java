@@ -86,7 +86,7 @@ public class CommunityServiceImpl implements CommunityService{
 
 
                 CommunityImg communityImg = CommunityImg.builder()
-                        .communitySeq(saveCommunity.getCommunitySeq())
+                        .community(saveCommunity)
                         .communityImgUrl(communityFileUrl)
                         .build();
 

@@ -41,10 +41,9 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "등록 실패")
     })
     @PostMapping("/nailart")
-    public ResponseEntity<BaseResponseBody> qnaOfNailRegister(@RequestPart MultipartFile qnaFile, @ModelAttribute QnaRegisterPostReq qnaRegisterPostReq)throws IOException {
+    public ResponseEntity<BaseResponseBody> qnaOfNailRegister(@RequestPart(value = "qnaFile", required = false) MultipartFile qnaFile , @ModelAttribute QnaRegisterPostReq qnaRegisterPostReq)throws IOException {
 
         log.info("qnaOfNailRegister - 호출");
-        Long userId = Long.valueOf(1L);
         Qna res = qnaService.qnaOfNailRegister(qnaFile, qnaRegisterPostReq);
         if(!res.equals(null)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));

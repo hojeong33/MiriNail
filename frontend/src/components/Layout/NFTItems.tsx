@@ -6,11 +6,13 @@ import { fetchDesigns } from '../../store/api';
 import { nftItems } from '../../store/atoms';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { Loading } from '../Commons/Loading';
 const Wrapper = styled.div`
 
 
   .clear {
     zoom : 1;
+    min-height : 1000px;
     li {
       height :254px;
       float: left;
@@ -78,7 +80,7 @@ const NFTItems = () => {
           );
         })} */}
       <ul className="clear">
-        {nftLoading ? null : nftData.map((e:any, idx:any) => {
+        {nftLoading && mypage === 1 ? <Loading /> : nftData?.map((e:any, idx:number) => {
           return (
             <div onClick={() => navigate(`/nft/${e.nailartSeq}`)}>
               
