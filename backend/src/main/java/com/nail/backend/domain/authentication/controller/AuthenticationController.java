@@ -45,7 +45,6 @@ public class AuthenticationController {
     @PostMapping
     public ResponseEntity<BaseResponseBody> artistRegister(@ModelAttribute ArtistRegisterPostReq artistRegisterPostReq,
                                                                @RequestPart(value = "registrationFile") MultipartFile registrationFile,
-                                                               @RequestPart(value = "portfolioFile")MultipartFile portfolioFile,
                                                                Principal principal) throws IOException {
 
         // 디자이너 정보는 artistRegisterPostReq에, 사업자 등록증은 productFile, 포트폴리오는 portfolioFile에 담아온다.
@@ -53,7 +52,7 @@ public class AuthenticationController {
         // 저장 결과 성공적이면 201, 중간에 다른 정보들이 없으면 404
 
         log.info("artistRegister - 호출");
-        DesignerApplication designerApplication = authenticationService.artistRegister(artistRegisterPostReq,registrationFile,portfolioFile,principal.getName());
+        DesignerApplication designerApplication = authenticationService.artistRegister(artistRegisterPostReq,registrationFile,principal.getName());
         if(!designerApplication.equals(null)) {
             return ResponseEntity.status(201).body(BaseResponseBody.of(201, "등록 성공"));
         }
