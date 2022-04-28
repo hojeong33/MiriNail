@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("QnaRegisterPostReq")
+@ApiModel("CommunityRegisterPostReq")
 @ToString
 public class CommunityRegisterPostReq {
 
