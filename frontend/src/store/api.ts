@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { page } from './atoms'
 const ACCESS_TOKEN = localStorage.getItem('token')
-const base_url = 'http://localhost:8080/api/'
+const base_url = 'http://k6e101.p.ssafy.io:8080/api/'
 
 
 // 디자인 관련
