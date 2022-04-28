@@ -5,13 +5,14 @@ import { page } from '../../store/atoms';
 import { fetchDesigns } from '../../store/api';
 import { nftItems } from '../../store/atoms';
 import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 const Wrapper = styled.div`
 
 
   .clear {
     zoom : 1;
     li {
-
+      height :254px;
       float: left;
       width: 25%;
       text-align: center;
@@ -60,7 +61,7 @@ const NFTItems = () => {
   
   const [mypage,setMyPage] = useRecoilState(page)
   const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",mypage], fetchDesigns)
-
+  const navigate = useNavigate();
   useEffect(() => {
     setMyPage(1)
   },[])
@@ -79,13 +80,16 @@ const NFTItems = () => {
       <ul className="clear">
         {nftLoading ? null : nftData.map((e:any, idx:any) => {
           return (
-            <div>
+            <div onClick={() => navigate(`/nft/${e.nailartSeq}`)}>
+              
+              {/* <img src="" alt="" /> */}
               <li className="ItemListType">
                <a href="" className="ItemBox">
                  <div className="imx">
-                   <img src={e.nailartThumbnailUrl} alt="" />
+                   <img src={e.nailartThumbnailUrl} alt="엥?" />
                    <div className="itemName">{e.nailartType} - {e.nailartDetailColor}</div>
                    <div className="itemPrice">{e.nailartPrice}</div>
+               
                    {/* <div className="hashTag">#{e.nailartWeather} #{e.designerInfo.user.userNickname}</div> */}
                  </div>
                </a>

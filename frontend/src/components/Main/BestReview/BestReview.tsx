@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import BestReviewCarousels from "./BestReviewCarousels";
 import BestReviewTitle from "./BestReviewTitle";
-
+import axios from "axios";
 export interface BestReviewProps {
   name: string;
   price: number;
@@ -12,6 +13,24 @@ export interface Props {
 }
 
 const BestReview = () => {
+  //베스트 리뷰 데이터 가져오기
+  // const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (ACCESS_TOKEN) {
+  //       const result = await axios({
+  //         method: "get",
+  //         url: `http://localhost:8080/api/community/`,
+  //         headers: {
+  //           Authorization: `Bearer ${ACCESS_TOKEN}`,
+  //         },
+  //       });
+  //       console.log(result);
+  //     }
+  //   };
+  //   fetchData();
+  //   console.log("베스트 리뷰 데이터 가져오기");
+  // }, []);
   const bestReview: BestReviewProps[] = [
     {
       img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
@@ -75,7 +94,14 @@ const BestReview = () => {
     },
   ];
   return (
-    <div style={{ backgroundColor: "#333333", paddingBottom: "200px" }}>
+    <div
+      style={{
+        backgroundColor: "#1f1f1f",
+        paddingBottom: "250px",
+        paddingTop: "50px",
+        paddingLeft: "20%",
+      }}
+    >
       <BestReviewTitle></BestReviewTitle>
       <BestReviewCarousels items={bestReview}></BestReviewCarousels>
     </div>

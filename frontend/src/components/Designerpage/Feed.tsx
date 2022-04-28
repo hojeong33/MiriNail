@@ -1,7 +1,9 @@
-import styled from 'styled-components'
-import { useState } from 'react';
-
-
+import styled from "styled-components";
+import { useState } from "react";
+import moment from "moment";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,34 +32,65 @@ const Divider = styled.div`
 
 const Picture = styled.div`
   img {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
   }
-`
+`;
+
+const StyledSlider = styled(Slider)`
+  .slick-dots {
+    bottom: 10px;
+  }
+  .slick-track {
+    display: flex;
+  }
+  width: 300px;
+`;
 
 interface IState {
   feed: {
-    title: string;
-    date: string;
-    imgurl: string;
-    content: string;
-  }
+    designerNewsDesc: string;
+    designerNewsImgUrl: any[];
+    designerNewsRegedAt: any;
+    designerNewsSeq: number;
+    designerNewsTitle: string;
+    designerSeq: number;
+  };
 }
 
-const Feed:React.FC<IState> = ({ feed }) => {
-  
+const Feed: React.FC<IState> = ({ feed }) => {
+  console.log(feed.designerNewsImgUrl);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    // autoplay: true,
+    // autoplaySpeed: 2000,
+  };
 
   return (
     <Wrapper>
       <div className="dividertop">
-        <div>{feed.title}</div>
-        <div>{feed.date}</div>
+        <div>{feed.designerNewsTitle}</div>
+        <div>{moment(feed.designerNewsRegedAt).format("YYYY-MM-DD")}</div>
       </div>
       <Divider></Divider>
-      <Picture>{feed.imgurl && <img src={feed.imgurl} alt="" />}</Picture>
-      <div className="feedcontent">{feed.content}</div>
+      {feed.designerNewsImgUrl.length !== 0 && (
+        <StyledSlider {...settings}>
+          {feed.designerNewsImgUrl.map((pic, idx) => {
+            return (
+              <Picture key={idx}>
+                <img src={pic.designerNewsImgUrl} alt="" />
+              </Picture>
+            );
+          })}
+        </StyledSlider>
+      )}
+      <div className="feedcontent">{feed.designerNewsDesc}</div>
     </Wrapper>
   );
-}
+};
 
-export default Feed
+export default Feed;

@@ -134,32 +134,32 @@ body {
 
 
 
-export interface hotDesignersProps {
-  designer_seq : number;
-  user_nickname : string;
-  user_profile_img : string;
-  designer_shop_name : string;
-  follow_follower_length : number;
-  designs : number; 
-}
-export interface Props {
-  items : hotDesignersProps[];
+// export interface hotDesignersProps {
+//   designerSeq : number;
+//   designerNickName : string;
+//   designerImgUrl : string;
+//   // designer_shop_name : string;
+//   followerNum : number;
+//   nailartCount : number; 
+// }
+// export interface Props {
+//   items : hotDesignersProps[];
   
-}
+// }
 
-export interface Prop {
-  info : hotDesignersProps;
-}
+// export interface Prop {
+//   info : hotDesignersProps;
+// }
 
 
-const Cards = ({info}: Prop) => {
+const Cards = ({info}: any) => {
 
   return (
     <>
       <Wrapper>
         <div className="col-md-12">
-          <div className="profile-card-6"><img src={info.user_profile_img} className="img img-responsive" />
-            <div className="profile-name">{info.user_nickname}</div>
+          <div className="profile-card-6"><img src={info.designerImgUrl} className="img img-responsive" />
+            <div className="profile-name">{info.designerNickName}</div>
               <div className="profile-position" style={{color:"#c5c4c4"}}>{info.designer_shop_name}</div>
               <div className="profile-overview">
                 <div className="profile-overview">
@@ -167,12 +167,12 @@ const Cards = ({info}: Prop) => {
                     <div className="col">
                     </div>
                     <div className="col">
-                      <h3>{info.follow_follower_length}</h3>
-                      <p>Followers</p>
+                      <h3>{info.followerNum}</h3>
+                      <p>팔로워</p>
                     </div>
                     <div className="col">
-                      <h3>{info.designs}</h3>
-                      <p>Designs</p>
+                      <h3>{info.nailartCount}</h3>
+                      <p>작품</p>
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
+import AddressModal from "./AddressModal";
 
 
 const Wrapper = styled.div`
@@ -66,6 +67,77 @@ const FormWrapper = styled.div`
     height: '400px';
     padding: '7px';
   }
+  .underline {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 2px;
+    width: 200px;
+    margin-top: 20px;
+    padding: 5px;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  .addressbtn {
+
+    input {
+      width: 400px;
+      border-bottom-width: 2px;
+    }
+    button {
+      padding: 6px 15px;
+      margin-left: 15px;
+      background-color: #333;
+      color: white;
+    }
+  }
+`;
+
+const UploadBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  label {
+    position: relative;
+    margin: 30px;
+    color: black;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    border-radius: 5px;
+    .filelabel {
+      display: flex;
+      border: 1px solid #333;
+      width: 250px;
+      justify-content: space-between;
+      align-items: center;
+      .labelleft {
+        padding: 5px;
+      }
+      .labelright {
+        background-color: #333;
+        color: white;
+        padding: 5px 15px;
+        cursor: pointer;
+      }
+    }
+  }
+  .file {
+    display: none;
+  }
+  .file-name {
+    margin-left: 15px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #6225E6;
+    text-align: left;
+    p {
+      margin: 0;
+    }
+  }
 `;
 
 const Divider = styled.div`
@@ -75,15 +147,49 @@ const Divider = styled.div`
 `;
 
 const Apply = () => {
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  const [address, setAddress] = useState(''); // 주소
-  const [addressDetail, setAddressDetail] = useState(''); // 상세주소
-  const [isOpenPost, setIsOpenPost] = useState(false);
+  const [shopName, setShopName] = useState("")
+  const [phonNumber, setPhoneNumber] = useState("")
+  const [address, setAddress] = useState(""); // 주소
+  const [addressDetail, setAddressDetail] = useState(""); // 상세주소
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [file, setFile] = useState<any>();
 
- 
-  const onChangeOpenPost = () => {
-    setIsOpenPost(!isOpenPost);
+  const handleModalOpen = () => {
+    setIsOpen(true);
   };
+
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
+
+  const onChangeShopName = (e:any) => {
+    setShopName(e.target.value)
+  }
+
+  const onChangePhoneNumber = (e:any) => {
+    setPhoneNumber(e.target.value)
+  }
+
+  const handleFileOnChange = (e: React.ChangeEvent) => {
+    console.log("메인파일변화");
+    setFile((e.target as HTMLInputElement).files?.item(0));
+    console.log((e.target as HTMLInputElement).files?.item(0));
+    // if ((e.target as HTMLInputElement).files) {
+    //   encodeMainFileToBasek64((e.target as HTMLInputElement).files?.item(0));
+    // }
+  };
+
+  // const encodeMainFileToBasek64 = (fileBlob: any) => {
+  //   const reader: any = new FileReader();
+  //   if (fileBlob) {
+  //     reader.readAsDataURL(fileBlob);
+  //   }
+  //   return new Promise(() => {
+  //     reader.onload = () => {
+  //       setFileSrc(reader.result);
+  //     };
+  //   });
+  // };
 
   const onCompletePost = (data:any) => {
     let fullAddr = data.address;
@@ -101,7 +207,7 @@ const Apply = () => {
 
     setAddress(data.zonecode);
     setAddressDetail(fullAddr);
-    setIsOpenPost(false);
+    setIsOpen(false);
   };
   // const { data } = useQuery(
   //   ["logDate", month],
@@ -119,32 +225,85 @@ const Apply = () => {
   //   }
   // );
 
-  const postCodeStyle = {
-    display: 'block',
-    position: 'relative',
-    top: '0%',
-    width: '400px',
-    height: '400px',
-    padding: '7px',
-  };
-
+  const cutWordLength = (word:string) => {
+    if (!word) return;
+    let result = word
+    if (word.length > 10) {
+      result = result.slice(0,10) + "..."
+    }
+    return result
+  }
 
   return (
     <Wrapper>
       <FormWrapper>
         <div className="menu">
-          <div className="menuSelectText">디자이너 등록 정보</div>
+          <div className="menuSelectText">디자이너 정보 입력</div>
           <div className="menucontent">
-            <input type="text" placeholder="네일 샵 명"/>
-            <button onClick={onChangeOpenPost}>dd</button>
-            {isOpenPost  ? (
-         <DaumPostcode className="postcode" autoClose onComplete={onCompletePost } />
-      ) : null}
-            <input type="text" placeholder="연락처"/>
+            <input
+              className="underline"
+              type="text"
+              onChange={onChangeShopName}
+              defaultValue={shopName}
+              spellCheck="false"
+              placeholder="네일 샵 명"
+            />
+            <input
+              className="underline"
+              type="text"
+              onChange={onChangePhoneNumber}
+              defaultValue={phonNumber}
+              spellCheck="false"
+              placeholder="연락처 (000-0000-0000)"
+            />
+            <div className="addressbtn">
+              <input
+                className="underline"
+                type="text"
+                placeholder="주소 입력"
+                spellCheck="false"
+                onClick={handleModalOpen}
+                defaultValue={addressDetail}
+              />
+              <button className="addressbtn" onClick={handleModalOpen}>
+                주소찾기
+              </button>
+            </div>
           </div>
         </div>
-        <button className="submitbutton">예약하기</button>
+        <div className="menu">
+          <div className="menuSelectText">사업자 등록증 등록</div>
+          <UploadBox>
+            <label className={file?.type.slice(0, 5)} htmlFor="chooseFile">
+              <div className="filelabel">
+                <div className="labelleft">{cutWordLength(file?.name)}</div>
+                <div className="labelright">파일첨부</div>
+              </div>
+            </label>
+            <input
+              className="file"
+              id="chooseFile"
+              type="file"
+              accept="image/*"
+              onChange={handleFileOnChange}
+            ></input>
+            {/* <div className="file-name">
+            <p>{file?.name}</p>
+          </div>
+           */}
+            {/* {file?.type.slice(0, 5)} */}
+          </UploadBox>
+        </div>
+        <button className="submitbutton">등록 신청하기</button>
       </FormWrapper>
+
+      <div>
+        <AddressModal
+          visible={isOpen}
+          onClose={handleModalClose}
+          onCompletePost={onCompletePost}
+        ></AddressModal>
+      </div>
     </Wrapper>
   );
 }

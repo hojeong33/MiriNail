@@ -6,6 +6,24 @@ export interface CommunityContentProps {
   id: number;
 }
 const CommunityContent = () => {
+  //소통게시글 데이터 가져오기
+  // const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (ACCESS_TOKEN) {
+  //       const result = await axios({
+  //         method: "get",
+  //         url: `http://localhost:8080/api/community/`,
+  //         headers: {
+  //           Authorization: `Bearer ${ACCESS_TOKEN}`,
+  //         },
+  //       });
+  //       console.log(result);
+  //     }
+  //   };
+  //   fetchData();
+  //   console.log("소통게시글 데이터 가져오기");
+  // }, []);
   //최신 소통게시글 20개
   const contents: CommunityContentProps[] = [
     {

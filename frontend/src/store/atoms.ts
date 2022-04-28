@@ -29,12 +29,28 @@ export const page = atom({
   effects_UNSTABLE : [persistAtom],
 })
 
+export const page2 = atom({
+  key: "page2",
+  default : 1,
+  effects_UNSTABLE : [persistAtom]
+})
+
 export const getNftItems = selector({
   key: "get/nftItems",
   get: async() => {
     const data = await fetchDesigns(1)
     return data
   },
-  
 })
 
+export const designerId = atom({
+  key : "designerId",
+  default : '',
+  effects_UNSTABLE : [persistAtom]
+})
+
+export const designerAtom = atom({
+  key : "designeratom",
+  default : {},
+  effects_UNSTABLE : [persistAtom],
+})
