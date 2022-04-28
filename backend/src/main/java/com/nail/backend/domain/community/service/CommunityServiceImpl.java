@@ -5,12 +5,10 @@ import com.nail.backend.domain.authentication.service.AwsS3Service;
 import com.nail.backend.domain.community.db.entity.Community;
 import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.db.entity.CommunityImg;
-import com.nail.backend.domain.community.db.repository.CommunityCommentRepository;
-import com.nail.backend.domain.community.db.repository.CommunityCommentRepositorySupport;
-import com.nail.backend.domain.community.db.repository.CommunityImgRepository;
-import com.nail.backend.domain.community.db.repository.CommunityRepository;
+import com.nail.backend.domain.community.db.repository.*;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
+import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.qna.response.QnaGetRes;
 import com.nail.backend.domain.user.db.entity.User;
@@ -54,6 +52,9 @@ public class CommunityServiceImpl implements CommunityService{
     CommunityCommentRepository communityCommentRepository;
 
     @Autowired
+    CommunityRepositorySupport communityRepositorySupport;
+
+    @Autowired
     CommunityCommentRepositorySupport communityCommentRepositorySupport;
 
     @Autowired
@@ -71,6 +72,7 @@ public class CommunityServiceImpl implements CommunityService{
                 .user(user)
                 .communityTitle(communityRegisterPostReq.getCommunityTitle())
                 .communityDesc(communityRegisterPostReq.getCommunityDesc())
+                .communityCnt(0L)
                 .communityRegedAt(LocalDateTime.now())
                 .build();
 
@@ -192,6 +194,31 @@ public class CommunityServiceImpl implements CommunityService{
     public CommunityGetRes getCommunity(Long communitySeq){
         Community community = communityRepository.findById(communitySeq).orElse(null);
 
+        List<CommunityComment> communityComment =
+                communityCommentRepository.findTop10ByCommunityAndCommunityCommentLayerIsNotOrderByCommunityCommentRegedAtDesc
+                (community,3);
+
+        List<CommunityCommentGetRes> resCommentList  = new ArrayList<>();
+
+        for (CommunityComment comments :communityComment) {
+
+            //댓글
+        CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
+                .communityCommentSeq(comments.getCommunityCommentSeq())
+                .userSeq(comments.getUser().getUserSeq())
+                .userNickname(comments.getUser().getUserNickname())
+                .userProfileImg(comments.getUser().getUserProfileImg())
+                .communityCommentDesc(comments.getCommunityCommentDesc())
+                .communityGroupNum(comments.getCommunityGroupNum())
+                .communityCommentLayer(comments.getCommunityCommentLayer())
+                .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
+                .build();
+
+        resCommentList.add(comment);
+        }
+
+
+        // 커뮤니티 게시글
         CommunityGetRes res = CommunityGetRes.builder()
                 .communitySeq(community.getCommunitySeq())
                 .userSeq(community.getUser().getUserSeq())
@@ -202,7 +229,10 @@ public class CommunityServiceImpl implements CommunityService{
                 .communityCnt(community.getCommunityCnt())
                 .communityRegedAt(community.getCommunityRegedAt())
                 .communityImg(community.getCommunityImg())
+                .communityComment(resCommentList)
                 .build();
+
+        communityRepositorySupport.modifyCommunityCnt(community.getCommunityCnt(),communitySeq);
         return res;
     }
 
@@ -218,6 +248,14 @@ public class CommunityServiceImpl implements CommunityService{
              return true;
         }
         return false;
+
+    }
+
+    public boolean communityCommentRemove(Long communitySeq){
+
+        communityCommentRepositorySupport.deleteCommunityComment(communitySeq);
+
+        return true;
 
     }
 }

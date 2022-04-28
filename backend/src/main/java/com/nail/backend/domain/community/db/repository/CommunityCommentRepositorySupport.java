@@ -31,4 +31,15 @@ public class CommunityCommentRepositorySupport {
                 .execute();
         return execute;
     }
+
+
+    // 댓글 삭제
+    // 삭제된 댓글입니다로 업데이트
+    public Long deleteCommunityComment(Long communityCommentSeq){
+        Long execute = jpaQueryFactory.update(qCommunityComment)
+                .set(qCommunityComment.communityCommentDesc,"삭제된 댓글입니다.")
+                .where(qCommunityComment.communityCommentSeq.eq(communityCommentSeq))
+                .execute();
+        return execute;
+    }
 }
