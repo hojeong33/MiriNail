@@ -2,6 +2,8 @@ package com.nail.backend.domain.community.controller;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.community.db.entity.Community;
+import com.nail.backend.domain.community.db.entity.CommunityComment;
+import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.community.service.CommunityService;
@@ -57,6 +59,29 @@ public class CommunityController {
         }
     }
 
+    @Transactional
+    @ApiOperation(value = "커뮤니티 글 댓글 작성")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "등록 성공"),
+            @ApiResponse(code = 404, message = "등록 실패")
+    })
+    @PostMapping("/comment")
+    public ResponseEntity<BaseResponseBody> communityCommentRegister(@RequestBody CommunityCommentRegisterPostReq communityCommentRegisterPostReq,
+                                                                     Principal principal){
+
+        log.info("communityCommentRegister - 호출");
+//        String userId = principal.getName();
+        String userId = "2217289220";
+
+        System.out.println(communityCommentRegisterPostReq);
+        CommunityComment res = communityService.communityCommentRegister(communityCommentRegisterPostReq,userId);
+        if(!res.equals(null)){
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
+        }
+        else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"등록실패"));
+        }
+    }
 //    READ___________________________________________
     @ApiOperation(value = "커뮤니티 글 전체조회")
     @ApiResponses({

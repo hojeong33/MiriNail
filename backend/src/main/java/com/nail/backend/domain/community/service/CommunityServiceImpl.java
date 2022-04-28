@@ -3,9 +3,13 @@ package com.nail.backend.domain.community.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.nail.backend.domain.authentication.service.AwsS3Service;
 import com.nail.backend.domain.community.db.entity.Community;
+import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.db.entity.CommunityImg;
+import com.nail.backend.domain.community.db.repository.CommunityCommentRepository;
+import com.nail.backend.domain.community.db.repository.CommunityCommentRepositorySupport;
 import com.nail.backend.domain.community.db.repository.CommunityImgRepository;
 import com.nail.backend.domain.community.db.repository.CommunityRepository;
+import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.qna.response.QnaGetRes;
@@ -45,6 +49,12 @@ public class CommunityServiceImpl implements CommunityService{
 
     @Autowired
     CommunityImgRepository communityImgRepository;
+
+    @Autowired
+    CommunityCommentRepository communityCommentRepository;
+
+    @Autowired
+    CommunityCommentRepositorySupport communityCommentRepositorySupport;
 
     @Autowired
     UserRepository userRepository;
@@ -107,6 +117,50 @@ public class CommunityServiceImpl implements CommunityService{
         }
 
         return saveCommunity;
+    }
+
+    public CommunityComment communityCommentRegister(CommunityCommentRegisterPostReq communityCommentRegisterPostReq,
+                                                     String userId){
+        Community community = communityRepository.findById(communityCommentRegisterPostReq.getCommunitySeq()).orElse(null);
+        User user = userRepository.findByUserId(userId);
+
+        if(communityCommentRegisterPostReq.getCommunityCommentLayer() == 1){
+            // 댓글 작성 layer == 1 일 경우
+        CommunityComment communityComment = CommunityComment.builder()
+                .community(community)
+                .user(user)
+                .communityCommentDesc(communityCommentRegisterPostReq.getCommunityCommentDesc())
+                .communityCommentLayer(communityCommentRegisterPostReq.getCommunityCommentLayer())
+                .communityCommentRegedAt(LocalDateTime.now())
+                .build();
+
+        CommunityComment res = communityCommentRepository.save(communityComment);
+
+        communityCommentRepositorySupport.setCommentGroup(res.getCommunityCommentSeq());
+        return res;
+
+        }else{
+            // 대댓글 작성
+            CommunityComment communityComment = CommunityComment.builder()
+                    .community(community)
+                    .user(user)
+                    .communityCommentDesc(communityCommentRegisterPostReq.getCommunityCommentDesc())
+                    .communityGroupNum(communityCommentRegisterPostReq.getCommunityCommentSeq())
+                    .communityCommentLayer(communityCommentRegisterPostReq.getCommunityCommentLayer())
+                    .communityCommentRegedAt(LocalDateTime.now())
+                    .build();
+
+            CommunityComment res = communityCommentRepository.save(communityComment);
+
+            //원댓글에 대댓글 있다는표시 -  layer2로 변경
+            if(communityCommentRepository.findById(communityCommentRegisterPostReq.getCommunityCommentSeq())
+                    .get().getCommunityCommentLayer() == 1){
+                communityCommentRepositorySupport.modifyCommentLayer(communityCommentRegisterPostReq.getCommunityCommentSeq());
+            }
+            return res;
+
+        }
+
     }
 
 //    READ___________________________________________
