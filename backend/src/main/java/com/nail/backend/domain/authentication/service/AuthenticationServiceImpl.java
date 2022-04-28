@@ -46,7 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
     @Override
     public DesignerApplication artistRegister(ArtistRegisterPostReq artistRegisterPostReq,
-            MultipartFile registrationFile, MultipartFile portfolioFile, String userId) throws IOException {
+            MultipartFile registrationFile, String userId) throws IOException {
 
         // 사업자 등록증 파일 처리
 
@@ -69,31 +69,12 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         file.delete();
 
 
-        // 포트폴리오 처리
 
-        // 실제 파일 이름을 받아서 랜덤한 이름으로 변경해준다.
-        String portfoliFileName = awsS3Service.createFileName(portfolioFile.getOriginalFilename());
-
-        // 파일 객체 생성
-        // System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
-        File file2 = new File(System.getProperty("user.dir") + portfoliFileName);
-
-        // 파일 저장
-        portfolioFile.transferTo(file2);
-
-        // S3 파일 업로드
-        awsS3Service.uploadOnS3(portfoliFileName, file2);
-        // 주소 할당
-        String portfolioUrl = amazonS3Client.getUrl(bucket, portfoliFileName).toString();
-
-        // 파일 삭제
-        file2.delete();
 
         User user = userRepository.findByUserId(userId);
         DesignerApplication designerApplication = DesignerApplication.builder()
                 .designerSeq(user.getUserSeq())
                 .designerCertification(registrationFileUrl)
-                .designerPortfolio(portfolioUrl)
                 .designerShopName(artistRegisterPostReq.getDesignerShopName())
                 .designerAddress(artistRegisterPostReq.getDesignerAddress())
                 .designerAuthStatus(true)
