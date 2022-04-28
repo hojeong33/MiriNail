@@ -14,3 +14,12 @@ export const postAsk = async (qnaDesc:string, qnaDesignerSeq:number, qnaTitle:st
   )
   return response.data
 }
+
+// 디자이너에게 작성된 1:1 문의 조회
+export const getDesignerAsk = async (page:number, size:number, designerSeq:number, qnaType:number) => {
+  const response = await apiClient.get<any>(
+    `/qna/designer/${designerSeq}/${qnaType}`,
+    { params: { page, size, designerSeq, qnaType } }
+  )
+  return response.data
+}
