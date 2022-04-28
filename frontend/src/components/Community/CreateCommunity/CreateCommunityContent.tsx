@@ -152,18 +152,33 @@ const CreateCommunityContent = () => {
     async () => {
       console.log(communityDesc);
       console.log(communityTitle);
-      const formdata = new FormData();
+      const formdata: any = new FormData();
       formdata.append("communityDesc", communityDesc);
       formdata.append("communityTitle", communityTitle);
+      for (let key of formdata.keys()) {
+        console.log(key);
+      }
 
+      /* value 확인하기 */
+      for (let value of formdata.values()) {
+        console.log(value);
+      }
+      axios
+        .post("http://localhost:8080/api/community", formdata, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(console.log)
+        .catch(console.log);
       // const files=[];
       // formdata.append("communityFiles",);
       // communityImages.forEach((e) => {
       //   formdata.append("communityFiles", e);
       // });
-      return await postNewCommunity({
-        formdata,
-      });
+      // return await postNewCommunity({
+      //   formdata,
+      // });
     },
     {
       onSuccess: (res) => console.log(res),
