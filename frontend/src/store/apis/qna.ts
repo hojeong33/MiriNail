@@ -50,3 +50,12 @@ export const postDeleteAsk = async (qnaSeq:number) => {
   )
   return response.data
 }
+
+// 1:1 문의 수정
+export const putAsk = async (qnaDesc:string, qnaSeq:number, qnaTitle:string) => {
+  const response = await apiClient.put<any>(
+    `/qna`,
+    { qnaDesc, qnaSeq, qnaTitle }
+  )
+  return response.data
+}

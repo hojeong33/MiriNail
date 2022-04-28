@@ -1,9 +1,9 @@
 import moment from "moment";
+import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getAskDetail, postDeleteAsk } from "../../store/apis/qna";
+import { getAskDetail, postDeleteAsk, putAsk } from "../../store/apis/qna";
 import { convertQnatypeToText } from "../Commons/functions";
 
 const Container = styled.div`
@@ -54,6 +54,12 @@ const Wrapper = styled.div`
       font-size: 18px;
       margin-bottom: 5px;
     }
+    textarea {
+      width: 100%;
+      resize: none;
+      height: 200px;
+      padding: 5px;
+    }
   }
   .buttons {
     width: 100%;
@@ -62,11 +68,8 @@ const Wrapper = styled.div`
     button {
       margin-left: 10px;
       margin-top: 10px;
-      padding: 10px 20px;
+      padding: 10px 30px;
       color: white;
-    }
-    .deleteBtn {
-      background-color: #f84a4a;
     }
     .editBtn {
       background-color: #2c2c2c;
@@ -91,8 +94,10 @@ interface IData {
   };
 }
 
-const AskDetail = () => {
+const UpdateAsk = () => {
   const {qnaSeq, userSeq} = useParams()
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
   const navigate = useNavigate();
   console.log(qnaSeq)
 
@@ -104,15 +109,17 @@ const AskDetail = () => {
     {
       onSuccess: (res) => {
         console.log(res);
+        setTitle(res.qnaTitle)
+        setContent(res.qnaDesc)
       },
       onError: (err: any) => console.log(err),
     }
   );
 
-  const deleteAsk = useMutation<any, Error>(
-    ["deleteAsk"],
+  const updateAsk = useMutation<any, Error>(
+    ["updateAsk"],
     async () => {
-      return await postDeleteAsk(Number(qnaSeq));
+      return await putAsk(content, Number(qnaSeq), title);
     },
     {
       onSuccess: (res) => {
@@ -123,8 +130,18 @@ const AskDetail = () => {
     }
   );
 
-  const onClickDeleteBtn = () => {
-    deleteAsk.mutate()
+ 
+
+  const onChangeContent = (e:any) => {
+    setContent(e.target.value)
+  }
+
+  const onChangeTitle = (e:any) => {
+    setTitle(e.target.value)
+  }
+
+  const onClickUpdateBtn = () => {
+    updateAsk.mutate()
   }
 
   return isLoading ? (
@@ -146,33 +163,36 @@ const AskDetail = () => {
               <th>No.{data?.qnaSeq}</th>
               <th>장영남</th>
               <th>{convertQnatypeToText(data?.qnaType)}</th>
-              <th>{data?.qnaTitle}</th>
-              <th>{moment(data?.qnaRegedAt).format("YYYY-MM-DD")}</th>
-              <th>{data?.qnaIsAnswered ? "답변완료" : "답변대기"}</th>
+              <th>
+                <input
+                  type="text"
+                  style={{ padding: "2px", width: "300px" }}
+                  defaultValue={title}
+                  spellCheck="false"
+                  onChange={onChangeTitle}
+                />
+              </th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
         </table>
         <div className="box">
           <div className="boxheader">문의내용</div>
-          {data?.qnaDesc}
+          <textarea
+            name=""
+            id=""
+            spellCheck="false"
+            defaultValue={content}
+            onChange={onChangeContent}
+          ></textarea>
         </div>
-        {data?.qnaIsAnswered && (
-          <div className="box">
-            <div className="boxheader">답변</div>
-            답변답변
-          </div>
-        )}
         <div className="buttons">
-          <Link to={`/designerpage/${userSeq}/updateask/${qnaSeq}`}>
-            <button className="editBtn">수정</button>
-          </Link>
-          <button className="deleteBtn" onClick={onClickDeleteBtn}>
-            삭제
-          </button>
+          <button className="editBtn" onClick={onClickUpdateBtn}>수정완료</button>
         </div>
       </Wrapper>
     </Container>
   );
 }
 
-export default AskDetail;
+export default UpdateAsk;
