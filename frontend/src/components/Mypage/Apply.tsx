@@ -234,6 +234,10 @@ const Apply = () => {
     return result
   }
 
+  const onClickSubmit = () => {
+    
+  }
+
   return (
     <Wrapper>
       <FormWrapper>
@@ -250,7 +254,7 @@ const Apply = () => {
             />
             <input
               className="underline"
-              type="text"
+              type="tel"
               onChange={onChangePhoneNumber}
               defaultValue={phonNumber}
               spellCheck="false"
@@ -294,7 +298,7 @@ const Apply = () => {
             {/* {file?.type.slice(0, 5)} */}
           </UploadBox>
         </div>
-        <button className="submitbutton">등록 신청하기</button>
+        <button className="submitbutton" onClick={onClickSubmit}>등록 신청하기</button>
       </FormWrapper>
 
       <div>
