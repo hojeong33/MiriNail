@@ -153,7 +153,7 @@ const CreateCommunityContent = () => {
     if (ACCESS_TOKEN) {
       const result = await axios({
         method: "post",
-        url: `https://k6e101.p.ssafy.io:8080/api/community`,
+        url: `https://k6e101.p.ssafy.io/api/community`,
         data: {},
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,

@@ -156,7 +156,7 @@ export default function CommunityImgList() {
       if (ACCESS_TOKEN) {
         const result = await axios({
           method: "get",
-          url: `https://k6e101.p.ssafy.io:8080/api/community`,
+          url: `https://k6e101.p.ssafy.io/api/community`,
           headers: {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },

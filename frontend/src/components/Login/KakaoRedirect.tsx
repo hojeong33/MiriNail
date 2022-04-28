@@ -14,7 +14,7 @@ const KakaoRedirect = () => {
       axios({
         method: "GET",
         // url: "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http:/localhost:3000/oauth2/redirect",
-        url: `https://k6e101.p.ssafy.io:8080/?code=${code}`,
+        url: `https://k6e101.p.ssafy.io/?code=${code}`,
       })
         .then((res) => {
           console.log(res); // 토큰이 넘어올 것임
