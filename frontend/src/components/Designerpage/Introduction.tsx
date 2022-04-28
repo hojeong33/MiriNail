@@ -51,6 +51,7 @@ const Wrapper = styled.div`
     display: flex;
     margin-top: 20px;
     width: 768px;
+    min-height: 100px;
     border: 1px solid #e0e0e0;
     padding: 20px;
     img {
@@ -72,14 +73,15 @@ interface IState {
 }
 
 function Introduction() {
-  const [content, setContent] = useState<IState["content"]>(
-    {
-      imgurl: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA4MDlfMjYw%2FMDAxNjI4NTAwNDU3NjQ2.y6HMk-12DUgv3FSOysuLr0GYz9OdQkSq6-VVPiQmxi8g.NvqUANKYigGgV6v-ysx4GotLQxFl384ExMedS_S_nAkg.JPEG.hery3436%2FIMG_4464.jpg&type=sc960_832",
-      content: "dadaism__official\n🐯\n안녕하세요.\n다다이즘입니다 ✋🏻\n\n수많은 조언과 아이디어로\n생각한게\n루미원장 마음대로 !\n\n \"오마카세 아트\"\n\n선보일까 하는데 저렴한 가격으로 할거에오 👼🏻 🤍\n\n너낌은 알아야 하니까 동영상 첨부 해봅니다..!\n\n많관부〰️🖤"
-    },
-  )
+  // const [content, setContent] = useState<IState["content"]>(
+  //   {
+  //     imgurl: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA4MDlfMjYw%2FMDAxNjI4NTAwNDU3NjQ2.y6HMk-12DUgv3FSOysuLr0GYz9OdQkSq6-VVPiQmxi8g.NvqUANKYigGgV6v-ysx4GotLQxFl384ExMedS_S_nAkg.JPEG.hery3436%2FIMG_4464.jpg&type=sc960_832",
+  //     content: "dadaism__official\n🐯\n안녕하세요.\n다다이즘입니다 ✋🏻\n\n수많은 조언과 아이디어로\n생각한게\n루미원장 마음대로 !\n\n \"오마카세 아트\"\n\n선보일까 하는데 저렴한 가격으로 할거에오 👼🏻 🤍\n\n너낌은 알아야 하니까 동영상 첨부 해봅니다..!\n\n많관부〰️🖤"
+  //   },
+  // )
   const {userSeq} = useParams();
   const designer = useRecoilValue(designerAtom)  
+  
   return (
     <Wrapper>
       <Link to={`/designerpage/${userSeq}/updateintroduction`}>
@@ -92,26 +94,40 @@ function Introduction() {
         <div className="infocontents">
           <div className="infocontent">
             <div className="tag">샵 이름</div>
-            <div className="tagcontent">{designer.name}</div>
+            <div className="tagcontent">
+              {designer.designerInfo.designerShopName}
+            </div>
           </div>
           <div className="infocontent">
             <div className="tag">연락처</div>
-            <div className="tagcontent">{designer.number}</div>
+            <div className="tagcontent">
+              {designer.designerInfo.user.userTel}
+            </div>
           </div>
           <div className="infocontent">
             <div className="tag">샵 위치</div>
-            <div className="tagcontent">{designer.location}</div>
+            <div className="tagcontent">
+              {designer.designerInfo.designerAddress}
+            </div>
           </div>
           <div className="infocontent">
             <div className="tag">영업시간</div>
-            <div className="tagcontent">10:00 ~ 19:00</div>
+            <div className="tagcontent">
+              {designer.designerInfo.designerShopOpen} ~{" "}
+              {designer.designerInfo.designerShopClose}
+            </div>
           </div>
         </div>
-        <Map location={designer.location} shopName={designer.name} />
+        <Map
+          location={designer.designerInfo.designerAddress}
+          shopName={designer.designerInfo.designerShopName}
+        />
       </div>
       <div className="introductionbox">
-        <div className="content">{content.content}</div>
-        <img src={content.imgurl} alt="" />
+        <div className="content">{designer.designerInfo.designerInfoDesc}</div>
+        {designer.designerInfo.designerInfoImgUrl && (
+          <img src={designer.designerInfo.designerInfoImgUrl} alt="" />
+        )}
       </div>
     </Wrapper>
   );

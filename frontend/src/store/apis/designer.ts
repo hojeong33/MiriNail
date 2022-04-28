@@ -1,5 +1,14 @@
 import { apiClient, fileApiClient } from "./apiClient"
 
+// 디자이너 정보 조회
+export const getDesignerinfo = async (designerSeq:number) => {
+  const response = await apiClient.get<any>(
+    `/designer/profile/${designerSeq}`,
+    { params: { designerSeq } }
+  );
+  return response.data
+}
+
 // 새소식 작성
 export const postNewFeed = async (formdata:any) => {
   const response = await fileApiClient.post<any>(
