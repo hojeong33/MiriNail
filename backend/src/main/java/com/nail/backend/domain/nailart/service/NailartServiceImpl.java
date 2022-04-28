@@ -157,11 +157,7 @@ public class NailartServiceImpl implements NailartService {
 
         return nailartDetailGetRes;
     }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> b034251167bf5797f7d1415c8d95b898c5fb71bf
+    
     @Override
     public Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq, List<MultipartFile> files) {
         Nailart nailart = new Nailart();
