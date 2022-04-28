@@ -283,7 +283,7 @@ function UpdateIntroduction() {
               className="underline"
               spellCheck="false"
               onChange={onChangeShopName}
-              value={shopName}
+              defaultValue={shopName}
             />
           </div>
           <div className="infocontent">
@@ -293,7 +293,7 @@ function UpdateIntroduction() {
               className="underline"
               spellCheck="false"
               onChange={onChangePhoneNumber}
-              value={phoneNumber}
+              defaultValue={phoneNumber}
             />
           </div>
           <div className="shoplocation">
@@ -308,7 +308,7 @@ function UpdateIntroduction() {
                   placeholder="주소 입력"
                   spellCheck="false"
                   onClick={handleModalOpen}
-                  value={addressDetail}
+                  defaultValue={addressDetail}
                 />
                 <button className="addressbtn" onClick={handleModalOpen}>
                   주소찾기
@@ -323,7 +323,7 @@ function UpdateIntroduction() {
             <div className="infocontent">
               <div className="startend">시작</div>
               <input
-                value={designerShopOpen}
+                defaultValue={designerShopOpen}
                 onChange={onChangeDesignerShopOpen}
                 type="text"
                 spellCheck="false"
@@ -333,7 +333,7 @@ function UpdateIntroduction() {
             <div className="infocontent">
               <div className="startend">종료</div>
               <input
-                value={designerShopClose}
+                defaultValue={designerShopClose}
                 onChange={onChangeDesignerShopClose}
                 type="text"
                 spellCheck="false"
@@ -346,7 +346,7 @@ function UpdateIntroduction() {
       </div>
       <div className="introductionbox">
         <textarea
-          value={content}
+          defaultValue={content}
           onChange={onChangeContent}
           spellCheck="false"
           name=""

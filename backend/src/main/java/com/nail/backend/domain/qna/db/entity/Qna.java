@@ -1,6 +1,7 @@
 package com.nail.backend.domain.qna.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -47,12 +48,13 @@ public class Qna {
     @ApiModelProperty(value = "QnA 비공개 여부")
     private boolean qnaIsPrivated;
 
+    @Column(name = "qna_type", columnDefinition = "TINYINT")
+    @ApiModelProperty(value = "문의 종류")
+    private int qnaType;
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime qnaRegedAt;
 
-    @OneToOne
-    @JoinColumn(name = "qnaSeq")
-    private QnaAnswer qnaAnswer;
+
 }

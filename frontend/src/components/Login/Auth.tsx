@@ -30,6 +30,8 @@ const Auth = () => {
       sessionStorage.setItem("userId", test.data.userId);
       sessionStorage.setItem("userProfileImg", test.data.userProfileImg);
       sessionStorage.setItem("userNickname", test.data.userNickname);
+      sessionStorage.setItem("userRole", test.data.userRole);
+      sessionStorage.setItem("userSeq", test.data.userSeq);
       navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
     }
   };

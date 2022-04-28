@@ -1,7 +1,8 @@
 import styled from "styled-components"
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Slider from "react-slick";
 import DesignerCarousel from "./DesignerCarousel";
+import { getHotDesigner, getRecentDesigner } from "../../store/api";
 
 export interface hotDesignersProps {
   designer_seq : number;
@@ -54,103 +55,20 @@ const PageContentThema = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 3,
     // nextArrow: <SampleNextArrow />,
     // prevArrow: <SamplePrevArrow />,
   };
-  const [hotDesigners,setHotDesigniers] = useState<hotDesignersProps[]>([
-    {
-      designer_seq : 1,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 2,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 3,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 4,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 5,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 6,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 7,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 8,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 9,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 10,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 11,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-  ])
 
+  const [hotDesigner,setHotDesigner] = useState<any>([])
+  const [latestDesigner,setLatestDesigner] = useState<any>()
 
+  useEffect(() => {
+    getHotDesigner().then((res):any => setHotDesigner(res))  
+    getRecentDesigner().then((res):any => setLatestDesigner(res))
+  },[])
+  
   return (
     <>
       <Wrapper>
@@ -159,16 +77,16 @@ const PageContentThema = () => {
           <div className="carouselGroup">
             <div>
               <div className="subtitle">Hot Designers</div>
-              <DesignerCarousel items={hotDesigners} />
+              <DesignerCarousel items={hotDesigner} />
             </div>
             <div style={{marginTop:"48px"}}>
               <div className="subtitle">New Designers</div>
-              <DesignerCarousel items={hotDesigners} />
+              <DesignerCarousel items={latestDesigner} />
             </div>
-            <div style={{marginTop:"48px"}}>
+            {/* <div style={{marginTop:"48px"}}>
               <div className="subtitle">High Rate Designers</div>
               <DesignerCarousel items={hotDesigners} />
-            </div>
+            </div> */}
           </div>
         </MainFrame>
         

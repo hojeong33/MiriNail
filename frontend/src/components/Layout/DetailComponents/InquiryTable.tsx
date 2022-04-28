@@ -1,9 +1,15 @@
 
 import styled from 'styled-components'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { Paginations2 } from '../Paginations'
 import OneOneOneWrite from './OneOnOneWrite'
 import { useParams } from 'react-router-dom'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { deleteInquiry, inquiryList, postInquiryAnswer } from '../../../store/api'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { designerId, page2 } from '../../../store/atoms'
+import LockIcon from '@mui/icons-material/Lock';
+import OneOneOneRevise from './OneOnOneRevise'
 
 const Wrapper = styled.div`
   margin-top : 100px;
@@ -68,6 +74,21 @@ const Wrapper = styled.div`
     margin-left:15px;
     font-size:16px;
     font-weight:bold;
+    width:80%;
+  }
+  .questionRev {
+    width:20%;
+    line-height:40px;
+    padding-top:5px;
+    span {
+      background-color:rgb(51, 51, 51);
+      color:white;
+      padding: 5px 10px 5px 10px;
+      margin : 10px 15px 10px 10px;
+      border-radius :5px;
+      text-align:end;
+      cursor:pointer;
+    }
   }
 
   .questionContent {
@@ -111,6 +132,7 @@ const Wrapper = styled.div`
 
   
 `
+
 export interface DummyData {
   id : number
   isAnswer : string
@@ -121,8 +143,21 @@ export interface DummyData {
 }
 
 const InquiryTable = () => {
-  let params = useParams()
-  
+  let params = useParams().id
+  const queryClient = useQueryClient()
+  const [mypage,setMyPage] = useRecoilState(page2)
+  const [myData,setMyData] = useState<any>([])
+  const [answerData,setAnswerData] = useState({
+    qnaAnswerDesc : '',
+    qnaSeq : null,
+  })
+  const writerId = useRecoilValue(designerId)
+  console.log(params)
+  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery(['inquiry',params,mypage], inquiryList)
+  const myId = Number(sessionStorage.getItem('userSeq'))
+  useEffect(() => {
+    setMyPage(1)
+  },[])
 
  
   const [dummy, setDummy] = useState<DummyData[]>(
@@ -238,21 +273,134 @@ const InquiryTable = () => {
       },
     ]  
   )
-  const testFunc = (id:any) => {
-    const mytest:any = document.getElementById(id)
-    mytest?.classList.toggle('active')
-    console.log(mytest.classList.contains('active'))
-    // console.log(mytest.style.display)
-    if (mytest?.style.display === "none") {
-      mytest.style.display = ''
-      console.log('none이엇음')
-    } else {
-      console.log('none아님')
-      mytest.style.display = 'none'
+  const testFunc = (id:any,e:any) => {
+    
+    console.log(e.qnaDesignerSeq,writerId,e.userSeq,Number(myId))
+    if (e.qnaIsPrivated) {
+      if (Number(myId) === writerId || e.userSeq === Number(myId) ) {
+        const mytest:any = document.getElementById(id)
+        mytest?.classList.toggle('active')
+        console.log(mytest.classList.contains('active'))
+        // console.log(mytest.style.display)
+        if (mytest?.style.display === "none") {
+          mytest.style.display = ''
+          console.log('none이엇음')
+        } else {
+          console.log('none아님')
+          mytest.style.display = 'none'
+        }
+      } else {
+        alert('비밀글 입니다')
+      }
+    }
+    else {
+      const mytest:any = document.getElementById(id)
+      mytest?.classList.toggle('active')
+      console.log(mytest.classList.contains('active'))
+      // console.log(mytest.style.display)
+      if (mytest?.style.display === "none") {
+        mytest.style.display = ''
+        console.log('none이엇음')
+      } else {
+        console.log('none아님')
+        mytest.style.display = 'none'
+      }
     }
   }
 
+  const AnswerFunc = (e:any) => {
+    const role = sessionStorage.getItem("userRole")
+    console.log(e)
+    if (e === true) {
+      return "답변 완료"
+    } else {
+      if (role === 'ROLE_ARTIST') {
+        return '작성 대기'
+      } else {
+        return '답변 대기'
+      }
+    }
+    
+  }
 
+  const postInquiryAnswerFunc:any = useMutation((data:any) => 
+    postInquiryAnswer(data)
+    ,{
+      onSuccess: () => {
+        console.log('성공')
+        queryClient.invalidateQueries('inquiry')
+      }
+    }
+  ) 
+
+  const deleteInquiryFunc:any = useMutation((data:any) => 
+    deleteInquiry(data)
+    ,{
+      onSuccess: () => {
+        queryClient.invalidateQueries('inquiry')
+      }
+    }
+  )
+
+  const deleteSubmit = async(e:any) => {
+    deleteInquiryFunc.mutate(e)
+  }
+
+  const answerSubmit = async(e:any) => {
+    const submitData = answerData
+    submitData.qnaSeq = e.qnaSeq
+    // console.log(submitData)
+    postInquiryAnswerFunc.mutate(submitData)
+  }
+  
+  const onChangeInput = (e: any) => {
+    setAnswerData({
+      ...answerData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const AnswerFrame = (e:any) => {
+    console.log(e)
+    const role = sessionStorage.getItem("userRole")
+    if (e.qnaIsAnswered === true) {
+      return (
+      <>
+      {/* <div>sadfasd</div> */}
+        <div className='replyInfo'>
+          <div className='replyCharger'>담당자</div>
+          <div className='replyContent'>{e.qnaAnswer ? e.qnaAnswer.qnaAnswerDesc : null}</div>
+          <div className='replyDate'>{e.qnaAnswer ? e.qnaAnswer.qnaAnswerRegedAt.slice(0,10) : null}</div>
+        </div>
+      </>
+    )} else {
+      if (writerId === myId) {
+        return (
+          <div className='replyInfo'>
+            <div className='replyCharger'>담당자</div>
+            <div className='replyContent' style={{width:"90%",marginLeft:"5%"}}>
+              <textarea name="qnaAnswerDesc" id="" style={{width:"100%", height:"100%",resize:"none"}} onChange={onChangeInput}></textarea>
+            </div>
+            <div className='replyDate' style={{paddingRight:"45px"}}> 
+              <span style={{
+                backgroundColor:"rgb(51, 51, 51)",
+                color:"white",
+                padding: "10px 15px 10px 15px",
+                margin : "10px 5px 10px 10px",
+                borderRadius :"5px",
+                fontSize:"20px"
+                }}
+                onClick={() => answerSubmit(e)}>등록
+              </span>
+            </div>
+          </div>
+        )
+      }
+      else {
+        <div></div>
+      }
+    }
+  }
 
   return (
     <Wrapper>
@@ -269,7 +417,7 @@ const InquiryTable = () => {
           <tr>
             <th scope="col">번호</th>
             <th scope="col">답변여부</th>
-            <th scope="col">내용</th>
+            <th scope="col">제목</th>
             <th scope="col">작성자</th>
             <th scope="col">등록일자</th>
           </tr>
@@ -282,26 +430,38 @@ const InquiryTable = () => {
             <td colSpan={6}>ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</td>
           </tr>
         </tbody> */}
-        {dummy.map(e =>
-        <tbody key={e.id}>
+        {InquiryData?.map((e:any) =>
+        <tbody key={e.qnaSeq}>
             <tr>
-              <td>{e.id}</td>
-              <td>{e.isAnswer}</td>
-              <td style={{cursor:"pointer"}} onClick={() => { testFunc(e.id.toString())}}>{e.content}</td>
-              <td>{e.writer}</td>
-              <td>{e.date}</td>
+              <td>{e.qnaSeq}</td>
+              <td>{AnswerFunc(e.qnaIsAnswered)}</td>
+              <td style={{cursor:"pointer"}} onClick={() => { testFunc(e.qnaSeq.toString(),e)}}>
+                {e.qnaTitle}
+                {e.qnaIsPrivated ? <LockIcon style={{marginLeft:"15px", color:"black"}}/> : null}
+              </td>
+              <td>{e.userNickname}</td>
+              <td>{e.qnaRegedAt.slice(0,10)}</td>
             </tr>
             <tr>
-              <td id={e.id.toString()} colSpan={6} style={{display:'none', }} className="reply">
-                <div className="questionName">프렌치 - 딥 다크(해당 상품 이름)</div>
+              <td id={e.qnaSeq.toString()} colSpan={6} style={{display:'none', }} className="reply">
+                <div style={{display:"flex"}}>
+                  <div className="questionName">프렌치 - 딥 다크(해당 상품 이름)</div>
+                  { e.userSeq === myId ? <div className="questionRev">
+                    <OneOneOneRevise data={e}/><span onClick={() => deleteSubmit(e.qnaSeq)}>삭제</span>
+                  </div>
+                  : null }
+                </div>
                 <hr />
-                <div className='questionContent'>{e.reply.content}</div>
-                <div className='replyInfo'>
+                <div className='questionContent'>
+                  <img src={e.qnaImgUrl} alt="" width="150" height="150"/>
+                  <div style={{marginTop:"15px"}}>{e.qnaDesc}</div>
+                </div>
+                {/* <div className='replyInfo'>
                   <div className='replyCharger'>담당자</div>
                   <div className='replyContent'>안녕하세요. 아니 사실 안녕하지 않아</div>
                   <div className='replyDate'>2022.04.14</div>
-                </div>
-            
+                </div> */}
+                {AnswerFrame(e)}
               </td>
             </tr>
         </tbody>
