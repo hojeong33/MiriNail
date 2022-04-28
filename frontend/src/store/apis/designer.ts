@@ -1,18 +1,4 @@
-import axios from "axios"
-
-const apiClient = axios.create({
-  baseURL: "http://localhost:8080/api",
-  headers: {
-    "Content-type": "application/json",
-  },
-})
-
-const fileApiClient = axios.create({
-  baseURL: "http://localhost:8080/api",
-  headers: {
-    "Content-type": "multipart/form-data",
-  },
-})
+import { apiClient, fileApiClient } from "./apiClient"
 
 // 새소식 작성
 export const postNewFeed = async (formdata:any) => {
@@ -31,3 +17,4 @@ export const getNewFeed = async ({designerSeq, page, size}:any) => {
   )
   return response.data
 }
+

@@ -6,6 +6,8 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import moment from 'moment'
 import axios from "axios";
+import { useMutation } from "react-query";
+import { postAsk } from "../../store/apis/qna";
 
 const Wrapper = styled.div`
   display: flex;
@@ -119,29 +121,41 @@ const CreateAsk = () => {
     setContent(e.target.value)
   }
 
-  const onClickSubmit = async (e:React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-    formData.append("qnaDesc", "수정한내용")
-    formData.append("qnaDesignerSeq", "3")
-    formData.append("qnaTitle", "수정한 제목")
-    try {
-      const data = {
-
-      }
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          processData: false,
-          contentType: false,
-        },
-      };
-      const response = await axios.post("http://localhost:8080/api/qna", formData, config)
-      console.log(response)
-
-    } catch (error) {
-      console.log(error)
+  const createAsk = useMutation<any, Error>(
+    "createAsk",
+    async () => {
+      return await postAsk(content, 3, title, menuType, 1);
+    },
+    {
+      onSuccess: (res) => console.log(res),
+      onError: (err: any) => console.log(err)
     }
+  )
+
+  const onClickSubmit = async (e:React.FormEvent) => {
+    e.preventDefault();
+    createAsk.mutate();
+    // const formData = new FormData()
+    // formData.append("qnaDesc", "수정한내용")
+    // formData.append("qnaDesignerSeq", "3")
+    // formData.append("qnaTitle", "수정한 제목")
+    // try {
+    //   const data = {
+
+    //   }
+    //   const config = {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //       processData: false,
+    //       contentType: false,
+    //     },
+    //   };
+    //   const response = await axios.post("http://localhost:8080/api/qna", formData, config)
+    //   console.log(response)
+
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 
   return (
