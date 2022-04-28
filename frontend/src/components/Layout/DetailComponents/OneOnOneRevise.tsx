@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { designerId } from '../../../store/atoms';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { inquiryList, postInquiry } from '../../../store/api';
+import { inquiryList, postInquiry, reviseInquiry } from '../../../store/api';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -90,36 +90,21 @@ const Content = styled.div`
   .uploadWrap {
     // display : flex;
     width: 50%;
-    // .uploadWrapLeft {
-    //   float :left;
-    //   width : 40%;
-    // }
-    .uploadWrapRight {
-      // margin-top:24px;
-    //   float : left;
-    //   width :60%;
-    //   margin :10px;
-    //   padding : 10px;
-    //   .imgWrap {
-    //     align:center;
-    //     width:100%;
-      // }
-    // }
+    
   }
 
   
 `
 
-export default function OneOneOneWrite(modalStatus:any) {
+export default function OneOneOneRevise({data}:any) {
+  console.log(data)
   let params:any = useParams().id
   const userSeq:any = sessionStorage.getItem('userSeq')
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [designerSeq,setDesignerSeq] = useRecoilState(designerId) 
-  // const {isLoading:isInquiryLoading , data:inquiryData} = useQuery('inquiryList',() => inquiryList(params.id?.slice(1,params.id.length)))
-
+ 
   // 문의 리스트
   const postInquiryFunc:any = useMutation((form:any) => 
       postInquiry(form)
@@ -133,16 +118,12 @@ export default function OneOneOneWrite(modalStatus:any) {
     )
   
   // 인풋
-  const [files,setFiles] = useState('')
   const [inputStatus,setInputStatus] = useState({
     qnaTitle : '',
     qnaDesc : '',
-    qnaPublic : '',
+  
 
   })
-  useEffect(() => {
-    console.log(inputStatus);
-  }, [inputStatus]);
 
   const onChangeInput = (e: any) => {
     setInputStatus({
@@ -151,91 +132,41 @@ export default function OneOneOneWrite(modalStatus:any) {
     });
   };
 
-  const onCheckbox = async(e:any) => {
-    const checkboxes:any = document.getElementsByName("qnaPublic")
-    for await (const box of checkboxes) {
-      console.log(box)
-      box.checked = false
-    }
-    e.target.checked = true
-    setInputStatus({
-      ...inputStatus,
-      [e.target.name]: e.target.value,
-    });
-  }
-  
-  const onLoadFile = (e:any) => {
-    const file = e.target.files
-    console.log(file)
-    setFiles(file)
-  }
   
   
 
   const submitData = {
     ...inputStatus,
-    qnaNailartSeq:params,
-    qnaDesignerSeq:designerSeq
+    // qnaNailartSeq:params.id?.slice(1,params.id.length),
+    qnaSeq : data.qnaSeq
   }
 
   useEffect(() => {
     console.log(submitData)
   },[submitData])
-  const preview = () => {
-    if (!files) {
-      return false
-    }
-    const imgEl:any = document.getElementById('uploadImg')
-    console.log(imgEl)
-    const reader:any = new FileReader()
-    reader.onload = () => {
-      imgEl.src = reader.result
-      imgEl.style.width = "100%"
-      imgEl.style.height = "100%"
-    }
-    reader.readAsDataURL(files[0])
-    console.log(imgEl)
-    
-  }
-  useEffect(() => {
-   preview()
+  
 
-  },[files])
-
+  const reviseInquiryFunc:any = useMutation((body:any) => 
+  reviseInquiry(body)
+  ,{
+    onSuccess: () => {
+      console.log('성공')
+      queryClient.invalidateQueries('inquiry')
+    }
+  })
   
   const submit = async() => {
-    
-    const formdata = new FormData()
-    console.log(userSeq)
-    formdata.append('qnaFile',files[0])
-    // formdata.append('qnaRegisterPostReq',testData)
-    formdata.append('qnaDesc', inputStatus.qnaDesc)
-    formdata.append('qnaDesignerSeq',submitData.qnaDesignerSeq)
-    formdata.append('qnaIsPrivated',submitData.qnaPublic)
-    formdata.append('qnaNailartSeq',submitData.qnaNailartSeq)
-    formdata.append('qnaTitle',inputStatus.qnaTitle)
-    formdata.append('userSeq',userSeq)
-    
-    await postInquiryFunc.mutate(formdata)
+    await reviseInquiryFunc.mutate(submitData)
     setOpen(false)
-    //  스트링으로 보내야 함.
-    
-    // await axios.post('http://localhost:8080/api/qna',formdata,{
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data'
-    //   }
-    //   }).then(console.log).catch(console.log)
-
-
   }
   
 
 
   return (
-    <div>
-      <div onClick={handleOpen}>
-        문의글 작성
-      </div>
+    <>
+      <span onClick={handleOpen}>
+        수정
+      </span>
       <Modal
         open={open}
         onClose={handleClose}
@@ -247,11 +178,11 @@ export default function OneOneOneWrite(modalStatus:any) {
             <div>1대1 문의</div>
             <div style={{display:"flex",paddingTop:"15px",fontSize:"18px"}}>
               <div className="CheckBox">
-                <input type="checkbox" id="c1" name="qnaPublic" value="false" onChange={onCheckbox}/>
+                <input type="checkbox" id="c1" name="qnaPublic" value="false" checked={data.qnaIsPrivated ? false : true} readOnly/>
                 <label htmlFor="cb1" style={{marginLeft:"5px"}} >공개</label>
               </div>
               <div className="CheckBox" style={{marginLeft:"20px"}}>
-                <input type="checkbox" id="c2" name="qnaPublic" value="true"onChange={onCheckbox}/>
+                <input type="checkbox" id="c2" name="qnaPublic" value="true" checked={data.qnaIsPrivated ? true : false} readOnly/>
                 <label htmlFor="cb2" style={{marginLeft:"5px"}} >비공개</label>
               </div>
             </div>
@@ -269,25 +200,25 @@ export default function OneOneOneWrite(modalStatus:any) {
             <div className="reviewWrite">
               <label htmlFor="goods_text" className="label">문의 내용</label>
               <div className="inputArea">
-                <textarea placeholder="내용을 입력해주세요" onChange={onChangeInput} name="qnaDesc"></textarea>
+                <textarea placeholder="내용을 입력해주세요" onChange={onChangeInput} name="qnaDesc" ></textarea>
               </div>
             </div>
             <div className='uploadWrap'>
               
-              <div className="uploadWrapLeft">
-              <form className="uploadInput">
-                <input type="file" id="image" accept="img/*" onChange={onLoadFile} />
+              {/* <div className="uploadWrapLeft"> */}
+              {/* <form className="uploadInput"> */}
+                {/* <input type="file" id="image" accept="img/*" onChange={onLoadFile} /> */}
                 {/* <label htmlFor="image">파일 선택하기</label> */}
                 
-              </form>
-              </div>
+              {/* </form> */}
+              {/* </div> */}
             
-              <div className='uploadWrapRigiht'>
+          
                 {/* <strong>업로드된 이미지</strong> */}
-                <div className='imgWrap' style={{height:"200px"}}>
-                  <img src="" alt="" id="uploadImg" style={{marginTop:"16px"}} />
+                <div className='imgWrap'>
+                  <img src={data.qnaImgUrl} alt=""  style={{marginTop:"16px",width:"100%",height:"150px"}} />
                 </div>
-              </div>
+         
               
 
             </div>
@@ -298,6 +229,6 @@ export default function OneOneOneWrite(modalStatus:any) {
           </Typography>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }

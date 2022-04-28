@@ -43,7 +43,6 @@ public class DesignerNews implements Serializable {
     @Column(name = "designer_newsImg_url")
     @ApiModelProperty(value = "새 소식 이미지")
     private String designerNewsImgUrl;
-    
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     @Column(name = "designer_news_reged_at")

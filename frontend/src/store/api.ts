@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { page } from './atoms'
 const ACCESS_TOKEN = localStorage.getItem('token')
 const base_url = 'http://localhost:8080/api/'
 
@@ -112,8 +113,45 @@ export const postInquiry = async(data:any) => {
   for (let value of data.values()) {
       console.log(value);
   }
-  const response = await axios.post(base_url+`qna`,data,{
+  const response = await axios.post(base_url+`qna/nailart`,data,{
     headers: {
       'Content-Type': 'multipart/form-data'
     }})
+}
+
+export const reviseInquiry = async(data:any) => {
+  const response = await axios.put(base_url +'qna',data)
+  console.log(response)
+}
+
+export const deleteInquiry = async(param:any) => {
+  const response = await axios.delete(base_url+`qna/${param}`)
+}
+
+export const postInquiryAnswer = async(data:any) => {
+  console.log(data)
+  const response = await axios.post(base_url+`qna/answer`,data)
+  console.log(response)
+}
+
+//디자이너
+
+export const getHotDesigner = async() => {
+  const response = await axios.get(base_url+'designer/list/countFollower')
+  console.log(response)
+  return response.data
+}
+
+export const getRecentDesigner = async() => {
+  const response = await axios.get(base_url+'designer/list/latest')
+  console.log(response)
+  return response.data
+}
+
+export const getAllDesigner = async(page:any) => {
+  const response = await axios.get(base_url+'designer/list/all',{
+    params : {page: page, size : 5}
+  })
+  console.log(response)
+  return response.data
 }

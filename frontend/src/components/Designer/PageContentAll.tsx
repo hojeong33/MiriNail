@@ -1,8 +1,9 @@
 import styled from "styled-components"
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Slider from "react-slick";
 import DesignerCarousel from "./DesignerCarousel";
 import Cards from "../Commons/Cards";
+import { getAllDesigner } from "../../store/api";
 
 export interface hotDesignersProps {
   designer_seq : number;
@@ -165,7 +166,24 @@ const PageContentAll = () => {
     },
   ])
 
+  const [allDesigner,setAllDesigner] = useState<any>([])
+  const [page,setPage] = useState(1)
+  useEffect(() => {
+    getAllDesigner(page).then((res):any => setAllDesigner(res))
+    // console.log('엥')
+    window.addEventListener("scroll", () => {
+      console.log('엥')
+      let scrollTop = document.documentElement.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight;
+      let clientHeight = document.documentElement.clientHeight;
 
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        setPage(e => e+1)
+        // this.limit += 10
+        getAllDesigner(page).then((res):any => setAllDesigner(res))
+      }
+    });
+  },[])
   return (
     <>
       <Wrapper>
@@ -174,7 +192,7 @@ const PageContentAll = () => {
           <div className="listGroup">
             <div className="subtitle">All Designers</div>
             <ul className="clear">
-                  {hotDesigners.map((item, idx) => {
+                  {allDesigner?.map((item:any, idx:any) => {
                     return (
                       <li className="ItemListType">
                         <a className="ItemBox">

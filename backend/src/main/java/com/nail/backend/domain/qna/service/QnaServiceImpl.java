@@ -240,6 +240,7 @@ public class QnaServiceImpl implements QnaService {
             qnaGetRes.setUserNickname(user.getUserNickname());
             qnaGetRes.setQnaTitle(qna.getQnaTitle());
             qnaGetRes.setQnaDesc(qna.getQnaDesc());
+            qnaGetRes.setQnaType(0);
             qnaGetRes.setQnaImgUrl(qna.getQnaImgUrl());
             qnaGetRes.setQnaDesignerSeq(qna.getQnaDesignerSeq());
             qnaGetRes.setQnaNailartSeq(qna.getQnaNailartSeq());

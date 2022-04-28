@@ -75,7 +75,9 @@ public class NailartServiceImpl implements NailartService {
         PageRequest pageReuest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
         nailartRepository.findAll(pageReuest).forEach(art -> {
             NailartListGetRes tmp = new NailartListGetRes();
+
             tmp.setNailartSeq(art.getNailartSeq());
+
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
@@ -85,8 +87,12 @@ public class NailartServiceImpl implements NailartService {
             tmp.setNailartDetailColor(art.getNailartDetailColor());
             tmp.setNailartWeather(art.getNailartWeather());
             tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
+
             tmp.setNailartType(art.getNailartType());
 //            tmp.setNailartAvailable(art.get);
+
+            // tmp.setNailartAvailable(art.get);
+
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
@@ -158,11 +164,6 @@ public class NailartServiceImpl implements NailartService {
         return nailartDetailGetRes;
     }
 
-    // @Override
-    // public Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq,
-    // List<MultipartFile> multipartFiles) {
-    // return null;
-    // }
 
     @Override
     public Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq, List<MultipartFile> files) {

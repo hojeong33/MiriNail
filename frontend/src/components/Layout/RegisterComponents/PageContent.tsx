@@ -177,7 +177,7 @@ const MainFrame = styled.div`
 const PageContent = () => {
   // 리모컨 
   const navigate = useNavigate();
-  const nailartName = 'dummysibal'
+  const nailartName = '일단은 더미'
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
     let clientHeight = document.documentElement.clientHeight;
@@ -190,6 +190,7 @@ const PageContent = () => {
       remote.style.top=""
     }
   })
+    const designerSeq = sessionStorage.getItem('userSeq')
     const [imageProcess,setImageProcess] = useState([])
     const [infoProcess,setInfoProcess] = useState({
       nailartType :'',
@@ -204,7 +205,7 @@ const PageContent = () => {
     useEffect(() => {
       console.log(postImages)
     },[postImages])
-
+  
 
   const onChangeText = (e:any) => {
     setnailartDesc(e.target.value) 
@@ -236,12 +237,10 @@ const PageContent = () => {
   const abc: any = "http://127.0.0.1:5002";
   const client = create(abc);
   const nftFunc = async () => {
-    const contentsReplace = () => {
-      return nailartDesc.replaceAll("<br>", "\r\n"); 
-    }
+  
     const files= new FormData()
     const multipartFiles = new FormData()
-    const nailData:any = {...infoProcess,nailartDesc,nailartName}
+    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
     files.append("jsonList",JSON.stringify(nailData))
     console.log(postImages)
     console.log(nailData)

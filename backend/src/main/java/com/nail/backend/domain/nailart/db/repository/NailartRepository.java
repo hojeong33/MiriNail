@@ -11,5 +11,6 @@ public interface NailartRepository extends JpaRepository<Nailart, Long> {
     Page<Nailart> findByDesignerSeq(long designerSeq, Pageable pageable);
     Nailart findByNailartSeq(long nailartSeq);
     List<Nailart> findAllByDesignerSeq(long designerSeq);
+    Long countByDesignerSeq(long designerDeq);
 
 }

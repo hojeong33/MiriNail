@@ -1,6 +1,7 @@
 
 import styled from 'styled-components'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -65,7 +66,7 @@ const Wrapper = styled.div`
           position: absolute;
           width: 100%;
           height: 30px;
-          bottom: 10px;
+          // bottom: 10px;
           font-size: 14px;
           color: #bfbfbd;
           * {
@@ -78,7 +79,7 @@ const Wrapper = styled.div`
           }
           
           svg {
-            top: 20%;
+            top: 0%;
           }
           
 
@@ -91,8 +92,7 @@ const Wrapper = styled.div`
 `
 
 function PageHeader({changeThema,changeAll}:any) {
-  console.log(changeThema)
-  console.log(changeAll)
+
 
   return (
     <>

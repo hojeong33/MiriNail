@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
-  console.log(ACCESS_TOKEN)
+  console.log(ACCESS_TOKEN);
   const navigate = useNavigate();
   const fetchData = async () => {
     if (ACCESS_TOKEN) {
@@ -26,10 +26,12 @@ const Auth = () => {
       console.log(test);
 
       // sessionStorage에 저장
+      sessionStorage.setItem("userSeq", test.data.userSeq);
       sessionStorage.setItem("userId", test.data.userId);
       sessionStorage.setItem("userProfileImg", test.data.userProfileImg);
       sessionStorage.setItem("userNickname", test.data.userNickname);
       sessionStorage.setItem("userRole", test.data.userRole);
+      sessionStorage.setItem("userSeq", test.data.userSeq);
       navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
     }
   };

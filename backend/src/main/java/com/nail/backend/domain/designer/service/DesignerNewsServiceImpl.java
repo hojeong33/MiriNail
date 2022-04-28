@@ -8,9 +8,6 @@ import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNewsImg;
 import com.nail.backend.domain.designer.db.repository.DesignerNewsImgRepository;
 import com.nail.backend.domain.designer.db.repository.DesignerNewsRepository;
-import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.designer.db.repository.DesignerNewsRepository;
-import com.nail.backend.domain.designer.request.DesignerNewsRegisterPostReq;
 import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
 import com.nail.backend.domain.follow.db.repository.FollowRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 @Service
 @Component
