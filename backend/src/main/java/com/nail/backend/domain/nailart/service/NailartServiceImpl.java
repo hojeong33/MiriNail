@@ -75,7 +75,7 @@ public class NailartServiceImpl implements NailartService{
         PageRequest pageReuest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
         nailartRepository.findAll(pageReuest).forEach(art -> {
             NailartListGetRes tmp = new NailartListGetRes();
-//            tmp.setdesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
