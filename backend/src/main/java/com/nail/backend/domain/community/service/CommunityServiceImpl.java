@@ -11,6 +11,7 @@ import com.nail.backend.domain.community.db.repository.CommunityImgRepository;
 import com.nail.backend.domain.community.db.repository.CommunityRepository;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
+import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.qna.response.QnaGetRes;
 import com.nail.backend.domain.user.db.entity.User;
@@ -192,6 +193,32 @@ public class CommunityServiceImpl implements CommunityService{
     public CommunityGetRes getCommunity(Long communitySeq){
         Community community = communityRepository.findById(communitySeq).orElse(null);
 
+        List<CommunityComment> communityComment =
+                communityCommentRepository.findTop10ByCommunityAndCommunityCommentLayerIsNotOrderByCommunityCommentRegedAtDesc
+                (community,3);
+
+        List<CommunityCommentGetRes> resCommentList  = new ArrayList<>();
+
+        for (CommunityComment comments :communityComment) {
+
+        CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
+                .communityCommentSeq(comments.getCommunityCommentSeq())
+                .userSeq(comments.getUser().getUserSeq())
+                .userNickname(comments.getUser().getUserNickname())
+                .userProfileImg(comments.getUser().getUserProfileImg())
+                .communityCommentDesc(comments.getCommunityCommentDesc())
+                .communityGroupNum(comments.getCommunityGroupNum())
+                .communityCommentLayer(comments.getCommunityCommentLayer())
+                .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
+                .build();
+
+        resCommentList.add(comment);
+        }
+
+
+
+
+
         CommunityGetRes res = CommunityGetRes.builder()
                 .communitySeq(community.getCommunitySeq())
                 .userSeq(community.getUser().getUserSeq())
@@ -202,6 +229,7 @@ public class CommunityServiceImpl implements CommunityService{
                 .communityCnt(community.getCommunityCnt())
                 .communityRegedAt(community.getCommunityRegedAt())
                 .communityImg(community.getCommunityImg())
+                .communityComment(resCommentList)
                 .build();
         return res;
     }

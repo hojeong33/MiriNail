@@ -60,7 +60,10 @@ public class CommunityController {
     }
 
     @Transactional
-    @ApiOperation(value = "커뮤니티 글 댓글 작성")
+    @ApiOperation(value = "커뮤니티 글 댓글 작성",
+            notes = "communityCommentLayer\" -    1 : 원 댓글작성 , 3 : 대댓글 작성\n" +
+            "  \"communityCommentSeq\"(원댓글Seq) : 대댓글 작성때만 넘겨주세요!,\n"
+            )
     @ApiResponses({
             @ApiResponse(code = 201, message = "등록 성공"),
             @ApiResponse(code = 404, message = "등록 실패")
@@ -70,8 +73,8 @@ public class CommunityController {
                                                                      Principal principal){
 
         log.info("communityCommentRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         System.out.println(communityCommentRegisterPostReq);
         CommunityComment res = communityService.communityCommentRegister(communityCommentRegisterPostReq,userId);
