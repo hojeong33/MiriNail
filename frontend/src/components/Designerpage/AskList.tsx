@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getDesignerAsk } from "../../store/apis/qna";
 import { useParams } from "react-router-dom";
+import moment from "moment";
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -125,7 +126,7 @@ const AskList = () => {
   };
 
   const { data, isLoading } = useQuery<any, Error>(
-    ["getAsklist", page, qnaType],
+    ["getAsklist", page],
     async () => {
       return await getDesignerAsk(page, 10, Number(userSeq), qnaType);
     },
@@ -139,81 +140,77 @@ const AskList = () => {
     }
   );
 
+  const convertQnatypeToText = (type:number) => {
+    switch (type) {
+      case 0:
+        return "예약"
+      case 1:
+        return "디자인"
+      case 2:
+        return "기타"
+      default:
+        return "???"
+    }
+  }
+
   return (
     <TableWrapper>
-      <div>
-        <button
-          onClick={() => {
-            setPage(1);
-            setQnaType(0);
-          }}
-        >
-          예약
-        </button>
-        <button
-          onClick={() => {
-            setPage(1);
-            setQnaType(1);
-          }}
-        >
-          디자인
-        </button>
-        <button
-          onClick={() => {
-            setPage(1);
-            setQnaType(2);
-          }}
-        >
-          기타
-        </button>
-      </div>
       {isLoading ? (
         <div>Loading...</div>
+      ) : data.content ? (
+        <TableWrapper>
+          <div className="table">
+            <div className="count">총 {data.totalElements} 건</div>
+            <table>
+              <colgroup>
+                <col width="5%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="45%" />
+                <col width="15%" />
+                <col width="10%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>작성자</th>
+                  <th>문의유형</th>
+                  <th>제목</th>
+                  <th>작성일</th>
+                  <th>답변상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.content.map((ask: IState["ask"], idx: number) => {
+                  return (
+                    <tr key={idx}>
+                      <th>{ask.qnaSeq}</th>
+                      <th>{ask.userNickname}</th>
+                      <th>{convertQnatypeToText(ask.qnaType)}</th>
+                      <th className="title">{ask.qnaTitle}</th>
+                      <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
+                      <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+        </TableWrapper>
       ) : (
-        <div className="table">
-          <div className="count">총 {data.totalElements} 건</div>
-          <table>
-            <colgroup>
-              <col width="5%" />
-              <col width="15%" />
-              <col width="55%" />
-              <col width="15%" />
-              <col width="10%" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>작성자</th>
-                <th>제목</th>
-                <th>작성일</th>
-                <th>답변상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.content.map((ask: IState["ask"], idx: number) => {
-                return (
-                  <tr key={idx}>
-                    <th>{ask.qnaSeq}</th>
-                    <th>{ask.userNickname}</th>
-                    <th className="title">{ask.qnaTitle}</th>
-                    <th>{ask.qnaRegedAt}</th>
-                    <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <div>문의가 없습니다.</div>
       )}
+      
       <div className="pagination">
-        <Stack spacing={2}>
-          <Pagination
-            count={lastPage}
-            shape="rounded"
-            onChange={onchangePage}
-          />
-        </Stack>
-      </div>
+            <Stack spacing={2}>
+              <Pagination
+                count={lastPage}
+                shape="rounded"
+                onChange={onchangePage}
+              />
+            </Stack>
+          </div>
     </TableWrapper>
   );
 }
