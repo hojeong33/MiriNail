@@ -8,6 +8,10 @@ import styled from 'styled-components'
 import { Rating } from 'react-simple-star-rating'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { designerId } from '../../../store/atoms';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { inquiryList, postInquiry } from '../../../store/api';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -45,7 +49,7 @@ const Content = styled.div`
   .rowBox {
     padding: 20px 0 10px 152px;
     position: relative;
-    border-top: 1px solid #f1f1f1;
+    // border-top: 1px solid #f1f1f1;
   }
 
   .rowBoxLeft {
@@ -53,6 +57,16 @@ const Content = styled.div`
     position: absolute;
     left: 0;
     top: 20px;
+  }
+
+  .rowBoxRight {
+    input {
+      width:90%;
+      border-left-width: 0;
+      border-right-width: 0;
+      border-top-width: 0;
+      border-bottom-width: 2px;
+    }
   }
 
   .reviewWrite {
@@ -97,19 +111,33 @@ const Content = styled.div`
 `
 
 export default function OneOneOneWrite(modalStatus:any) {
-  
+  let params:any = useParams().id
+  const userSeq:any = sessionStorage.getItem('userSeq')
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  let params = useParams()
+  const [designerSeq,setDesignerSeq] = useRecoilState(designerId) 
+  // const {isLoading:isInquiryLoading , data:inquiryData} = useQuery('inquiryList',() => inquiryList(params.id?.slice(1,params.id.length)))
 
-  
+  // 문의 리스트
+  const postInquiryFunc:any = useMutation((form:any) => 
+      postInquiry(form)
+      ,{
+        onSuccess: () => {
+          console.log('성공')
+          // inquiryList(params.id?.slice(1,params.id.length),1)
+          queryClient.invalidateQueries('inquiry')
+        }
+      }
+    )
   
   // 인풋
   const [files,setFiles] = useState('')
   const [inputStatus,setInputStatus] = useState({
     qnaTitle : '',
     qnaDesc : '',
+    qnaPublic : '',
 
   })
   useEffect(() => {
@@ -123,6 +151,19 @@ export default function OneOneOneWrite(modalStatus:any) {
     });
   };
 
+  const onCheckbox = async(e:any) => {
+    const checkboxes:any = document.getElementsByName("qnaPublic")
+    for await (const box of checkboxes) {
+      console.log(box)
+      box.checked = false
+    }
+    e.target.checked = true
+    setInputStatus({
+      ...inputStatus,
+      [e.target.name]: e.target.value,
+    });
+  }
+  
   const onLoadFile = (e:any) => {
     const file = e.target.files
     console.log(file)
@@ -133,8 +174,8 @@ export default function OneOneOneWrite(modalStatus:any) {
 
   const submitData = {
     ...inputStatus,
-    qnaNailartSeq:params.id?.slice(1,params.id.length),
-    qnaDesignerSeq:1
+    qnaNailartSeq:params,
+    qnaDesignerSeq:designerSeq
   }
 
   useEffect(() => {
@@ -163,35 +204,36 @@ export default function OneOneOneWrite(modalStatus:any) {
 
   
   const submit = async() => {
+    
     const formdata = new FormData()
-    const testData:any = {
-      qnaDesc : '내용',
-      qnaDesignerSeq : 1,
-      qnaIsPrivated : true,
-      qnaNailartSeq : 2,
-      qnaTitle : '제목',
-    }
+    console.log(userSeq)
     formdata.append('qnaFile',files[0])
     // formdata.append('qnaRegisterPostReq',testData)
-    formdata.append('qnaDesc','내용')
-    formdata.append('qnaDesignerSeq','1')
-    formdata.append('qnaIsPrivated','true')
-    formdata.append('qnaNailartSeq','2')
-    formdata.append('qnaTitle','제목')
+    formdata.append('qnaDesc', inputStatus.qnaDesc)
+    formdata.append('qnaDesignerSeq',submitData.qnaDesignerSeq)
+    formdata.append('qnaIsPrivated',submitData.qnaPublic)
+    formdata.append('qnaNailartSeq',submitData.qnaNailartSeq)
+    formdata.append('qnaTitle',inputStatus.qnaTitle)
+    formdata.append('userSeq',userSeq)
     
+    await postInquiryFunc.mutate(formdata)
+    setOpen(false)
     //  스트링으로 보내야 함.
-    axios.post('http://localhost:8080/api/qna',formdata,{
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-      }).then(console.log).catch(console.log)
+    
+    // await axios.post('http://localhost:8080/api/qna',formdata,{
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data'
+    //   }
+    //   }).then(console.log).catch(console.log)
+
+
   }
   
 
 
   return (
     <div>
-      <div  onClick={handleOpen}>
+      <div onClick={handleOpen}>
         문의글 작성
       </div>
       <Modal
@@ -203,8 +245,16 @@ export default function OneOneOneWrite(modalStatus:any) {
         <Box sx={modalStyle}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <div>1대1 문의</div>
-
-            
+            <div style={{display:"flex",paddingTop:"15px",fontSize:"18px"}}>
+              <div className="CheckBox">
+                <input type="checkbox" id="c1" name="qnaPublic" value="false" onChange={onCheckbox}/>
+                <label htmlFor="cb1" style={{marginLeft:"5px"}} >공개</label>
+              </div>
+              <div className="CheckBox" style={{marginLeft:"20px"}}>
+                <input type="checkbox" id="c2" name="qnaPublic" value="true"onChange={onCheckbox}/>
+                <label htmlFor="cb2" style={{marginLeft:"5px"}} >비공개</label>
+              </div>
+            </div>
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'span'}>
           <Content>
@@ -213,7 +263,7 @@ export default function OneOneOneWrite(modalStatus:any) {
                 문의 제목
               </div>
               <div className="rowBoxRight">
-                <input type="text" onChange={onChangeInput} name="qnaTitle" style={{border:"1px solid gray"}}/>
+                <input type="text" onChange={onChangeInput} name="qnaTitle"/>
               </div>
             </div>
             <div className="reviewWrite">
@@ -242,7 +292,7 @@ export default function OneOneOneWrite(modalStatus:any) {
 
             </div>
             <div className="buttons">
-              <button className="btn1" onClick={submit}>작성</button><button className="btn2">취소</button>
+              <button className="btn1" onClick={submit}>작성</button><button className="btn2" onClick={handleClose}>취소</button>
             </div>
           </Content>  
           </Typography>

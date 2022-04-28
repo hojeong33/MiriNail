@@ -1,10 +1,12 @@
 package com.nail.backend.domain.designer.db.entitiy;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,7 +43,8 @@ public class DesignerNews implements Serializable {
     @Column(name = "designer_newsImg_url")
     @ApiModelProperty(value = "새 소식 이미지")
     private String designerNewsImgUrl;
-
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     @Column(name = "designer_news_reged_at")
     private Timestamp designerNewsRegedAt;
 

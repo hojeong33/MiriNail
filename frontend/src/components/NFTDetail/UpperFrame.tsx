@@ -85,7 +85,7 @@ const Wrapper = styled.div`
                 p {
                   position: absolute;
                   left: 0px;
-                  top: 6px;
+                  top: 15px;
                   font-weight: 500;
                 }
                 span {
@@ -148,8 +148,8 @@ const Wrapper = styled.div`
 
 const UpperFrame = () => {
   const queryClient = useQueryClient();
-  let params = useParams()
-  // console.log(params)
+  let params = useParams().id
+  console.log(params)
   const [detailInfo,setDetailInfo] = useState (
     {
       type : '프렌치네일',
@@ -164,9 +164,9 @@ const UpperFrame = () => {
   )
 
   
-  const {isLoading:isLikeLoading , data:likeData} = useQuery('like',() => nailCount(params.id?.slice(1,params.id.length)))
-  const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params.id?.slice(1,params.id.length)))
-  const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params.id?.slice(1,params.id.length)))
+  const {isLoading:isLikeLoading , data:likeData} = useQuery('like',() => nailCount(params))
+  const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params))
+  const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params))
   const [designerSeq,setDesignerSeq] = useRecoilState<any>(designerId)
   
   useEffect(():any => {
@@ -179,8 +179,9 @@ const UpperFrame = () => {
   ,{
     onSuccess: () => {
     console.log('성공')
-    isLike(Number(params.id?.slice(1,params.id.length)))
+    isLike(Number(params))
     queryClient.invalidateQueries('isLike')
+    queryClient.invalidateQueries('like')
   },
   onError: (error) => { // 요청에 에러가 발생된 경우
     console.log('onError',error);
@@ -192,8 +193,9 @@ const UpperFrame = () => {
   ,{
     onSuccess: () => {
     console.log('성공')
-    isLike(Number(params.id?.slice(1,params.id.length)))
+    isLike(Number(params))
     queryClient.invalidateQueries('isLike')
+    queryClient.invalidateQueries('like')
   },
   onError: (error) => { // 요청에 에러가 발생된 경우
     console.log('onError',error);
@@ -204,13 +206,31 @@ const UpperFrame = () => {
     console.log('핸들러실행')
     if (isLikeData) {
       console.log('싫어요 실행')
-      disLikeFunc.mutate(Number(params.id?.slice(1,params.id.length)))
+      disLikeFunc.mutate(Number(params))
     } else {
       console.log('좋아요 실행')
-      likeFunc.mutate(Number(params.id?.slice(1,params.id.length)))
+      likeFunc.mutate(Number(params))
     }
   }
 
+  // 공유하기
+  // const url = window.location.href
+  // useEffect(() => {
+  //   initKakao()
+  // },[])
+
+  // const initKakao = () => {
+  //   if (window.Kakao) {
+  //     const kakao = window.Kakao;
+  //     if (!kakao.isInitialized()) {
+  //       kakao.init('154d6a3a53758783d545452dd09435a6');
+  //     }
+  //   }
+  // }
+
+  // const share = () => {
+ 
+  // }
   return (
     <>
       <Wrapper>
@@ -229,7 +249,7 @@ const UpperFrame = () => {
               <div className="imHarf">
                 <div className="primary">
                   <div className="share">
-                    <ShareIcon />
+                    {/* <ShareIcon onClick={share}/> */}
                   </div>
                   <div className="boxs">
                     {nailData?.nailartType}
@@ -238,7 +258,7 @@ const UpperFrame = () => {
                     {detailInfo.title}
                   </div>
                   <div className="price">
-                    {nailData?.nailartPrice}
+                    {nailData?.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
                   </div>
                   <div className="tags">
                     #{nailData?.nailartWeather} #{nailData?.designerNickname}
@@ -246,7 +266,7 @@ const UpperFrame = () => {
                   <div className="info">
                     <div>
                       <p>제품소개</p>
-                      <span>{nailData?.nailartDesc}</span>
+                      <span style={{whiteSpace:"pre-wrap"}}>{nailData?.nailartDesc}</span>
                     </div>
                   </div>
                   <div className='designerInfo'>
@@ -267,7 +287,7 @@ const UpperFrame = () => {
                     <a style={{backgroundColor:"red",color:"white",}}><CalendarMonthIcon style={{visibility:"hidden",width:"0px"}}></CalendarMonthIcon>AR 피팅하기</a>
                     <a style={{backgroundColor:'white'}}><CalendarMonthIcon />예약하기</a>
                     <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}} onClick={() => likeHandler()}>
-                      { isLikeData ? <span><FavoriteIcon /><span></span></span> : <span><FavoriteBorderIcon /><span></span></span>}
+                      { isLikeData ? <span ><FavoriteIcon style={{color:"red"}}/><span></span>{likeData}</span> : <span><FavoriteBorderIcon /><span>{likeData}</span></span>}
                       
                     </a>
                     <div>

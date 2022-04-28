@@ -1,3 +1,4 @@
+.test2 {
 @mixin centerFill($width, $direction: row) {
   width: $width;
   display: flex;
@@ -165,4 +166,5 @@
       }
     }
   }
+}
 }

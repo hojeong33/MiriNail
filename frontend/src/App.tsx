@@ -37,6 +37,7 @@ import CreateFeed from "./components/Designerpage/CreateFeed";
 import AskList from "./components/Designerpage/AskList";
 import CreateAsk from "./components/Designerpage/CreateAsk";
 import Apply from "./components/Mypage/Apply";
+import UpdateIntroduction from "./components/Designerpage/UpdateIntroduction";
 
 function App() {
   return (
@@ -46,7 +47,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/mypage" element={<Mypage />}>
+          <Route path="/mypage/:userSeq" element={<Mypage />}>
             <Route path="like" element={<Like />}></Route>
             <Route path="capture" element={<Capture />}></Route>
             <Route path="mypost" element={<Mypost />}></Route>
@@ -59,7 +60,7 @@ function App() {
             <Route path="myreservation" element={<MyReservation />}></Route>
             <Route path="apply" element={<Apply />}></Route>
           </Route>
-          <Route path="/designerpage" element={<DesignerPage />}>
+          <Route path="/designerpage/:userSeq" element={<DesignerPage />}>
             <Route path="new" element={<New />}></Route>
             <Route path="introduction" element={<Introduction />}></Route>
             <Route path="NFTs" element={<NFTs />}></Route>
@@ -69,12 +70,13 @@ function App() {
             <Route path="asklist" element={<AskList />}></Route>
             <Route path="createfeed" element={<CreateFeed />}></Route>
             <Route path="createask" element={<CreateAsk />}></Route>
+            <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>
           </Route>
           <Route path="/community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/nft" element={<NFTList />} />
-          <Route path="/nft/detail/:id" element={<NFTDetail />} />
+          <Route path="/nft/:id" element={<NFTDetail />} />
           <Route path="/nft/register" element={<NFTRegister />} />
           <Route path="/designer" element={<DesignerList />} />
           <Route path="/api/users/login" element={<KakaoRedirect />} />

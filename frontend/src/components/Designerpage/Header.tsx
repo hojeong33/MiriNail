@@ -1,11 +1,12 @@
 
 import styled from 'styled-components'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { designer } from '../../routes/Designerpage/Designerpage';
+import { IDesigner } from '../../routes/Designerpage/Designerpage';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   * {
@@ -105,11 +106,18 @@ const Wrapper = styled.div`
 `;
 
 interface IProps {
-    designer?: designer;
+    designer?: IDesigner;
 }
 
 const Header:React.FC<IProps> = ({designer}) => {
-  
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -149,6 +157,8 @@ const Header:React.FC<IProps> = ({designer}) => {
             </div>
           </div>
         </div>
+        <div>
+      </div>
       </Wrapper>
     </>
   );

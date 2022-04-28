@@ -27,14 +27,14 @@ public class FollowServiceImpl implements FollowService{
     }
 
     @Override
-    public List<User> getFollowerList(String userId) {
-        List<User> list = followRepositorySupport.FollowerList(userId);
+    public List<User> getFollowerList(Long userSeq) {
+        List<User> list = followRepositorySupport.FollowerList(userSeq);
         return list;
     }
 
     @Override
-    public List<User> getFolloweeList(String userId) {
-        List<User> list = followRepositorySupport.FolloweeList(userId);
+    public List<User> getFolloweeList(Long userSeq) {
+        List<User> list = followRepositorySupport.FolloweeList(userSeq);
         return list;
     }
 
