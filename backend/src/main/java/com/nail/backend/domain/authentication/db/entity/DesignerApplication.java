@@ -30,10 +30,6 @@ public class DesignerApplication implements Serializable {
     @JoinColumn(name = "designer_seq")
     private User user;
 
-    // 유저 포트폴리오
-    @ApiModelProperty(value = "유저 포트폴리오 url")
-    String designerPortfolio;
-
     // 유저 사업자 등록증
     @ApiModelProperty(value = "유저 사업자등록증 url")
     String designerCertification;
