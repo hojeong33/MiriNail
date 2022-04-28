@@ -38,6 +38,7 @@ import AskList from "./components/Designerpage/AskList";
 import CreateAsk from "./components/Designerpage/CreateAsk";
 import Apply from "./components/Mypage/Apply";
 import UpdateIntroduction from "./components/Designerpage/UpdateIntroduction";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
   return (
@@ -83,6 +84,7 @@ function App() {
           <Route path="/test" element={<Test />} />
           <Route path="/community/create" element={<CreateCommunity />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
+          <Route path="*" element={<PageNotFound/>} />
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
