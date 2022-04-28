@@ -81,7 +81,7 @@ public class DesignerContorller {
     // 4. 디자이너 전체 조회
     @GetMapping("/list/all")
     public List<DesignerListConditionGetRes> designerListAll(int page, int size){
-        return designerService.getDesignerListbylatest();
+        return designerService.getDesignerAllList(page, size);
     }
 
 }
