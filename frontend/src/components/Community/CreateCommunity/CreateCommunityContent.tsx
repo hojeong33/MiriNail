@@ -2,8 +2,9 @@ import styled from "styled-components";
 import FileUpload2 from "./FileUpload2";
 import { useState, useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
+import { useMutation } from "react-query";
+import { postNewCommunity } from "../../../store/apis/community";
 import axios from "axios";
-
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -143,30 +144,78 @@ const MainFrame = styled.div`
 
 const CreateCommunityContent = () => {
   //작성하기
-  const ACCESS_TOKEN = localStorage.getItem("token");
-  const createCommunity = async () => {
-    const communityData = {
-      user_seq: sessionStorage.getItem("userSeq"),
-      community_title: "",
-      community_desc: "",
-    };
-    if (ACCESS_TOKEN) {
-      const result = await axios({
-        method: "post",
-        url: `http://localhost:8080/api/community`,
-        data: {},
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-      })
-        .then((res) => {
-          console.log(res.data.content);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+  // const ACCESS_TOKEN = localStorage.getItem("token");
+  const [files, setFiles] = useState("");
+
+  const createCommunity = useMutation<any, Error>(
+    "createCommunity",
+    async () => {
+      console.log(communityDesc);
+      console.log(communityTitle);
+      const formdata = new FormData();
+      formdata.append("communityDesc", communityDesc);
+      formdata.append("communityTitle", communityTitle);
+
+      // const files=[];
+      // formdata.append("communityFiles",);
+      // communityImages.forEach((e) => {
+      //   formdata.append("communityFiles", e);
+      // });
+      return await postNewCommunity({
+        formdata,
+      });
+    },
+    {
+      onSuccess: (res) => console.log(res),
+      onError: (err: any) => console.log(err),
     }
+  );
+
+  const onClickCreateBtn = () => {
+    createCommunity.mutate();
   };
+
+  // const formData = new FormData();
+  // const createCommunity = async () => {
+  //   // const data = {
+  //   //   communityDesc: communityDesc,
+  //   //   communityTitle: communityTitle,
+  //   // };
+  //   formData.append("communityDesc", communityDesc);
+  //   formData.append("communityTitle", communityTitle);
+
+  //   if (imageProcess !== null) {
+  //     imageProcess.map((item) => {
+  //       formData.append("communityFiles", item);
+  //     });
+  //   }
+  //   console.log(communityDesc);
+  //   console.log(communityTitle);
+  //   // console.log(communityFiles);
+  //   if (ACCESS_TOKEN) {
+  //     axios({
+  //       method: "post",
+  //       url: `http://localhost:8080/api/community`,
+  //       // params: {
+  //       //   communityDesc: communityDesc,
+  //       //   communityTitle: communityTitle,
+  //       // },
+  //       headers: {
+  //         Authorization: `Bearer ${ACCESS_TOKEN}`,
+  //         "Content-type": "multipart/form-data",
+  //       },
+  //       data: {
+  //         formData: formData,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         console.log(res.data.content);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // };
   //리모컨
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
@@ -184,15 +233,22 @@ const CreateCommunityContent = () => {
   const [imageProcess, setImageProcess] = useState([]);
   const [textProcess, setTextProcess] = useState("");
   const [textProcess2, setTextProcess2] = useState("");
+  const [communityTitle, setCommunityTitle] = useState("");
+  const [communityDesc, setCommunityDesc] = useState("");
+  const [communityImages, setCommunityImages] = useState([]);
   useEffect(() => {
     console.log(imageProcess);
+    setCommunityImages(imageProcess);
+    console.log("이미지들", communityImages);
   }, [imageProcess]);
 
   const onChangeText = (e: any) => {
     setTextProcess(e.target.value);
+    setCommunityDesc(e.target.value);
   };
   const onChangeText2 = (e: any) => {
     setTextProcess2(e.target.value);
+    setCommunityTitle(e.target.value);
   };
 
   return (
@@ -277,8 +333,11 @@ const CreateCommunityContent = () => {
                   style={{ resize: "none" }}
                   placeholder="10자 이상 입력해주세요."
                 ></textarea>
+
                 <div className="buttons">
-                  <div className="btn1">작성</div>
+                  <div className="btn1" onClick={onClickCreateBtn}>
+                    작성
+                  </div>
                   <div className="btn2">취소</div>
                 </div>
               </div>
