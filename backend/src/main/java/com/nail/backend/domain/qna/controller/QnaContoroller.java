@@ -104,10 +104,10 @@ public class QnaContoroller {
             @ApiResponse(code = 404, message = "조회 실패")
     })
     @GetMapping("/{qnaSeq}")
-    public ResponseEntity<Qna> getQna(@ApiParam(value = "qnaSeq") @PathVariable("qnaSeq") Long qnaSeq){
+    public ResponseEntity<QnaGetRes> getQna(@ApiParam(value = "qnaSeq") @PathVariable("qnaSeq") Long qnaSeq){
 
         log.info("getQna - 호출");
-        Qna qna = qnaService.getQna(qnaSeq);
+        QnaGetRes qna = qnaService.getQna(qnaSeq);
 
         return ResponseEntity.status(200).body(qna);
     }

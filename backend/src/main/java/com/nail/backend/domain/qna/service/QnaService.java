@@ -23,7 +23,7 @@ public interface QnaService {
     QnaAnswer qnaAnswerRegister(QnaAnswerRegisterPostReq qnaAnswerRegisterPostReq);
 
 //    READ___________________________________________
-    Qna getQna(Long qnaSeq);
+    QnaGetRes getQna(Long qnaSeq);
     Page<QnaGetRes> getQnaListByUser(Pageable pageable, Long userSeq, int qnaType);
     Page<QnaGetRes> getQnaListByDesignerSeq(Pageable pageable, Long designerSeq, int qnaType);
     Page<QnaGetRes> getQnaListByNailart(Pageable pageable, Long nailartSeq);
