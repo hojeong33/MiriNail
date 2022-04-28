@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { page } from './atoms'
 const ACCESS_TOKEN = localStorage.getItem('token')
 const base_url = 'http://localhost:8080/api/'
 
@@ -147,8 +148,10 @@ export const getRecentDesigner = async() => {
   return response.data
 }
 
-// export const getHotDesigner = async() => {
-//   const response = await axios.get(base_url+'designer/list/countFollower')
-//   console.log(response)
-//   return response.data
-// }
+export const getAllDesigner = async(page:any) => {
+  const response = await axios.get(base_url+'designer/list/all',{
+    params : {page: page, size : 5}
+  })
+  console.log(response)
+  return response.data
+}
