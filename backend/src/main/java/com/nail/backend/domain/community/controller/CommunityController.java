@@ -45,54 +45,53 @@ public class CommunityController {
     @PostMapping
     public ResponseEntity<BaseResponseBody> communityRegister(@RequestPart(value = "communityFiles", required = false) List<MultipartFile> communityFiles,
                                                               @ModelAttribute CommunityRegisterPostReq communityRegisterPostReq,
-                                                              Principal principal)throws IOException {
+                                                              Principal principal) throws IOException {
 
         log.info("communityRegister - 호출");
         String userId = principal.getName();
 
-        Community res = communityService.communityRegister(communityFiles,communityRegisterPostReq,userId);
-        if(!res.equals(null)){
-            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
-        }
-        else {
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"등록실패"));
+        Community res = communityService.communityRegister(communityFiles, communityRegisterPostReq, userId);
+        if (!res.equals(null)) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "등록 성공"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "등록실패"));
         }
     }
 
     @Transactional
     @ApiOperation(value = "커뮤니티 글 댓글 작성",
             notes = "communityCommentLayer\" -    1 : 원 댓글작성 , 3 : 대댓글 작성\n" +
-            "  \"communityCommentSeq\"(원댓글Seq) : 대댓글 작성때만 넘겨주세요!,\n"
-            )
+                    "  \"communityCommentSeq\"(원댓글Seq) : 대댓글 작성때만 넘겨주세요!,\n"
+    )
     @ApiResponses({
             @ApiResponse(code = 201, message = "등록 성공"),
             @ApiResponse(code = 404, message = "등록 실패")
     })
     @PostMapping("/comment")
     public ResponseEntity<BaseResponseBody> communityCommentRegister(@RequestBody CommunityCommentRegisterPostReq communityCommentRegisterPostReq,
-                                                                     Principal principal){
+                                                                     Principal principal) {
 
         log.info("communityCommentRegister - 호출");
         String userId = principal.getName();
 //        String userId = "2217289220";
 
         System.out.println(communityCommentRegisterPostReq);
-        CommunityComment res = communityService.communityCommentRegister(communityCommentRegisterPostReq,userId);
-        if(!res.equals(null)){
-            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
-        }
-        else {
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"등록실패"));
+        CommunityComment res = communityService.communityCommentRegister(communityCommentRegisterPostReq, userId);
+        if (!res.equals(null)) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "등록 성공"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "등록실패"));
         }
     }
-//    READ___________________________________________
+
+    //    READ___________________________________________
     @ApiOperation(value = "커뮤니티 글 전체조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패")
     })
     @GetMapping
-    public ResponseEntity<Page<CommunityGetRes>> getCommunityList(@PageableDefault(page=0, size =10,sort = "communitySeq",direction = Sort.Direction.DESC) Pageable pageable){
+    public ResponseEntity<Page<CommunityGetRes>> getCommunityList(@PageableDefault(page = 0, size = 10, sort = "communitySeq", direction = Sort.Direction.DESC) Pageable pageable) {
 
         log.info("getCommunityList - 호출");
         Page<CommunityGetRes> communityList = communityService.getCommunityList(pageable);
@@ -107,33 +106,54 @@ public class CommunityController {
     })
 
     @GetMapping("/{communitySeq}")
-    public ResponseEntity<CommunityGetRes> getCommunity(@PathVariable("communitySeq") Long communitySeq){
+    public ResponseEntity<CommunityGetRes> getCommunity(@PathVariable("communitySeq") Long communitySeq) {
 
         log.info("getCommunity - 호출");
         CommunityGetRes community = communityService.getCommunity(communitySeq);
 
         return ResponseEntity.status(200).body(community);
     }
+
+
 //    UPDATE_________________________________________
 
-//    DELETE_________________________________________
-@Transactional
-@ApiOperation(value = "커뮤니티 글 삭제")
-@ApiResponses({
-        @ApiResponse(code = 200, message = "삭제 성공"),
-        @ApiResponse(code = 404, message = "삭제 실패")
-})
-@DeleteMapping("/{communitySeq}")
-public ResponseEntity<BaseResponseBody> communityRemove(@ApiParam(value ="커뮤니티 글 번호") @PathVariable Long communitySeq){
-    log.info("communityRemove - 호출");
+    //    DELETE_________________________________________
+    @Transactional
+    @ApiOperation(value = "커뮤니티 글 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "삭제 성공"),
+            @ApiResponse(code = 404, message = "삭제 실패")
+    })
+    @DeleteMapping("/{communitySeq}")
+    public ResponseEntity<BaseResponseBody> communityRemove(@ApiParam(value = "커뮤니티 글 번호") @PathVariable Long communitySeq) {
+        log.info("communityRemove - 호출");
 
-    if(communityService.communityRemove(communitySeq)){
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제성공"));
-    }
-    else{
-        log.error("communityRemove - This communitySeq doesn't exist");
-        return ResponseEntity.status(404).body(BaseResponseBody.of(404,"삭제실패"));
+        if (communityService.communityRemove(communitySeq)) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "삭제성공"));
+        } else {
+            log.error("communityRemove - This communitySeq doesn't exist");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "삭제실패"));
+        }
+
     }
 
-}
+    @Transactional
+    @ApiOperation(value = "커뮤니티 댓글 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "삭제 성공"),
+            @ApiResponse(code = 404, message = "삭제 실패")
+    })
+    @PatchMapping("comment/{communityCommentSeq}")
+    public ResponseEntity<BaseResponseBody> communityCommentRemove(@ApiParam(value = "커뮤니티 댓글 번호") @PathVariable Long communityCommentSeq) {
+        log.info("communityCommentRemove - 호출");
+
+        if (communityService.communityCommentRemove(communityCommentSeq)) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "삭제성공"));
+        } else {
+            log.error("communityRemove - This communityCommentSeq doesn't exist");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "삭제실패"));
+        }
+
+
+    }
 }

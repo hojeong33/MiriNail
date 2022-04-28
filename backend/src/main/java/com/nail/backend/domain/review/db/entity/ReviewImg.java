@@ -1,4 +1,4 @@
-package com.nail.backend.domain.community.db.entity;
+package com.nail.backend.domain.review.db.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,23 +14,19 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ApiModel(value = "CommunityImg", description = "소통 글 이미지")
-public class CommunityImg {
-
+@ApiModel(value = "Review Img", description = "리뷰 이미지")
+public class ReviewImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long communityImgSeq;
+    private Long reviewImgSeq;
 
     @JsonIgnore
-    @JoinColumn(name = "community_seq")
-    @ApiModelProperty(value = "소통 글 Seq")
+    @JoinColumn(name = "review_seq")
+    @ApiModelProperty(value = "리뷰 글 Seq")
     @ManyToOne
-    private Community community;
+    private Review review;
 
-    @ApiModelProperty(value = "리뷰 이미지 url")
-    private String communityImgUrl;
-
-
-
+    @ApiModelProperty(value = "리뷰 img url")
+    private String reviewImgUrl;
 
 }
