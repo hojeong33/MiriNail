@@ -11,7 +11,7 @@ export const convertQnatypeToText = (type:number|undefined) => {
   }
 }
 
-function leadingZeros(n:string, digits:number) {
+export function leadingZeros(n:string, digits:number) {
   var zero = '';
   n = n.toString();
 

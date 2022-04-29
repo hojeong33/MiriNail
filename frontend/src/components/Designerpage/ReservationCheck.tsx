@@ -5,6 +5,10 @@ import 'react-calendar/dist/Calendar.css'; // css import
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import moment from 'moment'
+import { useMutation, useQuery } from "react-query";
+import { deleteCancelReservation, getReservationDate, getReservationListByDate } from "../../store/apis/book";
+import { useNavigate, useParams } from "react-router-dom";
+import { convertDate, leadingZeros } from "../Commons/functions";
 
 const Wrapper = styled.div`
   display: flex;
@@ -185,7 +189,7 @@ interface IState {
 
 const ReservationCheck = () => {
   const [value, setValue] = useState(new Date());
-  const [mark, setMark] = useState(["2022-04-20", "2022-04-02"]);
+  const [mark, setMark] = useState<string[]>([]);
   const [reservations, setReservations] = useState<IState["reservation"][]>([
     {
       ID: "dami123",
@@ -213,24 +217,62 @@ const ReservationCheck = () => {
       time: "13:00"
     }
   ]);
-  
-  // const { data } = useQuery(
-  //   ["logDate", month],
-  //   async () => {
-  //     const result = await axios.get(
-  //       `/api/healthLogs?health_log_type=DIET`
-  //     );
-  //     return result.data;
-  //   },
-  //   {
-  //     onSuccess: (data: any) => {
-  //       setMark(data);
-  //      // ["2022-02-02", "2022-02-02", "2022-02-10"] 형태로 가져옴
-  //     },
-  //   }
-  // );
+  const navigate = useNavigate();
+  const { userSeq } = useParams();
 
 
+  const { data, isLoading } = useQuery<any, Error>(
+    ["getIsBooked"],
+    async () => {
+      return await getReservationDate(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        const temp = []
+        for(let i=0; i< res.length; i ++) {
+          console.log(res[i])
+          const year = String(res[i][0])
+          const month = String(res[i][1])
+          const day = String(res[i][2])
+          temp.push(year + "-" + leadingZeros(month, 2) + "-" + leadingZeros(day, 2))
+        }
+        console.log(temp)
+        setMark(temp)
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
+  const { data:bookData, isLoading:bookLoading, refetch } = useQuery<any, Error>(
+    ["getBookListByDate", moment(value).format("YYYY-MM-DD")],
+    async () => {
+      return await getReservationListByDate(Number(userSeq), moment(value).format("YYYY-MM-DD"));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        // setNailarts(res.content);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
+
+  const onClickBook = (nailartSeq:number) => {
+    navigate(`/nft/${nailartSeq}`)
+  }
+
+  const onClickCancelBtn = async (bookSeq:number) => {
+    try {
+      const res = await deleteCancelReservation(bookSeq)
+      console.log(res)
+      refetch()
+    } catch (error) {
+      console.log(error)
+      alert("예약 취소중 오류발생")
+    }
+  }
 
   return (
     <Wrapper>
@@ -269,27 +311,33 @@ const ReservationCheck = () => {
           <Divider></Divider>
           <TableWrapper>
             <div className="table">
-              <div className="count">총 10 건</div>
+              <div className="count">총 {bookData?.length} 건</div>
               <table>
                 <colgroup>
+                  <col width="5%" />
+                  <col width="10%" />
+                  <col width="55%" />
                   <col width="15%" />
-                  <col width="70%" />
                   <col width="15%" />
                 </colgroup>
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>No</th>
+                    <th>예약자</th>
                     <th>네일아트</th>
                     <th>예약시간</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {reservations.map((reservation, idx) => {
+                  {bookData?.map((book:any, idx:any) => {
                     return (
                       <tr key={idx}>
-                        <th>{reservation.ID}</th>
-                        <th className="title">{reservation.nailart}</th>
-                        <th>{reservation.time}</th>
+                        <th onClick={() => onClickBook(book.nailart.nailartSeq)}>{book.bookSeq}</th>
+                        <th onClick={() => onClickBook(book.nailart.nailartSeq)}>{book.user.userNickname}</th>
+                        <th onClick={() => onClickBook(book.nailart.nailartSeq)} className="title">{book.nailart.nailartType} - {book.nailart.nailartDetailColor}</th>
+                        <th onClick={() => onClickBook(book.nailart.nailartSeq)}>{convertDate(book.bookDatetime).slice(10,16)}</th>
+                        <th><button onClick={() => onClickCancelBtn(book.bookSeq)}>취소</button></th>
                       </tr>
                     );
                   })}
