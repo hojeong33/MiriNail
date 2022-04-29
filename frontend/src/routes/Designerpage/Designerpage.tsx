@@ -45,7 +45,7 @@ const DesignerPage = () => {
   const { userSeq } = useParams();
   const setterFn = useSetRecoilState(designerAtom)
 
-  const { data, isLoading } = useQuery<any, Error>(
+  const { data, isLoading, refetch} = useQuery<any, Error>(
     ["getDesigner"],
     async () => {
       return await getDesignerinfo(Number(userSeq));
@@ -61,7 +61,7 @@ const DesignerPage = () => {
 
   return (
     <>
-      <Header designer={designer}></Header>
+      <Header refetch={refetch}></Header>
       <Content designer={designer}></Content>
     </>
   );

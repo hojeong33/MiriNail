@@ -60,18 +60,19 @@ public class FollowRepositorySupport {
     }
 
     public Follow followRegister(Long followeeId, String userId) {
-        User followee = userRepository.findByUserSeq(followeeId);
-        User follower = userRepository.findByUserId(userId);
+
         // 토큰에 카카오 id 값이 들어있다는 전제하에 코딩함.
 
         // 해당 팔로우가 이미 있는지 확인.
         Follow isExist = jpaQueryFactory.select(qFollow)
                 .from(qFollow)
-                .where(qFollow.followFollower.eq(follower)
-                        .and(qFollow.followFollowee.eq(followee)))
+                .where(qFollow.followFollower.userId.eq(userId)
+                        .and(qFollow.followFollowee.userSeq.eq(followeeId)))
                 .fetchFirst();
 
         if(null == isExist) {
+            User followee = userRepository.findByUserSeq(followeeId);
+            User follower = userRepository.findByUserId(userId);
             Follow follow = Follow.builder()
                     .followFollowee(followee)
                     .followFollower(follower)
