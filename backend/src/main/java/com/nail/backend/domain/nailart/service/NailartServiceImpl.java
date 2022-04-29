@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
+import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
@@ -60,6 +62,9 @@ public class NailartServiceImpl implements NailartService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    DesignerInfoRepository designerInfoRepository;
 
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
@@ -158,6 +163,7 @@ public class NailartServiceImpl implements NailartService {
         // 아니면 각각 다른 곳에서 호춯하고 controller에서 합치기?\
         NailartDetailGetRes nailartDetailGetRes = new NailartDetailGetRes();
         Nailart nailart = nailartRepository.findByNailartSeq(nailartSeq);
+        DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(nailart.getDesignerSeq());
         nailartDetailGetRes.setNailartSeq(nailart.getNailartSeq());
         nailartDetailGetRes
                 .setDesignerNickname(userRepository.findByUserSeq(nailart.getDesignerSeq()).getUserNickname());
@@ -170,6 +176,7 @@ public class NailartServiceImpl implements NailartService {
         nailartDetailGetRes.setNailartWeather(nailart.getNailartWeather());
         nailartDetailGetRes.setNailartAvailable(nailart.isNailartAvailable());
         nailartDetailGetRes.setNailartThumbnailUrl(nailart.getNailartThumbnailUrl());
+        nailartDetailGetRes.setDesignerShopName(designerInfo.getDesignerShopName());
         nailartDetailGetRes.setNailartPrice(nailart.getNailartPrice());
         nailartDetailGetRes.setNailartRegedAt(nailart.getNailartRegedAt());
         nailartDetailGetRes.setNailartRating(nailart.getNailartRating());

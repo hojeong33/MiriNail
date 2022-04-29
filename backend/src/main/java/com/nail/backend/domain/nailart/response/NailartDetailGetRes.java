@@ -33,6 +33,8 @@ public class NailartDetailGetRes {
 
     private String nailartThumbnailUrl;
 
+    private String designerShopName;
+
     private boolean nailartAvailable;
 
     private int nailartPrice;
