@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
+import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -28,6 +29,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -199,6 +202,7 @@ public class NailartServiceImpl implements NailartService {
                 nailart.setNailartDetailColor(nailartRegisterPostReq.getNailartDetailColor());
                 nailart.setNailartWeather(nailartRegisterPostReq.getNailartWeather());
                 nailart.setNailartPrice(nailartRegisterPostReq.getNailartPrice());
+                nailart.setNailartRegedAt(Timestamp.valueOf(LocalDateTime.now()));
                 // 이미지 업로드
                 String fileName = createFileName(file.getOriginalFilename());
                 ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -250,6 +254,55 @@ public class NailartServiceImpl implements NailartService {
         }
         System.out.println("여기까지안오나?");
         System.out.println(nailart);
+        return nailart;
+    }
+
+    @Override
+    public Nailart nailartUpdate(NailartUpdatePutReq nailartUpdatePutReq, List<MultipartFile> files) {
+        Nailart nailart = new Nailart();
+        NailartImg nailartImg = new NailartImg();
+        Nailart nailartSaved = new Nailart();
+
+        int index = 0;
+        for (MultipartFile file : files) {
+            if (index == 0) {
+                // 이미지 업로드
+                String fileName = createFileName(file.getOriginalFilename());
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(file.getSize());
+                objectMetadata.setContentType(file.getContentType());
+                try (InputStream inputStream = file.getInputStream()) {
+                    amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+                } catch (IOException e) {
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+                }
+                nailartUpdatePutReq.setNailartThumbnailUrl(amazonS3.getUrl(bucket, fileName).toString());
+
+                nailartRepositorySupport.updateNailartByNailartSeq(nailartUpdatePutReq);
+
+            } else {
+                // 이미지 업로드
+                String fileName = createFileName(file.getOriginalFilename());
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(file.getSize());
+                objectMetadata.setContentType(file.getContentType());
+                System.out.println("두번째파일");
+                try (InputStream inputStream = file.getInputStream()) {
+                    System.out.println("두번째파일 s3 진입");
+                    amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+                } catch (IOException e) {
+                    System.out.println("두번째파일 s3 진입 실패");
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+                }
+                nailartRepository.deleteByNailartSeq(nailartUpdatePutReq.getNailartSeq());
+                nailartImg.setNailartSeq(nailartUpdatePutReq.getNailartSeq());
+                nailartImg.setNailartImgUrl(amazonS3.getUrl(bucket, fileName).toString());
+                nailartImgRepository.save(nailartImg);
+            }
+            index++;
+        }
         return nailart;
     }
 
