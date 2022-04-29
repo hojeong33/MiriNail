@@ -58,10 +58,10 @@ export const designerAtom = atom({
 export const nftFilter = atom({
   key : "nftFilter",
   default : {
-    category : "null",
-    color : "null",
-    type : "null",
-    sort : "null",
+    category : "",
+    color : "",
+    type : "",
+    sort : "",
     page : 1,
     size : 12,
   },

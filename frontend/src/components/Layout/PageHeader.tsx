@@ -97,21 +97,23 @@ const Wrapper = styled.div`
   }
 `;
 
-function PageHeader() {
+function PageHeader({setType}:any) {
+ 
+  console.log(setType)
   
 
   return (
     <>
     <Wrapper>
       <div className="row">
-        <div className="pageHeaderTitle">
+        <div className="pageHeaderTitle" >
           SHOPPING
         </div>
         <div className="pageHeaderLinks">
-          <span>
+          <span onClick={() => setType(true)}>
             타입별
           </span>
-          <span>
+          <span onClick={() => setType(false)}>
             색상별
           </span>
         </div>

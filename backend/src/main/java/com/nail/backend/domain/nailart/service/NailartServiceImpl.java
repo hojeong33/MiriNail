@@ -75,21 +75,22 @@ public class NailartServiceImpl implements NailartService {
         List<NailartListGetRes> nailart = new ArrayList<>();
 
         if(category.equals("color")){// color category
-            if(color != null){// 지정된 색상이 없을 시
+            if(color != ""){// 지정된 색상이 있을시
                 if(sort.equals("like")){// 좋아요 순
                     nailart = nailartRepositorySupport.getListbyColorFavoite(color, page, size);
                 }else{ // 최신순
                     nailart = nailartRepositorySupport.getListbyColorLatest(color, page, size);
                 }
-            }else{// 지정된 색상이 있을시
+            }else{// 지정된 색상이 없을시
                 if(sort.equals("like")){// 좋아요 순
                     nailart = nailartRepositorySupport.getListbyFavoite(page, size);
                 }else{ // 최신순
+                    System.out.println("check!!");
                     nailart = nailartRepositorySupport.getListbyLatest(page, size);
                 }
             }
         }else if(category.equals("type")){// type category
-            if(type != null){// 타입이 없을 시
+            if(type != ""){// 타입이 없을 시
                 if(sort.equals("like")){// 좋아요 순
                     nailart = nailartRepositorySupport.getListbyTypeFavoite(type, page, size);
                 }else{ // 최신순
