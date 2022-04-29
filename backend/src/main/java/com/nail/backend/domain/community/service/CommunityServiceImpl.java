@@ -6,6 +6,7 @@ import com.nail.backend.domain.community.db.entity.Community;
 import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.db.entity.CommunityImg;
 import com.nail.backend.domain.community.db.repository.*;
+import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
 import com.nail.backend.domain.community.response.CommunityCommentGetRes;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -194,28 +196,6 @@ public class CommunityServiceImpl implements CommunityService{
     public CommunityGetRes getCommunity(Long communitySeq){
         Community community = communityRepository.findById(communitySeq).orElse(null);
 
-        List<CommunityComment> communityComment =
-                communityCommentRepository.findTop10ByCommunityAndCommunityCommentLayerIsNotOrderByCommunityCommentRegedAtDesc
-                (community,3);
-
-        List<CommunityCommentGetRes> resCommentList  = new ArrayList<>();
-
-        for (CommunityComment comments :communityComment) {
-
-            //댓글
-        CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
-                .communityCommentSeq(comments.getCommunityCommentSeq())
-                .userSeq(comments.getUser().getUserSeq())
-                .userNickname(comments.getUser().getUserNickname())
-                .userProfileImg(comments.getUser().getUserProfileImg())
-                .communityCommentDesc(comments.getCommunityCommentDesc())
-                .communityGroupNum(comments.getCommunityGroupNum())
-                .communityCommentLayer(comments.getCommunityCommentLayer())
-                .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
-                .build();
-
-        resCommentList.add(comment);
-        }
 
 
         // 커뮤니티 게시글
@@ -229,15 +209,85 @@ public class CommunityServiceImpl implements CommunityService{
                 .communityCnt(community.getCommunityCnt())
                 .communityRegedAt(community.getCommunityRegedAt())
                 .communityImg(community.getCommunityImg())
-                .communityComment(resCommentList)
                 .build();
 
         communityRepositorySupport.modifyCommunityCnt(community.getCommunityCnt(),communitySeq);
         return res;
     }
 
+    // 댓글 ----------------------------
+    public Page<CommunityCommentGetRes> getCommunityComment(Pageable pageable, Long communitySeq){
+
+        Page<CommunityComment> communityComments = communityCommentRepository.findAllByCommunity_CommunitySeqAndCommunityCommentLayerIsNot
+                        (pageable, communitySeq,3);
+
+        Long total = communityComments.getTotalElements();
+        List<CommunityCommentGetRes> resCommentList  = new ArrayList<>();
+
+        for (CommunityComment comments :communityComments) {
+
+            CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
+                    .communityCommentSeq(comments.getCommunityCommentSeq())
+                    .userSeq(comments.getUser().getUserSeq())
+                    .userNickname(comments.getUser().getUserNickname())
+                    .userProfileImg(comments.getUser().getUserProfileImg())
+                    .communityCommentDesc(comments.getCommunityCommentDesc())
+                    .communityGroupNum(comments.getCommunityGroupNum())
+                    .communityCommentLayer(comments.getCommunityCommentLayer())
+                    .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
+                    .build();
+
+            resCommentList.add(comment);
+        }
+        Page<CommunityCommentGetRes> res = new PageImpl<>(resCommentList, pageable, total);
+
+        return res;
+    }
+
+    public Page<CommunityCommentGetRes> getCommunityCommentLayer(Pageable pageable, Long communityCommentSeq){
+        Page<CommunityComment> communityComments = communityCommentRepository.findAllByCommunityGroupNumAndCommunityCommentLayer
+                (pageable, communityCommentSeq,3);
+
+        Long total = communityComments.getTotalElements();
+        List<CommunityCommentGetRes> resCommentList  = new ArrayList<>();
+
+        for (CommunityComment comments :communityComments) {
+
+            CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
+                    .communityCommentSeq(comments.getCommunityCommentSeq())
+                    .userSeq(comments.getUser().getUserSeq())
+                    .userNickname(comments.getUser().getUserNickname())
+                    .userProfileImg(comments.getUser().getUserProfileImg())
+                    .communityCommentDesc(comments.getCommunityCommentDesc())
+                    .communityGroupNum(comments.getCommunityGroupNum())
+                    .communityCommentLayer(comments.getCommunityCommentLayer())
+                    .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
+                    .build();
+
+            resCommentList.add(comment);
+        }
+        Page<CommunityCommentGetRes> res = new PageImpl<>(resCommentList, pageable, total);
+
+        return res;
+    }
+
+
 
 //    UPDATE_________________________________________
+
+    @Override
+    @Transactional
+    public Long communityCommentModify(CommunityCommentModifyPutReq communityCommentModifyPutReq){
+
+        //해당 QnaAnswer가 존재하면 수정, 존재하지 않으면 0 반환
+        if(communityCommentRepository.findById(communityCommentModifyPutReq.getCommunityCommentSeq()).isPresent()){
+            Long execute = communityCommentRepositorySupport.updateCommunityCommentByCommentSeq(communityCommentModifyPutReq);
+            return execute;
+        }
+        else return 0L;
+
+    }
+
 
 //    DELETE_________________________________________
 

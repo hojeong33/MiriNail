@@ -1,6 +1,7 @@
 package com.nail.backend.domain.community.db.repository;
 
 import com.nail.backend.domain.community.db.entity.QCommunityComment;
+import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,14 @@ public class CommunityCommentRepositorySupport {
         return execute;
     }
 
+    // 댓글 수정
+    public Long updateCommunityCommentByCommentSeq(CommunityCommentModifyPutReq communityCommentModifyPutReq){
+        Long execute = jpaQueryFactory.update(qCommunityComment)
+                .set(qCommunityComment.communityCommentDesc, communityCommentModifyPutReq.getCommunityCommentDesc())
+                .where(qCommunityComment.communityCommentSeq.eq(communityCommentModifyPutReq.getCommunityCommentSeq()))
+                .execute();
+        return execute;
+    }
 
     // 댓글 삭제
     // 삭제된 댓글입니다로 업데이트

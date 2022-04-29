@@ -28,6 +28,5 @@ public class CommunityGetRes {
     private Long communityCnt;
     private LocalDateTime communityRegedAt;
     private List<CommunityImg> communityImg;
-    private List<CommunityCommentGetRes> communityComment;
 
 }
