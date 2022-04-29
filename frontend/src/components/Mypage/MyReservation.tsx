@@ -4,6 +4,10 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // css import
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import moment from 'moment'
+import { useQuery } from "react-query";
+import { getUserReservation } from "../../store/apis/book";
+import { useNavigate, useParams } from "react-router-dom";
+import { convertDate } from "../Commons/functions";
 
 const Wrapper = styled.div`
   width: 768px;
@@ -199,49 +203,73 @@ const MyReservation = () => {
       count: 3
     },
   ])
+  const navigate = useNavigate();
+  const { userSeq } = useParams();
 
-  return (
+  const { data, isLoading } = useQuery<any, Error>(
+    ["getBookByDate" ],
+    async () => {
+      return await getUserReservation(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        // setNailarts(res.content);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
+  const onClickDesigner = (designerSeq:number) => {
+    navigate(`/designerpage/${designerSeq}/new`)
+  }
+
+  const onClickCard = (designerSeq:number) => {
+    navigate(`/designerpage/${designerSeq}/new`)
+  }
+
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <Wrapper>
       <div className="nowRV">
         <div className="subtitle">
           현재 <span>예약</span> 내역
         </div>
         <div className="cards">
-          {designers.map((designer, idx) => {
+          {data.bookList.map((book:any, idx:any) => {
             return (
-              <div className="card" key={idx}>
+              <div onClick={() => onClickCard(book.designerInfo.designerSeq)} className="card" key={idx}>
                 <div className="cardleft">
-                  <img src={designer.imgurl} alt="" />
+                  <img src={book.designerInfo.designerInfoImgUrl} alt="" />
                 </div>
                 <div className="cardright">
                   <div className="cardright-top">
-                    <div className="name">{designer.name}</div>
-                    <div className="shop">{designer.shop}</div>
+                    <div className="name">{book.designerInfo.designerShopName}</div>
+                    <div className="shop">예약일: {moment(convertDate(book.bookDatetime)).format("MM/DD HH시 mm분")}</div>
                   </div>
                   <div className="cardright-bottom">
                     <div>
-                      {designer.type} - {designer.color}
+                      {book.nailart.nailartType} - {book.nailart.nailartDetailColor}
                     </div>
-                    <div>
+                    {/* <div>
                       <ArrowForwardIosIcon />
                       예약일: {designer.date}
-                    </div>
+                    </div> */}
                     <div>
                       <ArrowForwardIosIcon />
-                      가격: {designer.price.toLocaleString()}원
+                      가격: {book.nailart.nailartPrice.toLocaleString()}원
                     </div>
                   </div>
                 </div>
               </div>
             );
           })}
-          
         </div>
-
       </div>
       <div className="history">
         <div className="subtitle">
-          장영남님은 현재까지 총 <span>528</span>회 예약하셨습니다.
+          장영남님은 현재까지 총 <span>{data.visitCount}</span>회 예약하셨습니다.
         </div>
         <div className="designertextbox">
           아티스트
@@ -253,11 +281,11 @@ const MyReservation = () => {
             <col width="15%" />
           </colgroup>
           <tbody>
-            {reservations.map((reservation, idx) => {
+            {data.designerList.map((designer:any, idx:any) => {
               return (
-                <tr key={idx}>
-                  <th className="artist">{reservation.shop}</th>
-                  <th className="count">{reservation.count}회</th>
+                <tr key={idx} onClick={() => onClickDesigner(designer.designerInfo.designerSeq)}>
+                  <th className="artist">{designer.designerInfo.designerShopName}</th>
+                  <th className="count">{designer.designerCount}회</th>
                 </tr>
               );
             })}

@@ -275,7 +275,7 @@ const HistoryTab = styled.div`
 
 
 const Content = () => {
-  const [hisTog, setHisTog] = useState<boolean>(true);
+  const [hisTog, setHisTog] = useState<boolean>(false);
 
   return (
     <>

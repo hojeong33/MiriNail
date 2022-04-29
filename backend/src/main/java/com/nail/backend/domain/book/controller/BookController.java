@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -54,6 +56,21 @@ public class BookController {
 
         if(bookInfo == null) return ResponseEntity.status(404).body(null);
         return ResponseEntity.status(200).body(bookInfo);
+    }
+
+    @GetMapping("/designer/{designerSeq}")
+    @ApiOperation(value = "디자이너 네일아트 예약 여부 확인", notes = "<strong>디자이너 네일아트 예약 여부 확인한다.</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "해당 유저 예약 없음.")
+    })
+    public ResponseEntity<Set<LocalDate>> getBookListByDesignerSeq(@PathVariable("designerSeq") Long designerSeq) {
+
+        log.info("getBookListByDesignerSeq - 호출");
+        Set<LocalDate> bookLocalDateList = bookService.getBookListByDesignerSeq(designerSeq);
+
+        if(bookLocalDateList.isEmpty()) return ResponseEntity.status(404).body(null);
+        return ResponseEntity.status(200).body(bookLocalDateList);
     }
 
     @GetMapping("/designer/{designerSeq}/{bookDate}")

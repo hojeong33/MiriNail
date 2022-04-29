@@ -303,4 +303,12 @@ public class BookRepositorySupport {
 
         return designerList;
     }
+
+    public List<Book> getBookListByDesignerSeq(Long designerSeq) {
+        List<Book> bookList = jpaQueryFactory.select(qBook)
+                .from(qBook)
+                .where(qBook.designerInfo.designerSeq.eq(designerSeq))
+                .fetch();
+        return bookList;
+    }
 }

@@ -17,3 +17,12 @@ export const getBookByCalendar = async (bookDate:string, designerSeq:number) => 
   )
   return response
 }
+
+// 유저 네일아트 예약 조회
+export const getUserReservation = async (userSeq :number) => {
+  const response = await apiClient.get<any>(
+    `/book/user/${userSeq}`,
+    { params: { userSeq } }
+  )
+  return response.data
+}

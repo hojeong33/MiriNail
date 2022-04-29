@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -73,4 +71,19 @@ public class BookServiceImpl implements BookService{
         List<Book> bookList = bookRepositorySupport.getBookLitByDesignerSeqAndBookDate(designerSeq, bookDate);
         return bookList;
     }
+
+    @Override
+    public Set<LocalDate> getBookListByDesignerSeq(Long designerSeq) {
+        List<Book> bookList = bookRepositorySupport.getBookListByDesignerSeq(designerSeq);
+
+        Set<LocalDate> localDateList = new HashSet<>();
+
+        bookList.forEach(book -> {
+            LocalDate bookDate = book.getBookDatetime().toLocalDate();
+            localDateList.add(bookDate);
+        });
+
+        return localDateList;
+    }
+
 }

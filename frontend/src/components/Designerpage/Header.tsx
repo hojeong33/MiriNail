@@ -180,7 +180,7 @@ const Header:React.FC<IProps> = ({refetch}) => {
       <Wrapper>
         <div className="row">
           <div className="pageHeader">
-            <img src={designer.designerInfo.user.userProfileImg} alt="" />
+            <img src={designer.designerInfo.designerInfoImgUrl} alt="" />
             <div className="designername">{designer.designerInfo.designerShopName}</div>
             <div className="buttons">
               <Link to="createask">
