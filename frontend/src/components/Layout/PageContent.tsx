@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import styled from "styled-components";
+import { nftFilter } from "../../store/atoms";
 import NFTItems from "./NFTItems";
 import { Paginations } from "./Paginations";
 
@@ -15,6 +18,8 @@ const Wrapper = styled.div`
   // height: 100vh;
 `;
 const MainFrame = styled.div`
+  
+
   width: 1300px;
   // height: 100%;
   margin: 0 auto;
@@ -92,9 +97,55 @@ const MainFrame = styled.div`
       }
     }
   }
+
+  @media screen and (max-width: 920px) {
+    width :100%;
+    .MainPadding {
+      .ItemList {
+        padding-left: 0px;
+        .LeftBox {
+          position: relative;
+          padding-right: 0px;
+          left: auto;
+          top: auto;
+          z-index: 10;
+          padding-top: 30px;
+          text-align: left;
+          .TypeFilter {
+            display:flex;
+            justify-content:center;
+            a {
+              
+            }
+          }
+          
+        }
+      }
+    }
+  }
+  
 `;
 
 const PageContent = () => {
+  const [myFilter,setMyFilter] = useRecoilState(nftFilter)
+  const [sortFilter,setSortFilter] = useState('')
+  const reset = useResetRecoilState(nftFilter)
+  useEffect(() => {
+    console.log(myFilter)
+  },[myFilter])
+
+  const onCheckbox = async (e: any) => {
+    const checkboxes: any = document.getElementsByName("cb");
+    for await (const box of checkboxes) {
+      console.log(box);
+      box.checked = false;
+    }
+    e.target.checked = true;
+    setMyFilter({...myFilter,sort:e.target.value});
+  };
+
+ 
+
   return (
     <>
       <Wrapper>
@@ -103,19 +154,19 @@ const PageContent = () => {
             <div className="ItemList">
               <div className="LeftBox">
                 <div className="TypeFilter">
-                  <a>전체</a>
-                  <a>GEL NAIL</a>
-                  <a>FRENCH NAIL</a>
-                  <a>LINESTONE NAIL</a>
+                  <a onClick={() => reset()}>전체</a>
+                  <a onClick={() => setMyFilter({...myFilter,type:'젤'})}>GEL NAIL</a>
+                  <a onClick={() => setMyFilter({...myFilter,type:'프렌치'})}>FRENCH NAIL</a>
+                  <a onClick={() => setMyFilter({...myFilter,type:'라인스톤'})}>LINESTONE NAIL</a>
                 </div>
                 <div className="OrderFilter">
                   <a>정렬</a>
                   <div className="CheckBox">
-                    <input type="checkbox" id="cb1" />
+                    <input type="checkbox" name="cb" id="cb1" onChange={onCheckbox} value=""/>
                     <label htmlFor="cb1">최신순</label>
                   </div>
                   <div className="CheckBox">
-                    <input type="checkbox" id="cb2" />
+                    <input type="checkbox" name="cb" id="cb2" onChange={onCheckbox} value="like"/>
                     <label htmlFor="cb2">인기도순</label>
                   </div>
                 </div>

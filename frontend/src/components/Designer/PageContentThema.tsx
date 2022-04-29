@@ -40,7 +40,7 @@ const MainFrame = styled.div`
 `
 
 export interface IHotDesigner {
-  designer_seq : number;
+  designerSeq : number;
   designerNickName : string;
   designerImgUrl : string;
   // designer_shop_name : string;
@@ -49,7 +49,7 @@ export interface IHotDesigner {
 }
 
 export interface ILatestDesigner {
-  designer_seq : number;
+  designerSeq : number;
   designerNickName : string;
   designerImgUrl : string;
   // designer_shop_name : string;

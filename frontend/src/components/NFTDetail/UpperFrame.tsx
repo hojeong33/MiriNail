@@ -172,6 +172,7 @@ const UpperFrame = () => {
   
   useEffect(():any => {
     if (nailData) {setDesignerSeq(nailData.designerSeq)}
+    console.log(nailData)
   },[nailData])
 
   const ACCESS_TOKEN = localStorage.getItem('token')
@@ -241,7 +242,7 @@ const UpperFrame = () => {
             <div className="leftBox">
               <div className="imHarf">
                 <div className="mainImg">
-                  <img style={{width:"95%", height:"500px"}} src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
+                  <img style={{width:"95%", height:"500px"}} src={nailData?.nailartThumbnailUrl} alt="" />
                 </div>
               </div>
 
@@ -275,14 +276,14 @@ const UpperFrame = () => {
                   <div className='designerInfo'>
                     
                     <div className="designerImg">
-                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" />
+                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)} />
                     </div> 
                     <div className='designerName'>
-                      <div style={{fontSize:"1.2em"}}>
+                      <div style={{fontSize:"1.2em"}} onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)}>
                         {nailData?.designerNickname}
                       </div>
                       <div style={{color:'gray'}}>
-                        Nailshop1
+                        {nailData?.designerShopName}
                       </div>
                     </div>
                   </div>

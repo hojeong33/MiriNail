@@ -57,17 +57,27 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  // @media (min-width:768px) and (max-width:1000px) {
+  //   .row {
+  //     max-width : 768px;
+  //   }
+  // }
+
+  
 `
 
-const NFTItems = () => {
-  const currentPage = useRecoilValue(page)
-  const [myFilter,setMyfilter] = useRecoilState(nftFilter)
+const NFTItems = (props:any) => {
+
+  const [myFilter,setMyFilter] = useRecoilState(nftFilter)
   const [mypage,setMyPage] = useRecoilState(page)
   const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",myFilter], fetchDesigns)
   const navigate = useNavigate();
   useEffect(() => {
     setMyPage(1)
   },[])
+
+
 
   return (
     <>

@@ -240,7 +240,7 @@ export default function OneOneOneWrite(modalStatus: any) {
                   value="false"
                   onChange={onCheckbox}
                 />
-                <label htmlFor="cb1" style={{ marginLeft: "5px" }}>
+                <label htmlFor="c1" style={{ marginLeft: "5px" }}>
                   공개
                 </label>
               </div>
@@ -252,7 +252,7 @@ export default function OneOneOneWrite(modalStatus: any) {
                   value="true"
                   onChange={onCheckbox}
                 />
-                <label htmlFor="cb2" style={{ marginLeft: "5px" }}>
+                <label htmlFor="c2" style={{ marginLeft: "5px" }}>
                   비공개
                 </label>
               </div>
