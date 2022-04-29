@@ -4,12 +4,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @ApiModel(value = "BookPostReq", description = "예약 등록시 필요한 정보")
 public class BookPostReq {
 
@@ -26,9 +28,8 @@ public class BookPostReq {
     Long nailartSeq;
 
     // 예약 날짜 및 시간
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
-    @ApiModelProperty(value = "예약 날짜 및 시간")
-    LocalDateTime bookDatetime;
+    @ApiModelProperty(value = "예약 날짜 및 시간", example = "2022-05-22 12:00")
+    String bookDatetime;
 
     // 예약 코멘트
     @ApiModelProperty(value = "예약 코멘트", example = "상담후에 시술 결정하고 싶어요.")

@@ -82,7 +82,6 @@ public class BookController {
 
         log.info("bookRegister - 호출");
         Book book = bookService.bookRegister(bookPostReq);
-
         if(book == null) {
             log.error("bookRegister - This book doesn't exist.");
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "예약 등록 실패했습니다."));

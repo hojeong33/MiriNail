@@ -60,14 +60,6 @@ const ItemCard = styled.div`
   }
 `;
 
-interface IState {
-  item: {
-    title: string;
-    price: number;
-    category: string[];
-    isfollow: boolean;
-  };
-}
 interface INailart {
   item: {
     designerSeq: number;
@@ -88,69 +80,7 @@ interface INailart {
 }
 
 const NFTs = () => {
-  const [items, setItems] = useState<IState["item"][]>([
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-  ])
-  const [nailarts, setNailarts] = useState<INailart["item"][]>([]);
+  // const [nailarts, setNailarts] = useState<INailart["item"][]>([]);
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
@@ -170,7 +100,7 @@ const NFTs = () => {
       onSuccess: (res) => {
         console.log(res);
         setLastPage(res.totalPages);
-        setNailarts(res.content);
+        // setNailarts(res.content);
       },
       onError: (err: any) => console.log(err),
     }
@@ -183,7 +113,7 @@ const NFTs = () => {
         <div>Loading...</div>
       ) : (
         <ItemCards>
-          {nailarts.map((item, idx) => {
+          {data.content.map((item:any, idx:any) => {
             return (
               <ItemCard key={idx}>
                 <div className="cardwrapper">
