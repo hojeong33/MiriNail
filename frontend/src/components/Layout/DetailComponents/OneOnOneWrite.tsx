@@ -111,7 +111,7 @@ const Content = styled.div`
 `;
 
 export default function OneOneOneWrite(modalStatus: any) {
-  let params: any = useParams().id;
+  let params:string|undefined = useParams().id;
   const userSeq: any = sessionStorage.getItem("userSeq");
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -121,7 +121,7 @@ export default function OneOneOneWrite(modalStatus: any) {
   // const {isLoading:isInquiryLoading , data:inquiryData} = useQuery('inquiryList',() => inquiryList(params.id?.slice(1,params.id.length)))
 
   // 문의 리스트
-  const postInquiryFunc: any = useMutation((form: any) => postInquiry(form), {
+  const postInquiryFunc = useMutation((form: any) => postInquiry(form), {
     onSuccess: () => {
       console.log("성공");
       // inquiryList(params.id?.slice(1,params.id.length),1)
@@ -166,7 +166,7 @@ export default function OneOneOneWrite(modalStatus: any) {
     setFiles(file);
   };
 
-  const submitData = {
+  const submitData:any = {
     ...inputStatus,
     qnaNailartSeq: params,
     qnaDesignerSeq: designerSeq,

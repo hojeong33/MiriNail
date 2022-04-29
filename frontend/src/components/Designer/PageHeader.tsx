@@ -1,6 +1,7 @@
 
 import styled from 'styled-components'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   * {
@@ -92,7 +93,7 @@ const Wrapper = styled.div`
 `
 
 function PageHeader({changeThema,changeAll}:any) {
-
+  const [flag,setFlag] = useState(true)
 
   return (
     <>
@@ -102,10 +103,10 @@ function PageHeader({changeThema,changeAll}:any) {
           DESIGNER
         </div>
         <div className="pageHeaderLinks">
-          <span onClick={changeThema}>
+          <span onClick={() => {changeThema(); setFlag(true)}} style={flag ? {color:"black"} : {color:"gray"}}>
             테마보기
           </span>
-          <span onClick={changeAll}>
+          <span onClick={() => {changeAll(); setFlag(false)}} style={flag ? {color:"gray"} : {color:"black"}}>
             전체보기
           </span>
         </div>
@@ -113,7 +114,7 @@ function PageHeader({changeThema,changeAll}:any) {
           <div className="NavElement">
             <span>디자이너</span>
             <ChevronRightIcon />
-            <span>목록</span>
+            {flag ? <span>테마보기</span> : <span>전체보기</span>}
           </div>
         </div>
       </div>

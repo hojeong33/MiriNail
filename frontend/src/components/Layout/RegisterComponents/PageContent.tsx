@@ -234,7 +234,7 @@ const PageContent = () => {
   }, [infoProcess]);
 
   // ipfs 등록 및 nft 발급
-  const abc: any = "http://127.0.0.1:5002";
+  const abc:any = "http://127.0.0.1:5002";
   const client = create(abc);
   const nftFunc = async () => {
   
