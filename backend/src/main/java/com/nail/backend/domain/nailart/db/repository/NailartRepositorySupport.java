@@ -1,15 +1,20 @@
 package com.nail.backend.domain.nailart.db.repository;
 
+import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.favorite.db.entity.QFavorite;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.entity.QNailart;
+import com.nail.backend.domain.qna.request.QnaModifyPutReq;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +34,25 @@ public class NailartRepositorySupport {
 
     QFavorite qFavorite = QFavorite.favorite;
 
-    // 색상 x, 타입 x, 최신 순
+    //네일 아트 수정
+    @Transactional
+    public Long updateNailartByNailartSeq(NailartUpdatePutReq nailartUpdatePutReq) {
+        long execute = jpaQueryFactory.update(qNailart)
+                .set(qNailart.nailartName, nailartUpdatePutReq.getNailartName())
+                .set(qNailart.nailartDesc, nailartUpdatePutReq.getNailartDesc())
+                .set(qNailart.nailartType, nailartUpdatePutReq.getNailartType())
+                .set(qNailart.nailartColor, nailartUpdatePutReq.getNailartColor())
+                .set(qNailart.nailartDetailColor, nailartUpdatePutReq.getNailartDetailColor())
+                .set(qNailart.nailartWeather, nailartUpdatePutReq.getNailartWeather())
+                .set(qNailart.nailartPrice, nailartUpdatePutReq.getNailartPrice())
+                .set(qNailart.nailartRegedAt, Timestamp.valueOf(LocalDateTime.now()))
+                .set(qNailart.nailartThumbnailUrl, nailartUpdatePutReq.getNailartThumbnailUrl())
+                .where(qNailart.nailartSeq.eq(nailartUpdatePutReq.getNailartSeq()))
+                .execute();
+        return execute;
+    }
+
+   // 색상 x, 타입 x, 최신 순
     public List<NailartListGetRes> getListbyLatest(int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
         List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)

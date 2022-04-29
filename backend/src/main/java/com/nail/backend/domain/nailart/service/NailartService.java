@@ -1,5 +1,6 @@
 package com.nail.backend.domain.nailart.service;
 
+import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
@@ -26,6 +27,7 @@ public interface NailartService {
     Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq, List<MultipartFile> files);
 
     // 네일 아트 수정
+    Nailart nailartUpdate(NailartUpdatePutReq nailartUpdatePutReq, List<MultipartFile> files);
 
     // 네일 아트 삭제
     boolean nailartRemove(long nailartSeq);

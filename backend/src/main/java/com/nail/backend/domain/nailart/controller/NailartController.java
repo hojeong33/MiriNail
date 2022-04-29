@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
+import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.nailart.service.NailartService;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -56,17 +57,22 @@ public class NailartController {
 
     // Nailart 등록
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<Void> test(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
+    public ResponseEntity<Void> nailartRegister(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         NailartRegisterPostReq nailartRegisterPostReq = objectMapper.readValue(jsonList, new TypeReference<NailartRegisterPostReq>() {});
-        log.info("files count : {}",files);
-        log.info("json text) : {}",nailartRegisterPostReq);
         nailartService.nailartRegister(nailartRegisterPostReq, files);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     // Nailart 수정
+    @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<Void> nailartUpdate(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
+        NailartUpdatePutReq nailartUpdatePutReq = objectMapper.readValue(jsonList, new TypeReference<NailartUpdatePutReq>() {});
+
+//        nailartService.nailartRegister(nailartRegisterPostReq, files);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     // Nailart 삭제
     @DeleteMapping("/{nailartSeq}")
