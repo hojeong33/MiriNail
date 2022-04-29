@@ -1,8 +1,6 @@
 package com.nail.backend.domain.designer.db.repository;
 
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
+import com.nail.backend.domain.nailart.response.NailartListGetRes;
+import com.nail.backend.domain.nailart.service.NailartService;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
-import com.nail.backend.domain.nailart.response.NailartListGetRes;
-import com.nail.backend.domain.nailart.service.NailartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,8 +33,8 @@ public class NailartController {
 
     // Nailart 리스트 전체 조회
     @GetMapping("/list")
-    public List<NailartListGetRes> nailartList(@RequestParam int page, @RequestParam int size){
-        return nailartService.nailartList(page, size);
+    public List<NailartListGetRes> nailartList(@RequestParam String category, @RequestParam String color, @RequestParam String type, @RequestParam String sort, @RequestParam int page, @RequestParam int size){
+        return nailartService.nailartList(category, color, type, sort, page, size);
     }
 
     // Nailart nailartSeq로 작품 상세 조회
