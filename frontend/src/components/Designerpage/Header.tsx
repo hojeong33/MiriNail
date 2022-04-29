@@ -1,16 +1,18 @@
-
-import styled from 'styled-components'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { IDesigner } from '../../routes/Designerpage/Designerpage';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Link, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { designerAtom } from '../../store/atoms';
-import { deleteFollow, postFollow } from '../../store/apis/follow';
-import { useMutation } from 'react-query';
+import styled from "styled-components";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { IDesigner } from "../../routes/Designerpage/Designerpage";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CreateIcon from "@mui/icons-material/Create";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import PeopleIcon from "@mui/icons-material/People";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { designerAtom } from "../../store/atoms";
+import { deleteFollow, postFollow } from "../../store/apis/follow";
+import { useMutation } from "react-query";
 
 const Wrapper = styled.div`
   * {
@@ -84,7 +86,7 @@ const Wrapper = styled.div`
 
   .pageHeaderNavigation {
     position: absolute;
-    width: 100%;
+    width: 400px;
     height: 30px;
     bottom: 10px;
     font-size: 14px;
@@ -93,7 +95,7 @@ const Wrapper = styled.div`
       position: absolute;
       display: flex;
       align-items: center;
-      width: 100%;
+      width: 400px;
       height: 30px;
       bottom: 10px;
       font-size: 14px;
@@ -110,15 +112,15 @@ const Wrapper = styled.div`
 `;
 
 interface IProps {
-    designer?: IDesigner;
-    refetch: any;
+  designer?: IDesigner;
+  refetch: any;
 }
 
-const Header:React.FC<IProps> = ({refetch}) => {
+const Header: React.FC<IProps> = ({ refetch }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isFollow, setIsFollow] = useState<boolean>(false)
-  const designer = useRecoilValue(designerAtom)  
-  const {userSeq} = useParams();
+  const [isFollow, setIsFollow] = useState<boolean>(false);
+  const designer = useRecoilValue(designerAtom);
+  const { userSeq } = useParams();
   const handleModalOpen = () => {
     setIsOpen(true);
   };
@@ -156,7 +158,7 @@ const Header:React.FC<IProps> = ({refetch}) => {
   );
 
   const findIsFollow = () => {
-    const me = Number(sessionStorage.getItem("userSeq"))
+    const me = Number(sessionStorage.getItem("userSeq"));
     setIsFollow(
       designer.follower.some(function (ele: any, idx: any) {
         return ele.userSeq === me;
@@ -165,26 +167,31 @@ const Header:React.FC<IProps> = ({refetch}) => {
   };
 
   const onClickFollow = () => {
-    follow.mutate()
-  }
+    follow.mutate();
+  };
 
   const onClickUnFollow = () => {
-    unFollow.mutate()
-  }
+    unFollow.mutate();
+  };
 
-  useEffect(()=> {
-    findIsFollow()
-  }, [designer])
+  useEffect(() => {
+    findIsFollow();
+  }, [designer]);
   return (
     <>
       <Wrapper>
         <div className="row">
           <div className="pageHeader">
             <img src={designer.designerInfo.designerInfoImgUrl} alt="" />
-            <div className="designername">{designer.designerInfo.designerShopName}</div>
+            <div className="designername">
+              {designer.designerInfo.designerShopName}
+            </div>
             <div className="buttons">
               <Link to="createask">
-                <button>1:1 문의하기</button>
+                <button>
+                  <CreateIcon />
+                  1:1 문의
+                </button>
               </Link>
               <Link to="reservation">
                 <button>
@@ -204,6 +211,25 @@ const Header:React.FC<IProps> = ({refetch}) => {
                 </button>
               )}
             </div>
+            <div className="buttons">
+              <button>
+                <AccountBoxIcon />
+                사진변경
+              </button>
+
+              <Link to="reservationcheck">
+                <button>
+                  <CalendarMonthIcon />
+                  예약확인
+                </button>
+              </Link>
+              <Link to="followers">
+                <button>
+                  <PeopleIcon />
+                  팔로워들
+                </button>
+              </Link>
+            </div>
           </div>
           <div className="pageHeaderNavigation">
             <div className="NavElement">
@@ -213,11 +239,10 @@ const Header:React.FC<IProps> = ({refetch}) => {
             </div>
           </div>
         </div>
-        <div>
-      </div>
+        <div></div>
       </Wrapper>
     </>
   );
-}
+};
 
-export default Header
+export default Header;

@@ -17,3 +17,12 @@ export const deleteFollow = async (followFollowee :number) => {
   );
   return response
 }
+
+// 팔로워 조회
+export const getFollowers = async (userSeq :number) => {
+  const response = await apiClient.get<any>(
+    `/follow/followee/${userSeq}`,
+    { params: { userSeq } }
+  );
+  return response.data
+}

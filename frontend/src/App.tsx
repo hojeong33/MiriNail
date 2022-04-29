@@ -41,6 +41,7 @@ import UpdateIntroduction from "./components/Designerpage/UpdateIntroduction";
 import PageNotFound from "./components/PageNotFound";
 import AskDetail from "./components/Designerpage/AskDetail";
 import UpdateAsk from "./components/Designerpage/UpdateAsk";
+import Followers from "./components/Designerpage/Followers";
 
 function App() {
   return (
@@ -76,6 +77,7 @@ function App() {
             <Route path="createfeed" element={<CreateFeed />}></Route>
             <Route path="createask" element={<CreateAsk />}></Route>
             <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>
+            <Route path="followers" element={<Followers />}></Route>
           </Route>
           <Route path="/community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />
