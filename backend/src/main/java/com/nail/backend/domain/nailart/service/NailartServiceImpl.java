@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -267,6 +268,7 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
+    @Transactional
     public Nailart nailartUpdate(NailartUpdatePutReq nailartUpdatePutReq, List<MultipartFile> files) {
         Nailart nailart = new Nailart();
         NailartImg nailartImg = new NailartImg();
@@ -275,6 +277,7 @@ public class NailartServiceImpl implements NailartService {
         int index = 0;
         for (MultipartFile file : files) {
             if (index == 0) {
+                System.out.println("check1!");
                 // 이미지 업로드
                 String fileName = createFileName(file.getOriginalFilename());
                 ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -286,10 +289,12 @@ public class NailartServiceImpl implements NailartService {
                 } catch (IOException e) {
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
                 }
+                System.out.println("check2!");
                 nailartUpdatePutReq.setNailartThumbnailUrl(amazonS3.getUrl(bucket, fileName).toString());
-
+                System.out.println("check3!");
+                System.out.println(nailartUpdatePutReq);
                 nailartRepositorySupport.updateNailartByNailartSeq(nailartUpdatePutReq);
-
+                System.out.println("check4!");
             } else {
                 // 이미지 업로드
                 String fileName = createFileName(file.getOriginalFilename());
@@ -305,10 +310,18 @@ public class NailartServiceImpl implements NailartService {
                     System.out.println("두번째파일 s3 진입 실패");
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
                 }
-                nailartRepository.deleteByNailartSeq(nailartUpdatePutReq.getNailartSeq());
+                System.out.println("check5!");
+                System.out.println(nailartUpdatePutReq.getNailartSeq());
+                NailartImg Img = nailartImgRepository.findByNailartSeq(nailartUpdatePutReq.getNailartSeq());
+                System.out.println(Img.getNailartImgSeq());
+                nailartImgRepository.deleteAllByNailartSeq((long)Img.getNailartImgSeq());
+                System.out.println("check6!");
                 nailartImg.setNailartSeq(nailartUpdatePutReq.getNailartSeq());
+                System.out.println("check7!");
                 nailartImg.setNailartImgUrl(amazonS3.getUrl(bucket, fileName).toString());
+                System.out.println("check8!");
                 nailartImgRepository.save(nailartImg);
+                System.out.println("check9!");
             }
             index++;
         }
@@ -316,9 +329,10 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
+    @Transactional
     public boolean nailartRemove(long nailartSeq) {
         if (nailartRepository.findById(nailartSeq).isPresent()) {
-            nailartImgRepository.deleteByNailartSeq(nailartSeq);
+            nailartImgRepository.deleteAllByNailartSeq(nailartSeq);
             nailartRepository.deleteByNailartSeq(nailartSeq);
             return true;
         } else

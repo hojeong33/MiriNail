@@ -41,7 +41,7 @@ export const registDesign = async(files:any) => {
 
 export const designDetail = async(param:any) => {
   const response = await axios.get(base_url+`nailart/detail/${param}`)
-  // console.log(response.data)
+  console.log(response.data)
   return response.data
   
 }
@@ -53,7 +53,16 @@ export const otherDesign = async(param:any) => {
   return response.data
 }
 
-
+export const reviseDesign = async(param:any) => {
+  console.log(param)
+  const response = await axios.put(base_url+`nailart`,param,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  console.log(response)
+  return response.data
+}
 
 
 // 좋아요
