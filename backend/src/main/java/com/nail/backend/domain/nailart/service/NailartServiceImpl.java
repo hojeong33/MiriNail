@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
+import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.entity.NailartImg;
@@ -11,14 +13,12 @@ import com.nail.backend.domain.nailart.db.repository.NailartImgRepository;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
-import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -31,8 +31,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static com.google.common.io.Files.getFileExtension;
 
 @RequiredArgsConstructor
 
@@ -47,6 +45,9 @@ public class NailartServiceImpl implements NailartService {
 
     @Autowired
     NailartRepository nailartRepository;
+
+    @Autowired
+    NailartRepositorySupport nailartRepositorySupport;
 
     @Autowired
     NailartImgRepository nailartImgRepository;
@@ -70,28 +71,43 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
-    public List<NailartListGetRes> nailartList(int page, int size) {
+    public List<NailartListGetRes> nailartList(String category, String color, String type, String sort, int page, int size) {
         List<NailartListGetRes> nailart = new ArrayList<>();
-        PageRequest pageReuest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
-        nailartRepository.findAll(pageReuest).forEach(art -> {
-            NailartListGetRes tmp = new NailartListGetRes();
-            tmp.setNailartSeq(art.getNailartSeq());
-            tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
-            tmp.setDesignerSeq(art.getDesignerSeq());
-            tmp.setTokenId(art.getTokenId());
-            tmp.setNailartName(art.getNailartName());
-            tmp.setNailartDesc(art.getNailartDesc());
-            tmp.setNailartColor(art.getNailartColor());
-            tmp.setNailartDetailColor(art.getNailartDetailColor());
-            tmp.setNailartWeather(art.getNailartWeather());
-            tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
-            tmp.setNailartType(art.getNailartType());
-//            tmp.setNailartAvailable(art.get);
-            tmp.setNailartPrice(art.getNailartPrice());
-            tmp.setNailartRegedAt(art.getNailartRegedAt());
-            tmp.setNailartRating(art.getNailartRating());
-            nailart.add(tmp);
-        });
+
+        if(category.equals("color")){// color category
+            if(color.equals("null")){// 지정된 색상이 없을 시
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyFavoite(page, size);
+                }else{ // 최신순
+                    nailart = nailartRepositorySupport.getListbyLatest(page, size);
+                }
+            }else{// 지정된 색상이 있을시
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyColorFavoite(color, page, size);
+                }else{ // 최신순
+                    nailart = nailartRepositorySupport.getListbyColorLatest(color, page, size);
+                }
+            }
+        }else if(category.equals("type")){// type category
+            if(type.equals("null")){// 타입이 없을 시
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyFavoite(page, size);
+                }else{ // 최신순
+                    nailart = nailartRepositorySupport.getListbyLatest(page, size);
+                }
+
+            }else{// 타입이 있을시
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyTypeFavoite(type, page, size);
+                }else{ // 최신순
+                    nailart = nailartRepositorySupport.getListbyTypeLatest(type, page, size);
+                }
+            }
+
+
+        }else{// 아무것도 선택 안했을시
+            nailart = nailartRepositorySupport.getListbyLatest(page, size);
+        }
 
         return nailart;
     }

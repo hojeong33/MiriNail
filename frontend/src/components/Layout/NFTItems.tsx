@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { page } from '../../store/atoms';
+import { nftFilter, page } from '../../store/atoms';
 import { fetchDesigns } from '../../store/api';
 import { nftItems } from '../../store/atoms';
 import { useQuery, useQueryClient } from 'react-query';
@@ -61,9 +61,9 @@ const Wrapper = styled.div`
 
 const NFTItems = () => {
   const currentPage = useRecoilValue(page)
-  
+  const [myFilter,setMyfilter] = useRecoilState(nftFilter)
   const [mypage,setMyPage] = useRecoilState(page)
-  const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",mypage], fetchDesigns)
+  const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",myFilter], fetchDesigns)
   const navigate = useNavigate();
   useEffect(() => {
     setMyPage(1)

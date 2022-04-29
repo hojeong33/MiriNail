@@ -1,10 +1,7 @@
 package com.nail.backend.domain.designer.service;
 
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
-import com.nail.backend.domain.designer.request.DesignerNewsRegisterPostReq;
 import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
-import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

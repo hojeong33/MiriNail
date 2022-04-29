@@ -3,9 +3,7 @@ package com.nail.backend.domain.nailart.db.entity;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,6 +12,8 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 @Table(name ="nailart")
 @ApiModel(value = "NailArt", description = "NailArt 작품")
 public class Nailart {

@@ -6,9 +6,9 @@ const base_url = 'http://localhost:8080/api/'
 
 // 디자인 관련
 export const fetchDesigns = async({queryKey}:any) => {
-  console.log(queryKey)
- 
-  const response = await axios.get(base_url+'nailart/list',{params : {page: queryKey[1],size:12}})
+  const data = queryKey[1]
+  console.log(data)
+  const response = await axios.get(base_url+'nailart/list',{params : data})
   console.log(response)
   return response.data
 }
