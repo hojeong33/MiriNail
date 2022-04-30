@@ -1,5 +1,7 @@
 package com.nail.backend.domain.community.response;
 
+import com.nail.backend.domain.community.controller.CommunityController;
+import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.db.entity.CommunityImg;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -14,7 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("BookListByUserSeqGetRes")
+@ApiModel("CommunityGetRes")
 public class CommunityGetRes {
 
     private Long communitySeq;

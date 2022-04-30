@@ -23,6 +23,7 @@ public class Community {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "community_seq")
     private Long communitySeq;
 
     @ApiModelProperty(value = "유저 번호")

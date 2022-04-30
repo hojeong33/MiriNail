@@ -5,12 +5,11 @@ import com.nail.backend.domain.authentication.service.AwsS3Service;
 import com.nail.backend.domain.community.db.entity.Community;
 import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.db.entity.CommunityImg;
-import com.nail.backend.domain.community.db.repository.CommunityCommentRepository;
-import com.nail.backend.domain.community.db.repository.CommunityCommentRepositorySupport;
-import com.nail.backend.domain.community.db.repository.CommunityImgRepository;
-import com.nail.backend.domain.community.db.repository.CommunityRepository;
+import com.nail.backend.domain.community.db.repository.*;
+import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
+import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.qna.response.QnaGetRes;
 import com.nail.backend.domain.user.db.entity.User;
@@ -25,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -54,6 +54,9 @@ public class CommunityServiceImpl implements CommunityService{
     CommunityCommentRepository communityCommentRepository;
 
     @Autowired
+    CommunityRepositorySupport communityRepositorySupport;
+
+    @Autowired
     CommunityCommentRepositorySupport communityCommentRepositorySupport;
 
     @Autowired
@@ -71,6 +74,7 @@ public class CommunityServiceImpl implements CommunityService{
                 .user(user)
                 .communityTitle(communityRegisterPostReq.getCommunityTitle())
                 .communityDesc(communityRegisterPostReq.getCommunityDesc())
+                .communityCnt(0L)
                 .communityRegedAt(LocalDateTime.now())
                 .build();
 
@@ -192,6 +196,9 @@ public class CommunityServiceImpl implements CommunityService{
     public CommunityGetRes getCommunity(Long communitySeq){
         Community community = communityRepository.findById(communitySeq).orElse(null);
 
+
+
+        // 커뮤니티 게시글
         CommunityGetRes res = CommunityGetRes.builder()
                 .communitySeq(community.getCommunitySeq())
                 .userSeq(community.getUser().getUserSeq())
@@ -203,11 +210,84 @@ public class CommunityServiceImpl implements CommunityService{
                 .communityRegedAt(community.getCommunityRegedAt())
                 .communityImg(community.getCommunityImg())
                 .build();
+
+        communityRepositorySupport.modifyCommunityCnt(community.getCommunityCnt(),communitySeq);
+        return res;
+    }
+
+    // 댓글 ----------------------------
+    public Page<CommunityCommentGetRes> getCommunityComment(Pageable pageable, Long communitySeq){
+
+        Page<CommunityComment> communityComments = communityCommentRepository.findAllByCommunity_CommunitySeqAndCommunityCommentLayerIsNot
+                        (pageable, communitySeq,3);
+
+        Long total = communityComments.getTotalElements();
+        List<CommunityCommentGetRes> resCommentList  = new ArrayList<>();
+
+        for (CommunityComment comments :communityComments) {
+
+            CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
+                    .communityCommentSeq(comments.getCommunityCommentSeq())
+                    .userSeq(comments.getUser().getUserSeq())
+                    .userNickname(comments.getUser().getUserNickname())
+                    .userProfileImg(comments.getUser().getUserProfileImg())
+                    .communityCommentDesc(comments.getCommunityCommentDesc())
+                    .communityGroupNum(comments.getCommunityGroupNum())
+                    .communityCommentLayer(comments.getCommunityCommentLayer())
+                    .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
+                    .build();
+
+            resCommentList.add(comment);
+        }
+        Page<CommunityCommentGetRes> res = new PageImpl<>(resCommentList, pageable, total);
+
+        return res;
+    }
+
+    public Page<CommunityCommentGetRes> getCommunityCommentLayer(Pageable pageable, Long communityCommentSeq){
+        Page<CommunityComment> communityComments = communityCommentRepository.findAllByCommunityGroupNumAndCommunityCommentLayer
+                (pageable, communityCommentSeq,3);
+
+        Long total = communityComments.getTotalElements();
+        List<CommunityCommentGetRes> resCommentList  = new ArrayList<>();
+
+        for (CommunityComment comments :communityComments) {
+
+            CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
+                    .communityCommentSeq(comments.getCommunityCommentSeq())
+                    .userSeq(comments.getUser().getUserSeq())
+                    .userNickname(comments.getUser().getUserNickname())
+                    .userProfileImg(comments.getUser().getUserProfileImg())
+                    .communityCommentDesc(comments.getCommunityCommentDesc())
+                    .communityGroupNum(comments.getCommunityGroupNum())
+                    .communityCommentLayer(comments.getCommunityCommentLayer())
+                    .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
+                    .build();
+
+            resCommentList.add(comment);
+        }
+        Page<CommunityCommentGetRes> res = new PageImpl<>(resCommentList, pageable, total);
+
         return res;
     }
 
 
+
 //    UPDATE_________________________________________
+
+    @Override
+    @Transactional
+    public Long communityCommentModify(CommunityCommentModifyPutReq communityCommentModifyPutReq){
+
+        //해당 QnaAnswer가 존재하면 수정, 존재하지 않으면 0 반환
+        if(communityCommentRepository.findById(communityCommentModifyPutReq.getCommunityCommentSeq()).isPresent()){
+            Long execute = communityCommentRepositorySupport.updateCommunityCommentByCommentSeq(communityCommentModifyPutReq);
+            return execute;
+        }
+        else return 0L;
+
+    }
+
 
 //    DELETE_________________________________________
 
@@ -218,6 +298,14 @@ public class CommunityServiceImpl implements CommunityService{
              return true;
         }
         return false;
+
+    }
+
+    public boolean communityCommentRemove(Long communitySeq){
+
+        communityCommentRepositorySupport.deleteCommunityComment(communitySeq);
+
+        return true;
 
     }
 }
