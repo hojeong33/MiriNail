@@ -69,7 +69,6 @@ public class NailartController {
     public ResponseEntity<Void> nailartUpdate(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         NailartUpdatePutReq nailartUpdatePutReq = objectMapper.readValue(jsonList, new TypeReference<NailartUpdatePutReq>() {});
-        System.out.println(nailartUpdatePutReq);
         nailartService.nailartUpdate(nailartUpdatePutReq, files);
         return new ResponseEntity<>(HttpStatus.OK);
     }
