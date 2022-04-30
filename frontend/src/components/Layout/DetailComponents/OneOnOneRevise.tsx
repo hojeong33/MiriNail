@@ -98,8 +98,8 @@ const Content = styled.div`
 
 export default function OneOneOneRevise({data}:any) {
   console.log(data)
-  let params:any = useParams().id
-  const userSeq:any = sessionStorage.getItem('userSeq')
+  let params:string|undefined = useParams().id
+  // const userSeq:number = sessionStorage.getItem('userSeq')
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -146,7 +146,7 @@ export default function OneOneOneRevise({data}:any) {
   },[submitData])
   
 
-  const reviseInquiryFunc:any = useMutation((body:any) => 
+  const reviseInquiryFunc = useMutation((body:any) => 
   reviseInquiry(body)
   ,{
     onSuccess: () => {

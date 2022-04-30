@@ -5,20 +5,6 @@ import DesignerCarousel from "./DesignerCarousel";
 import Cards from "../Commons/Cards";
 import { getAllDesigner } from "../../store/api";
 
-export interface hotDesignersProps {
-  designer_seq : number;
-  user_nickname : string;
-  user_profile_img : string;
-  designer_shop_name : string;
-  follow_follower_length : number;
-  designs : number; 
-}
-export interface Props {
-  items : hotDesignersProps[];
-}
-
-
-
 const Wrapper = styled.div`
 * {
   margin: 0px;
@@ -63,6 +49,18 @@ const MainFrame = styled.div`
   }
 
 `
+const FadeIn = styled.div`
+animation: 0.7s ease-in-out loadEffect1;
+
+@keyframes loadEffect1 {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+`
 
 
 const PageContentAll = () => {
@@ -75,139 +73,62 @@ const PageContentAll = () => {
     // nextArrow: <SampleNextArrow />,
     // prevArrow: <SamplePrevArrow />,
   };
-  const [hotDesigners,setHotDesigniers] = useState<hotDesignersProps[]>([
-    {
-      designer_seq : 1,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 2,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 3,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 4,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 5,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 6,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 7,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 8,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 9,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 10,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-    {
-      designer_seq : 11,
-      user_nickname : 'Designer1',
-      user_profile_img : 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202010/22/2182ecd3-b8cc-4993-98a7-8c2568f9fbbc.jpg',
-      designer_shop_name : 'Nailshop1',
-      follow_follower_length : 50,
-      designs : 40, 
-    },
-  ])
+  
 
   const [allDesigner,setAllDesigner] = useState<any>([])
-  const [page,setPage] = useState(1)
+  const [test,setTest] = useState(1)
+  
+  const infiniteScroll = async() => {
+    
+    let scrollTop = document.documentElement.scrollTop;
+    let scrollHeight = document.documentElement.scrollHeight;
+    let clientHeight = document.documentElement.clientHeight;
+    console.log(scrollTop, scrollHeight, clientHeight)
+    console.log(scrollTop + clientHeight >= scrollHeight - 10)
+    if (scrollTop + clientHeight >= scrollHeight ) {
+      setTest(e => e +1)
+      // await console.log(test)
+      
+      //  {console.log(res); setAllDesigner((e:any) => allDesigner.push(...e))})
+    }
+  }
   useEffect(() => {
-    getAllDesigner(page).then((res):any => setAllDesigner(res))
-    // console.log('엥')
-    window.addEventListener("scroll", () => {
-      console.log('엥')
-      let scrollTop = document.documentElement.scrollTop;
-      let scrollHeight = document.documentElement.scrollHeight;
-      let clientHeight = document.documentElement.clientHeight;
+    console.log(test)
+    getAllDesigner(test,5).then(async(res:any) => await setAllDesigner((prev:any) => Array.from(new Set([...prev, ...res]))))
+  },[test])
 
-      if (scrollTop + clientHeight >= scrollHeight - 10) {
-        setPage(e => e+1)
-        // this.limit += 10
-        getAllDesigner(page).then((res):any => setAllDesigner(res))
-      }
-    });
+  useEffect(() => {
+    console.log(test)
+    getAllDesigner(test,10).then((res):any => setAllDesigner(res))
+    window.addEventListener('scroll',infiniteScroll,true)
   },[])
+
   return (
     <>
       <Wrapper>
         
         <MainFrame>
-          <div className="listGroup">
-            <div className="subtitle">All Designers</div>
-            <ul className="clear">
-                  {allDesigner?.map((item:any, idx:any) => {
-                    return (
-                      <li className="ItemListType">
-                        <a className="ItemBox">
-                          <div className="imx">
-                            <div key={idx}>
-                              <Cards info={item}/>
-                            </div>
+
+            <div className="listGroup">
+              <div className="subtitle">All Designers</div>
+              <ul className="clear">
+                {allDesigner?.map((item:any, idx:any) => {
+                  return (
+                    <li className="ItemListType">
+                      <a className="ItemBox">
+                        <div className="imx">
+                          <div key={idx}>
+                            <Cards info={item}/>
                           </div>
-                        </a>
-                      </li>
-                    );
-                  })}
-                  
-            </ul>
-          </div>
+                        </div>
+                      </a>
+                    </li>
+                  );
+                })}
+                    
+              </ul>
+            </div>
+ 
           
         </MainFrame>
         

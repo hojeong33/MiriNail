@@ -78,6 +78,7 @@ function App() {
           <Route path="/nft" element={<NFTList />} />
           <Route path="/nft/:id" element={<NFTDetail />} />
           <Route path="/nft/register" element={<NFTRegister />} />
+          <Route path="/nft/revise" element={<NFTRegister />} />
           <Route path="/designer" element={<DesignerList />} />
           <Route path="/api/users/login" element={<KakaoRedirect />} />
           <Route path="/test" element={<Test />} />

@@ -1,16 +1,18 @@
 import styled from 'styled-components'
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { page } from '../../store/atoms';
+import { nftFilter, page } from '../../store/atoms';
 import { fetchDesigns } from '../../store/api';
 import { nftItems } from '../../store/atoms';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { Loading } from '../Commons/Loading';
 const Wrapper = styled.div`
 
 
   .clear {
     zoom : 1;
+    min-height : 1000px;
     li {
       height :254px;
       float: left;
@@ -26,6 +28,7 @@ const Wrapper = styled.div`
           img {
             width :100%;
             max-width:100%;
+            height :254px;
           }
           .itemName {
             color: #3D3C3A;
@@ -54,17 +57,27 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  // @media (min-width:768px) and (max-width:1000px) {
+  //   .row {
+  //     max-width : 768px;
+  //   }
+  // }
+
+  
 `
 
-const NFTItems = () => {
-  const currentPage = useRecoilValue(page)
-  
+const NFTItems = (props:any) => {
+
+  const [myFilter,setMyFilter] = useRecoilState(nftFilter)
   const [mypage,setMyPage] = useRecoilState(page)
-  const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",mypage], fetchDesigns)
+  const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",myFilter], fetchDesigns)
   const navigate = useNavigate();
   useEffect(() => {
     setMyPage(1)
   },[])
+
+
 
   return (
     <>
@@ -78,7 +91,7 @@ const NFTItems = () => {
           );
         })} */}
       <ul className="clear">
-        {nftLoading ? null : nftData.map((e:any, idx:any) => {
+        {nftLoading && mypage === 1 ? <Loading /> : nftData?.map((e:any, idx:number) => {
           return (
             <div onClick={() => navigate(`/nft/${e.nailartSeq}`)}>
               

@@ -51,6 +51,7 @@ public class NailartRepositorySupport {
                 .execute();
         return execute;
     }
+    // 네일 아트 삭제
 
    // 색상 x, 타입 x, 최신 순
     public List<NailartListGetRes> getListbyLatest(int page, int size){

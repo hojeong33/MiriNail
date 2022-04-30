@@ -17,6 +17,8 @@ public class NailartDetailGetRes {
 
     private long tokenId;
 
+    private String designerImgUrl;
+
     private String designerNickname;
 
     private String nailartName;
