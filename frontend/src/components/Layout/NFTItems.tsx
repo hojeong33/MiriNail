@@ -58,11 +58,18 @@ const Wrapper = styled.div`
     }
   }
 
-  // @media (min-width:768px) and (max-width:1000px) {
-  //   .row {
-  //     max-width : 768px;
-  //   }
-  // }
+  @media screen and (max-width: 1023px) {
+    .clear{
+      margin-top : 50px;
+      li {
+        width: 50%;
+        text-align: center;
+        cursor: pointer;
+        margin-bottom: 100px;
+     
+      }
+    }
+  }
 
   
 `

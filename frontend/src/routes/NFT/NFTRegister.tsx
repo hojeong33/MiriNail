@@ -7,8 +7,8 @@ const NFTRegister = () => {
   return (
     <div>
       <PageHeader />
-      {/* <PageContent /> */}
-      <PageContentRevise />
+      <PageContent />
+      {/* <PageContentRevise /> */}
     </div>
   );
 };

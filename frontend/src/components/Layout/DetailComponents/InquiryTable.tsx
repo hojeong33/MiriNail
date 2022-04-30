@@ -131,6 +131,54 @@ const Wrapper = styled.div`
   }
 
   
+
+  @media screen and (max-width: 1023px) {
+    .table {
+      
+      .tableElement {
+        display : table-column-group;
+      }
+      tbody {
+        height :50px;
+        font-size :13px;
+      }
+      td {
+        border-bottom: 1px solid #ddd;
+      }
+  
+      th {
+        height :60px;
+  
+        border-bottom: 2px solid #ddd;
+        background-color :#dbd9d9;
+      }
+
+      .column {
+        // font-size:13px;
+      }
+
+      tr {
+        // line-height:35px;
+      }
+    }
+  
+  
+    .content {
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      background-color: #f1f1f1;
+    }
+  
+  }
+
+  @media screen and (max-width: 767px) {
+    .column {
+      th {
+        font-size:12px;
+      }
+    }
+  }
 `
 
 export interface IQnaInquiry {
@@ -301,14 +349,14 @@ const InquiryTable = () => {
       <div style={{fontSize:"40px",marginTop:"60px"}}>1대1 문의</div>
       <table className="table">
         <colgroup className="tableElement">
-          <col style={{width:"7%"}} />
-          <col style={{width:"8%"}} />
+          <col style={{width:"10%"}} />
+          <col style={{width:"15%"}} />
           <col style={{width:"auto"}} />
           <col style={{width:"12%"}} />
-          <col style={{width:"13%"}} />
+          <col style={{width:"15%"}} />
         </colgroup>
         <thead>
-          <tr>
+          <tr className="column">
             <th scope="col">번호</th>
             <th scope="col">답변여부</th>
             <th scope="col">제목</th>

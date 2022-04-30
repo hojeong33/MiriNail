@@ -39,6 +39,10 @@ const Button = styled.div`
   right: 10px;
   font-size: 14px;
   position: absolute;
+
+  @media screen and (max-width: 767px) {
+    display:none;
+  }
 `;
 
 const ContentsWrapper = styled.div`

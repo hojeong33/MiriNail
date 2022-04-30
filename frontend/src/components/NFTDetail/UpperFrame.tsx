@@ -27,6 +27,12 @@ const Wrapper = styled.div`
         width : 50%;
         float: left;
         height : 500px;
+        .imHarf {
+          height:100%;
+          .mainImg {
+            height:100%;
+          }
+        }
       }
       
       .rightBox {
@@ -144,6 +150,141 @@ const Wrapper = styled.div`
       }
     }
   }
+
+
+  @media screen and (max-width: 767px) {
+    height :1100px;
+    .row {
+
+      zoom : 1;
+      .imHarf {
+        margin: 5px;
+        .leftBox {
+          width : 100%;
+          float: none;
+          height : 350px;
+          // display:none;
+          position:relative;
+        }
+        
+        .rightBox {
+          margin-top:50px;
+          z-index:11;
+          height: 1000px;
+          position:relative;
+          width : 100%;
+          float: none;
+          .imHarf {
+            height :100%;
+            .primary {
+              height : 100%;
+              .share {
+                cursor:pointer;
+                position :absolute;
+                right : 0px;
+                top : 0px;
+                font-size: 1.8em;
+              }
+              .boxs {
+                margin-bottom: 20px;
+                padding: 5px 20px;
+                background: #3D3C3A;
+                color: #fff;
+                display: inline-block;
+              }
+              .name {
+                font-size: 2em;
+                font-weight: 500;
+                margin-bottom : 15px;
+              }
+              .price {
+                margin-bottom : 15px;
+                font-size: 1.5em;
+              }
+              .tags {
+                margin-bottom: 25px;
+                font-size: 14px;
+                color : gray;
+              }
+              .info {
+                position : relative;
+                margin-bottom: 30px;
+                height:60px;
+                
+  
+  
+                div {
+                  
+                  padding-left: 120px;
+                  padding-top : 15px;
+                  padding-bottom : 25px;
+                  font-size: 14px;
+                  margin-bottom: 10px;
+                  border-top: 1px solid rgba(61,60,58,0.2);
+                  border-bottom: 1px solid rgba(61,60,58,0.2);
+                  p {
+                    position: absolute;
+                    left: 0px;
+                    top: 15px;
+                    font-weight: 500;
+                  }
+                  span {
+                    display :block;
+                    // margin-top:0px;
+                    // word-break:break-all;
+                    display: -webkit-box; -webkit-box-orient: vertical; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; line-height:20px; /* ★★ 설정이 필요한 영역 ★★ */ /* ★★ 3줄 이상은 말줄임 처리 ★★ */ -webkit-line-clamp: 3; /* ★★ line-height:20px일때 ★★ */ height: 60px;
+  
+                
+                  }
+                }
+              }
+              .designerInfo {
+                margin-top: 60px;
+                display:flex;
+          
+                .designerImg {
+                  img {
+                    margin-top:5px;
+                    width :70px;
+                    height :70px;
+                    border-radius :100%;
+                    margin-left : 10px;
+                  }
+                }
+                .designerName {
+                  margin-top : 12px;
+                  margin-left : 38px;
+          
+                }
+              }
+              .btns {
+                margin-top : 40px;
+                position : relative;
+                zoom : 1;
+                width:100%;
+            
+                a {
+                  float:left;
+                  font-size: 16px;
+                  padding: 2% 1.2%;
+                  text-align: center;
+                  width: 33%;
+                  border-left: 1px solid rgba(61,60,58,0.4);
+                  border-top: 1px solid rgba(61,60,58,0.4);
+                  border-bottom: 1px solid rgba(61,60,58,0.4);
+                  border-right: 1px solid rgba(61,60,58,0.4);
+                  cursor: pointer;
+                  border-right: 0px;
+                  background-color: #F7F7F5;
+                  color: #3D3C3A;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 `
 
 const UpperFrame = () => {
@@ -242,7 +383,7 @@ const UpperFrame = () => {
             <div className="leftBox">
               <div className="imHarf">
                 <div className="mainImg">
-                  <img style={{width:"95%", height:"500px"}} src={nailData?.nailartThumbnailUrl} alt="" />
+                  <img style={{width:"95%", height:"100%"}} src={nailData?.nailartThumbnailUrl} alt="" />
                 </div>
               </div>
 

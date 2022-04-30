@@ -22,7 +22,8 @@ const Wrapper = styled.div`
   // height: 100vh;
 `;
 const MainFrame = styled.div`
-  width: 1300px;
+  width:100%;
+  max-width: 1300px;
   height: 100%;
   margin: 0 auto;
 
@@ -164,6 +165,28 @@ const MainFrame = styled.div`
           }
         }
       }
+    }
+  }
+
+  @media screen and (max-width: 1023px) {
+    .LeftBox {
+      display:none;
+    }
+
+    .MainPadding .ItemList {
+      padding-left: 0px;
+    }
+
+    .MainPadding .ItemList .RightBox {
+      border-left: 0px solid white;
+      padding-left: 0px;
+      padding:10px;
+      // height :100%;
+      padding-top: 75px;
+      width: 100%;
+      // border-left: 1px solid #d2d2d0;
+      padding-bottom: 160px;
+      text-align: left;
     }
   }
 `;

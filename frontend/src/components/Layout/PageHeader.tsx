@@ -99,7 +99,7 @@ const Wrapper = styled.div`
     }
   }
 
-  @media screen and (max-width: 920px) {
+  @media screen and (max-width: 1023px) {
 
     height :250px;
     .row {
@@ -113,19 +113,20 @@ const Wrapper = styled.div`
 
       .pageHeaderLinks {
         position: absolute;
-        top: 25%;
+        top: 35%;
         // left: 20%;
         // margin : 0 auto;
         // transform: translateY(-50%);
         font-size: 18px;
         width: 100%;
         margin-top: 100px;
-        text-align: left;
+        text-align: center;
         color: #3d3c3a;
-    
+        
         span {
           padding: 0px 25px;
           cursor: pointer;
+          
         }
       }
 

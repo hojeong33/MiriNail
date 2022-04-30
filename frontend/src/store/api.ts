@@ -54,7 +54,14 @@ export const otherDesign = async(param:any) => {
 }
 
 export const reviseDesign = async(param:any) => {
-  console.log(param)
+  for (let key of param.keys()) {
+    console.log(key);
+  }
+
+  /* value 확인하기 */
+  for (let value of param.values()) {
+      console.log(value);
+  }
   const response = await axios.put(base_url+`nailart`,param,{
     headers: {
       'Content-Type': 'multipart/form-data'
