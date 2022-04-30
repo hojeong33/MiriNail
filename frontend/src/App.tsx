@@ -38,6 +38,7 @@ import AskList from "./components/Designerpage/AskList";
 import CreateAsk from "./components/Designerpage/CreateAsk";
 import Apply from "./components/Mypage/Apply";
 import UpdateIntroduction from "./components/Designerpage/UpdateIntroduction";
+import NFTRevise from "./routes/NFT/NFTRevise";
 
 function App() {
   return (
@@ -78,7 +79,7 @@ function App() {
           <Route path="/nft" element={<NFTList />} />
           <Route path="/nft/:id" element={<NFTDetail />} />
           <Route path="/nft/register" element={<NFTRegister />} />
-          <Route path="/nft/revise" element={<NFTRegister />} />
+          <Route path="/nft/revise" element={<NFTRevise />} />
           <Route path="/designer" element={<DesignerList />} />
           <Route path="/api/users/login" element={<KakaoRedirect />} />
           <Route path="/test" element={<Test />} />

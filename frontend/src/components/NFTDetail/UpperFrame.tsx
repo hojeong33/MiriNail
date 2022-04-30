@@ -53,10 +53,35 @@ const Wrapper = styled.div`
             }
             .boxs {
               margin-bottom: 20px;
-              padding: 5px 20px;
-              background: #3D3C3A;
-              color: #fff;
-              display: inline-block;
+              // padding: 5px 20px;
+              // background: #3D3C3A;
+              // color: #fff;
+              display: flex;
+              justify-content : space-between;
+              .boxsLeft {
+                padding: 5px 20px;
+                background: #3D3C3A;
+                color: #fff;
+              }
+              .boxsRight {
+                margin-right :20px;
+                display:flex;
+                div {
+                  padding: 5px 20px;
+                  border: 1px solid #3D3C3A;
+                  color: #3D3C3A;
+                  cursor : pointer;
+                  :hover {
+                    background-color: #c31d1d;
+                    color :white;
+                    border : 1px solid white; 
+                  }
+                }
+
+                
+              
+              }
+
             }
             .name {
               font-size: 2em;
@@ -174,113 +199,7 @@ const Wrapper = styled.div`
           position:relative;
           width : 100%;
           float: none;
-          .imHarf {
-            height :100%;
-            .primary {
-              height : 100%;
-              .share {
-                cursor:pointer;
-                position :absolute;
-                right : 0px;
-                top : 0px;
-                font-size: 1.8em;
-              }
-              .boxs {
-                margin-bottom: 20px;
-                padding: 5px 20px;
-                background: #3D3C3A;
-                color: #fff;
-                display: inline-block;
-              }
-              .name {
-                font-size: 2em;
-                font-weight: 500;
-                margin-bottom : 15px;
-              }
-              .price {
-                margin-bottom : 15px;
-                font-size: 1.5em;
-              }
-              .tags {
-                margin-bottom: 25px;
-                font-size: 14px;
-                color : gray;
-              }
-              .info {
-                position : relative;
-                margin-bottom: 30px;
-                height:60px;
-                
-  
-  
-                div {
-                  
-                  padding-left: 120px;
-                  padding-top : 15px;
-                  padding-bottom : 25px;
-                  font-size: 14px;
-                  margin-bottom: 10px;
-                  border-top: 1px solid rgba(61,60,58,0.2);
-                  border-bottom: 1px solid rgba(61,60,58,0.2);
-                  p {
-                    position: absolute;
-                    left: 0px;
-                    top: 15px;
-                    font-weight: 500;
-                  }
-                  span {
-                    display :block;
-                    // margin-top:0px;
-                    // word-break:break-all;
-                    display: -webkit-box; -webkit-box-orient: vertical; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; line-height:20px; /* ★★ 설정이 필요한 영역 ★★ */ /* ★★ 3줄 이상은 말줄임 처리 ★★ */ -webkit-line-clamp: 3; /* ★★ line-height:20px일때 ★★ */ height: 60px;
-  
-                
-                  }
-                }
-              }
-              .designerInfo {
-                margin-top: 60px;
-                display:flex;
           
-                .designerImg {
-                  img {
-                    margin-top:5px;
-                    width :70px;
-                    height :70px;
-                    border-radius :100%;
-                    margin-left : 10px;
-                  }
-                }
-                .designerName {
-                  margin-top : 12px;
-                  margin-left : 38px;
-          
-                }
-              }
-              .btns {
-                margin-top : 40px;
-                position : relative;
-                zoom : 1;
-                width:100%;
-            
-                a {
-                  float:left;
-                  font-size: 16px;
-                  padding: 2% 1.2%;
-                  text-align: center;
-                  width: 33%;
-                  border-left: 1px solid rgba(61,60,58,0.4);
-                  border-top: 1px solid rgba(61,60,58,0.4);
-                  border-bottom: 1px solid rgba(61,60,58,0.4);
-                  border-right: 1px solid rgba(61,60,58,0.4);
-                  cursor: pointer;
-                  border-right: 0px;
-                  background-color: #F7F7F5;
-                  color: #3D3C3A;
-                }
-              }
-            }
-          }
         }
       }
     }
@@ -395,12 +314,21 @@ const UpperFrame = () => {
                     {/* <ShareIcon onClick={share}/> */}
                   </div>
                   <div className="boxs">
-                    {nailData?.nailartType}
-                    
+                    <div className="boxsLeft">
+                      {nailData?.nailartType}
+                    </div>
+                    <div className="boxsRight">
+                      <div onClick={() => navigate('/nft/Revise',{state:params})}>
+                        수정
+                      </div>
+                      <div style={{marginLeft:"10px"}}>
+                        삭제
+                      </div>
+                    </div>
                   </div>
                   <div className='name'>
                     {detailInfo.title}
-                    <button onClick={() => navigate('/nft/Revise',{state:params})}>sadfsa</button>
+                    <button >sadfsa</button>
                   </div>
                   <div className="price">
                     {nailData?.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원

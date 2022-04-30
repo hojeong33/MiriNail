@@ -189,6 +189,11 @@ const MainFrame = styled.div`
       text-align: left;
     }
   }
+  
+  @media screen and (max-width: 576px) {
+
+  }
+
 `;
 
 

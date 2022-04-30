@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import UnderLineInput from '../../Commons/UnderLineInput'
-import FileUpload from './FileUpload'
+import FileUpload from '../RegisterComponents/FileUpload'
 import {useState,useEffect} from 'react'
 import { create } from 'ipfs-http-client'
 import axios from 'axios'
