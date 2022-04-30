@@ -8,10 +8,10 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     background-color: white;
-    color: black;
     width: 100%;
     height: 100%;
     background-size: cover;   
+    color: #333;
 }
   a {
     text-decoration: none;
@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     background: transparent;
     border: none;
     cursor: pointer;
+    color: #333;
   }
 
   ul {

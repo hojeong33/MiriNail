@@ -42,6 +42,7 @@ import PageNotFound from "./components/PageNotFound";
 import AskDetail from "./components/Designerpage/AskDetail";
 import UpdateAsk from "./components/Designerpage/UpdateAsk";
 import Followers from "./components/Designerpage/Followers";
+import TopButton from "./components/Navbar/TopButton";
 
 function App() {
   return (
@@ -92,6 +93,7 @@ function App() {
           <Route path="/oauth2/redirect" element={<Auth />} />
           <Route path="*" element={<PageNotFound/>} />
         </Routes>
+        <TopButton />
         {/* <Footer /> */}
       </BrowserRouter>
     </>
