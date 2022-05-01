@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.nail.backend.domain.book.db.repository.BookRepository;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
@@ -67,6 +68,9 @@ public class NailartServiceImpl implements NailartService {
 
     @Autowired
     DesignerInfoRepository designerInfoRepository;
+
+    @Autowired
+    BookRepository bookRepository;
 
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
@@ -336,8 +340,10 @@ public class NailartServiceImpl implements NailartService {
     @Transactional
     public boolean nailartRemove(long nailartSeq) {
         if (nailartRepository.findById(nailartSeq).isPresent()) {
-            nailartImgRepository.deleteById(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
-            nailartRepository.deleteById(nailartSeq);
+//            System.out.println(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
+//            System.out.println(bookRepository.findByNailartSeq(nailartSeq));
+//            nailartImgRepository.deleteById(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
+//            nailartRepository.deleteById(nailartSeq);
             return true;
         } else
             return false;

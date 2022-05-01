@@ -66,6 +66,15 @@ public class DesignerContorller {
         }
     }
 
+    @PutMapping(value="/profileupdate/{designerSeq}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponseBody> designerInfoImgUrlUpdate (@PathVariable long designerSeq, @RequestPart("file") MultipartFile file) throws JsonProcessingException{
+        if(designerInfoService.designerInfoImgUrlupdate(designerSeq, file)) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
+        }else{
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This designerNewsSeq doesn't exist."));
+        }
+    }
+
     // 디자이너 조건별 조회
     // 1. 팔로워 수
     @GetMapping("/list/countFollower")

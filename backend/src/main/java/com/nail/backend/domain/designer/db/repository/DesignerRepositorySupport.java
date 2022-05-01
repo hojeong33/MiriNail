@@ -13,6 +13,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,5 +95,14 @@ public class DesignerRepositorySupport {
         });
 
         return result;
+    }
+    // 디자이너 정보 이미지 수정
+    @Transactional
+    public Long DesignerProfileUpdate(long desginerSeq, String designerInfoImgUrl){
+        long excute = jpaQueryFactory.update(qDesignerInfo)
+                .set(qDesignerInfo.designerInfoImgUrl, designerInfoImgUrl)
+                .where(qDesignerInfo.designerSeq.eq(desginerSeq))
+                .execute();
+        return excute;
     }
 }
