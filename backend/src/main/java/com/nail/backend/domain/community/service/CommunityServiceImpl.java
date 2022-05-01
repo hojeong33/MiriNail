@@ -168,7 +168,7 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
 //    READ___________________________________________
-
+    // 전체조회
     public Page<CommunityGetRes> getCommunityList(Pageable pageable){
         Page<Community> communityList = communityRepository.findAll(pageable);
         List<CommunityGetRes> communityGetResList = new ArrayList<>();
@@ -193,6 +193,31 @@ public class CommunityServiceImpl implements CommunityService{
 
         return res;
     }
+    // 내가 쓴 글 조회
+    public Page<CommunityGetRes> getCommunityListByUser(Pageable pageable, String userId){
+        User user = userRepository.findByUserId(userId);
+        Page<Community> communityList = communityRepository.findAllByUser(pageable, user);
+        List<CommunityGetRes> communityGetResList = new ArrayList<>();
+
+        long total = communityList.getTotalElements();
+        for (Community c : communityList) {
+            CommunityGetRes communityGetRes =CommunityGetRes.builder()
+                    .communitySeq(c.getCommunitySeq())
+                    .communityTitle(c.getCommunityTitle())
+                    .communityCnt(c.getCommunityCnt())
+                    .communityRegedAt(c.getCommunityRegedAt())
+                    .communityImg(c.getCommunityImg())
+                    .build();
+            communityGetResList.add(communityGetRes);
+        }
+        Page<CommunityGetRes> res = new PageImpl<>(communityGetResList, pageable, total);
+
+        return res;
+    }
+
+
+
+
     public CommunityGetRes getCommunity(Long communitySeq){
         Community community = communityRepository.findById(communitySeq).orElse(null);
 
