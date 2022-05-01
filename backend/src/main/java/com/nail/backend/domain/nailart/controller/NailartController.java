@@ -6,11 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
+import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.NailartListGetRes;
+import com.nail.backend.domain.nailart.service.NailartService;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
-import com.nail.backend.domain.nailart.response.NailartListGetRes;
-import com.nail.backend.domain.nailart.service.NailartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,8 +34,8 @@ public class NailartController {
 
     // Nailart 리스트 전체 조회
     @GetMapping("/list")
-    public List<NailartListGetRes> nailartList(@RequestParam int page, @RequestParam int size){
-        return nailartService.nailartList(page, size);
+    public List<NailartListGetRes> nailartList(@RequestParam String category, @RequestParam String color, @RequestParam String type, @RequestParam String sort, @RequestParam int page, @RequestParam int size){
+        return nailartService.nailartList(category, color, type, sort, page, size);
     }
 
     // Nailart nailartSeq로 작품 상세 조회
@@ -56,21 +57,26 @@ public class NailartController {
 
     // Nailart 등록
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<Void> test(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
+    public ResponseEntity<Void> nailartRegister(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         NailartRegisterPostReq nailartRegisterPostReq = objectMapper.readValue(jsonList, new TypeReference<NailartRegisterPostReq>() {});
-        log.info("files count : {}",files);
-        log.info("json text) : {}",nailartRegisterPostReq);
         nailartService.nailartRegister(nailartRegisterPostReq, files);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     // Nailart 수정
+    @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<Void> nailartUpdate(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
+        NailartUpdatePutReq nailartUpdatePutReq = objectMapper.readValue(jsonList, new TypeReference<NailartUpdatePutReq>() {});
+        nailartService.nailartUpdate(nailartUpdatePutReq, files);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     // Nailart 삭제
     @DeleteMapping("/{nailartSeq}")
     public ResponseEntity<BaseResponseBody> nailartRemove(@PathVariable long nailartSeq){
+        System.out.println("check");
         if (nailartService.nailartRemove(nailartSeq)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
         } else {

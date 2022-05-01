@@ -5,7 +5,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { designDetail, nailCount, nailLike, isLike, nailDislike  } from '../../store/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
@@ -147,18 +147,19 @@ const Wrapper = styled.div`
 `
 
 const UpperFrame = () => {
+  const navigate = useNavigate()
   const queryClient = useQueryClient();
-  let params = useParams().id
+  let params:any = useParams().id
   console.log(params)
   const [detailInfo,setDetailInfo] = useState (
     {
-      type : '프렌치네일',
-      price : '50,000원',
-      tags : '#봄 #태그123 #태그 456',
-      info : '모든 피부타입dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
-      name : 'Designer1',
-      shop : 'Nailshop1',
-      color : '딥 다크',
+      // type : '프렌치네일',
+      // price : '50,000원',
+      // tags : '#봄 #태그123 #태그 456',
+      // info : '모든 피부타입dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+      // name : 'Designer1',
+      // shop : 'Nailshop1',
+      // color : '딥 다크',
       title : '프렌치 - 딥다크'
     }
   )
@@ -171,6 +172,7 @@ const UpperFrame = () => {
   
   useEffect(():any => {
     if (nailData) {setDesignerSeq(nailData.designerSeq)}
+    console.log(nailData)
   },[nailData])
 
   const ACCESS_TOKEN = localStorage.getItem('token')
@@ -240,7 +242,7 @@ const UpperFrame = () => {
             <div className="leftBox">
               <div className="imHarf">
                 <div className="mainImg">
-                  <img style={{width:"95%", height:"500px"}} src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
+                  <img style={{width:"95%", height:"500px"}} src={nailData?.nailartThumbnailUrl} alt="" />
                 </div>
               </div>
 
@@ -253,9 +255,11 @@ const UpperFrame = () => {
                   </div>
                   <div className="boxs">
                     {nailData?.nailartType}
+                    
                   </div>
                   <div className='name'>
                     {detailInfo.title}
+                    <button onClick={() => navigate('/nft/Revise',{state:params})}>sadfsa</button>
                   </div>
                   <div className="price">
                     {nailData?.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
@@ -272,14 +276,14 @@ const UpperFrame = () => {
                   <div className='designerInfo'>
                     
                     <div className="designerImg">
-                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" />
+                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)} />
                     </div> 
                     <div className='designerName'>
-                      <div style={{fontSize:"1.2em"}}>
+                      <div style={{fontSize:"1.2em"}} onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)}>
                         {nailData?.designerNickname}
                       </div>
                       <div style={{color:'gray'}}>
-                        Nailshop1
+                        {nailData?.designerShopName}
                       </div>
                     </div>
                   </div>

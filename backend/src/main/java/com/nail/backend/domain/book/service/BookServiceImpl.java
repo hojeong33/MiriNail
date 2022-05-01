@@ -4,9 +4,8 @@ import com.nail.backend.domain.book.db.entity.Book;
 import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.repository.BookCheckRepositorySupport;
 import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
-import com.nail.backend.domain.book.request.BookPostReq;
+import com.nail.backend.domain.follow.request.BookPostReq;
 import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
-import com.querydsl.core.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

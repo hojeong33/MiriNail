@@ -6,9 +6,9 @@ const base_url = 'http://localhost:8080/api/'
 
 // 디자인 관련
 export const fetchDesigns = async({queryKey}:any) => {
-  console.log(queryKey)
- 
-  const response = await axios.get(base_url+'nailart/list',{params : {page: queryKey[1],size:10}})
+  const data = queryKey[1]
+  console.log(data)
+  const response = await axios.get(base_url+'nailart/list',{params : data})
   console.log(response)
   return response.data
 }
@@ -41,7 +41,7 @@ export const registDesign = async(files:any) => {
 
 export const designDetail = async(param:any) => {
   const response = await axios.get(base_url+`nailart/detail/${param}`)
-  // console.log(response.data)
+  console.log(response.data)
   return response.data
   
 }
@@ -53,7 +53,16 @@ export const otherDesign = async(param:any) => {
   return response.data
 }
 
-
+export const reviseDesign = async(param:any) => {
+  console.log(param)
+  const response = await axios.put(base_url+`nailart`,param,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  console.log(response)
+  return response.data
+}
 
 
 // 좋아요
@@ -148,9 +157,10 @@ export const getRecentDesigner = async() => {
   return response.data
 }
 
-export const getAllDesigner = async(page:any) => {
+export const getAllDesigner = async(pages:number, sizes:number) => {
+  console.log(`실행됨 : ${pages}`)
   const response = await axios.get(base_url+'designer/list/all',{
-    params : {page: page, size : 5}
+    params : {page: pages, size : sizes}
   })
   console.log(response)
   return response.data
