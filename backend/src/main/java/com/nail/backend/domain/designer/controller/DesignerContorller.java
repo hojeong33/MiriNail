@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.nail.backend.common.model.response.BaseResponseBody;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
 import com.nail.backend.domain.designer.response.DesignerListConditionGetRes;
 import com.nail.backend.domain.designer.response.DesignerInfoGetRes;
@@ -66,6 +67,7 @@ public class DesignerContorller {
         }
     }
 
+    @ApiOperation(value = "디자이너 프로필 수정")
     @PutMapping(value="/profileupdate/{designerSeq}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponseBody> designerInfoImgUrlUpdate (@PathVariable long designerSeq, @RequestPart("file") MultipartFile file) throws JsonProcessingException{
         if(designerInfoService.designerInfoImgUrlupdate(designerSeq, file)) {
@@ -73,6 +75,15 @@ public class DesignerContorller {
         }else{
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This designerNewsSeq doesn't exist."));
         }
+    }
+
+    @ApiOperation(value = "디자이너 소개 작성, 수정")
+    @PutMapping(value = "/intorduce", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<BaseResponseBody> designerIntroduceRegister(@RequestParam("jsonList") String jsonList, @RequestPart("file") MultipartFile file) throws JsonProcessingException{
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
+        DesignerInfo designerInfo = objectMapper.readValue(jsonList, new TypeReference<DesignerInfo>() {});
+        designerInfoService.designerIntroduceRegister(designerInfo, file);
+        return new ResponseEntity<BaseResponseBody>(HttpStatus.OK);
     }
 
     // 디자이너 조건별 조회

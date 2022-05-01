@@ -100,7 +100,7 @@ public class DesignerRepositorySupport {
     @Transactional
     public Long DesignerProfileUpdate(long desginerSeq, String designerInfoImgUrl){
         long excute = jpaQueryFactory.update(qDesignerInfo)
-                .set(qDesignerInfo.designerInfoImgUrl, designerInfoImgUrl)
+                .set(qDesignerInfo.designerProfileImgUrl, designerInfoImgUrl)
                 .where(qDesignerInfo.designerSeq.eq(desginerSeq))
                 .execute();
         return excute;
