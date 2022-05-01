@@ -84,6 +84,7 @@ public class DesignerRepositorySupport {
                 .from(qNailart)
                 .groupBy(qNailart.designerSeq)
                 .orderBy(qNailart.nailartRating.avg().desc())
+                .limit(10)
                 .fetch();
         nailarts.forEach( num -> {
             DesignerListConditionGetRes tmp = new DesignerListConditionGetRes();
