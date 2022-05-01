@@ -3,6 +3,7 @@ package com.nail.backend.domain.review.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nail.backend.domain.community.db.entity.CommunityImg;
+import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,6 +30,16 @@ public class Review {
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_seq")
     private User user;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "nailart_seq")
+    @ApiModelProperty(value = "작품 seq")
+    private Nailart nailartSeq;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_seq")
+    @ApiModelProperty(value = "리뷰 디자이너 seq")
+    private User designerSeq;
 
     @ApiModelProperty(value = "리뷰 게시판 글 제목")
     private String reviewTitle;

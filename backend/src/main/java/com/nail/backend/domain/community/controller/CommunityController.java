@@ -9,8 +9,6 @@ import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
 import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.community.service.CommunityService;
-import com.nail.backend.domain.qna.db.entity.Qna;
-import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +73,8 @@ public class CommunityController {
                                                                      Principal principal) {
 
         log.info("communityCommentRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         System.out.println(communityCommentRegisterPostReq);
         CommunityComment res = communityService.communityCommentRegister(communityCommentRegisterPostReq, userId);
