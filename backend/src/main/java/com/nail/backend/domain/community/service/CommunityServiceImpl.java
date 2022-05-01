@@ -304,7 +304,7 @@ public class CommunityServiceImpl implements CommunityService{
     @Transactional
     public Long communityCommentModify(CommunityCommentModifyPutReq communityCommentModifyPutReq){
 
-        //해당 QnaAnswer가 존재하면 수정, 존재하지 않으면 0 반환
+        //해당 댓글이 존재하면 수정, 존재하지 않으면 0 반환
         if(communityCommentRepository.findById(communityCommentModifyPutReq.getCommunityCommentSeq()).isPresent()){
             Long execute = communityCommentRepositorySupport.updateCommunityCommentByCommentSeq(communityCommentModifyPutReq);
             return execute;
