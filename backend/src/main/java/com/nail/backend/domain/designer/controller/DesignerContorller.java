@@ -98,6 +98,10 @@ public class DesignerContorller {
         return designerService.getDesignerListbylatest();
     }
     // 3. 리뷰 점수 높은 순
+    @GetMapping("list/rating")
+    public List<DesignerListConditionGetRes> designerListRating(){
+        return designerService.getDesignerListbyRating();
+    }
     // 4. 디자이너 전체 조회
     @GetMapping("/list/all")
     public List<DesignerListConditionGetRes> designerListAll(int page, int size){

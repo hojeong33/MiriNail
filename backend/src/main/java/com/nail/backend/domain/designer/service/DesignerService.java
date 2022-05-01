@@ -9,6 +9,7 @@ import java.util.List;
 public interface DesignerService {
     List<DesignerListConditionGetRes> getDesignerListbyFollowCount();
     List<DesignerListConditionGetRes> getDesignerListbylatest();
+    List<DesignerListConditionGetRes> getDesignerListbyRating();
     List<DesignerListConditionGetRes> getDesignerAllList(int page, int size);
 
 
