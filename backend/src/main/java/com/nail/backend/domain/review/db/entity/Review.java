@@ -34,12 +34,12 @@ public class Review {
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "nailart_seq")
     @ApiModelProperty(value = "작품 seq")
-    private Nailart nailartSeq;
+    private Nailart nailart;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_seq")
-    @ApiModelProperty(value = "리뷰 디자이너 seq")
-    private User designerSeq;
+    @ApiModelProperty(value = "리뷰 디자이너")
+    private User designer;
 
     @ApiModelProperty(value = "리뷰 게시판 글 제목")
     private String reviewTitle;

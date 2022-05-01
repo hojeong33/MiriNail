@@ -3,10 +3,12 @@ package com.nail.backend.domain.review.controller;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.community.db.entity.Community;
 import com.nail.backend.domain.community.db.entity.CommunityComment;
+import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
+import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
 import com.nail.backend.domain.review.service.ReviewService;
@@ -82,7 +84,26 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
 //    READ___________________________________________
 //    UPDATE_________________________________________
 
-//    DELETE_________________________________________
+    @Transactional
+    @ApiOperation(value ="리뷰 댓글 수정")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "수정 성공"),
+            @ApiResponse(code = 404, message = "수정 실패")
+    })
+    @PutMapping("/comment")
+    public ResponseEntity<BaseResponseBody> reviewCommentUpdate(@RequestBody ReviewCommentModifyPutReq reviewCommentModifyPutReq){
+        log.info("reviewCommentUpdate - 호출");
+
+        if(reviewService.reviewCommentModify(reviewCommentModifyPutReq)== 0) {
+            log.error("reviewCommentModify - This reviewCommentSeq doesn't exist");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"수정 실패"));
+        }
+        else
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"수정 성공"));
+    }
+
+
+    //    DELETE_________________________________________
 @Transactional
 @ApiOperation(value = "리뷰 글 삭제")
 @ApiResponses({

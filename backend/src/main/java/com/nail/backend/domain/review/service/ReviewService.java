@@ -3,6 +3,7 @@ package com.nail.backend.domain.review.service;
 
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
+import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ public interface ReviewService {
 
 //    READ___________________________________________
 //    UPDATE_________________________________________
+    Long reviewCommentModify(ReviewCommentModifyPutReq reviewCommentModifyPutReq);
 
 //    DELETE_________________________________________
     boolean reviewRemove(Long reviewSeq);
