@@ -143,9 +143,28 @@ public class QnaServiceImpl implements QnaService {
 //    READ___________________________________________
     @Override
     @Transactional
-    public Qna getQna(Long qnaSeq){
+    public QnaGetRes getQna(Long qnaSeq){
         Qna qna = qnaRepository.findById(qnaSeq).orElse(null);
-        return qna;
+        User user = userRepository.findByUserSeq(qna.getUserSeq());
+        QnaAnswer qnaAnswer = qnaAnswerRepository.findQnaAnswerByQnaSeq(qnaSeq);
+
+        QnaGetRes qnaGetRes = new QnaGetRes();
+
+        qnaGetRes.setQnaSeq(qna.getQnaSeq());
+        qnaGetRes.setUserSeq(user.getUserSeq());
+        qnaGetRes.setUserNickname(user.getUserNickname());
+        qnaGetRes.setQnaTitle(qna.getQnaTitle());
+        qnaGetRes.setQnaDesc(qna.getQnaDesc());
+        qnaGetRes.setQnaType(qna.getQnaType());
+        qnaGetRes.setQnaImgUrl(qna.getQnaImgUrl());
+        qnaGetRes.setQnaDesignerSeq(qna.getQnaDesignerSeq());
+        qnaGetRes.setQnaNailartSeq(qna.getQnaNailartSeq());
+        qnaGetRes.setQnaIsAnswered(qna.isQnaIsAnswered());
+        qnaGetRes.setQnaIsPrivated(qna.isQnaIsPrivated());
+        qnaGetRes.setQnaRegedAt(qna.getQnaRegedAt());
+        qnaGetRes.setQnaAnswer(qnaAnswer);
+
+        return qnaGetRes;
     }
 
     @Override

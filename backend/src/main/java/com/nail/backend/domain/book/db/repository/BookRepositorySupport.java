@@ -284,4 +284,18 @@ public class BookRepositorySupport {
 
         return designerList;
     }
+
+    public Long deleteByNailartSeq(Long nailartSeq){
+        long execute = jpaQueryFactory.delete(qBook)
+                .where(qBook.nailart.nailartSeq.eq(nailartSeq))
+                .execute();
+        return execute;
+    }
+
+    public List<Long> findByNailartSeq(Long nailartSeq){
+        List<Long> list = jpaQueryFactory.select(qBook.bookSeq)
+                .where(qBook.nailart.nailartSeq.eq(nailartSeq))
+                .fetch();
+        return list;
+    }
 }

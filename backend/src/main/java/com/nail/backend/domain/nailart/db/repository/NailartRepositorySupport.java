@@ -1,5 +1,6 @@
 package com.nail.backend.domain.nailart.db.repository;
 
+import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.favorite.db.entity.QFavorite;
@@ -30,6 +31,12 @@ public class NailartRepositorySupport {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    NailartImgRepository nailartImgRepository;
+
+    @Autowired
+    BookRepositorySupport bookRepositorySupport;
+
     QNailart qNailart = QNailart.nailart;
 
     QFavorite qFavorite = QFavorite.favorite;
@@ -52,6 +59,17 @@ public class NailartRepositorySupport {
         return execute;
     }
     // 네일 아트 삭제
+    @Transactional
+    public boolean deleteNailartByNailartSeq(long nailartSeq){
+        if(nailartRepository.findByNailartSeq(nailartSeq) != null){
+            if(bookRepositorySupport.findByNailartSeq(nailartSeq) != null)
+                bookRepositorySupport.deleteByNailartSeq(nailartSeq);
+            nailartRepository.deleteByNailartSeq(nailartSeq);
+            nailartImgRepository.deleteAllByNailartSeq(nailartSeq);
+            return true;
+        }else
+        return false;
+    }
 
    // 색상 x, 타입 x, 최신 순
     public List<NailartListGetRes> getListbyLatest(int page, int size){
