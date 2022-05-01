@@ -4,6 +4,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useState } from "react";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getLikeNailarts } from "../../store/apis/favorite";
 
 const Wrapper = styled.div`
   .pagination {
@@ -127,12 +130,30 @@ const Like = () => {
       isfollow: true
     },
   ])
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
+  const { userSeq } = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
-  }
+    console.log(event);
+    console.log(page);
+    setPage(page);
+  };
   
+  const { data, isLoading } = useQuery<any, Error>(
+    ["like"],
+    async () => {
+      return await getLikeNailarts(Number(userSeq), page, 12);
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        // setNailarts(res.content);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
   return (
     <Wrapper>
       <ItemCards>

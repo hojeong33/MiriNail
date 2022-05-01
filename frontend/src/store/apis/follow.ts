@@ -26,3 +26,12 @@ export const getFollowers = async (userSeq :number) => {
   );
   return response.data
 }
+
+// 팔로우 조회
+export const getFollowees = async (userSeq :number) => {
+  const response = await apiClient.get<any>(
+    `/follow/follower/${userSeq}`,
+    { params: { userSeq } }
+  );
+  return response.data
+}

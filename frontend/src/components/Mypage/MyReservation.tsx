@@ -160,49 +160,6 @@ interface IState {
 }
 
 const MyReservation = () => {
-  const [designers, setDesigners] = useState<IState["designer"][]>([
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      type: "글레이즈",
-      color: "코랄 블루",
-      date: "2022.04.14",
-      price: 50000
-    },
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      type: "글레이즈",
-      color: "코랄 블루",
-      date: "2022.04.14",
-      price: 50000
-    },    
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      type: "글레이즈",
-      color: "코랄 블루",
-      date: "2022.04.14",
-      price: 50000
-    },
-  ]);
-  const [reservations, setResevations] = useState<IState["reservation"][]>([
-    {
-      shop: "네일샵1",
-      count: 1
-    },
-    {
-      shop: "네일샵3",
-      count: 234
-    },
-    {
-      shop: "네일샵23",
-      count: 3
-    },
-  ])
   const navigate = useNavigate();
   const { userSeq } = useParams();
 
@@ -269,7 +226,7 @@ const MyReservation = () => {
       </div>
       <div className="history">
         <div className="subtitle">
-          장영남님은 현재까지 총 <span>{data.visitCount}</span>회 예약하셨습니다.
+          현재까지 총 <span>{data.visitCount}</span>회 예약하셨습니다.
         </div>
         <div className="designertextbox">
           아티스트
@@ -281,7 +238,7 @@ const MyReservation = () => {
             <col width="15%" />
           </colgroup>
           <tbody>
-            {data.designerList.map((designer:any, idx:any) => {
+            {data.designerList?.map((designer:any, idx:any) => {
               return (
                 <tr key={idx} onClick={() => onClickDesigner(designer.designerInfo.designerSeq)}>
                   <th className="artist">{designer.designerInfo.designerShopName}</th>

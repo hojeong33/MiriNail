@@ -2,8 +2,6 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // css import
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import moment from 'moment'
 import { useMutation, useQuery } from "react-query";
 import { deleteCancelReservation, getReservationDate, getReservationListByDate } from "../../store/apis/book";
@@ -147,6 +145,7 @@ const TableWrapper = styled.div`
       color: #3d3c3a;
       thead {
         font-weight: 500;
+        background-color: #f8f8fa;
       }
       th {
         font-size: 14px;
@@ -170,6 +169,14 @@ const TableWrapper = styled.div`
   }
   .pagination {
     margin: 20px 0;
+  }
+  .noinfo {
+    border: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
   }
 `;
 
@@ -311,7 +318,7 @@ const ReservationCheck = () => {
           <Divider></Divider>
           <TableWrapper>
             <div className="table">
-              <div className="count">총 {bookData?.length} 건</div>
+              <div className="count">총 {bookData?.length ? bookData?.length : 0 } 건</div>
               <table>
                 <colgroup>
                   <col width="5%" />
@@ -329,6 +336,7 @@ const ReservationCheck = () => {
                     <th></th>
                   </tr>
                 </thead>
+                {bookData?.length &&                 
                 <tbody>
                   {bookData?.map((book:any, idx:any) => {
                     return (
@@ -341,8 +349,11 @@ const ReservationCheck = () => {
                       </tr>
                     );
                   })}
-                </tbody>
+                </tbody>}
               </table>
+              {!bookData?.length && 
+              <div className="noinfo">예약 정보가 없습니다.</div>
+              }
             </div>
             <div className="pagination"></div>
           </TableWrapper>

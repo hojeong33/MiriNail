@@ -8,3 +8,12 @@ export const postApply = async (formdata:any) => {
   )
   return response.data
 }
+
+// 인증신청 전체 조회
+export const getAllApply = async (page:number, size:number) => {
+  const response = await fileApiClient.get<any>(
+    "/authentication/list",
+    { params : { page, size } }
+  )
+  return response.data
+}

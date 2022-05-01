@@ -113,7 +113,7 @@ const NFTs = () => {
         <div>Loading...</div>
       ) : (
         <ItemCards>
-          {data.content.map((item:any, idx:any) => {
+          {data.content?.map((item:any, idx:any) => {
             return (
               <ItemCard key={idx}>
                 <div className="cardwrapper">

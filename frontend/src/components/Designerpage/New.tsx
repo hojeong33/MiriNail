@@ -33,6 +33,9 @@ const Wrapper = styled.div`
     background-color: #333;
     color: white;
   }
+  .nonews {
+    margin-top: 20px;
+  }
 `;
 
 interface IState {
@@ -89,11 +92,11 @@ function New() {
       </Link>
       {query.data?.pages.map((feed: any, idx: number) => {
         return feed.result.map((feed: any, idx: any) => {
-          return <Feed feed={feed} key={idx} />;
+          return <Feed feed={feed} key={idx} refetch={query.refetch}/>;
         });
       })}
       {lastState ? (
-        <div>불러올 새소식이 없습니다.</div>
+        <div className="nonews">불러올 새소식이 없습니다.</div>
       ) : (
         <button className="addFeedBtn" onClick={() => query.fetchNextPage()}>더 보기</button>
       )}

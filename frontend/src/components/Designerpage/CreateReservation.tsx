@@ -541,7 +541,7 @@ const CreateReservation = () => {
             </div>
             <div className="nailartlist">
 
-            {menuType === 0 && type1.map((item:any, idx:any) => {
+            {menuType === 0 && type1?.map((item:any, idx:any) => {
               return (
                 <div
                   key={idx}
@@ -557,7 +557,7 @@ const CreateReservation = () => {
                 </div>
               );
             })}
-            {menuType === 1 && type2.map((item:any, idx:any) => {
+            {menuType === 1 && type2?.map((item:any, idx:any) => {
               return (
                 <div key={idx} className="menucontent" onClick={() => onClickNailart(item.nailartSeq)}>
                   { item.nailartSeq === selectedMenu ? <CheckCircleOutlineIcon /> : <RadioButtonUncheckedIcon/>}
@@ -567,7 +567,7 @@ const CreateReservation = () => {
                 </div>
               );
             })}
-            {menuType === 2 && type3.map((item:any, idx:any) => {
+            {menuType === 2 && type3?.map((item:any, idx:any) => {
               return (
                 <div
                   key={idx}

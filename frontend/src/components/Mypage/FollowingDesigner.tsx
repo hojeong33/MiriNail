@@ -4,6 +4,9 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useQuery } from "react-query";
+import { getFollowees } from "../../store/apis/follow";
+import { useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -152,11 +155,21 @@ const FollowingDesigner = () => {
       follower: 12
     },
   ]);
+  const { userSeq } = useParams();
 
-  const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
-  }
+  const { data, isLoading } = useQuery<any, Error>(
+    ["getFollowee" ],
+    async () => {
+      return await getFollowees(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        // setNailarts(res.content);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
 
   return (
     <Wrapper>
@@ -180,11 +193,6 @@ const FollowingDesigner = () => {
             </div>
           );
         })}
-      </div>
-      <div className="pagination">
-        <Stack spacing={2}>
-          <Pagination count={10} shape="rounded" onChange={onchangePage} />
-        </Stack>
       </div>
     </Wrapper>
   );

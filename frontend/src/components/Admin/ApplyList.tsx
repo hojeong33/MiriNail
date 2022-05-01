@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { getMyDesignerAsk } from "../../store/apis/qna";
+import { getDesignerAsk } from "../../store/apis/qna";
+import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import { convertQnatypeToText } from "../Commons/functions";
+import { getAllApply } from "../../store/apis/authentication";
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -42,13 +44,11 @@ const TableWrapper = styled.div`
         padding: 20px 0px;
         font-weight: 500;
       }
-      tbody {
-        tr {
+      tr {
         cursor: pointer;
         :hover {
           background-color: #f8f8fa;
         }
-      }
       }
     }
   }
@@ -75,13 +75,12 @@ interface IState {
   };
 }
 
-const MyAsk = () => {
-  const [asks, setAsks] = useState([]);
-  const [qnaType, setQnaType] = useState(1);
+const ApplyList = () => {
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event);
     console.log(page);
@@ -89,71 +88,83 @@ const MyAsk = () => {
   };
 
   const { data, isLoading } = useQuery<any, Error>(
-    ["getAsklist", page, qnaType],
+    ["getApplyList", page],
     async () => {
-      return await getMyDesignerAsk(page, 10, Number(userSeq), qnaType);
+      return await getAllApply(page, 10);
     },
     {
       onSuccess: (res) => {
         console.log(res);
         setLastPage(res.totalPages);
-        setAsks(res.content);
       },
       onError: (err: any) => console.log(err),
     }
   );
 
-  const onClickAsk = (qnaSeq:number, designerSeq:number) => {
-    navigate(`/designerpage/${designerSeq}/askdetail/${qnaSeq}`)
+
+
+  const onClickAsk = (qnaSeq:number) => {
+    navigate(`/designerpage/${userSeq}/askdetail/${qnaSeq}`)
   }
 
   return (
     <TableWrapper>
       {isLoading ? (
         <div>Loading...</div>
+      ) : data.content ? (
+        <TableWrapper>
+          <div className="table">
+            <div className="count">총 {data.totalElements} 건</div>
+            <table>
+              <colgroup>
+                <col width="5%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="45%" />
+                <col width="15%" />
+                <col width="10%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>작성자</th>
+                  <th>문의유형</th>
+                  <th>제목</th>
+                  <th>작성일</th>
+                  <th>답변상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.content?.map((ask: IState["ask"], idx: number) => {
+                  return (
+                    <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq)}>
+                      <th>{ask.qnaSeq}</th>
+                      <th>{ask.userNickname}</th>
+                      <th>{convertQnatypeToText(ask.qnaType)}</th>
+                      <th className="title">{ask.qnaTitle}</th>
+                      <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
+                      <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </TableWrapper>
       ) : (
-        <div className="table">
-          <div className="count">총 {data?.totalElements} 건</div>
-          <table>
-            <colgroup>
-              <col width="5%" />
-              <col width="10%" />
-              <col width="55%" />
-              <col width="15%" />
-              <col width="15%" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>문의유형</th>
-                <th>제목</th>
-                <th>작성일</th>
-                <th>답변상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.content?.map((ask: IState["ask"], idx: number) => {
-                return (
-                  <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq, ask.qnaDesignerSeq)}>
-                    <th>{ask.qnaSeq}</th>
-                    <th>{convertQnatypeToText(ask.qnaType)}</th>
-                    <th className="title">{ask.qnaTitle}</th>
-                    <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
-                    <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <div>문의가 없습니다.</div>
       )}
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={lastPage} shape="rounded" onChange={onchangePage} />
+          <Pagination
+            count={lastPage}
+            shape="rounded"
+            onChange={onchangePage}
+          />
         </Stack>
       </div>
     </TableWrapper>
   );
-  
 }
-export default MyAsk
+
+export default ApplyList;

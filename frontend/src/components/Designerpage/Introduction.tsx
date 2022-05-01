@@ -124,7 +124,7 @@ function Introduction() {
         />
       </div>
       <div className="introductionbox">
-        <div className="content">{designer.designerInfo.designerInfoDesc}</div>
+        <div className="content">{designer.designerInfo.designerInfoDesc ? designer.designerInfo.designerInfoDesc : "소개글이 없습니다."}</div>
         {designer.designerInfo.designerInfoImgUrl && (
           <img src={designer.designerInfo.designerInfoImgUrl} alt="" />
         )}

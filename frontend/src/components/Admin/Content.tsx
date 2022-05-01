@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
-import { IDesigner } from '../../routes/Designerpage/Designerpage';
-// import Paginations from '../Layout/Paginations'
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 
 const Wrapper = styled.div`
@@ -40,6 +39,7 @@ const MainFrame = styled.div`
         top: 0px;
         z-index: 10;
         padding-top: 55px;
+
         .TypeFilter {
           a {
             display: block;
@@ -55,9 +55,13 @@ const MainFrame = styled.div`
           a:hover {
             opacity: 1;
           }
-          .selected {
-          opacity: 1;
-        }
+          .historytext{
+            display: flex;
+            align-items: center;
+            svg {
+              margin-left: 20px;
+            }
+          }
         }
 
         .OrderFilter {
@@ -85,7 +89,6 @@ const MainFrame = styled.div`
             }
           }
         }
-
       }
 
       .RightBox {
@@ -100,15 +103,7 @@ const MainFrame = styled.div`
   }
 `;
 
-interface IProps {
-  designer?: IDesigner
-}
-
-const Content:React.FC<IProps> = ({designer}) => {
-  const location = useLocation();
-  const temp = location.pathname.split("/")
-  console.log(temp[temp.length - 1])
-
+const Content = () => {
   return (
     <>
       <Wrapper>
@@ -117,36 +112,7 @@ const Content:React.FC<IProps> = ({designer}) => {
             <div className="ItemList">
               <div className="LeftBox">
                 <div className="TypeFilter">
-                  <Link
-                    to="new"
-                    className={`${temp[temp.length - 1] === "new" ? "selected" : ""}`}
-                  >
-                    새 소식
-                  </Link>
-                  <Link
-                    to="introduction"
-                    className={`${temp[temp.length - 1] === "introduction" ? "selected" : ""}`}
-                  >
-                    디자이너 소개
-                  </Link>
-                  <Link
-                    to="NFTs"
-                    className={`${temp[temp.length - 1] === "NFTs" ? "selected" : ""}`}
-                  >
-                    네일아트 목록
-                  </Link>
-                  <Link
-                    to="reviews"
-                    className={`${temp[temp.length - 1] === "reviews" ? "selected" : ""}`}
-                  >
-                    시술 후기들
-                  </Link>
-                  <Link
-                    to="asklist"
-                    className={`${temp[temp.length - 1] === "asklist" ? "selected" : ""}`}
-                  >
-                    문의 내역
-                  </Link>
+                  <Link to="applylist">디자이너 인증신청 목록</Link>
                 </div>
               </div>
               <div className="RightBox">

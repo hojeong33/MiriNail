@@ -43,6 +43,8 @@ import AskDetail from "./components/Designerpage/AskDetail";
 import UpdateAsk from "./components/Designerpage/UpdateAsk";
 import Followers from "./components/Designerpage/Followers";
 import TopButton from "./components/Navbar/TopButton";
+import Admin from "./routes/Admin/Admin";
+import ApplyList from "./components/Admin/ApplyList";
 
 function App() {
   return (
@@ -79,6 +81,9 @@ function App() {
             <Route path="createask" element={<CreateAsk />}></Route>
             <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>
             <Route path="followers" element={<Followers />}></Route>
+          </Route>
+          <Route path="/admin" element={<Admin />} >
+            <Route path="applylist" element={<ApplyList />}></Route>
           </Route>
           <Route path="/community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />

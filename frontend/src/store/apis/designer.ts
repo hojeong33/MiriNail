@@ -27,3 +27,11 @@ export const getNewFeed = async ({designerSeq, page, size}:any) => {
   return response.data
 }
 
+// 새소식 삭제
+export const deleteFeed = async (designerNewsSeq:number) => {
+  const response = await apiClient.delete<any>(
+    `/designer/news/${designerNewsSeq}`,
+    { params: { designerNewsSeq } }
+  );
+  return response.data
+}

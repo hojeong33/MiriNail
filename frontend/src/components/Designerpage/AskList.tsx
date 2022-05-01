@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getDesignerAsk } from "../../store/apis/qna";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { convertQnatypeToText } from "../Commons/functions";
@@ -54,6 +54,17 @@ const TableWrapper = styled.div`
   .pagination {
     margin: 20px 0;
   }
+  .buttons {
+    display: flex;
+
+    width: 90%;
+    button {
+      padding: 5px 20px;
+      border: 1px solid #3d3c3a;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+  }
 `;
 
 interface IState {
@@ -75,46 +86,8 @@ interface IState {
 }
 
 const AskList = () => {
-  // const [asks, setAsks] = useState<IState["ask"][]>([
-  //   {
-  //     no: 10,
-  //     title: "문의글",
-  //     date: "2022.03.28",
-  //     answerstate: "답변완료"
-  //   },
-  //   {
-  //     no: 10,
-  //     title: "문의글",
-  //     date: "2022.03.28",
-  //     answerstate: "답변완료"
-  //   },
-  //   {
-  //     no: 10,
-  //     title: "문의글",
-  //     date: "2022.03.28",
-  //     answerstate: "답변완료"
-  //   },
-  //   {
-  //     no: 10,
-  //     title: "문의글",
-  //     date: "2022.03.28",
-  //     answerstate: "답변완료"
-  //   },
-  //   {
-  //     no: 10,
-  //     title: "문의글",
-  //     date: "2022.03.28",
-  //     answerstate: "답변완료"
-  //   },
-  //   {
-  //     no: 10,
-  //     title: "문의글",
-  //     date: "2022.03.28",
-  //     answerstate: "답변완료"
-  //   },
-  // ]);
   const [asks, setAsks] = useState([]);
-  const [qnaType, setQnaType] = useState(1);
+  const [qnaType, setQnaType] = useState(0);
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
@@ -126,8 +99,8 @@ const AskList = () => {
     setPage(page);
   };
 
-  const { data, isLoading } = useQuery<any, Error>(
-    ["getAsklist", page],
+  const { data, isLoading, refetch } = useQuery<any, Error>(
+    ["getAsklist", page, qnaType],
     async () => {
       return await getDesignerAsk(page, 10, Number(userSeq), qnaType);
     },
@@ -147,8 +120,18 @@ const AskList = () => {
     navigate(`/designerpage/${userSeq}/askdetail/${qnaSeq}`)
   }
 
+  const onClicktype = (type:number) => {
+    setQnaType(type)
+    refetch()
+  }
+
   return (
     <TableWrapper>
+      <div className="buttons">
+        <button onClick={() => onClicktype(0)}>예약</button>
+        <button onClick={() => onClicktype(1)}>디자인</button>
+        <button onClick={() => onClicktype(2)}>기타</button>
+      </div>
       {isLoading ? (
         <div>Loading...</div>
       ) : data.content ? (
@@ -175,7 +158,7 @@ const AskList = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.content.map((ask: IState["ask"], idx: number) => {
+                {data.content?.map((ask: IState["ask"], idx: number) => {
                   return (
                     <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq)}>
                       <th>{ask.qnaSeq}</th>
@@ -196,11 +179,27 @@ const AskList = () => {
       )}
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination
-            count={lastPage}
-            shape="rounded"
-            onChange={onchangePage}
-          />
+          {qnaType === 0 && (
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          )}
+          {qnaType === 1 && (
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          )}
+          {qnaType === 2 && (
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          )}
         </Stack>
       </div>
     </TableWrapper>
