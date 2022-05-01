@@ -26,9 +26,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewSeq;
 
-    @ApiModelProperty(value = "유저 번호")
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_seq")
+    @ApiModelProperty(value = "유저 번호")
     private User user;
 
     @ManyToOne(targetEntity = User.class)
@@ -37,7 +37,7 @@ public class Review {
     private Nailart nailart;
 
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_seq")
+    @JoinColumn(name = "designer_seq")
     @ApiModelProperty(value = "리뷰 디자이너")
     private User designer;
 

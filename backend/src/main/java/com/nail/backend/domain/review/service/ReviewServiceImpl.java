@@ -3,7 +3,9 @@ package com.nail.backend.domain.review.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.nail.backend.domain.authentication.service.AwsS3Service;
+import com.nail.backend.domain.community.db.entity.Community;
 import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
+import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.review.db.entity.Review;
@@ -16,12 +18,17 @@ import com.nail.backend.domain.review.db.repository.ReviewRepository;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.response.ReviewCommentGetRes;
+import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +36,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -111,8 +119,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 
                 // 리뷰게시판 파일 테이블 insert
-
-
                 ReviewImg reviewImg = ReviewImg.builder()
                         .review(saveReview)
                         .reviewImgUrl(reviewFileUrl)
@@ -172,6 +178,35 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
 //    READ___________________________________________
+// 전체조회
+public Page<ReviewGetRes> getReviewList(Pageable pageable){
+    Page<Review> reviewList = reviewRepository.findAll(pageable);
+//    List<ReviewCommentGetRes> reviewCommentList = reviewCommentRepository.findAllByReview_ReviewSeqAndReviewCommentLayerIsNot()
+    List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+    long total = reviewList.getTotalElements();
+    for (Review rv : reviewList) {
+        ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                .reviewSeq(rv.getReviewSeq())
+                .userSeq(rv.getUser().getUserSeq())
+                .userNickname(rv.getUser().getUserNickname())
+                .userProfileImg(rv.getUser().getUserProfileImg())
+                .designerSeq(rv.getDesigner().getUserSeq())
+                .designerNickname(rv.getDesigner().getUserNickname())
+                .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                .reviewTitle(rv.getReviewTitle())
+                .reviewDesc(rv.getReviewDesc())
+                .reviewCnt(rv.getReviewCnt())
+                .reviewRegedAt(rv.getReviewRegedAt())
+                .reviewImg(rv.getReviewImg())
+                .build();
+        reviewGetResList.add(reviewGetRes);
+    }
+    Page<ReviewGetRes> res = new PageImpl<>(reviewGetResList, pageable, total);
+
+
+    return res;
+}
 //    UPDATE_________________________________________
 
     @Override

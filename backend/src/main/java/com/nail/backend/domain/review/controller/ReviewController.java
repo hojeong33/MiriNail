@@ -6,15 +6,21 @@ import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
+import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.review.service.ReviewService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +52,8 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
                                                           Principal principal) throws IOException {
 
     log.info("reviewRegister - 호출");
-    String userId = principal.getName();
+//    String userId = principal.getName();
+        String userId = "2217289220";
 
     Review res = reviewService.reviewRegister(reviewFiles, reviewRegisterPostReq, userId);
     if (!res.equals(null)) {
@@ -82,6 +89,20 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
     }
 
 //    READ___________________________________________
+    @ApiOperation(value = "리뷰 글 전체조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping
+    public ResponseEntity<Page<ReviewGetRes>> getReviewList(@PageableDefault(page = 0, size = 10, sort = "reviewSeq", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        log.info("getReviewList - 호출");
+        Page<ReviewGetRes> reviewList = reviewService.getReviewList(pageable);
+
+        return ResponseEntity.status(200).body(reviewList);
+}
+
 //    UPDATE_________________________________________
 
     @Transactional
