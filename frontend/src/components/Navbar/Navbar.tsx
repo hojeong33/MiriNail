@@ -249,7 +249,9 @@ const Navbar = () => {
                     <li>
                       <button
                         onClick={() => {
-                          navigate(`/mypage`);
+                          navigate(
+                            `/mypage/${sessionStorage.getItem("userSeq")}`
+                          );
                         }}
                       >
                         Mypage
