@@ -56,10 +56,10 @@ public class Review {
     @ApiModelProperty(value = "리뷰 총 평점")
     private float reviewRating;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewImg> reviewImg;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewComment> reviewComment;
 
 }

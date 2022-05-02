@@ -13,6 +13,7 @@ import com.nail.backend.domain.review.db.repository.*;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.response.ReviewCommentGetRes;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
@@ -163,11 +164,33 @@ public class ReviewServiceImpl implements ReviewService {
 // 전체조회
 public Page<ReviewGetRes> getReviewList(Pageable pageable){
     Page<Review> reviewList = reviewRepository.findAll(pageable);
-//    List<ReviewCommentGetRes> reviewCommentList = reviewCommentRepository.findAllByReview_ReviewSeqAndReviewCommentLayerIsNot()
     List<ReviewGetRes> reviewGetResList = new ArrayList<>();
 
     long total = reviewList.getTotalElements();
     for (Review rv : reviewList) {
+
+        // 댓글
+    List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+    List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+    // 댓글 리턴 리스트 만들기
+        for(ReviewComment rc : reviewCommentList){
+
+        ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                .userSeq(rc.getUser().getUserSeq())
+                .userNickname(rc.getUser().getUserNickname())
+                .userProfileImg(rc.getUser().getUserProfileImg())
+                .reviewCommentSeq(rc.getReviewCommentSeq())
+                .reviewCommentDesc(rc.getReviewCommentDesc())
+                .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                .build();
+        reviewCommentGetResList.add(reviewCommentGetRes);
+        }
+
+    // 이미지
+    List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+    // 리뷰 전체 리턴 리스트 만들기
         ReviewGetRes reviewGetRes = ReviewGetRes.builder()
                 .reviewSeq(rv.getReviewSeq())
                 .userSeq(rv.getUser().getUserSeq())
@@ -180,7 +203,8 @@ public Page<ReviewGetRes> getReviewList(Pageable pageable){
                 .reviewDesc(rv.getReviewDesc())
                 .reviewCnt(rv.getReviewCnt())
                 .reviewRegedAt(rv.getReviewRegedAt())
-                .reviewImg(rv.getReviewImg())
+                .reviewImg(reviewImgList)
+                .reviewComments(reviewCommentGetResList)
                 .build();
         reviewGetResList.add(reviewGetRes);
     }
