@@ -132,6 +132,21 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
 
         return ResponseEntity.status(200).body(reviewList);
     }
+
+
+    @ApiOperation(value = "조회수 높은 리뷰 글 전체조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/cnt")
+    public ResponseEntity<List<ReviewGetRes>> getTop10ReviewList(){
+
+        log.info("getTop10ReviewList - 호출");
+        List<ReviewGetRes> reviewList = reviewService.getTop10ReviewList();
+
+        return ResponseEntity.status(200).body(reviewList);
+    }
 //    UPDATE_________________________________________
 
     @Transactional

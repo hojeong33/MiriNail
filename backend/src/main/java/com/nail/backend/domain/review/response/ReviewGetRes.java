@@ -1,6 +1,7 @@
 package com.nail.backend.domain.review.response;
 
 import com.nail.backend.domain.community.db.entity.CommunityImg;
+import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.review.db.entity.ReviewImg;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ReviewGetRes {
 
     private Long reviewSeq;
-    private Long nailartSeq;
+    private Nailart nailart;
 
     private Long userSeq;
     private String userNickname;
