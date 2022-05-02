@@ -86,20 +86,52 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
     }
 
 //    READ___________________________________________
-    @ApiOperation(value = "리뷰 글 전체조회")
+    @ApiOperation(value = "작품별 리뷰 글 전체조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패")
     })
-    @GetMapping
-    public ResponseEntity<Page<ReviewGetRes>> getReviewList(@PageableDefault(page = 0, size = 10, sort = "reviewSeq", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/nailart/{nailartSeq}")
+    public ResponseEntity<Page<ReviewGetRes>> getReviewListByNailartSeq(@PageableDefault(page = 0, size = 10, sort = "reviewSeq", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                        @ApiParam(value = "네일 아트 Seq") @PathVariable Long nailartSeq) {
 
         log.info("getReviewList - 호출");
-        Page<ReviewGetRes> reviewList = reviewService.getReviewList(pageable);
+        Page<ReviewGetRes> reviewList = reviewService.getReviewListByNailartSeq(pageable,nailartSeq);
 
         return ResponseEntity.status(200).body(reviewList);
 }
 
+
+    @ApiOperation(value = "유저가 쓴 리뷰 글 전체조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/user/{userSeq}")
+    public ResponseEntity<Page<ReviewGetRes>> getReviewListByUser(@PageableDefault(page = 0, size = 10, sort = "reviewSeq", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                  @ApiParam(value = "조회할 유저Seq") @PathVariable Long userSeq){
+
+        log.info("getReviewListByUser - 호출");
+        Page<ReviewGetRes> reviewList = reviewService.getReviewListByUser(pageable,userSeq);
+
+        return ResponseEntity.status(200).body(reviewList);
+    }
+
+
+    @ApiOperation(value = "디자이너에게 쓴 리뷰 글 전체조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/designer/{designerSeq}")
+    public ResponseEntity<Page<ReviewGetRes>> getReviewListByDesignerSeq(@PageableDefault(page = 0, size = 10, sort = "reviewSeq", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                  @ApiParam(value = "디자이너Seq") @PathVariable Long designerSeq){
+
+        log.info("getReviewListByDesignerSeq - 호출");
+        Page<ReviewGetRes> reviewList = reviewService.getReviewListByDesignerSeq(pageable,designerSeq);
+
+        return ResponseEntity.status(200).body(reviewList);
+    }
 //    UPDATE_________________________________________
 
     @Transactional

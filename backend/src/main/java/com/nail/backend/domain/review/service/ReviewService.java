@@ -22,7 +22,10 @@ public interface ReviewService {
 
 
 //    READ___________________________________________
-    Page<ReviewGetRes> getReviewList(Pageable pageable);
+    Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq);
+    Page<ReviewGetRes> getReviewListByUser(Pageable pageable,Long userSeq);
+    Page<ReviewGetRes> getReviewListByDesignerSeq(Pageable pageable,Long designerSeq);
+
 
     //    UPDATE_________________________________________
     Long reviewCommentModify(ReviewCommentModifyPutReq reviewCommentModifyPutReq);
