@@ -26,6 +26,7 @@ public interface ReviewService {
     Page<ReviewGetRes> getReviewListByUser(Pageable pageable,Long userSeq);
     Page<ReviewGetRes> getReviewListByDesignerSeq(Pageable pageable,Long designerSeq);
 
+    List<ReviewGetRes> getTop10ReviewList();
 
     //    UPDATE_________________________________________
     Long reviewCommentModify(ReviewCommentModifyPutReq reviewCommentModifyPutReq);
