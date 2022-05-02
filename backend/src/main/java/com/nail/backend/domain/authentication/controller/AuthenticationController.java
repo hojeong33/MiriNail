@@ -57,7 +57,7 @@ public class AuthenticationController {
             return ResponseEntity.status(201).body(BaseResponseBody.of(201, "등록 성공"));
         }
         else {
-            return ResponseEntity.status(201).body(BaseResponseBody.of(404, "등록 실패"));
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "등록 실패"));
         }
     }
 

@@ -35,3 +35,12 @@ export const deleteFeed = async (designerNewsSeq:number) => {
   );
   return response.data
 }
+
+// 디자이너 프로필 사진 변경
+export const putProfileImgUpdate = async (formdata:any, designerSeq:number) => {
+  const response = await apiClient.put<any>(
+    `/designer/news/${designerSeq}`,
+    formdata
+  );
+  return response.data
+}

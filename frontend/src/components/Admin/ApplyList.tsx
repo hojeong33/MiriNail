@@ -7,8 +7,9 @@ import { getDesignerAsk } from "../../store/apis/qna";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { convertQnatypeToText } from "../Commons/functions";
+import { convertDate, convertQnatypeToText } from "../Commons/functions";
 import { getAllApply } from "../../store/apis/authentication";
+import { TailSpin } from "react-loader-spinner"
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -57,23 +58,7 @@ const TableWrapper = styled.div`
   }
 `;
 
-interface IState {
-  ask: {
-    qnaAnswer: string | null;
-    qnaDesc: string;
-    qnaDesignerSeq: number;
-    qnaImgUrl: string | null;
-    qnaIsAnswered: boolean;
-    qnaIsPrivated: boolean;
-    qnaNailartSeq: number | null;
-    qnaRegedAt: string;
-    qnaSeq: number;
-    qnaTitle: string;
-    qnaType: number;
-    userNickname: string;
-    userSeq: number;
-  };
-}
+
 
 const ApplyList = () => {
   const [lastPage, setLastPage] = useState();
@@ -110,7 +95,9 @@ const ApplyList = () => {
   return (
     <TableWrapper>
       {isLoading ? (
-        <div>Loading...</div>
+        <div className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </div>
       ) : data.content ? (
         <TableWrapper>
           <div className="table">
@@ -118,32 +105,43 @@ const ApplyList = () => {
             <table>
               <colgroup>
                 <col width="5%" />
-                <col width="15%" />
                 <col width="10%" />
-                <col width="45%" />
-                <col width="15%" />
-                <col width="10%" />
+                <col width="39%" />
+                <col width="16%" />
+                <col width="16%" />
+                <col width="7%" />
+                <col width="7%" />
               </colgroup>
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>작성자</th>
-                  <th>문의유형</th>
-                  <th>제목</th>
-                  <th>작성일</th>
-                  <th>답변상태</th>
+                  <th>신청인</th>
+                  <th>네일아트샵명</th>
+                  <th>연락처</th>
+                  <th>신청일</th>
+                  <th></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                {data.content?.map((ask: IState["ask"], idx: number) => {
+                {data.content?.map((apply: any, idx: number) => {
                   return (
-                    <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq)}>
-                      <th>{ask.qnaSeq}</th>
-                      <th>{ask.userNickname}</th>
-                      <th>{convertQnatypeToText(ask.qnaType)}</th>
-                      <th className="title">{ask.qnaTitle}</th>
-                      <th>{moment(ask.qnaRegedAt).format("YYYY-MM-DD")}</th>
-                      <th>{ask.qnaIsAnswered ? "완료" : "대기"}</th>
+                    <tr key={idx}>
+                      <th>{apply.designerSeq}</th>
+                      <th>{apply.user.userNickname}</th>
+                      <th className="title">{apply.designerShopName}</th>
+                      <th>{apply.designerTel}</th>
+                      <th>
+                        {moment(convertDate(apply.designerRegedAt)).format(
+                          "YYYY-MM-DD"
+                        )}
+                      </th>
+                      <th>
+                        <button>승인</button>
+                      </th>
+                      <th>
+                        <button>거절</button>
+                      </th>
                     </tr>
                   );
                 })}

@@ -89,7 +89,7 @@ const MainFrame = styled.div`
       }
 
       .RightBox {
-        height: 100%;
+        min-height: 100vh;
         padding-top: 55px;
         width: 100%;
         border-left: 1px solid #d2d2d0;

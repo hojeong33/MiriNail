@@ -1,12 +1,17 @@
 import styled from "styled-components";
-import React, { useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css'; // css import
-import moment from 'moment'
+import React, { useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css"; // css import
+import moment from "moment";
 import { useMutation, useQuery } from "react-query";
-import { deleteCancelReservation, getReservationDate, getReservationListByDate } from "../../store/apis/book";
+import {
+  deleteCancelReservation,
+  getReservationDate,
+  getReservationListByDate,
+} from "../../store/apis/book";
 import { useNavigate, useParams } from "react-router-dom";
 import { convertDate, leadingZeros } from "../Commons/functions";
+import { TailSpin } from "react-loader-spinner";
 
 const Wrapper = styled.div`
   display: flex;
@@ -60,7 +65,7 @@ const Wrapper = styled.div`
     border-radius: 6px;
   }
   .react-calendar__tile--now {
-    background: #E9E9E9;
+    background: #e9e9e9;
     border-radius: 6px;
     font-weight: bold;
   }
@@ -159,11 +164,11 @@ const TableWrapper = styled.div`
           cursor: pointer;
         }
         tr {
-        cursor: pointer;
-        :hover {
-          background-color: #f8f8fa;
+          cursor: pointer;
+          :hover {
+            background-color: #f8f8fa;
+          }
         }
-      }
       }
     }
   }
@@ -186,12 +191,21 @@ const Divider = styled.div`
   border-bottom: 1px solid #bcbcbc;
 `;
 
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin: 0 auto;
+  width: 768px;
+`;
+
 interface IState {
   reservation: {
     ID: string;
     nailart: string;
     time: string;
-  }
+  };
 }
 
 const ReservationCheck = () => {
@@ -201,32 +215,31 @@ const ReservationCheck = () => {
     {
       ID: "dami123",
       nailart: "글레이즈-딥다크",
-      time: "13:00"
+      time: "13:00",
     },
     {
       ID: "dami123",
       nailart: "글레이즈-딥다크",
-      time: "13:00"
+      time: "13:00",
     },
     {
       ID: "dami123",
       nailart: "글레이즈-딥다크",
-      time: "13:00"
+      time: "13:00",
     },
     {
       ID: "dami123",
       nailart: "글레이즈-딥다크",
-      time: "13:00"
+      time: "13:00",
     },
     {
       ID: "dami123",
       nailart: "글레이즈-딥다크",
-      time: "13:00"
-    }
+      time: "13:00",
+    },
   ]);
   const navigate = useNavigate();
   const { userSeq } = useParams();
-
 
   const { data, isLoading } = useQuery<any, Error>(
     ["getIsBooked"],
@@ -236,25 +249,34 @@ const ReservationCheck = () => {
     {
       onSuccess: (res) => {
         console.log(res);
-        const temp = []
-        for(let i=0; i< res.length; i ++) {
-          console.log(res[i])
-          const year = String(res[i][0])
-          const month = String(res[i][1])
-          const day = String(res[i][2])
-          temp.push(year + "-" + leadingZeros(month, 2) + "-" + leadingZeros(day, 2))
+        const temp = [];
+        for (let i = 0; i < res.length; i++) {
+          console.log(res[i]);
+          const year = String(res[i][0]);
+          const month = String(res[i][1]);
+          const day = String(res[i][2]);
+          temp.push(
+            year + "-" + leadingZeros(month, 2) + "-" + leadingZeros(day, 2)
+          );
         }
-        console.log(temp)
-        setMark(temp)
+        console.log(temp);
+        setMark(temp);
       },
       onError: (err: any) => console.log(err),
     }
   );
 
-  const { data:bookData, isLoading:bookLoading, refetch } = useQuery<any, Error>(
+  const {
+    data: bookData,
+    isLoading: bookLoading,
+    refetch,
+  } = useQuery<any, Error>(
     ["getBookListByDate", moment(value).format("YYYY-MM-DD")],
     async () => {
-      return await getReservationListByDate(Number(userSeq), moment(value).format("YYYY-MM-DD"));
+      return await getReservationListByDate(
+        Number(userSeq),
+        moment(value).format("YYYY-MM-DD")
+      );
     },
     {
       onSuccess: (res) => {
@@ -265,21 +287,20 @@ const ReservationCheck = () => {
     }
   );
 
+  const onClickBook = (nailartSeq: number) => {
+    navigate(`/nft/${nailartSeq}`);
+  };
 
-  const onClickBook = (nailartSeq:number) => {
-    navigate(`/nft/${nailartSeq}`)
-  }
-
-  const onClickCancelBtn = async (bookSeq:number) => {
+  const onClickCancelBtn = async (bookSeq: number) => {
     try {
-      const res = await deleteCancelReservation(bookSeq)
-      console.log(res)
-      refetch()
+      const res = await deleteCancelReservation(bookSeq);
+      console.log(res);
+      refetch();
     } catch (error) {
-      console.log(error)
-      alert("예약 취소중 오류발생")
+      console.log(error);
+      alert("예약 취소중 오류발생");
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -310,15 +331,21 @@ const ReservationCheck = () => {
       </div>
 
       <FormWrapper>
+        <div className="rvtext">
+          {moment(value).format("YYYY년 MM월 DD일")} 예약 정보
+        </div>
 
-          <div className="rvtext">
-            {moment(value).format("YYYY년 MM월 DD일")} 예약 정보
-          </div>
-
-          <Divider></Divider>
+        <Divider></Divider>
+        {isLoading ? (
+          <LoadingBox className="loading">
+            <TailSpin height={50} width={50} color="gray" />
+          </LoadingBox>
+        ) : (
           <TableWrapper>
             <div className="table">
-              <div className="count">총 {bookData?.length ? bookData?.length : 0 } 건</div>
+              <div className="count">
+                총 {bookData?.length ? bookData?.length : 0} 건
+              </div>
               <table>
                 <colgroup>
                   <col width="5%" />
@@ -336,30 +363,55 @@ const ReservationCheck = () => {
                     <th></th>
                   </tr>
                 </thead>
-                {bookData?.length &&                 
-                <tbody>
-                  {bookData?.map((book:any, idx:any) => {
-                    return (
-                      <tr key={idx}>
-                        <th onClick={() => onClickBook(book.nailart.nailartSeq)}>{book.bookSeq}</th>
-                        <th onClick={() => onClickBook(book.nailart.nailartSeq)}>{book.user.userNickname}</th>
-                        <th onClick={() => onClickBook(book.nailart.nailartSeq)} className="title">{book.nailart.nailartType} - {book.nailart.nailartDetailColor}</th>
-                        <th onClick={() => onClickBook(book.nailart.nailartSeq)}>{convertDate(book.bookDatetime).slice(10,16)}</th>
-                        <th><button onClick={() => onClickCancelBtn(book.bookSeq)}>취소</button></th>
-                      </tr>
-                    );
-                  })}
-                </tbody>}
+                {bookData?.length !== 0 && (
+                  <tbody>
+                    {bookData?.map((book: any, idx: any) => {
+                      return (
+                        <tr key={idx}>
+                          <th
+                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                          >
+                            {book.bookSeq}
+                          </th>
+                          <th
+                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                          >
+                            {book.user.userNickname}
+                          </th>
+                          <th
+                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                            className="title"
+                          >
+                            {book.nailart.nailartType} -{" "}
+                            {book.nailart.nailartDetailColor}
+                          </th>
+                          <th
+                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                          >
+                            {convertDate(book.bookDatetime).slice(10, 16)}
+                          </th>
+                          <th>
+                            <button
+                              onClick={() => onClickCancelBtn(book.bookSeq)}
+                            >
+                              취소
+                            </button>
+                          </th>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                )}
               </table>
-              {!bookData?.length && 
-              <div className="noinfo">예약 정보가 없습니다.</div>
-              }
+              {bookData?.length === 0 && (
+                <div className="noinfo">예약 정보가 없습니다.</div>
+              )}
             </div>
             <div className="pagination"></div>
           </TableWrapper>
-
+        )}
       </FormWrapper>
     </Wrapper>
   );
-}
-export default ReservationCheck
+};
+export default ReservationCheck;

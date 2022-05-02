@@ -51,7 +51,7 @@ const FormWrapper = styled.div`
       margin-right: 20px;
       cursor: pointer;
       button {
-        margin-left: 10px;
+        margin-left: 5px;
       }
     }
   }

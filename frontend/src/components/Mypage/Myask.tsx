@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { getMyDesignerAsk } from "../../store/apis/qna";
 import moment from "moment";
 import { convertQnatypeToText } from "../Commons/functions";
+import { TailSpin } from "react-loader-spinner"
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -14,6 +15,10 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  .noask {
+      border: none;
+      padding: 10px 0;
+    }
   .count {
     text-align: start;
     padding: 10px;
@@ -55,6 +60,21 @@ const TableWrapper = styled.div`
   .pagination {
     margin: 20px 0;
   }
+  .buttons {
+    display: flex;
+
+    width: 90%;
+    button {
+      padding: 5px 20px;
+      border: 1px solid #3d3c3a;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    .selected {
+      background-color: #3d3c3a;
+      color: white;
+    }
+  }
 `;
 
 interface IState {
@@ -77,7 +97,7 @@ interface IState {
 
 const MyAsk = () => {
   const [asks, setAsks] = useState([]);
-  const [qnaType, setQnaType] = useState(1);
+  const [qnaType, setQnaType] = useState(0);
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
@@ -88,7 +108,7 @@ const MyAsk = () => {
     setPage(page);
   };
 
-  const { data, isLoading } = useQuery<any, Error>(
+  const { data, isLoading, refetch } = useQuery<any, Error>(
     ["getAsklist", page, qnaType],
     async () => {
       return await getMyDesignerAsk(page, 10, Number(userSeq), qnaType);
@@ -107,13 +127,40 @@ const MyAsk = () => {
     navigate(`/designerpage/${designerSeq}/askdetail/${qnaSeq}`)
   }
 
+  const onClicktype = (type:number) => {
+    setQnaType(type)
+    refetch()
+  }
+
   return (
     <TableWrapper>
+      <div className="buttons">
+        <button
+          className={`${qnaType === 0 ? "selected" : ""}`}
+          onClick={() => onClicktype(0)}
+        >
+          예약
+        </button>
+        <button
+          className={`${qnaType === 1 ? "selected" : ""}`}
+          onClick={() => onClicktype(1)}
+        >
+          디자인
+        </button>
+        <button
+          className={`${qnaType === 2 ? "selected" : ""}`}
+          onClick={() => onClicktype(2)}
+        >
+          기타
+        </button>
+      </div>
       {isLoading ? (
-        <div>Loading...</div>
+        <div className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </div>
       ) : (
         <div className="table">
-          <div className="count">총 {data?.totalElements} 건</div>
+          <div className="count">총 {data.totalElements ? data.totalElements : 0} 건</div>
           <table>
             <colgroup>
               <col width="5%" />
@@ -134,7 +181,10 @@ const MyAsk = () => {
             <tbody>
               {data.content?.map((ask: IState["ask"], idx: number) => {
                 return (
-                  <tr key={idx} onClick={() => onClickAsk(ask.qnaSeq, ask.qnaDesignerSeq)}>
+                  <tr
+                    key={idx}
+                    onClick={() => onClickAsk(ask.qnaSeq, ask.qnaDesignerSeq)}
+                  >
                     <th>{ask.qnaSeq}</th>
                     <th>{convertQnatypeToText(ask.qnaType)}</th>
                     <th className="title">{ask.qnaTitle}</th>
@@ -145,11 +195,32 @@ const MyAsk = () => {
               })}
             </tbody>
           </table>
+              {!data.content && <div className="noask">문의 내역이 없습니다</div>}
         </div>
       )}
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={lastPage} shape="rounded" onChange={onchangePage} />
+          {qnaType === 0 && (
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          )}
+          {qnaType === 1 && (
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          )}
+          {qnaType === 2 && (
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          )}
         </Stack>
       </div>
     </TableWrapper>

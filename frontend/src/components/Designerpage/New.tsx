@@ -5,6 +5,7 @@ import Feed from './Feed';
 import { Link, useParams } from 'react-router-dom';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { getNewFeed } from '../../store/apis/designer';
+import { TailSpin } from "react-loader-spinner"
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,6 +37,15 @@ const Wrapper = styled.div`
   .nonews {
     margin-top: 20px;
   }
+`;
+
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
 `;
 
 interface IState {
@@ -82,7 +92,9 @@ function New() {
   });
 
   return query.isLoading ? (
-    <div>Loading...</div>
+    <LoadingBox className="loading">
+      <TailSpin height={50} width={50} color="gray" />
+    </LoadingBox>
   ) : (
     <Wrapper>
       <Link to={`/designerpage/${userSeq}/createfeed`}>
@@ -92,13 +104,15 @@ function New() {
       </Link>
       {query.data?.pages.map((feed: any, idx: number) => {
         return feed.result.map((feed: any, idx: any) => {
-          return <Feed feed={feed} key={idx} refetch={query.refetch}/>;
+          return <Feed feed={feed} key={idx} refetch={query.refetch} />;
         });
       })}
       {lastState ? (
         <div className="nonews">불러올 새소식이 없습니다.</div>
       ) : (
-        <button className="addFeedBtn" onClick={() => query.fetchNextPage()}>더 보기</button>
+        <button className="addFeedBtn" onClick={() => query.fetchNextPage()}>
+          더 보기
+        </button>
       )}
     </Wrapper>
   );

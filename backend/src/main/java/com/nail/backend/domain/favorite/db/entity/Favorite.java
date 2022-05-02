@@ -1,13 +1,11 @@
 package com.nail.backend.domain.favorite.db.entity;
 
+import com.nail.backend.domain.nailart.db.entity.Nailart;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -25,7 +23,9 @@ public class Favorite {
     @ApiModelProperty(value = "유저 Seq")
     Long userSeq;
 
+    @ManyToOne
+    @JoinColumn(name = "nailart_seq", referencedColumnName = "nailart_seq")
     @ApiModelProperty(value ="네일아트 seq")
-    Long nailartSeq;
+    Nailart nailart;
 
 }

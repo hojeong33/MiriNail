@@ -1,12 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import PhoneIcon from '@mui/icons-material/Phone';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useQuery } from "react-query";
-import { getFollowees } from "../../store/apis/follow";
-import { useParams } from "react-router-dom";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { useMutation, useQuery } from "react-query";
+import { getFollowees, postFollow } from "../../store/apis/follow";
+import { useNavigate, useParams } from "react-router-dom";
+import { TailSpin } from "react-loader-spinner"
 
 const Wrapper = styled.div`
   width: 100%;
@@ -77,7 +80,7 @@ const Wrapper = styled.div`
           display: flex;
           align-items: center;
         }
-        svg {
+        .follow {
           position: absolute;
           width: 25px;
           height: 25px;
@@ -87,11 +90,20 @@ const Wrapper = styled.div`
             transform:scale(1.1); 
           }
         }
+        .designericon {
+          margin-right: 10px;
+        }
       }
     }
   }
   .pagination {
     margin: 20px 0;
+  }
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
   }
 `;
 
@@ -105,56 +117,7 @@ interface IState {
 }
 
 const FollowingDesigner = () => {
-  const [designers, setDesigners] = useState<IState["designer"][]>([
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl:
-        "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      follower: 12,
-    },
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl:
-        "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      follower: 12,
-    },
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl:
-        "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      follower: 12,
-    },
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl:
-        "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      follower: 12,
-    },
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl:
-        "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      follower: 12,
-    },
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl:
-        "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      follower: 12,
-    },
-    {
-      name: "김다미 디자이너",
-      shop: "nailshop1",
-      imgurl: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMjRfMjU1/MDAxNTgyNTExOTM4NzI3.lxzK3zwTMmFs3FhkmLOWdaE0AMaPntOjtQnguqaL-Oog.ArD3XUOanpM9MqeHZRjuBTv5iifeuOG4oANhuDe8Lf0g.JPEG.pola0216/%EA%B9%80%EB%8B%A4%EB%AF%B8%EC%97%AC%EC%B9%9C%EC%A7%A401.jpg?type=w800",
-      follower: 12
-    },
-  ]);
+  const navigate = useNavigate();
   const { userSeq } = useParams();
 
   const { data, isLoading } = useQuery<any, Error>(
@@ -171,29 +134,65 @@ const FollowingDesigner = () => {
     }
   );
 
+  const onClickDesigner = (designerSeq:number) => {
+    navigate(`/designerpage/${designerSeq}/new`)
+  }
+
   return (
     <Wrapper>
-      <div className="cards">
-        {designers.map((designer, idx) => {
-          return (
-            <div className="card" key={idx}>
-              <div className="cardleft">
-                <img src={designer.imgurl} alt="" />
-              </div>
-              <div className="cardright">
-                <div className="cardright-top">
-                  <div className="name">{designer.name}</div>
-                  <div className="shop">{designer.shop}</div>
+      {isLoading ? (
+        <div className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </div>
+      ) : (
+        <div className="cards">
+          {data?.map((designer: any, idx: number) => {
+            return (
+              <div
+                className="card"
+                key={idx}
+                onClick={() => {
+                  onClickDesigner(designer.designerSeq);
+                }}
+              >
+                <div className="cardleft">
+                  <img src={designer.user.userProfileImg} alt="" />
                 </div>
-                <div className="cardright-bottom">
-                  <div>팔로워 : {designer.follower}명</div>
-                  <FavoriteIcon color="error"/>
+                <div className="cardright">
+                  <div className="cardright-top">
+                    <div className="name">{designer.designerShopName}</div>
+                    <div className="shop">{designer.designerAddress}</div>
+                  </div>
+                  <div className="cardright-bottom">
+                    <div>
+                      <AccessTimeIcon className="designericon" />
+                      {designer.designerShopOpen
+                        ? designer.designerShopOpen
+                        : ""}{" "}
+                      -{" "}
+                      {designer.designerShopClose
+                        ? designer.designerShopClose
+                        : ""}
+                    </div>
+                    <div>
+                      <PhoneIcon className="designericon" />
+                      {designer.user.userTel ? designer.user.userTel : "-"}
+                    </div>
+                    {/* <FavoriteIcon
+                    className="follow"
+                    onClick={(e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      console.log("dds");
+                    }}
+                    color="error"
+                  /> */}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </Wrapper>
   );
 }

@@ -8,6 +8,17 @@ import { useQuery } from "react-query";
 import { getUserReservation } from "../../store/apis/book";
 import { useNavigate, useParams } from "react-router-dom";
 import { convertDate } from "../Commons/functions";
+import { TailSpin } from "react-loader-spinner"
+
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
+`;
+
 
 const Wrapper = styled.div`
   width: 768px;
@@ -186,7 +197,9 @@ const MyReservation = () => {
   }
 
   return isLoading ? (
-    <div>Loading...</div>
+    <LoadingBox className="loading">
+      <TailSpin height={50} width={50} color="gray" />
+    </LoadingBox>
   ) : (
     <Wrapper>
       <div className="nowRV">
@@ -194,34 +207,48 @@ const MyReservation = () => {
           현재 <span>예약</span> 내역
         </div>
         <div className="cards">
-          {data.bookList.map((book:any, idx:any) => {
-            return (
-              <div onClick={() => onClickCard(book.designerInfo.designerSeq)} className="card" key={idx}>
-                <div className="cardleft">
-                  <img src={book.designerInfo.designerInfoImgUrl} alt="" />
-                </div>
-                <div className="cardright">
-                  <div className="cardright-top">
-                    <div className="name">{book.designerInfo.designerShopName}</div>
-                    <div className="shop">예약일: {moment(convertDate(book.bookDatetime)).format("MM/DD HH시 mm분")}</div>
+          {data.bookList.length !== 0 &&
+            data.bookList.map((book: any, idx: any) => {
+              return (
+                <div
+                  onClick={() => onClickCard(book.designerInfo.designerSeq)}
+                  className="card"
+                  key={idx}
+                >
+                  <div className="cardleft">
+                    <img src={book.designerInfo.designerInfoImgUrl} alt="" />
                   </div>
-                  <div className="cardright-bottom">
-                    <div>
-                      {book.nailart.nailartType} - {book.nailart.nailartDetailColor}
+                  <div className="cardright">
+                    <div className="cardright-top">
+                      <div className="name">
+                        {book.designerInfo.designerShopName}
+                      </div>
+                      <div className="shop">
+                        예약일:{" "}
+                        {moment(convertDate(book.bookDatetime)).format(
+                          "MM/DD HH시 mm분"
+                        )}
+                      </div>
                     </div>
-                    {/* <div>
+                    <div className="cardright-bottom">
+                      <div>
+                        {book.nailart.nailartType} -{" "}
+                        {book.nailart.nailartDetailColor}
+                      </div>
+                      {/* <div>
                       <ArrowForwardIosIcon />
                       예약일: {designer.date}
                     </div> */}
-                    <div>
-                      <ArrowForwardIosIcon />
-                      가격: {book.nailart.nailartPrice.toLocaleString()}원
+                      <div>
+                        <ArrowForwardIosIcon />
+                        가격: {book.nailart.nailartPrice.toLocaleString()}원
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          {data.bookList.length === 0 && <div>예약 내역이 없습니다</div>}
         </div>
       </div>
       <div className="history">
@@ -238,10 +265,17 @@ const MyReservation = () => {
             <col width="15%" />
           </colgroup>
           <tbody>
-            {data.designerList?.map((designer:any, idx:any) => {
+            {data.designerList?.map((designer: any, idx: any) => {
               return (
-                <tr key={idx} onClick={() => onClickDesigner(designer.designerInfo.designerSeq)}>
-                  <th className="artist">{designer.designerInfo.designerShopName}</th>
+                <tr
+                  key={idx}
+                  onClick={() =>
+                    onClickDesigner(designer.designerInfo.designerSeq)
+                  }
+                >
+                  <th className="artist">
+                    {designer.designerInfo.designerShopName}
+                  </th>
                   <th className="count">{designer.designerCount}회</th>
                 </tr>
               );

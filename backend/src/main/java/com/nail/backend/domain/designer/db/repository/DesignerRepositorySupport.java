@@ -44,7 +44,7 @@ public class DesignerRepositorySupport {
     public Long getFollowerCount(long followFollowee){
         Long follower = jpaQueryFactory.select(qFollow.count())
                 .from(qFollow)
-                .where(qFollow.followFollowee.userSeq.eq(followFollowee))
+                .where(qFollow.followFollowee.designerSeq.eq(followFollowee))
                 .fetchOne();
         return follower;
     }

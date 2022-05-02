@@ -83,7 +83,7 @@ public class BookController {
         log.info("getBookListByDesignerSeq - 호출");
         List<Book> bookList = bookService.getBookLitByDesignerSeqAndBookDate(designerSeq,bookDate);
 
-        if(bookList.isEmpty()) return ResponseEntity.status(404).body(null);
+        if(bookList.isEmpty()) return ResponseEntity.status(200).body(bookList);
         return ResponseEntity.status(200).body(bookList);
     }
 

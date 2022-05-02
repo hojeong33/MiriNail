@@ -6,6 +6,6 @@ export const getLikeNailarts = async (userSeq:number, page:number, size:number) 
     `/favorite/nailart/${userSeq}`,
     { params: { userSeq, page, size } }
   );
-  return response
+  return response.data
 }
 

@@ -93,12 +93,12 @@ const MainFrame = styled.div`
       }
 
       .RightBox {
-        height: 100%;
         padding-top: 55px;
         width: 100%;
         border-left: 1px solid #d2d2d0;
         padding-bottom: 160px;
         text-align: center;
+        min-height: 100vh;
       }
     }
   }

@@ -7,7 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CreateIcon from "@mui/icons-material/Create";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PeopleIcon from "@mui/icons-material/People";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { designerAtom } from "../../store/atoms";
@@ -64,6 +64,9 @@ const Wrapper = styled.div`
       display: flex;
       font-size: 16px;
       margin-top: 10px;
+      .selected {
+        background-color: #e0e0e0;
+      }
       button {
         display: flex;
         justify-content: center;
@@ -120,7 +123,12 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isFollow, setIsFollow] = useState<boolean>(false);
   const designer = useRecoilValue(designerAtom);
+  const [selected, setSelected] = useState(0)
+  const [selectedByDesigner, setSelectedByDesigner] = useState(0)
   const { userSeq } = useParams();
+  const location = useLocation();
+  const temp = location.pathname.split("/")
+  // console.log(temp[temp.length - 1])
   const handleModalOpen = () => {
     setIsOpen(true);
   };
@@ -188,13 +196,13 @@ const Header: React.FC<IProps> = ({ refetch }) => {
             </div>
             <div className="buttons">
               <Link to="createask">
-                <button>
+                <button className={`${temp[temp.length - 1] === "createask" ? "selected" : ""}`}>
                   <CreateIcon />
                   1:1 문의
                 </button>
               </Link>
               <Link to="reservation">
-                <button>
+                <button className={`${temp[temp.length - 1] === "reservation" ? "selected" : ""}`}>
                   <CalendarMonthIcon />
                   예약하기
                 </button>
@@ -216,15 +224,14 @@ const Header: React.FC<IProps> = ({ refetch }) => {
                 <AccountBoxIcon />
                 사진변경
               </button>
-
               <Link to="reservationcheck">
-                <button>
+                <button className={`${temp[temp.length - 1] === "reservationcheck" ? "selected" : ""}`}>
                   <CalendarMonthIcon />
                   예약확인
                 </button>
               </Link>
               <Link to="followers">
-                <button>
+                <button className={`${temp[temp.length - 1] === "followers" ? "selected" : ""}`}>
                   <PeopleIcon />
                   팔로워들
                 </button>

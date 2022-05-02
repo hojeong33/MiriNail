@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { getFollowers } from "../../store/apis/follow";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { TailSpin } from "react-loader-spinner";
 
 const Wrapper = styled.div`
   width: 768px;
@@ -77,6 +78,15 @@ const Wrapper = styled.div`
   }
 `;
 
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
+`;
+
 interface IState {
   designer: {
     name: string;
@@ -109,25 +119,31 @@ const FollowingDesigner = () => {
 
   return (
     <Wrapper>
-      <div className="cards">
-        {followersData?.map((follower:any, idx:any) => {
-          return (
-            <Link to={`/mypage/${follower.userSeq}`}>
-            <div className="card" key={idx}>
-              <div className="cardleft">
-                <img src={follower.userProfileImg} alt="" />
-              </div>
-              <div className="cardright">
-                <div className="cardright-top">
-                  <div className="name">{follower.userNickname}</div>
-                  <div className="shop">{follower.userEmail}</div>
+      {followersLoading ? (
+        <LoadingBox className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </LoadingBox>
+      ) : (
+        <div className="cards">
+          {followersData?.map((follower: any, idx: any) => {
+            return (
+              <Link to={`/mypage/${follower.userSeq}`}>
+                <div className="card" key={idx}>
+                  <div className="cardleft">
+                    <img src={follower.userProfileImg} alt="" />
+                  </div>
+                  <div className="cardright">
+                    <div className="cardright-top">
+                      <div className="name">{follower.userNickname}</div>
+                      <div className="shop">{follower.userEmail}</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            </Link>
-          );
-        })}
-      </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </Wrapper>
   );
 }

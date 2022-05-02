@@ -6,8 +6,8 @@ import { useQuery } from "react-query";
 import { getDesignerAsk } from "../../store/apis/qna";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import { convertQnatypeToText } from "../Commons/functions";
+import { TailSpin } from "react-loader-spinner"
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -56,7 +56,6 @@ const TableWrapper = styled.div`
   }
   .buttons {
     display: flex;
-
     width: 90%;
     button {
       padding: 5px 20px;
@@ -64,7 +63,20 @@ const TableWrapper = styled.div`
       margin-right: 10px;
       margin-bottom: 10px;
     }
+    .selected {
+      background-color: #3d3c3a;
+      color: white;
+    }
   }
+`;
+
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
 `;
 
 interface IState {
@@ -86,7 +98,6 @@ interface IState {
 }
 
 const AskList = () => {
-  const [asks, setAsks] = useState([]);
   const [qnaType, setQnaType] = useState(0);
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
@@ -108,7 +119,6 @@ const AskList = () => {
       onSuccess: (res) => {
         console.log(res);
         setLastPage(res.totalPages);
-        setAsks(res.content);
       },
       onError: (err: any) => console.log(err),
     }
@@ -128,12 +138,29 @@ const AskList = () => {
   return (
     <TableWrapper>
       <div className="buttons">
-        <button onClick={() => onClicktype(0)}>예약</button>
-        <button onClick={() => onClicktype(1)}>디자인</button>
-        <button onClick={() => onClicktype(2)}>기타</button>
+        <button
+          className={`${qnaType === 0 ? "selected" : ""}`}
+          onClick={() => onClicktype(0)}
+        >
+          예약
+        </button>
+        <button
+          className={`${qnaType === 1 ? "selected" : ""}`}
+          onClick={() => onClicktype(1)}
+        >
+          디자인
+        </button>
+        <button
+          className={`${qnaType === 2 ? "selected" : ""}`}
+          onClick={() => onClicktype(2)}
+        >
+          기타
+        </button>
       </div>
       {isLoading ? (
-        <div>Loading...</div>
+        <LoadingBox className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </LoadingBox>
       ) : data.content ? (
         <TableWrapper>
           <div className="table">
