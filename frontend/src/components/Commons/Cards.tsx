@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 // import './CardStyle.css'
-import { IHotDesigner, ILatestDesigner } from '../Designer/PageContentThema'
+import { IHighRateDesigner, IHotDesigner, ILatestDesigner } from '../Designer/PageContentThema'
 
 const Wrapper = styled.div`
 h1,
@@ -142,7 +142,11 @@ interface ILatestDesignerProp {
   info : ILatestDesigner
 }
 
-const Cards = ({info}: IHotDesignerProp|ILatestDesignerProp) => {
+interface IHighRateDesignerProp {
+  info : IHighRateDesigner
+}
+
+const Cards = ({info}: IHotDesignerProp|ILatestDesignerProp|IHighRateDesignerProp) => {
   const navigate = useNavigate()
   // console.log(info)
   return (

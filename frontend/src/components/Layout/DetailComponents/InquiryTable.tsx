@@ -5,7 +5,7 @@ import { Paginations2 } from '../Paginations'
 import OneOneOneWrite from './OneOnOneWrite'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { deleteInquiry, inquiryList, postInquiryAnswer } from '../../../store/api'
+import { deleteInquiry, delInquiryAnswer, inquiryList, postInquiryAnswer, revInquiryAnswer } from '../../../store/api'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { designerId, page2 } from '../../../store/atoms'
 import LockIcon from '@mui/icons-material/Lock';
@@ -78,13 +78,15 @@ const Wrapper = styled.div`
   }
   .questionRev {
     width:20%;
-    line-height:40px;
+    text-align:right;
+    // line-height:40px;
     padding-top:5px;
+    margin-right:10px;
     span {
       background-color:rgb(51, 51, 51);
       color:white;
       padding: 5px 10px 5px 10px;
-      margin : 10px 15px 10px 10px;
+      margin : 10px 5px 10px 10px;
       border-radius :5px;
       text-align:end;
       cursor:pointer;
@@ -200,11 +202,17 @@ export interface IQnaInquiry {
 const InquiryTable = () => {
   let params = useParams().id
   const queryClient = useQueryClient()
+  const [answerFlag,setAnswerFlag] = useState(false)
   const [mypage,setMyPage] = useRecoilState(page2)
   const [answerData,setAnswerData] = useState({
     qnaAnswerDesc : '',
     qnaSeq : null,
   })
+  const [answerRevData,setAnswerRevData] = useState({
+    qnaAnswerDesc : '',
+    qnaAnswerSeq : null,
+  })
+  
   const writerId = useRecoilValue(designerId)
   console.log(params)
   const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<IQnaInquiry[]>(['inquiry',params,mypage], inquiryList)
@@ -275,6 +283,15 @@ const InquiryTable = () => {
     }
   ) 
 
+  const revInquiryAnswerFunc = useMutation((data:any) =>
+    revInquiryAnswer(data)
+    ,{
+      onSuccess: () => {
+        queryClient.invalidateQueries('inquiry')
+      }
+    }
+  )
+
   const deleteInquiryFunc = useMutation((data:any) => 
     deleteInquiry(data)
     ,{
@@ -294,6 +311,14 @@ const InquiryTable = () => {
     // console.log(submitData)
     postInquiryAnswerFunc.mutate(submitData)
   }
+
+  const revSubmit = async(e:any) => {
+    const submitData = answerRevData
+    submitData.qnaAnswerSeq = e.qnaAnswer.qnaAnswerSeq
+    revInquiryAnswerFunc.mutate(submitData)
+    setAnswerFlag(false)
+    
+  }
   
   const onChangeInput = (e: any) => {
     setAnswerData({
@@ -302,10 +327,39 @@ const InquiryTable = () => {
     });
   };
 
+  const onChangeAnswerInput = (e: any) => {
+    setAnswerRevData({
+      ...answerRevData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const AnswerFrame = (e:any) => {
     console.log(e)
     const role = sessionStorage.getItem("userRole")
     if (e.qnaIsAnswered === true) {
+      if (answerFlag === true) {
+        return (
+          <div className='replyInfo'>
+            <div className='replyCharger'>담당자</div>
+            <div className='replyContent' style={{width:"90%",marginLeft:"5%"}}>
+              <textarea name="qnaAnswerDesc" id="" style={{width:"100%", height:"100%",resize:"none"}} onChange={onChangeAnswerInput}></textarea>
+            </div>
+            <div className='replyDate' style={{paddingRight:"45px"}}> 
+              <span style={{
+                backgroundColor:"rgb(51, 51, 51)",
+                color:"white",
+                padding: "10px 15px 10px 15px",
+                margin : "10px 5px 10px 10px",
+                borderRadius :"5px",
+                fontSize:"20px"
+                }}
+                onClick={() => revSubmit(e)}>등록
+              </span>
+            </div>
+          </div>
+        )
+      }
       return (
       <>
       {/* <div>sadfasd</div> */}
@@ -390,6 +444,10 @@ const InquiryTable = () => {
                   <div className="questionName">프렌치 - 딥 다크(해당 상품 이름)</div>
                   { e.userSeq === myId ? <div className="questionRev">
                     <OneOneOneRevise data={e}/><span onClick={() => deleteSubmit(e.qnaSeq)}>삭제</span>
+                  </div>
+                  : null }
+                  { e.qnaDesignerSeq === myId && e.qnaIsAnswered === true ? <div className="questionRev">
+                  <span onClick={() => setAnswerFlag(true)}>답변 수정</span><span onClick={() => delInquiryAnswer(e.qnaAnswer.qnaAnswerSeq)}>답변 삭제</span>
                   </div>
                   : null }
                 </div>

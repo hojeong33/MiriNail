@@ -168,6 +168,16 @@ export const postInquiryAnswer = async(data:any) => {
   console.log(response)
 }
 
+// 문의 답변 수정
+export const revInquiryAnswer = async(data:any) => {
+  console.log(data)
+  const response = await axios.put(base_url+`qna/answer`,data)
+}
+// 문의 답변 삭제
+export const delInquiryAnswer = async(param:any) => {
+  const response = await axios.delete(base_url +`qna/answer/${param}`)
+}
+
 
 
 // 디자이너 목록
@@ -186,6 +196,13 @@ export const getRecentDesigner = async() => {
   return response.data
 }
 
+//평점순 디자이너
+export const getHighRateDesigner = async() => {
+  const response = await axios.get(base_url+'designer/list/rating')
+  console.log(response)
+  return response.data
+}
+
 // 모든 디자이너
 export const getAllDesigner = async(pages:number, sizes:number) => {
   console.log(`실행됨 : ${pages}`)
@@ -194,4 +211,19 @@ export const getAllDesigner = async(pages:number, sizes:number) => {
   })
   console.log(response)
   return response.data
+}
+
+
+
+// 디자인 리뷰
+
+// 리뷰 작성
+export const postReview = async(data:any) => {
+  console.log(data)
+  const response = await axios.post(base_url+'review',data,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }}
+    )
+  console.log(response)
 }

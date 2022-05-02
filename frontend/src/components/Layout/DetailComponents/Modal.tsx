@@ -6,6 +6,10 @@ import Modal from '@mui/material/Modal';
 import {useState,useEffect} from 'react'
 import styled from 'styled-components'
 import { Rating } from 'react-simple-star-rating'
+import { postReview } from '../../../store/api';
+import { useParams } from 'react-router-dom';
+import { designerId } from '../../../store/atoms';
+import { useRecoilValue } from 'recoil';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -98,7 +102,8 @@ const Content = styled.div`
 `
 
 export default function BasicModal(modalStatus:any) {
-  
+  const nailartSeq = useParams().id!
+  const writerId = useRecoilValue(designerId)
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -136,18 +141,63 @@ export default function BasicModal(modalStatus:any) {
   },[files])
 
   // 스타 레이팅
-  const StarRating = () => {
-  const [ratingValue, setRatingValue] = useState(0)
-  const handleRating = (rate: number) => {
-    setRatingValue(rate)
-  }
-  return (
-    <Rating onClick={handleRating} ratingValue={ratingValue} showTooltip
-    tooltipArray={['별로에요', '그냥 그래요', '보통이에요', '맘에 들어요', '아주 좋아요']} style={{color:"#F8E71C"}}></Rating>
-  )
-  }
+  const StarRating = ({submitData}:any) => {
+    const handleRating = async(rate: any) => {
+      setSubmitData({
+        ...submitData,
+        reviewRating : rate
+      })
+    }
+    return (
+      <Rating onClick={handleRating} ratingValue={submitData.reviewRating} showTooltip
+      tooltipArray={['별로에요', '그냥 그래요', '보통이에요', '맘에 들어요', '아주 좋아요']} style={{color:"#F8E71C"}}></Rating>
+    )
+    }
 
   
+  
+  
+  const [submitData,setSubmitData] = useState({
+    reviewTitle : '',
+    reviewDesc : '',
+    nailartSeq : nailartSeq,
+    designerSeq : writerId,
+    reviewRating : 0,
+  })
+  useEffect(() => {
+    console.log(submitData)
+  },[submitData])
+
+  const onChangeInput = (e: any) => {
+    setSubmitData({
+      ...submitData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  useEffect(() => {
+    console.log(submitData);
+  }, [submitData]);
+
+  const submit = async() => {
+    const formdata:any = new FormData()
+    formdata.append("reviewTitle",submitData.reviewTitle)
+    formdata.append("reviewDesc",submitData.reviewDesc)
+    formdata.append("nailartSeq",submitData.nailartSeq)
+    formdata.append("designerSeq",submitData.designerSeq)
+    formdata.append("reviewRating",submitData.reviewRating/20)
+    formdata.append('reviewFile',files[0])
+    for (let key of formdata.keys()) {
+      console.log(key);
+    }
+
+    /* value 확인하기 */
+    for (let value of formdata.values()) {
+      console.log(value);
+    }
+
+    // postReview(formdata)
+  }
 
 
   return (
@@ -163,7 +213,7 @@ export default function BasicModal(modalStatus:any) {
       >
         <Box sx={modalStyle}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            <div>sadfasdf</div>
+            <div>리뷰 작성</div>
 
             
           </Typography>
@@ -171,16 +221,16 @@ export default function BasicModal(modalStatus:any) {
           <Content>
             <div className="rowBox">
               <div className="rowBoxLeft">
-                별점매기기
+                디자인 평가
               </div>
               <div className="rowBoxRight">
-                {StarRating()}
+                <StarRating submitData={submitData}/>
               </div>
             </div>
             <div className="reviewWrite">
               <label htmlFor="goods_text" className="label">디자인에 대한 평가를 20자 이상 작성해 주세요</label>
               <div className="inputArea">
-                <textarea id="goods_text" placeholder="내용을 입력해주세요" name="goods_text" ></textarea>
+                <textarea id="goods_text" name="reviewDesc" placeholder="내용을 입력해주세요" onChange={onChangeInput}></textarea>
               </div>
             </div>
             <div className='uploadWrap'>
@@ -203,7 +253,7 @@ export default function BasicModal(modalStatus:any) {
 
             </div>
             <div className="buttons">
-              <button className="btn1">작성</button><button className="btn2">취소</button>
+              <button className="btn1" onClick={() => submit()}>작성</button><button className="btn2">취소</button>
             </div>
           </Content>  
           </Typography>

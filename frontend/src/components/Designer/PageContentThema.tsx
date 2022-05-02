@@ -2,7 +2,7 @@ import styled from "styled-components"
 import {useEffect, useState} from 'react'
 import Slider from "react-slick";
 import DesignerCarousel from "./DesignerCarousel";
-import { getHotDesigner, getRecentDesigner } from "../../store/api";
+import { getHighRateDesigner, getHotDesigner, getRecentDesigner } from "../../store/api";
 
 
 
@@ -57,6 +57,16 @@ export interface ILatestDesigner {
   nailartCount : number; 
 }
 
+export interface IHighRateDesigner {
+  designerSeq : number;
+  designerNickName : string;
+  designerImgUrl : string;
+  // designer_shop_name : string;
+  followerNum : number;
+  nailartCount : number; 
+}
+
+
 const PageContentThema = () => {
   const settings = {
     dots: true,
@@ -70,10 +80,12 @@ const PageContentThema = () => {
 
   const [hotDesigner,setHotDesigner] = useState<IHotDesigner[]>([])
   const [latestDesigner,setLatestDesigner] = useState<ILatestDesigner[]>()
+  const [highRateDesigner,setHighRateDesigner] = useState<IHighRateDesigner[]>()
 
   useEffect(() => {
     getHotDesigner().then((res):any => setHotDesigner(res))  
     getRecentDesigner().then((res):any => setLatestDesigner(res))
+    getHighRateDesigner().then((res):any => setHighRateDesigner(res))
   },[])
   
   return (
@@ -91,10 +103,11 @@ const PageContentThema = () => {
               {latestDesigner && <DesignerCarousel items={latestDesigner} />}
               {/* {latestDesigner ? <DesignerCarousel items={latestDesigner} /> : null} */}
             </div>
-            {/* <div style={{marginTop:"48px"}}>
+            <div style={{marginTop:"48px"}}>
               <div className="subtitle">High Rate Designers</div>
-              <DesignerCarousel items={hotDesigners} />
-            </div> */}
+              {highRateDesigner && <DesignerCarousel items={highRateDesigner} />}
+           
+            </div>
           </div>
         </MainFrame>
         
