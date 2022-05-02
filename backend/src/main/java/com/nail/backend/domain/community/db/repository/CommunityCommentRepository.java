@@ -17,5 +17,5 @@ public interface CommunityCommentRepository extends JpaRepository<CommunityComme
             (Pageable pageable, Long communitySeq , int communityCommentLayer);
 
     Page<CommunityComment> findAllByCommunityGroupNumAndCommunityCommentLayer
-            (Pageable pageable, Long CommunityCommentSeq , int communityCommentLayer);
+            (Pageable pageable, Long communityCommentSeq , int communityCommentLayer);
 }

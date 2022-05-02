@@ -3,6 +3,7 @@ package com.nail.backend.domain.review.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nail.backend.domain.community.db.entity.CommunityImg;
+import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,10 +26,20 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewSeq;
 
-    @ApiModelProperty(value = "유저 번호")
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_seq")
+    @ApiModelProperty(value = "유저 번호")
     private User user;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "nailart_seq")
+    @ApiModelProperty(value = "작품 seq")
+    private Nailart nailart;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "designer_seq")
+    @ApiModelProperty(value = "리뷰 디자이너")
+    private User designer;
 
     @ApiModelProperty(value = "리뷰 게시판 글 제목")
     private String reviewTitle;

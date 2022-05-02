@@ -28,6 +28,10 @@ public class DesignerInfo implements Serializable {
     @JoinColumn(name = "designer_seq")
     private User user;
 
+    // 디자이너 프로필 이미지
+    @ApiModelProperty(value = "디자이너 프로필 이미지")
+    private String designerProfileImgUrl;
+
     // 유저 포트폴리오
     @ApiModelProperty(value = "유저 포트폴리오 url")
     String designerPortfolioUrl;

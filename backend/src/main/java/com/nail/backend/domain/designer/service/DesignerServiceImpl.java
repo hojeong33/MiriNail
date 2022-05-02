@@ -69,6 +69,11 @@ public class DesignerServiceImpl implements DesignerService{
     }
 
     @Override
+    public List<DesignerListConditionGetRes> getDesignerListbyRating() {
+        return designerRepositorySupport.DesignerRatingList();
+    }
+
+    @Override
     public List<DesignerListConditionGetRes> getDesignerAllList(int page, int size) {
         return designerRepositorySupport.DesignerAllList(page, size);
     }

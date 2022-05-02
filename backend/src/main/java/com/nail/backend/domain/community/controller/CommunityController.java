@@ -9,8 +9,6 @@ import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
 import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.community.service.CommunityService;
-import com.nail.backend.domain.qna.db.entity.Qna;
-import com.nail.backend.domain.qna.request.QnaAnswerModifyPutReq;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +49,8 @@ public class CommunityController {
                                                               Principal principal) throws IOException {
 
         log.info("communityRegister - 호출");
-        String userId = principal.getName();
+//        String userId = principal.getName();
+        String userId = "2217289220";
 
         Community res = communityService.communityRegister(communityFiles, communityRegisterPostReq, userId);
         if (!res.equals(null)) {
@@ -75,8 +74,8 @@ public class CommunityController {
                                                                      Principal principal) {
 
         log.info("communityCommentRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         System.out.println(communityCommentRegisterPostReq);
         CommunityComment res = communityService.communityCommentRegister(communityCommentRegisterPostReq, userId);
@@ -98,6 +97,23 @@ public class CommunityController {
 
         log.info("getCommunityList - 호출");
         Page<CommunityGetRes> communityList = communityService.getCommunityList(pageable);
+
+        return ResponseEntity.status(200).body(communityList);
+    }
+
+    @ApiOperation(value = "내가 쓴 커뮤니티 글 전체조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/user")
+    public ResponseEntity<Page<CommunityGetRes>> getCommunityListByUser(@PageableDefault(page = 0, size = 10, sort = "communitySeq", direction = Sort.Direction.DESC) Pageable pageable, Principal principal) {
+
+        log.info("getCommunityListByUser - 호출");
+        String userId ="2210624673"; // 2번 유저 - 호정
+//        String userId = principal.getName();
+
+        Page<CommunityGetRes> communityList = communityService.getCommunityListByUser(pageable,userId);
 
         return ResponseEntity.status(200).body(communityList);
     }

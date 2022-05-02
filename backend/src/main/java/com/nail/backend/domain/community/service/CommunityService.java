@@ -22,6 +22,7 @@ public interface CommunityService {
 
 //    READ___________________________________________
     Page<CommunityGetRes> getCommunityList(Pageable pageable);
+    Page<CommunityGetRes> getCommunityListByUser(Pageable pageable, String userId);
     CommunityGetRes getCommunity(Long communitySeq);
     // 댓글
     Page<CommunityCommentGetRes> getCommunityComment(Pageable pageable, Long communitySeq);
