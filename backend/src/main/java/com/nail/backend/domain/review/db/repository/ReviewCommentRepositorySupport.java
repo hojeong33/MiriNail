@@ -15,24 +15,6 @@ public class ReviewCommentRepositorySupport {
     QReviewComment qReviewComment = QReviewComment.reviewComment;
 
 
-    // 댓글 작성시 groupNum 초기화
-    public Long setCommentGroup(Long reviewCommentSeq){
-        Long execute = jpaQueryFactory.update(qReviewComment)
-                .set(qReviewComment.reviewGroupNum, reviewCommentSeq)
-                .where(qReviewComment.reviewCommentSeq.eq(reviewCommentSeq))
-                .execute();
-
-        return execute;
-    }
-
-    public Long modifyCommentLayer(Long reviewCommentSeq){
-        Long execute = jpaQueryFactory.update(qReviewComment)
-                .set(qReviewComment.reviewCommentLayer, 2)
-                .where(qReviewComment.reviewCommentSeq.eq(reviewCommentSeq))
-                .execute();
-        return execute;
-    }
-
     // 댓글 수정
     public Long updateReviewCommentByCommentSeq(ReviewCommentModifyPutReq reviewCommentModifyPutReq){
         Long execute = jpaQueryFactory.update(qReviewComment)

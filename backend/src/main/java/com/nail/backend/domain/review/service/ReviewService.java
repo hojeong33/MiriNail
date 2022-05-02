@@ -1,7 +1,6 @@
 package com.nail.backend.domain.review.service;
 
 
-import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;

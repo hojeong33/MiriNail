@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("ReviewGetCommentRes")
+@ApiModel("ReviewCommentGetRes")
 public class ReviewCommentGetRes {
 
     private Long reviewCommentSeq;
@@ -22,8 +22,6 @@ public class ReviewCommentGetRes {
     private String userProfileImg;
 
     private String reviewCommentDesc;
-    private Long reviewGroupNum;
-    private int reviewCommentLayer;
     private LocalDateTime reviewCommentRegedAt;
 
 }

@@ -14,17 +14,14 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ApiModel(value = "Review Img", description = "리뷰 이미지")
+@ApiModel(value = "reviewImg", description = "리뷰 이미지")
 public class ReviewImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewImgSeq;
 
-    @JsonIgnore
-    @JoinColumn(name = "review_seq")
     @ApiModelProperty(value = "리뷰 글 Seq")
-    @ManyToOne
-    private Review review;
+    private Long reviewSeq;
 
     @ApiModelProperty(value = "리뷰 img url")
     private String reviewImgUrl;
