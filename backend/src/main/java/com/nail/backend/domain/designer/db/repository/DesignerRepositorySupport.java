@@ -127,9 +127,9 @@ public class DesignerRepositorySupport {
     }
     // 디자이너 정보 이미지 수정
     @Transactional
-    public Long DesignerProfileUpdate(long desginerSeq, String designerInfoImgUrl){
+    public Long DesignerProfileUpdate(long desginerSeq, String designerProfileImgUrl){
         long excute = jpaQueryFactory.update(qDesignerInfo)
-                .set(qDesignerInfo.designerProfileImgUrl, designerInfoImgUrl)
+                .set(qDesignerInfo.designerProfileImgUrl, designerProfileImgUrl)
                 .where(qDesignerInfo.designerSeq.eq(desginerSeq))
                 .execute();
         return excute;
