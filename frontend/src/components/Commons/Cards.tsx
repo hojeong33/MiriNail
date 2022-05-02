@@ -1,6 +1,8 @@
 
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 // import './CardStyle.css'
+import { IHotDesigner, ILatestDesigner } from '../Designer/PageContentThema'
 
 const Wrapper = styled.div`
 h1,
@@ -40,7 +42,7 @@ body {
 
 
 .profile-card-6 {
-    max-width: 200px;
+    max-width: 220px;
     height : 300px;
     /* background-color: #FFF; */
     border-radius: 5px;
@@ -132,35 +134,26 @@ body {
 
 
 
+interface IHotDesignerProp {
+  info : IHotDesigner
+}
 
+interface ILatestDesignerProp {
+  info : ILatestDesigner
+}
 
-// export interface hotDesignersProps {
-//   designerSeq : number;
-//   designerNickName : string;
-//   designerImgUrl : string;
-//   // designer_shop_name : string;
-//   followerNum : number;
-//   nailartCount : number; 
-// }
-// export interface Props {
-//   items : hotDesignersProps[];
-  
-// }
-
-// export interface Prop {
-//   info : hotDesignersProps;
-// }
-
-
-const Cards = ({info}: any) => {
-
+const Cards = ({info}: IHotDesignerProp|ILatestDesignerProp) => {
+  const navigate = useNavigate()
+  // console.log(info)
   return (
     <>
       <Wrapper>
-        <div className="col-md-12">
+        <div className="col-md-12" onClick={() => navigate(`/mypage/${info.designerSeq}`)}>
           <div className="profile-card-6"><img src={info.designerImgUrl} className="img img-responsive" />
             <div className="profile-name">{info.designerNickName}</div>
-              <div className="profile-position" style={{color:"#c5c4c4"}}>{info.designer_shop_name}</div>
+              <div className="profile-position" style={{color:"#c5c4c4"}}>
+                {/* {info.designer_shop_name} */}
+                </div>
               <div className="profile-overview">
                 <div className="profile-overview">
                   <div className="row text-center">

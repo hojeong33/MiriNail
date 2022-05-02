@@ -4,8 +4,8 @@ import {useEffect, useState} from 'react'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { designDetail, nailCount, nailLike, isLike, nailDislike  } from '../../store/api';
-import { useParams } from 'react-router-dom';
+import { designDetail, nailCount, nailLike, isLike, nailDislike, deleteDesign  } from '../../store/api';
+import { useNavigate, useParams } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
@@ -27,6 +27,12 @@ const Wrapper = styled.div`
         width : 50%;
         float: left;
         height : 500px;
+        .imHarf {
+          height:100%;
+          .mainImg {
+            height:100%;
+          }
+        }
       }
       
       .rightBox {
@@ -47,10 +53,35 @@ const Wrapper = styled.div`
             }
             .boxs {
               margin-bottom: 20px;
-              padding: 5px 20px;
-              background: #3D3C3A;
-              color: #fff;
-              display: inline-block;
+              // padding: 5px 20px;
+              // background: #3D3C3A;
+              // color: #fff;
+              display: flex;
+              justify-content : space-between;
+              .boxsLeft {
+                padding: 5px 20px;
+                background: #3D3C3A;
+                color: #fff;
+              }
+              .boxsRight {
+                margin-right :20px;
+                display:flex;
+                div {
+                  padding: 5px 20px;
+                  border: 1px solid #3D3C3A;
+                  color: #3D3C3A;
+                  cursor : pointer;
+                  :hover {
+                    background-color: #c31d1d;
+                    color :white;
+                    border : 1px solid white; 
+                  }
+                }
+
+                
+              
+              }
+
             }
             .name {
               font-size: 2em;
@@ -144,21 +175,52 @@ const Wrapper = styled.div`
       }
     }
   }
+
+
+  @media screen and (max-width: 767px) {
+    height :1100px;
+    .row {
+
+      zoom : 1;
+      .imHarf {
+        margin: 5px;
+        .leftBox {
+          width : 100%;
+          float: none;
+          height : 350px;
+          // display:none;
+          position:relative;
+        }
+        
+        .rightBox {
+          margin-top:50px;
+          z-index:11;
+          height: 1000px;
+          position:relative;
+          width : 100%;
+          float: none;
+          
+        }
+      }
+    }
+  }
 `
 
 const UpperFrame = () => {
+  const navigate = useNavigate()
   const queryClient = useQueryClient();
-  let params = useParams().id
+  let params:any = useParams().id
   console.log(params)
+  const myId = Number(sessionStorage.getItem('userSeq'))
   const [detailInfo,setDetailInfo] = useState (
     {
-      type : '프렌치네일',
-      price : '50,000원',
-      tags : '#봄 #태그123 #태그 456',
-      info : '모든 피부타입dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
-      name : 'Designer1',
-      shop : 'Nailshop1',
-      color : '딥 다크',
+      // type : '프렌치네일',
+      // price : '50,000원',
+      // tags : '#봄 #태그123 #태그 456',
+      // info : '모든 피부타입dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+      // name : 'Designer1',
+      // shop : 'Nailshop1',
+      // color : '딥 다크',
       title : '프렌치 - 딥다크'
     }
   )
@@ -168,9 +230,9 @@ const UpperFrame = () => {
   const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params))
   const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params))
   const [designerSeq,setDesignerSeq] = useRecoilState<any>(designerId)
-  
   useEffect(():any => {
     if (nailData) {setDesignerSeq(nailData.designerSeq)}
+    console.log(nailData)
   },[nailData])
 
   const ACCESS_TOKEN = localStorage.getItem('token')
@@ -213,6 +275,11 @@ const UpperFrame = () => {
     }
   }
 
+  const delDesign = async(param:any) => {
+    await deleteDesign(param)
+    navigate('/nft')
+  }
+
   // 공유하기
   // const url = window.location.href
   // useEffect(() => {
@@ -240,7 +307,7 @@ const UpperFrame = () => {
             <div className="leftBox">
               <div className="imHarf">
                 <div className="mainImg">
-                  <img style={{width:"95%", height:"500px"}} src="https://image.msscdn.net/images/goods_img/20200721/1521989/1521989_1_500.jpg" alt="" />
+                  <img style={{width:"95%", height:"100%"}} src={nailData?.nailartThumbnailUrl} alt="" />
                 </div>
               </div>
 
@@ -252,10 +319,21 @@ const UpperFrame = () => {
                     {/* <ShareIcon onClick={share}/> */}
                   </div>
                   <div className="boxs">
-                    {nailData?.nailartType}
+                    <div className="boxsLeft">
+                      {nailData?.nailartType}
+                    </div>
+                    { myId === designerSeq ? <div className="boxsRight">
+                      <div onClick={() => navigate('/nft/Revise',{state:params})}>
+                        수정
+                      </div>
+                      <div style={{marginLeft:"10px"}} onClick={() => delDesign(params)}>
+                        삭제
+                      </div>
+                    </div> : null }
                   </div>
                   <div className='name'>
                     {detailInfo.title}
+               
                   </div>
                   <div className="price">
                     {nailData?.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
@@ -272,14 +350,14 @@ const UpperFrame = () => {
                   <div className='designerInfo'>
                     
                     <div className="designerImg">
-                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" />
+                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)} />
                     </div> 
                     <div className='designerName'>
-                      <div style={{fontSize:"1.2em"}}>
+                      <div style={{fontSize:"1.2em"}} onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)}>
                         {nailData?.designerNickname}
                       </div>
                       <div style={{color:'gray'}}>
-                        Nailshop1
+                        {nailData?.designerShopName}
                       </div>
                     </div>
                   </div>

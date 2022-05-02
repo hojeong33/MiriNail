@@ -135,7 +135,7 @@ function PageHeader() {
     <Wrapper>
       <div className="row">
         <div className="pageHeaderTitle">
-          REGISTER
+        REVISE
         </div>
         <div className="pageHeaderLinks">
 
@@ -144,7 +144,7 @@ function PageHeader() {
           <div className="NavElement">
             <span>제품</span>
             <ChevronRightIcon style={{top:"0"}}/>
-            <span>REGISTER</span>
+            <span>REVISE</span>
           </div>
         </div>
       </div>

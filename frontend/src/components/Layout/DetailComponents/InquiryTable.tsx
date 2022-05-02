@@ -131,148 +131,90 @@ const Wrapper = styled.div`
   }
 
   
+
+  @media screen and (max-width: 1023px) {
+    .table {
+      
+      .tableElement {
+        display : table-column-group;
+      }
+      tbody {
+        height :50px;
+        font-size :13px;
+      }
+      td {
+        border-bottom: 1px solid #ddd;
+      }
+  
+      th {
+        height :60px;
+  
+        border-bottom: 2px solid #ddd;
+        background-color :#dbd9d9;
+      }
+
+      .column {
+        // font-size:13px;
+      }
+
+      tr {
+        // line-height:35px;
+      }
+    }
+  
+  
+    .content {
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      background-color: #f1f1f1;
+    }
+  
+  }
+
+  @media screen and (max-width: 767px) {
+    .column {
+      th {
+        font-size:12px;
+      }
+    }
+  }
 `
 
-export interface DummyData {
-  id : number
-  isAnswer : string
-  content : string
-  writer : string
-  date : string
-  reply : any
+export interface IQnaInquiry {
+  qnaAnswer: any
+  qnaDesc: string
+  qnaDesignerSeq: number
+  qnaImgUrl: string
+  qnaIsAnswered: boolean
+  qnaIsPrivated: boolean
+  qnaNailartSeq: number
+  qnaRegedAt: string
+  qnaSeq: number
+  qnaTitle: string
+  qnaType: any
+  userNickname: string
+  userSeq: number
 }
 
 const InquiryTable = () => {
   let params = useParams().id
   const queryClient = useQueryClient()
   const [mypage,setMyPage] = useRecoilState(page2)
-  const [myData,setMyData] = useState<any>([])
   const [answerData,setAnswerData] = useState({
     qnaAnswerDesc : '',
     qnaSeq : null,
   })
   const writerId = useRecoilValue(designerId)
   console.log(params)
-  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery(['inquiry',params,mypage], inquiryList)
+  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<IQnaInquiry[]>(['inquiry',params,mypage], inquiryList)
   const myId = Number(sessionStorage.getItem('userSeq'))
   useEffect(() => {
     setMyPage(1)
   },[])
 
  
-  const [dummy, setDummy] = useState<DummyData[]>(
-    [
-      {
-        id : 1,
-        isAnswer : '답변완료',
-        content : 'content1 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-01',
-        reply : {
-          id : 1,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },
-      },
-      {id : 2,
-        isAnswer : '답변완료',
-        content : 'content2 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-02',
-        reply : {
-          id : 2,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  },
-      {id : 3,
-      isAnswer : '답변완료',
-      content : 'content3 입니다. 알아두세요',
-      writer : '곽동현',
-      date : '2020-02-03',
-      reply : {
-        id : 3,
-        title : 'asdfas',
-        content : 'dsaf',  
-      }, },
-      {id : 4,
-        isAnswer : '답변완료',
-        content : 'content4 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-04',
-        reply : {
-          id : 4,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  
-      },
-      {id : 5,
-        isAnswer : '답변완료',
-        content : 'content5 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-05',
-        reply : {
-          id : 5,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  
-      },
-      {id : 6,
-        isAnswer : '답변완료',
-        content : 'content6 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-06',
-        reply : {
-          id : 6,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  
-      },
-      {id : 7,
-        isAnswer : '답변완료',
-        content : 'content7 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-07',
-        reply : {
-          id : 7,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  
-      },
-      {id : 8,
-        isAnswer : '답변완료',
-        content : 'content8 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-08',
-        reply : {
-          id : 8,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  
-      },
-      {id : 9,
-        isAnswer : '답변완료',
-        content : 'content9 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-09',
-        reply : {
-          id : 9,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  
-      },
-      {id : 10,
-        isAnswer : '답변완료',
-        content : 'content10 입니다. 알아두세요',
-        writer : '곽동현',
-        date : '2020-02-010',
-        reply : {
-          id : 10,
-          title : 'asdfas',
-          content : 'dsaf',  
-        },  
-      },
-    ]  
-  )
+  
   const testFunc = (id:any,e:any) => {
     
     console.log(e.qnaDesignerSeq,writerId,e.userSeq,Number(myId))
@@ -323,7 +265,7 @@ const InquiryTable = () => {
     
   }
 
-  const postInquiryAnswerFunc:any = useMutation((data:any) => 
+  const postInquiryAnswerFunc = useMutation((data:any) => 
     postInquiryAnswer(data)
     ,{
       onSuccess: () => {
@@ -333,7 +275,7 @@ const InquiryTable = () => {
     }
   ) 
 
-  const deleteInquiryFunc:any = useMutation((data:any) => 
+  const deleteInquiryFunc = useMutation((data:any) => 
     deleteInquiry(data)
     ,{
       onSuccess: () => {
@@ -407,14 +349,14 @@ const InquiryTable = () => {
       <div style={{fontSize:"40px",marginTop:"60px"}}>1대1 문의</div>
       <table className="table">
         <colgroup className="tableElement">
-          <col style={{width:"7%"}} />
-          <col style={{width:"8%"}} />
+          <col style={{width:"10%"}} />
+          <col style={{width:"15%"}} />
           <col style={{width:"auto"}} />
           <col style={{width:"12%"}} />
-          <col style={{width:"13%"}} />
+          <col style={{width:"15%"}} />
         </colgroup>
         <thead>
-          <tr>
+          <tr className="column">
             <th scope="col">번호</th>
             <th scope="col">답변여부</th>
             <th scope="col">제목</th>

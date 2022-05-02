@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import UnderLineInput from '../../Commons/UnderLineInput'
-import FileUpload from './FileUpload'
+import FileUpload from '../RegisterComponents/FileUpload'
 import {useState,useEffect} from 'react'
 import { create } from 'ipfs-http-client'
 import axios from 'axios'
 import publishToken from '../../BlockChain/PublishNFT'
 import DoneIcon from '@mui/icons-material/Done';
-import {registDesign} from '../../../store/api'
-import { useNavigate } from 'react-router-dom'
+import {registDesign, reviseDesign} from '../../../store/api'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Wrapper = styled.div`
   * {
@@ -22,8 +22,7 @@ const Wrapper = styled.div`
   // height: 100vh;
 `;
 const MainFrame = styled.div`
-  width:100%;
-  max-width: 1300px;
+  width: 1300px;
   height: 100%;
   margin: 0 auto;
 
@@ -167,33 +166,6 @@ const MainFrame = styled.div`
       }
     }
   }
-
-  @media screen and (max-width: 1023px) {
-    .LeftBox {
-      display:none;
-    }
-
-    .MainPadding .ItemList {
-      padding-left: 0px;
-    }
-
-    .MainPadding .ItemList .RightBox {
-      border-left: 0px solid white;
-      padding-left: 0px;
-      padding:10px;
-      // height :100%;
-      padding-top: 75px;
-      width: 100%;
-      // border-left: 1px solid #d2d2d0;
-      padding-bottom: 160px;
-      text-align: left;
-    }
-  }
-  
-  @media screen and (max-width: 576px) {
-
-  }
-
 `;
 
 
@@ -202,7 +174,9 @@ const MainFrame = styled.div`
 
 
 
-const PageContent = () => {
+const PageContentRevise = () => {
+  const {state} = useLocation()
+  console.log(state)
   // 리모컨 
   const navigate = useNavigate();
   const nailartName = '일단은 더미'
@@ -268,7 +242,7 @@ const PageContent = () => {
   
     const files= new FormData()
     const multipartFiles = new FormData()
-    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
+    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq,nailartSeq:Number(state)}
     files.append("jsonList",JSON.stringify(nailData))
     console.log(postImages)
     console.log(nailData)
@@ -278,7 +252,7 @@ const PageContent = () => {
 
    
 
-    await registDesign(files)
+    await reviseDesign(files)
     // const response = await client.add(JSON.stringify(nailData))
     // const ipfsHash = response.path
     // console.log(ipfsHash)
@@ -352,4 +326,4 @@ const PageContent = () => {
   );
 };
 
-export default PageContent;
+export default PageContentRevise;
