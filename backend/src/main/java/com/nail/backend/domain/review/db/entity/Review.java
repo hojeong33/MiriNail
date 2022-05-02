@@ -31,7 +31,7 @@ public class Review {
     @ApiModelProperty(value = "유저 번호")
     private User user;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = Nailart.class)
     @JoinColumn(name = "nailart_seq")
     @ApiModelProperty(value = "작품 seq")
     private Nailart nailart;
@@ -57,8 +57,10 @@ public class Review {
     @ApiModelProperty(value = "리뷰 총 평점")
     private float reviewRating;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImg> reviewImg;
 
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<ReviewComment> reviewComment;
 
 }

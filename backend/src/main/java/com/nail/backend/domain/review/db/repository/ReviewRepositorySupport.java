@@ -22,4 +22,12 @@ public class ReviewRepositorySupport {
                 .execute();
         return execute;
     }
+    @Transactional
+    public double getAvgRate(Long nailartSeq){
+        double execute = jpaQueryFactory.select(qReview.reviewRating.avg())
+                .from(qReview)
+                .where(qReview.nailart.nailartSeq.eq(nailartSeq))
+                .fetchOne();
+        return execute;
+    }
 }
