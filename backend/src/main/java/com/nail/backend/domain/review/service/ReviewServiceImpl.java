@@ -160,8 +160,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
 
+    // 조회수 증가
+    public Long reviewCntPlus(Long reviewSeq){
+        return reviewRepositorySupport.modifyReviewCnt(reviewSeq);
+    }
+
+
 //    READ___________________________________________
-// 전체조회
+// 네일아트 리뷰 조회
 public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq){
     Page<Review> reviewList = reviewRepository.findAllByNailart_NailartSeq(pageable,nailartSeq);
     List<ReviewGetRes> reviewGetResList = new ArrayList<>();
@@ -248,6 +254,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             // 리뷰 전체 리턴 리스트 만들기
             ReviewGetRes reviewGetRes = ReviewGetRes.builder()
                     .reviewSeq(rv.getReviewSeq())
+                    .nailart(rv.getNailart())
                     .userSeq(rv.getUser().getUserSeq())
                     .userNickname(rv.getUser().getUserNickname())
                     .userProfileImg(rv.getUser().getUserProfileImg())
@@ -303,6 +310,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             // 리뷰 전체 리턴 리스트 만들기
             ReviewGetRes reviewGetRes = ReviewGetRes.builder()
                     .reviewSeq(rv.getReviewSeq())
+                    .nailart(rv.getNailart())
                     .userSeq(rv.getUser().getUserSeq())
                     .userNickname(rv.getUser().getUserNickname())
                     .userProfileImg(rv.getUser().getUserProfileImg())
@@ -323,6 +331,59 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
 
 
         return res;
+    }
+
+
+    // Top10 리뷰 전체조회
+    public List<ReviewGetRes> getTop10ReviewList(){
+        List<Review> reviewList = reviewRepository.findTop10ByOrderByReviewCntDesc();
+        List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+        for (Review rv : reviewList) {
+
+            // 댓글
+            List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+            List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+            // 댓글 리턴 리스트 만들기
+            for(ReviewComment rc : reviewCommentList){
+
+                ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .userSeq(rc.getUser().getUserSeq())
+                        .userNickname(rc.getUser().getUserNickname())
+                        .userProfileImg(rc.getUser().getUserProfileImg())
+                        .reviewCommentSeq(rc.getReviewCommentSeq())
+                        .reviewCommentDesc(rc.getReviewCommentDesc())
+                        .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                        .build();
+                reviewCommentGetResList.add(reviewCommentGetRes);
+            }
+
+            // 이미지
+            List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+            // 리뷰 전체 리턴 리스트 만들기
+            ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                    .reviewSeq(rv.getReviewSeq())
+                    .nailart(rv.getNailart())
+                    .userSeq(rv.getUser().getUserSeq())
+                    .userNickname(rv.getUser().getUserNickname())
+                    .userProfileImg(rv.getUser().getUserProfileImg())
+                    .designerSeq(rv.getDesigner().getUserSeq())
+                    .designerNickname(rv.getDesigner().getUserNickname())
+                    .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .reviewTitle(rv.getReviewTitle())
+                    .reviewDesc(rv.getReviewDesc())
+                    .reviewCnt(rv.getReviewCnt())
+                    .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
+                    .reviewImg(reviewImgList)
+                    .reviewComments(reviewCommentGetResList)
+                    .build();
+            reviewGetResList.add(reviewGetRes);
+        }
+
+        return reviewGetResList;
     }
 //    UPDATE_________________________________________
 

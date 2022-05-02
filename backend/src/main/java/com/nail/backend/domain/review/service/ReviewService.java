@@ -19,13 +19,14 @@ public interface ReviewService {
     //    CREATE_________________________________________
     Review reviewRegister(List<MultipartFile> reviewFiles, ReviewRegisterPostReq reviewRegisterPostReq, String userId) throws IOException;
     ReviewComment reviewCommentRegister(ReviewCommentRegisterPostReq reviewCommentRegisterPostReq, String userId);
-
+    Long reviewCntPlus(Long reviewSeq);
 
 //    READ___________________________________________
     Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq);
     Page<ReviewGetRes> getReviewListByUser(Pageable pageable,Long userSeq);
     Page<ReviewGetRes> getReviewListByDesignerSeq(Pageable pageable,Long designerSeq);
 
+    List<ReviewGetRes> getTop10ReviewList();
 
     //    UPDATE_________________________________________
     Long reviewCommentModify(ReviewCommentModifyPutReq reviewCommentModifyPutReq);
