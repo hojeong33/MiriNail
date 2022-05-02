@@ -175,12 +175,14 @@ const CreateCommunityContent = () => {
     let scrollTop = document.documentElement.scrollTop;
     let clientHeight = document.documentElement.clientHeight;
     let remote: any = document.getElementById("remote");
-    if (scrollTop + clientHeight >= 1337) {
-      remote.style.position = "fixed";
-      remote.style.top = "180px";
-    } else {
-      remote.style.position = "relative";
-      remote.style.top = "";
+    if (remote) {
+      if (scrollTop + clientHeight >= 1337) {
+        remote.style.position = "fixed";
+        remote.style.top = "180px";
+      } else {
+        remote.style.position = "relative";
+        remote.style.top = "";
+      }
     }
   });
 
@@ -189,13 +191,10 @@ const CreateCommunityContent = () => {
   const [textProcess2, setTextProcess2] = useState("");
   const [communityTitle, setCommunityTitle] = useState("");
   const [communityDesc, setCommunityDesc] = useState("");
-  const [communityImages, setCommunityImages] = useState([]);
   const [postImages, setPostImages] = useState<any[]>([]);
 
   useEffect(() => {
     console.log(imageProcess);
-    setCommunityImages(imageProcess);
-    console.log("이미지들", communityImages);
   }, [imageProcess]);
 
   const onChangeText = (e: any) => {
