@@ -8,6 +8,7 @@ import moment from 'moment'
 import axios from "axios";
 import { useMutation } from "react-query";
 import { postAsk } from "../../store/apis/qna";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,7 +51,7 @@ const FormWrapper = styled.div`
       margin-right: 20px;
       cursor: pointer;
       button {
-        margin-left: 10px;
+        margin-left: 5px;
       }
     }
   }
@@ -112,6 +113,8 @@ const CreateAsk = () => {
   const [menuType, setMenuType] = useState<number>(0);
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
+  const { userSeq } = useParams();
+  const navigate = useNavigate();
 
   const onChangeTitle = (e:any) => {
     setTitle(e.target.value)
@@ -124,13 +127,22 @@ const CreateAsk = () => {
   const createAsk = useMutation<any, Error>(
     "createAsk",
     async () => {
-      return await postAsk(content, 3, title, menuType, 1);
+      return await postAsk(
+        content,
+        Number(userSeq),
+        title,
+        menuType,
+        Number(sessionStorage.getItem("userSeq"))
+      );
     },
     {
-      onSuccess: (res) => console.log(res),
-      onError: (err: any) => console.log(err)
+      onSuccess: (res) => {
+        console.log(res);
+        navigate(`/designerpage/${userSeq}/asklist`)
+      },
+      onError: (err: any) => console.log(err),
     }
-  )
+  );
 
   const onClickSubmit = async (e:React.FormEvent) => {
     e.preventDefault();

@@ -5,6 +5,8 @@ import { designerAtom } from "../../store/atoms"
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getDesignerinfo } from "../../store/apis/designer";
 
 export interface IDesigner {
   id: number;
@@ -41,17 +43,25 @@ const DesignerPage = () => {
     designerShopClose: "19:00"
   })
   const { userSeq } = useParams();
-  console.log(userSeq)
   const setterFn = useSetRecoilState(designerAtom)
 
+  const { data, isLoading, refetch} = useQuery<any, Error>(
+    ["getDesigner"],
+    async () => {
+      return await getDesignerinfo(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        setterFn(res)
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
 
-
-  useEffect(() => {
-    setterFn(designer)
-  }, [])
   return (
     <>
-      <Header designer={designer}></Header>
+      <Header refetch={refetch}></Header>
       <Content designer={designer}></Content>
     </>
   );

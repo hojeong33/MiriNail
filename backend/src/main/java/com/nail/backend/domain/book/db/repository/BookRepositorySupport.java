@@ -4,7 +4,7 @@ import com.nail.backend.domain.book.db.entity.Book;
 import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.entity.QBook;
 import com.nail.backend.domain.book.db.entity.QBookCheck;
-import com.nail.backend.domain.book.request.BookPostReq;
+import com.nail.backend.domain.follow.request.BookPostReq;
 import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
@@ -13,15 +13,11 @@ import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +40,9 @@ public class BookRepositorySupport {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    BookCheckRepository bookCheckRepository;
+
     QBook qBook = QBook.book;
 
     QBookCheck qBookCheck = QBookCheck.bookCheck;
@@ -54,12 +53,15 @@ public class BookRepositorySupport {
         DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(bookPostReq.getDesignerSeq());
         Nailart nailart = nailartRepository.findByNailartSeq(bookPostReq.getNailartSeq());
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime bookDateTime = LocalDateTime.parse(bookPostReq.getBookDatetime(),formatter);
+
         Book book = Book.builder()
                 .user(user)
                 .designerInfo(designerInfo)
                 .nailart(nailart)
                 .bookComment(bookPostReq.getBookComment())
-                .bookDatetime(bookPostReq.getBookDatetime())
+                .bookDatetime(bookDateTime)
                 .bookRegedAt(LocalDateTime.now())
                 .build();
 
@@ -67,11 +69,21 @@ public class BookRepositorySupport {
 
         // 해당 예약 찾기
         BookCheck bookCheck = jpaQueryFactory.select(qBookCheck)
+                .from(qBookCheck)
                 .where(qBookCheck.designerSeq.eq(bookPostReq.getDesignerSeq())
-                        .and(qBookCheck.bookCheckDate.eq(bookPostReq.getBookDatetime().toLocalDate())))
+                        .and(qBookCheck.bookCheckDate.eq(bookDateTime.toLocalDate())))
                 .fetchFirst();
+
+        // 해당 예약이 없으면
+        if(bookCheck == null) {
+            bookCheck = BookCheck.builder()
+                    .designerSeq(bookPostReq.getDesignerSeq())
+                    .bookCheckDate(bookDateTime.toLocalDate())
+                    .build();
+        }
+
         // 예약한 시간
-        String bookTime = bookPostReq.getBookDatetime().toLocalTime().toString();
+        String bookTime = bookDateTime.toLocalTime().toString();
 
         // 해당시간 예약 처리 -> 이게 맞나..?
         switch (bookTime) {
@@ -133,6 +145,7 @@ public class BookRepositorySupport {
                 bookCheck.setPm1900(true);
                 break;
         }
+        bookCheckRepository.save(bookCheck);
         return book;
     }
 
@@ -172,6 +185,7 @@ public class BookRepositorySupport {
 
         // 해당 예약 찾기
         BookCheck bookCheck = jpaQueryFactory.select(qBookCheck)
+                .from(qBookCheck)
                 .where(qBookCheck.designerSeq.eq(deignerSeq)
                         .and(qBookCheck.bookCheckDate.eq(bookDate)))
                 .fetchFirst();
@@ -286,5 +300,13 @@ public class BookRepositorySupport {
         });
 
         return designerList;
+    }
+
+    public List<Book> getBookListByDesignerSeq(Long designerSeq) {
+        List<Book> bookList = jpaQueryFactory.select(qBook)
+                .from(qBook)
+                .where(qBook.designerInfo.designerSeq.eq(designerSeq))
+                .fetch();
+        return bookList;
     }
 }

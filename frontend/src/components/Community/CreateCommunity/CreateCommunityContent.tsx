@@ -3,7 +3,6 @@ import FileUpload2 from "./FileUpload2";
 import { useState, useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
-
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -145,54 +144,66 @@ const CreateCommunityContent = () => {
   //작성하기
   const ACCESS_TOKEN = localStorage.getItem("token");
   const createCommunity = async () => {
-    const communityData = {
-      user_seq: sessionStorage.getItem("userSeq"),
-      community_title: "",
-      community_desc: "",
-    };
-    if (ACCESS_TOKEN) {
-      const result = await axios({
-        method: "post",
-        url: `http://localhost:8080/api/community`,
-        data: {},
+    console.log(communityDesc);
+    console.log(communityTitle);
+    const formdata: any = new FormData();
+    formdata.append("communityDesc", communityDesc);
+    formdata.append("communityTitle", communityTitle);
+    postImages.forEach((e) => {
+      formdata.append("communityFiles", e);
+    });
+    for (let key of formdata.keys()) {
+      console.log(key);
+    }
+
+    /* value 확인하기 */
+    for (let value of formdata.values()) {
+      console.log(value);
+    }
+    axios
+      .post("http://localhost:8080/api/community", formdata, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       })
-        .then((res) => {
-          console.log(res.data.content);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+      .then(console.log)
+      .catch(console.log);
   };
   //리모컨
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
     let clientHeight = document.documentElement.clientHeight;
     let remote: any = document.getElementById("remote");
-    if (scrollTop + clientHeight >= 1337) {
-      remote.style.position = "fixed";
-      remote.style.top = "180px";
-    } else {
-      remote.style.position = "relative";
-      remote.style.top = "";
+    if (remote) {
+      if (scrollTop + clientHeight >= 1337) {
+        remote.style.position = "fixed";
+        remote.style.top = "180px";
+      } else {
+        remote.style.position = "relative";
+        remote.style.top = "";
+      }
     }
   });
 
   const [imageProcess, setImageProcess] = useState([]);
   const [textProcess, setTextProcess] = useState("");
   const [textProcess2, setTextProcess2] = useState("");
+  const [communityTitle, setCommunityTitle] = useState("");
+  const [communityDesc, setCommunityDesc] = useState("");
+  const [postImages, setPostImages] = useState<any[]>([]);
+
   useEffect(() => {
     console.log(imageProcess);
   }, [imageProcess]);
 
   const onChangeText = (e: any) => {
     setTextProcess(e.target.value);
+    setCommunityDesc(e.target.value);
   };
   const onChangeText2 = (e: any) => {
     setTextProcess2(e.target.value);
+    setCommunityTitle(e.target.value);
   };
 
   return (
@@ -256,7 +267,10 @@ const CreateCommunityContent = () => {
                   이미지 등록
                 </div>
                 <div className="fileBox">
-                  <FileUpload2 setImageProcess={setImageProcess} />
+                  <FileUpload2
+                    setImageProcess={setImageProcess}
+                    setPostImages={setPostImages}
+                  />
                 </div>
                 <div className="subTitle" style={{ marginTop: "120px" }}>
                   글제목 작성
@@ -277,8 +291,11 @@ const CreateCommunityContent = () => {
                   style={{ resize: "none" }}
                   placeholder="10자 이상 입력해주세요."
                 ></textarea>
+
                 <div className="buttons">
-                  <div className="btn1">작성</div>
+                  <div className="btn1" onClick={createCommunity}>
+                    작성
+                  </div>
                   <div className="btn2">취소</div>
                 </div>
               </div>

@@ -26,8 +26,8 @@ public class DesignerApplication implements Serializable {
 
     @MapsId
     @ApiModelProperty(value = "유저 정보")
-    @OneToOne
-    @JoinColumn(name = "designer_seq")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "designer_seq", referencedColumnName = "user_seq")
     private User user;
 
     // 유저 사업자 등록증
@@ -41,6 +41,10 @@ public class DesignerApplication implements Serializable {
     // 디자이너 샵 주소
     @ApiModelProperty(value = "유저 디자이너 샵 주소")
     String designerAddress;
+
+    // 디자이너 전화번호
+    @ApiModelProperty(value = "디자이너 전화번호")
+    String designerTel;
 
     // 인증 신청 상태
     @ApiModelProperty(value = "유저 인증신청 상태 default : true(진행중)이고 false 는 거절")

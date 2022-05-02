@@ -24,11 +24,4 @@ public class NailartRegisterPostReq {
     String nailartWeather;
 
     int nailartPrice;
-
-
 }
-//@Data
-//public class NailartRegisterPostReq {
-//    String name;
-//    String gender;
-//}

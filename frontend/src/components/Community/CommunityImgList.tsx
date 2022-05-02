@@ -18,6 +18,7 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import axios from "axios";
+import { fetchDesigns } from "../../store/api";
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -150,39 +151,225 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 }
 
 export default function CommunityImgList() {
+  interface CommunityImgProp {
+    communityImgSeq: number;
+    communityImgUrl: string;
+  }
+  interface CommunityItemProp {
+    communityImg: CommunityImgProp[];
+    communityTitle: string;
+    communitySeq: number;
+    rows: number;
+    cols: number;
+  }
+  interface CommunityDetailProp {
+    communitySeq: number;
+    userNickname: string;
+    userProfileImg: string;
+    userSeq: string;
+    communityTitle: string;
+    communityDesc: string;
+    communityImg: CommunityImgProp[];
+    communityRededAt: Array<object>;
+  }
+  interface CommentDataProp {
+    communityCommentSeq: number;
+    userSeq: number;
+    userNickname: string;
+    userProfileImg: string;
+    communityCommentDesc: string;
+  }
+
+  const [itemData, setItemData] = useState<CommunityItemProp[]>([]);
+  const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
+  const [commentData, setCommentData] = useState<CommentDataProp[]>([]);
+  const [replyData, setreplyData] = useState<CommentDataProp[]>([]);
+  const observerRef = React.useRef<IntersectionObserver>();
+  const boxRef = React.useRef<HTMLDivElement>(null);
   const ACCESS_TOKEN = localStorage.getItem("token");
+  const [page, setPage] = React.useState(1);
+  const [size, setSize] = React.useState(4);
+  const [totalitem, setTotalItem] = React.useState(9999);
+  const [totalPage, setTotalPage] = React.useState(9999);
+  const [communityCommentLayer, setCommunityCommentLayer] = useState<number>(1);
+  const [currentCommunitySeq, setCurrentCommunitySeq] = useState<number>(0);
+  const [currentCommentSeq, setCurrentCommentSeq] = useState<number>(0);
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (ACCESS_TOKEN) {
-        const result = await axios({
-          method: "get",
-          url: `http://localhost:8080/api/community`,
-          headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        })
-          .then((res) => {
-            console.log(res.data.content);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    };
-    fetchData();
-    console.log("전체소통게시글 가져오기");
+    fetchData(page);
+    setPage(page + 1);
   }, []);
 
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(intersectionObserver);
+    boxRef.current && observerRef.current.observe(boxRef.current);
+  }, [itemData]);
+
+  const fetchData = async (page: number) => {
+    if (ACCESS_TOKEN) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/community`,
+        params: {
+          page: page,
+          size: 20,
+        },
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          setTotalPage(res.data.totalPages);
+          setPage(page + 1);
+          setItemData((curItemData) => [...curItemData, ...res.data.content]); // state에 추가
+          setTotalItem(res.data.totalElements);
+          console.log(page, "page");
+          console.log(size, "size");
+          console.log(totalPage, "totalPage");
+          console.log(totalitem, "totalItem");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const intersectionObserver = (
+    entries: IntersectionObserverEntry[],
+    io: IntersectionObserver
+  ) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && page <= totalPage) {
+        // 관찰하고 있는 entry가 화면에 보여지는 경우
+        io.unobserve(entry.target); // entry 관찰 해제
+        if (size * (page + 1) > totalitem) {
+          setSize(totalitem - (page + 1) * size);
+        }
+        fetchData(page); // 데이터 가져오기
+      }
+    });
+  };
+
+  const getComments = async (communitySeq: number) => {
+    if (ACCESS_TOKEN) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/community/comment/${communitySeq}`,
+        params: {
+          page: 0,
+          size: 1,
+        },
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          console.log("댓글 데이터", res);
+          setCommentData(res.data.content);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const getReplyComments = async (communityCommentSeq: number) => {
+    if (ACCESS_TOKEN) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/community/comment/layer/${communityCommentSeq}`,
+        params: {
+          page: 0,
+          size: 1,
+        },
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          console.log("대댓글 데이터", res);
+          setreplyData(res.data.content);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  //게시글 상세 정보 받아오기
+  const getDetail = async (communitySeq: number) => {
+    if (ACCESS_TOKEN) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/community/${communitySeq}`,
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          console.log("디테일 데이터", res);
+          setItemDetail(res.data);
+          setModalStatus((prev: any) => !prev);
+          getComments(communitySeq);
+          setCurrentCommunitySeq(communitySeq);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   // 답글 달기
   const [inputVal, setInputVal] = useState("");
-  const tagUser = (userName: string) => {
+  const tagUser = (userName: string, communityCommentSeq: number) => {
     setInputVal("@" + userName + " ");
+    setCommunityCommentLayer(3);
+    setCurrentCommentSeq(communityCommentSeq);
   };
 
   //댓글 작성
+  const createComment = async () => {
+    const data: object = {
+      communityCommentDesc: inputVal,
+      communityCommentLayer: communityCommentLayer,
+      communitySeq: currentCommunitySeq,
+    };
+    // if(communityCommentLayer===3){
+    //   data[]
+    // }
+    console.log(inputVal);
+    console.log(communityCommentLayer);
+    console.log(currentCommunitySeq);
+    if (ACCESS_TOKEN) {
+      axios({
+        method: "post",
+        url: `http://localhost:8080/api/community/comment`,
+        data: {
+          communityCommentDesc: inputVal,
+          communityCommentLayer: communityCommentLayer,
+          communitySeq: currentCommunitySeq,
+        },
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   const Button = () => {
     if (inputVal) {
-      return <div style={{ color: "#0095f6" }}>게시</div>;
+      return (
+        <div style={{ color: "#0095f6" }} onClick={createComment}>
+          게시
+        </div>
+      );
     } else {
       return <div>게시</div>;
     }
@@ -208,496 +395,255 @@ export default function CommunityImgList() {
 
   return (
     <ImageList
-      //   sx={{ width: 500, height: 450 }}
+      sx={{ height: "100%" }}
       variant="quilted"
       cols={5}
       //   rowHeight={500}
     >
-      {itemData.map((item) => (
-        <CustomImageListItem
-          key={item.id}
-          cols={item.cols || 1}
-          rows={item.rows || 1}
-        >
-          <img
-            {...srcset(item.img, 121, item.rows, item.cols)}
-            alt={item.title}
-            loading="lazy"
-            onClick={() => setModalStatus((prev: any) => !prev)}
-          />
-          <div className="inner-content">
-            <span>{item.title}</span>
+      {itemData.map((item) => {
+        return (
+          <div ref={boxRef} key={item.communitySeq}>
+            <CustomImageListItem cols={item.cols || 1} rows={item.rows || 1}>
+              <img
+                {...srcset(
+                  item.communityImg[0].communityImgUrl,
+                  121,
+                  item.rows,
+                  item.cols
+                )}
+                alt={item.communityTitle}
+                loading="lazy"
+                onClick={() => getDetail(item.communitySeq)}
+              />
+              <div className="inner-content">
+                <span>{item.communityTitle}</span>
+              </div>
+            </CustomImageListItem>
           </div>
-
-          <Modal
-            open={modalStatus}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={modalStyle}>
-              <Wrapper>
-                <div className="leftDetailBox">
+        );
+      })}
+      <Modal
+        open={modalStatus}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Wrapper>
+            <div className="leftDetailBox">
+              <img src={itemDetail?.communityImg[0].communityImgUrl}></img>
+              {/* {itemDetail.communityImg.map((img, idx) => {
+                <img src={img.communityImgUrl} alt="" />;
+              })} */}
+            </div>
+            <div
+              className="rightDetailBox"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <div className="rightDetailBoxTop">
+                <img
+                  src={itemDetail?.userProfileImg}
+                  alt=""
+                  width="32"
+                  height="32"
+                />
+                <div style={{ marginLeft: "14px" }}>
+                  {itemDetail?.userNickname}
+                </div>
+              </div>
+              <div className="rightDetailBoxMiddle">
+                <div className="postWriter" style={{ display: "flex" }}>
                   <img
-                    src="http://img3.tmon.kr/cdn3/deals/2020/02/17/456660414/original_456660414_front_bda8d_1581922255production.jpg"
+                    src={itemDetail?.userProfileImg}
                     alt=""
+                    width="32"
+                    height="32"
                   />
-                </div>
-                <div
-                  className="rightDetailBox"
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <div className="rightDetailBoxTop">
-                    <img src={detailInfo.image} alt="" width="32" height="32" />
-                    <div style={{ marginLeft: "14px" }}>
-                      {detailInfo.userName}
-                    </div>
+                  <div style={{ marginLeft: "14px" }}>
+                    {itemDetail?.userNickname}
                   </div>
-                  <div className="rightDetailBoxMiddle">
-                    <div className="postWriter" style={{ display: "flex" }}>
-                      <img
-                        src={detailInfo.image}
-                        alt=""
-                        width="32"
-                        height="32"
-                      />
-                      <div style={{ marginLeft: "14px" }}>
-                        {detailInfo.userName}
-                      </div>
-                      <div style={{ marginLeft: "14px" }}>
-                        <div>{detailInfo.detailContent}</div>
-                        <div style={{ marginTop: "10px" }}>6시간</div>
-                      </div>
-                    </div>
-                    <div className="replys">
-                      {replyData.map((e: any, idx) => {
-                        return (
-                          <div className="replyFrame" key={idx}>
-                            <div className="replysInfo">
-                              <div style={{ borderRadius: "70%" }}>
-                                <img
-                                  src={e.image}
-                                  alt=""
-                                  width="32"
-                                  height="32"
-                                />
-                              </div>
-                              <span style={{ marginLeft: "14px" }}>
-                                {e.userName}
-                              </span>
-                              <div>
-                                <div style={{ marginLeft: "14px" }}>
-                                  {e.replyContent}
-                                </div>
-                                <div style={{ margin: "10px 0 0 14px" }}>
-                                  <span>6시간</span>
-                                  <span
-                                    style={{ marginLeft: "15px" }}
-                                    onClick={() => tagUser(e.userName)}
-                                  >
-                                    답글 달기
-                                  </span>
-                                </div>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    margin: "10px 0 10px 14px",
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      borderBottom: "2px solid #e3e3e3",
-                                      width: "40px",
-                                      height: "13px",
-                                    }}
-                                  ></div>
-                                  <span
-                                    style={{ marginLeft: "15px" }}
-                                    onClick={() => toggle(e.userName)}
-                                  >
-                                    답글 보기
-                                  </span>
-                                </div>
-                                {open === e.userName ? (
-                                  <div style={{ margin: "12px 0 12px 14px" }}>
-                                    <div>
-                                      {e.replyReply.map((ele: any) => {
-                                        return (
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              margin: "20px 0",
-                                            }}
-                                          >
-                                            <div
-                                              style={{ borderRadius: "70%" }}
-                                            >
-                                              <img
-                                                src={ele.image}
-                                                alt=""
-                                                width="32"
-                                                height="32"
-                                              />
-                                            </div>
-                                            <div style={{ marginLeft: "14px" }}>
-                                              {ele.userName}
-                                            </div>
-                                            <div style={{ marginLeft: "14px" }}>
-                                              {ele.replyContent}
-                                            </div>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-                                ) : null}
-                              </div>
-                            </div>
-                            <div></div>
+                  <div style={{ marginLeft: "14px" }}>
+                    <div>{itemDetail?.communityDesc}</div>
+                    <div style={{ marginTop: "10px" }}>6시간</div>
+                  </div>
+                </div>
+                <div className="replys">
+                  {commentData.map((e: any, idx) => {
+                    return (
+                      <div className="replyFrame" key={idx}>
+                        <div className="replysInfo">
+                          <div style={{ borderRadius: "70%" }}>
+                            <img
+                              src={e.userProfileImg}
+                              alt=""
+                              width="32"
+                              height="32"
+                            />
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: "100%",
-                      bottom: "0px",
-                      borderTop: "1px solid #e3e3e3",
-                      height: "50px",
-                      paddingRight: "16px",
-                      paddingLeft: "16px",
-                    }}
-                  >
-                    <div className="inputBox">
-                      <input
-                        type="text"
-                        value={inputVal}
-                        onChange={(e) => setInputVal(e.target.value)}
-                      />
-                      <Button />
-                    </div>
-                  </div>
+                          <span style={{ marginLeft: "14px" }}>
+                            {e.userNickname}
+                          </span>
+                          <div>
+                            <div style={{ marginLeft: "14px" }}>
+                              {e.communityCommentDesc}
+                            </div>
+                            <div style={{ margin: "10px 0 0 14px" }}>
+                              <span>6시간</span>
+                              <span
+                                style={{ marginLeft: "15px" }}
+                                onClick={() =>
+                                  tagUser(e.userNickname, e.communityCommentSeq)
+                                }
+                              >
+                                답글 달기
+                              </span>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                margin: "10px 0 10px 14px",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  borderBottom: "2px solid #e3e3e3",
+                                  width: "40px",
+                                  height: "13px",
+                                }}
+                              ></div>
+                              <span
+                                style={{ marginLeft: "15px" }}
+                                onClick={() => {
+                                  getReplyComments(e.communityCommentSeq);
+                                  toggle(e.userNickname);
+                                }}
+                              >
+                                답글 보기
+                              </span>
+                            </div>
+                            {open === e.userNickname ? (
+                              <div style={{ margin: "12px 0 12px 14px" }}>
+                                <div>
+                                  {replyData.map((ele: any) => {
+                                    return (
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          margin: "20px 0",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            borderRadius: "70%",
+                                          }}
+                                        >
+                                          <img
+                                            src={ele.userProfileImg}
+                                            alt=""
+                                            width="32"
+                                            height="32"
+                                          />
+                                        </div>
+                                        <div
+                                          style={{
+                                            marginLeft: "14px",
+                                          }}
+                                        >
+                                          {ele.userNickname}
+                                        </div>
+                                        <div
+                                          style={{
+                                            marginLeft: "14px",
+                                          }}
+                                        >
+                                          {ele.communityCommentDesc}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                        <div></div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </Wrapper>
-            </Box>
-          </Modal>
-        </CustomImageListItem>
-      ))}
+              </div>
+
+              <div
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  bottom: "0px",
+                  borderTop: "1px solid #e3e3e3",
+                  height: "50px",
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
+              >
+                <div className="inputBox">
+                  <input
+                    type="text"
+                    value={inputVal}
+                    onChange={(e) => setInputVal(e.target.value)}
+                  />
+                  <Button />
+                </div>
+              </div>
+            </div>
+          </Wrapper>
+        </Box>
+      </Modal>
     </ImageList>
   );
 }
-
-const itemData = [
-  {
-    img: image66,
-    title: "sample",
-    rows: 2,
-    cols: 2,
-    id: 1,
-  },
-  {
-    img: image67,
-    title: "sample",
-    id: 2,
-  },
-  {
-    img: image68,
-    title: "sample",
-    cols: 2,
-    id: 3,
-  },
-  {
-    img: image69,
-    title: "sample",
-    cols: 3,
-    id: 4,
-  },
-  {
-    img: image70,
-    title: "sample",
-    cols: 3,
-    id: 5,
-  },
-  {
-    img: image71,
-    title: "sample",
-    id: 6,
-  },
-  {
-    img: image67,
-    title: "sample",
-    id: 7,
-  },
-];
-const detailInfo = {
-  image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-  userName: "username1",
-  detailContent:
-    "아 이게 내 게시물입니다. 하고싶은말 쓸거에용 아 이게 내 게시물입니다. 하고싶은말 쓸거에용 아 이게 내 게시물입니다. 하고싶은말 쓸거에용 아 이게 내 게시물입니다. 하고싶은말 쓸거에용",
-};
-const replyData = [
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user2",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user3",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user4",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user5",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user6",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user7",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user8",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user9",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-  {
-    image:
-      "http://spnimage.edaily.co.kr/images/photo/files/NP/S/2021/06/PS21060900004.jpg",
-    userName: "user10",
-    replyContent:
-      "저도 정말 가고싶어요 ㅇㅈ? 근데 긴 댓글이 필요해서 조금 말을 늘려볼게요. 아오 너무 귀찮아요 처음부터 잘 짜고 싶어요",
-    replyReply: [
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-      {
-        image: "https://img.vogue.co.kr/vogue/2021/12/style_61adc5db872b5.jpeg",
-        userName: "user123",
-        replyContent: "아 이게 내용입니다",
-      },
-    ],
-  },
-];
+interface sizeDataProp {
+  rows: number;
+  cols: number;
+}
+const sizeData: sizeDataProp[] = [];
+// const itemData = [
+//   {
+//     img: image66,
+//     title: "sample",
+//     rows: 2,
+//     cols: 2,
+//     id: 1,
+//   },
+//   {
+//     img: image67,
+//     title: "sample",
+//     id: 2,
+//   },
+//   {
+//     img: image68,
+//     title: "sample",
+//     cols: 2,
+//     id: 3,
+//   },
+//   {
+//     img: image69,
+//     title: "sample",
+//     cols: 3,
+//     id: 4,
+//   },
+//   {
+//     img: image70,
+//     title: "sample",
+//     cols: 3,
+//     id: 5,
+//   },
+//   {
+//     img: image71,
+//     title: "sample",
+//     id: 6,
+//   },
+//   {
+//     img: image67,
+//     title: "sample",
+//     id: 7,
+//   },
+// ];

@@ -17,4 +17,8 @@ public class ArtistRegisterPostReq {
     // 디자이너 샵 주소
     @ApiModelProperty(value = "유저 디자이너 샵 주소")
     String designerAddress;
+
+    // 디자이너 전화번호
+    @ApiModelProperty(value = "디자이너 전화번호")
+    String designerTel;
 }
