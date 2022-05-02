@@ -309,11 +309,12 @@ public class BookRepositorySupport {
         return execute;
     }
 
-    public List<Long> findByNailartSeq(Long nailartSeq){
+    public List<Long> findByNailartSeq(Long nailartSeq) {
         List<Long> list = jpaQueryFactory.select(qBook.bookSeq)
                 .where(qBook.nailart.nailartSeq.eq(nailartSeq))
                 .fetch();
         return list;
+    }
 
     public List<Book> getBookListByDesignerSeq(Long designerSeq) {
         List<Book> bookList = jpaQueryFactory.select(qBook)
