@@ -21,6 +21,11 @@ public class DesignerInfoRepositorySupport {
         long excute = jpaQueryFactory.update(qDesignerInfo)
                 .set(qDesignerInfo.designerProfileImgUrl, designerProfileImgUrl)
                 .set(qDesignerInfo.designerInfoDesc, designerInfo.getDesignerInfoDesc())
+                .set(qDesignerInfo.designerShopName, designerInfo.getDesignerShopName())
+                .set(qDesignerInfo.designerAddress, designerInfo.getDesignerAddress())
+                .set(qDesignerInfo.designerShopOpen, designerInfo.getDesignerShopOpen())
+                .set(qDesignerInfo.designerShopClose, designerInfo.getDesignerShopClose())
+                .set(qDesignerInfo.designerTel, designerInfo.getDesignerTel())
                 .where(qDesignerInfo.designerSeq.eq(designerInfo.getDesignerSeq()))
                 .execute();
         return excute;
