@@ -47,4 +47,6 @@ public class Community {
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<CommunityImg>  communityImg;
 
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
+    private List<CommunityComment>  communityComment;
 }

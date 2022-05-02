@@ -60,5 +60,7 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImg> reviewImg;
 
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<ReviewComment> reviewComment;
 
 }
