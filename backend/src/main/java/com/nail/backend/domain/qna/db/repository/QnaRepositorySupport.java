@@ -60,4 +60,12 @@ public class QnaRepositorySupport{
 
 //    DELETE_________________________________________
 
+    // 답변 달리면 답변여부 update
+    @Transactional
+    public void updateIsAnsweredFalse(Long qnaSeq){
+        jpaQueryFactory.update(qQna)
+                .set(qQna.qnaIsAnswered,false)
+                .where(qQna.qnaSeq.eq(qnaSeq))
+                .execute();
+    }
 }

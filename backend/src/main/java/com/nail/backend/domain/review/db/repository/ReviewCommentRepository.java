@@ -1,16 +1,13 @@
 package com.nail.backend.domain.review.db.repository;
 
 import com.nail.backend.domain.review.db.entity.ReviewComment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ReviewCommentRepository extends JpaRepository<ReviewComment,Long> {
-    Page<ReviewComment> findAllByReview_ReviewSeqAndReviewCommentLayerIsNot
-            (Pageable pageable, Long reviewSeq , int reviewCommentLayer);
+    List<ReviewComment> findAllByReviewSeq(Long reviewSeq);
 
-    Page<ReviewComment> findAllByReviewGroupNumAndReviewCommentLayer
-            (Pageable pageable, Long reviewCommentSeq , int reviewCommentLayer);
 }

@@ -64,10 +64,7 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
 }
 
     @Transactional
-    @ApiOperation(value = "리뷰 글 댓글 작성",
-            notes = "reivewCommentLayer\" -    1 : 원 댓글작성 , 3 : 대댓글 작성\n" +
-                    "  \"reviewCommentSeq\"(원댓글Seq) : 대댓글 작성때만 넘겨주세요!,\n"
-    )
+    @ApiOperation(value = "리뷰 글 댓글 작성")
     @ApiResponses({
             @ApiResponse(code = 201, message = "등록 성공"),
             @ApiResponse(code = 404, message = "등록 실패")
@@ -77,8 +74,8 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
                                                                      Principal principal) {
 
         log.info("reviewCommentRegister - 호출");
-        String userId = principal.getName();
-//        String userId = "2217289220";
+//        String userId = principal.getName();
+        String userId = "2217289220";
 
         ReviewComment res = reviewService.reviewCommentRegister(reviewCommentRegisterPostReq, userId);
         if (!res.equals(null)) {

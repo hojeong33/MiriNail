@@ -25,7 +25,7 @@ public class CommunityComment {
     private Long communityCommentSeq;
 
     @ApiModelProperty(value = "커뮤니티 글 ")
-    @ManyToOne(targetEntity = Community.class)
+    @ManyToOne(targetEntity = Community.class )
     @JoinColumn(name = "community_seq")
     private Community community;
 
