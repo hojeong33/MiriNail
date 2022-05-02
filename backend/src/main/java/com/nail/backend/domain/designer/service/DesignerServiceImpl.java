@@ -1,5 +1,6 @@
 package com.nail.backend.domain.designer.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.designer.db.repository.DesignerRepositorySupport;
@@ -11,11 +12,15 @@ import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Component
@@ -61,6 +66,11 @@ public class DesignerServiceImpl implements DesignerService{
     @Override
     public List<DesignerListConditionGetRes> getDesignerListbylatest() {
         return designerRepositorySupport.DesignerLatestList();
+    }
+
+    @Override
+    public List<DesignerListConditionGetRes> getDesignerListbyRating() {
+        return designerRepositorySupport.DesignerRatingList();
     }
 
     @Override

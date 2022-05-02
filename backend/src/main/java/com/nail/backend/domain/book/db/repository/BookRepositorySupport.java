@@ -4,7 +4,7 @@ import com.nail.backend.domain.book.db.entity.Book;
 import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.entity.QBook;
 import com.nail.backend.domain.book.db.entity.QBookCheck;
-import com.nail.backend.domain.book.request.BookPostReq;
+import com.nail.backend.domain.follow.request.BookPostReq;
 import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
@@ -13,15 +13,12 @@ import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -286,5 +283,19 @@ public class BookRepositorySupport {
         });
 
         return designerList;
+    }
+
+    public Long deleteByNailartSeq(Long nailartSeq){
+        long execute = jpaQueryFactory.delete(qBook)
+                .where(qBook.nailart.nailartSeq.eq(nailartSeq))
+                .execute();
+        return execute;
+    }
+
+    public List<Long> findByNailartSeq(Long nailartSeq){
+        List<Long> list = jpaQueryFactory.select(qBook.bookSeq)
+                .where(qBook.nailart.nailartSeq.eq(nailartSeq))
+                .fetch();
+        return list;
     }
 }

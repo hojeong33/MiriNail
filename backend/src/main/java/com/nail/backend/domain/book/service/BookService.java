@@ -2,7 +2,7 @@ package com.nail.backend.domain.book.service;
 
 import com.nail.backend.domain.book.db.entity.Book;
 import com.nail.backend.domain.book.db.entity.BookCheck;
-import com.nail.backend.domain.book.request.BookPostReq;
+import com.nail.backend.domain.follow.request.BookPostReq;
 import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
 
 import java.util.List;

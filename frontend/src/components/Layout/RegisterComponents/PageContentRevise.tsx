@@ -6,8 +6,8 @@ import { create } from 'ipfs-http-client'
 import axios from 'axios'
 import publishToken from '../../BlockChain/PublishNFT'
 import DoneIcon from '@mui/icons-material/Done';
-import {registDesign} from '../../../store/api'
-import { useNavigate } from 'react-router-dom'
+import {registDesign, reviseDesign} from '../../../store/api'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Wrapper = styled.div`
   * {
@@ -174,7 +174,9 @@ const MainFrame = styled.div`
 
 
 
-const PageContent = () => {
+const PageContentRevise = () => {
+  const {state} = useLocation()
+  console.log(state)
   // 리모컨 
   const navigate = useNavigate();
   const nailartName = '일단은 더미'
@@ -240,7 +242,7 @@ const PageContent = () => {
   
     const files= new FormData()
     const multipartFiles = new FormData()
-    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
+    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq,nailartSeq:Number(state)}
     files.append("jsonList",JSON.stringify(nailData))
     console.log(postImages)
     console.log(nailData)
@@ -250,7 +252,7 @@ const PageContent = () => {
 
    
 
-    await registDesign(files)
+    await reviseDesign(files)
     // const response = await client.add(JSON.stringify(nailData))
     // const ipfsHash = response.path
     // console.log(ipfsHash)
@@ -324,4 +326,4 @@ const PageContent = () => {
   );
 };
 
-export default PageContent;
+export default PageContentRevise;

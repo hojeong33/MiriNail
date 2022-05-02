@@ -1,4 +1,4 @@
-package com.nail.backend.domain.book.request;
+package com.nail.backend.domain.follow.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

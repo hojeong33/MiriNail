@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { CirclePicker, GithubPicker } from "react-color";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { nftFilter } from "../../store/atoms";
 import NFTItems from "./NFTItems";
@@ -18,8 +19,6 @@ const Wrapper = styled.div`
   // height: 100vh;
 `;
 const MainFrame = styled.div`
-  
-
   width: 1300px;
   // height: 100%;
   margin: 0 auto;
@@ -52,6 +51,7 @@ const MainFrame = styled.div`
           }
           a:active{ opacity:1;}
           a:hover{ opacity:1;}
+          
         }
 
         .OrderFilter {
@@ -97,39 +97,13 @@ const MainFrame = styled.div`
       }
     }
   }
-
-  @media screen and (max-width: 920px) {
-    width :100%;
-    .MainPadding {
-      .ItemList {
-        padding-left: 0px;
-        .LeftBox {
-          position: relative;
-          padding-right: 0px;
-          left: auto;
-          top: auto;
-          z-index: 10;
-          padding-top: 30px;
-          text-align: left;
-          .TypeFilter {
-            display:flex;
-            justify-content:center;
-            a {
-              
-            }
-          }
-          
-        }
-      }
-    }
-  }
   
 `;
 
-const PageContent = () => {
+const PageContentColor = () => {
   const [myFilter,setMyFilter] = useRecoilState(nftFilter)
-  const [sortFilter,setSortFilter] = useState('')
-  const reset = useResetRecoilState(nftFilter)
+
+
   useEffect(() => {
     console.log(myFilter)
   },[myFilter])
@@ -143,9 +117,6 @@ const PageContent = () => {
     e.target.checked = true;
     setMyFilter({...myFilter,sort:e.target.value});
   };
-
- 
-
   return (
     <>
       <Wrapper>
@@ -154,20 +125,37 @@ const PageContent = () => {
             <div className="ItemList">
               <div className="LeftBox">
                 <div className="TypeFilter">
-                  <a onClick={() => reset()}>전체</a>
-                  <a onClick={() => setMyFilter({...myFilter,type:'젤'})}>GEL NAIL</a>
-                  <a onClick={() => setMyFilter({...myFilter,type:'프렌치'})}>FRENCH NAIL</a>
-                  <a onClick={() => setMyFilter({...myFilter,type:'라인스톤'})}>LINESTONE NAIL</a>
+                  <div>색상 필터</div>
+                  <div className="rows" style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                    <div style={{backgroundColor:"red", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'red'})}></div>
+                    <div style={{backgroundColor:"orange", width:"33px",height:"30px"}} onClick={() =>setMyFilter({...myFilter,color:'orange'})}></div>
+                    <div style={{backgroundColor:"yellow", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'yellow'})}></div>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                    <div style={{backgroundColor:"green", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'green'})}></div>
+                    <div style={{backgroundColor:"blue", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'blue'})}></div>
+                    <div style={{backgroundColor:"navy", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'navy'})}></div>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                    <div style={{backgroundColor:"purple", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'purple'})}></div>
+                    <div style={{backgroundColor:"skyblue", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'skyblue'})}></div>
+                    <div style={{backgroundColor:"pink", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'pink'})}></div>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                    <div style={{backgroundColor:"gold", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'gold'})}></div>
+                    <div style={{backgroundColor:"silver", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'silver'})}></div>
+                    <div style={{backgroundColor:"brown", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'brown'})}></div>
+                  </div>
                 </div>
                 <div className="OrderFilter">
                   <a>정렬</a>
                   <div className="CheckBox">
                     <input type="checkbox" name="cb" id="cb1" onChange={onCheckbox} value=""/>
-                    <label htmlFor="cb1">최신순</label>
+                    <label htmlFor="b1">최신순</label>
                   </div>
                   <div className="CheckBox">
                     <input type="checkbox" name="cb" id="cb2" onChange={onCheckbox} value="like"/>
-                    <label htmlFor="cb2">인기도순</label>
+                    <label htmlFor="b2">인기도순</label>
                   </div>
                 </div>
               </div>
@@ -186,4 +174,4 @@ const PageContent = () => {
   );
 };
 
-export default PageContent;
+export default PageContentColor;
