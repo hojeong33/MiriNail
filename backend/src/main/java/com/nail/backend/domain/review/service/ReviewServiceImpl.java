@@ -3,22 +3,16 @@ package com.nail.backend.domain.review.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.nail.backend.domain.authentication.service.AwsS3Service;
-import com.nail.backend.domain.community.db.entity.Community;
-import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
-import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
+import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.db.entity.ReviewImg;
-import com.nail.backend.domain.review.db.repository.ReviewCommentRepository;
-import com.nail.backend.domain.review.db.repository.ReviewCommentRepositorySupport;
-import com.nail.backend.domain.review.db.repository.ReviewImgRepository;
-import com.nail.backend.domain.review.db.repository.ReviewRepository;
+import com.nail.backend.domain.review.db.repository.*;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
-import com.nail.backend.domain.review.response.ReviewCommentGetRes;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
@@ -57,6 +51,9 @@ public class ReviewServiceImpl implements ReviewService {
     ReviewRepository reviewRepository;
 
     @Autowired
+    ReviewRepositorySupport reviewRepositorySupport;
+
+    @Autowired
     ReviewCommentRepository reviewCommentRepository;
 
     @Autowired
@@ -67,6 +64,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     NailartRepository nailartRepository;
+
+    @Autowired
+    NailartRepositorySupport nailartRepositorySupport;
 
     @Autowired
     UserRepository userRepository;
@@ -129,6 +129,12 @@ public class ReviewServiceImpl implements ReviewService {
             }
 
         }
+
+        // 전체 리뷰 평점 수정
+
+        double avgRate = reviewRepositorySupport.getAvgRate(reviewRegisterPostReq.getNailartSeq());
+
+        nailartRepositorySupport.modifyRatingByNailartSeq((float) avgRate,saveReview.getNailart().getNailartSeq());
 
         return saveReview;
     }
