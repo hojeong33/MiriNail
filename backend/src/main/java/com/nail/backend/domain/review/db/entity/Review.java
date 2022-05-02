@@ -57,7 +57,7 @@ public class Review {
     @ApiModelProperty(value = "리뷰 총 평점")
     private float reviewRating;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImg> reviewImg;
 
 
