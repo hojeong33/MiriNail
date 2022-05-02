@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { designDetail, nailCount, nailLike, isLike, nailDislike  } from '../../store/api';
+import { designDetail, nailCount, nailLike, isLike, nailDislike, deleteDesign  } from '../../store/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
@@ -211,6 +211,7 @@ const UpperFrame = () => {
   const queryClient = useQueryClient();
   let params:any = useParams().id
   console.log(params)
+  const myId = Number(sessionStorage.getItem('userSeq'))
   const [detailInfo,setDetailInfo] = useState (
     {
       // type : '프렌치네일',
@@ -229,7 +230,6 @@ const UpperFrame = () => {
   const {isLoading:nailLoading, data:nailData } = useQuery("detail", () => designDetail(params))
   const {isLoading:isLikeCheckLoading, data: isLikeData } = useQuery("isLike", () => isLike(params))
   const [designerSeq,setDesignerSeq] = useRecoilState<any>(designerId)
-  
   useEffect(():any => {
     if (nailData) {setDesignerSeq(nailData.designerSeq)}
     console.log(nailData)
@@ -275,6 +275,11 @@ const UpperFrame = () => {
     }
   }
 
+  const delDesign = async(param:any) => {
+    await deleteDesign(param)
+    navigate('/nft')
+  }
+
   // 공유하기
   // const url = window.location.href
   // useEffect(() => {
@@ -317,18 +322,18 @@ const UpperFrame = () => {
                     <div className="boxsLeft">
                       {nailData?.nailartType}
                     </div>
-                    <div className="boxsRight">
+                    { myId === designerSeq ? <div className="boxsRight">
                       <div onClick={() => navigate('/nft/Revise',{state:params})}>
                         수정
                       </div>
-                      <div style={{marginLeft:"10px"}}>
+                      <div style={{marginLeft:"10px"}} onClick={() => delDesign(params)}>
                         삭제
                       </div>
-                    </div>
+                    </div> : null }
                   </div>
                   <div className='name'>
                     {detailInfo.title}
-                    <button >sadfsa</button>
+               
                   </div>
                   <div className="price">
                     {nailData?.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원

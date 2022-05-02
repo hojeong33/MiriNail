@@ -32,17 +32,20 @@ const Wrapper = styled.div`
           }
           .itemName {
             color: #3D3C3A;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 500;
             word-break: keep-all;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
           }
+          .itemTags {
+            color :gray;
+          }
           .itemPrice {
             color: #3D3C3A;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 10px;
           }
           .hashTag {
@@ -108,7 +111,8 @@ const NFTItems = (props:any) => {
                  <div className="imx">
                    <img src={e.nailartThumbnailUrl} alt="엥?" />
                    <div className="itemName">{e.nailartType} - {e.nailartDetailColor}</div>
-                   <div className="itemPrice">{e.nailartPrice}</div>
+                   <div className="itemTags">#{e.nailartWeather} #{e.nailartColor} #{e.designerNickname}</div>
+                   <div className="itemPrice">{e.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원</div>
                
                    {/* <div className="hashTag">#{e.nailartWeather} #{e.designerInfo.user.userNickname}</div> */}
                  </div>
