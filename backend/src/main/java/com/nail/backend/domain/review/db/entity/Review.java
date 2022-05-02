@@ -31,7 +31,7 @@ public class Review {
     @ApiModelProperty(value = "유저 번호")
     private User user;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = Nailart.class)
     @JoinColumn(name = "nailart_seq")
     @ApiModelProperty(value = "작품 seq")
     private Nailart nailart;

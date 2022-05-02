@@ -202,6 +202,9 @@ public class CommunityServiceImpl implements CommunityService{
         long total = communityList.getTotalElements();
         for (Community c : communityList) {
             CommunityGetRes communityGetRes =CommunityGetRes.builder()
+                    .userSeq(c.getUser().getUserSeq())
+                    .userProfileImg(c.getUser().getUserProfileImg())
+                    .userNickname(c.getUser().getUserNickname())
                     .communitySeq(c.getCommunitySeq())
                     .communityTitle(c.getCommunityTitle())
                     .communityCnt(c.getCommunityCnt())
