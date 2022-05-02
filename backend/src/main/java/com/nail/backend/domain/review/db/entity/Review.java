@@ -2,7 +2,6 @@ package com.nail.backend.domain.review.db.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.nail.backend.domain.community.db.entity.CommunityImg;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
@@ -57,10 +56,10 @@ public class Review {
     @ApiModelProperty(value = "리뷰 총 평점")
     private float reviewRating;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ReviewImg> reviewImg;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ReviewComment> reviewComment;
 
 }

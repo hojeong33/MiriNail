@@ -120,7 +120,7 @@ public class ReviewServiceImpl implements ReviewService {
 
                 // 리뷰게시판 파일 테이블 insert
                 ReviewImg reviewImg = ReviewImg.builder()
-                        .review(saveReview)
+                        .reviewSeq(saveReview.getReviewSeq())
                         .reviewImgUrl(reviewFileUrl)
                         .build();
 
@@ -141,45 +141,21 @@ public class ReviewServiceImpl implements ReviewService {
 
     public ReviewComment reviewCommentRegister(ReviewCommentRegisterPostReq reviewCommentRegisterPostReq,
                                                String userId){
-        Review review = reviewRepository.findById(reviewCommentRegisterPostReq.getReviewSeq()).orElse(null);
         User user = userRepository.findByUserId(userId);
+        Review review = reviewRepository.findByReviewSeq(reviewCommentRegisterPostReq.getReviewSeq());
 
-        if(reviewCommentRegisterPostReq.getReviewCommentLayer() == 1){
-            // 댓글 작성 layer == 1 일 경우
+
+
             ReviewComment reviewComment = ReviewComment.builder()
-                    .review(review)
+                    .reviewSeq(review.getReviewSeq())
                     .user(user)
                     .reviewCommentDesc(reviewCommentRegisterPostReq.getReviewCommentDesc())
-                    .reviewCommentLayer(reviewCommentRegisterPostReq.getReviewCommentLayer())
                     .reviewCommentRegedAt(LocalDateTime.now())
                     .build();
 
             ReviewComment res = reviewCommentRepository.save(reviewComment);
 
-            reviewCommentRepositorySupport.setCommentGroup(res.getReviewCommentSeq());
             return res;
-
-        }else{
-            // 대댓글 작성
-            ReviewComment reviewComment = ReviewComment.builder()
-                    .review(review)
-                    .user(user)
-                    .reviewCommentDesc(reviewCommentRegisterPostReq.getReviewCommentDesc())
-                    .reviewGroupNum(reviewCommentRegisterPostReq.getReviewCommentSeq())
-                    .reviewCommentLayer(reviewCommentRegisterPostReq.getReviewCommentLayer())
-                    .reviewCommentRegedAt(LocalDateTime.now())
-                    .build();
-
-            ReviewComment res = reviewCommentRepository.save(reviewComment);
-
-            //원댓글에 대댓글 있다는표시 -  layer2로 변경
-            if(reviewCommentRepository.findById(reviewCommentRegisterPostReq.getReviewCommentSeq())
-                    .get().getReviewCommentLayer() == 1){
-                reviewCommentRepositorySupport.modifyCommentLayer(reviewCommentRegisterPostReq.getReviewCommentSeq());
-            }
-            return res;
-
-        }
 
     }
 
