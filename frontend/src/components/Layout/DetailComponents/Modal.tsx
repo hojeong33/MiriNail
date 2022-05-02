@@ -158,7 +158,7 @@ export default function BasicModal(modalStatus:any) {
   
   
   const [submitData,setSubmitData] = useState({
-    reviewTitle : '',
+    reviewTitle : 'dummy',
     reviewDesc : '',
     nailartSeq : nailartSeq,
     designerSeq : writerId,
@@ -186,7 +186,7 @@ export default function BasicModal(modalStatus:any) {
     formdata.append("nailartSeq",submitData.nailartSeq)
     formdata.append("designerSeq",submitData.designerSeq)
     formdata.append("reviewRating",submitData.reviewRating/20)
-    formdata.append('reviewFile',files[0])
+    formdata.append('reviewFiles',files[0])
     for (let key of formdata.keys()) {
       console.log(key);
     }
@@ -196,7 +196,8 @@ export default function BasicModal(modalStatus:any) {
       console.log(value);
     }
 
-    // postReview(formdata)
+    await postReview(formdata)
+    handleClose()
   }
 
 
@@ -253,7 +254,7 @@ export default function BasicModal(modalStatus:any) {
 
             </div>
             <div className="buttons">
-              <button className="btn1" onClick={() => submit()}>작성</button><button className="btn2">취소</button>
+              <button className="btn1" onClick={() => submit()}>작성</button><button className="btn2" onClick={() => handleClose()}>취소</button>
             </div>
           </Content>  
           </Typography>

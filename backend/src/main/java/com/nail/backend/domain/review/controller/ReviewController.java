@@ -50,7 +50,7 @@ public class ReviewController {
 public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "reviewFiles", required = false) List<MultipartFile> reviewFiles,
                                                           @ModelAttribute ReviewRegisterPostReq reviewRegisterPostReq,
                                                           Principal principal) throws IOException {
-
+    System.out.println(reviewRegisterPostReq);
     log.info("reviewRegister - 호출");
 //    String userId = principal.getName();
         String userId = "2217289220";
