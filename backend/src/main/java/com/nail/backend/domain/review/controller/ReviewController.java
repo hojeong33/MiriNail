@@ -85,6 +85,24 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
         }
     }
 
+    @Transactional
+    @ApiOperation(value = "리뷰 글 조회수 증가")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "조회수 증가 성공"),
+            @ApiResponse(code = 404, message = "조회수 증가 실패")
+    })
+    @PostMapping("/cnt/{reviewSeq}")
+    public ResponseEntity<BaseResponseBody> reviewCntPlus(@ApiParam(value = "리뷰 글 Seq") @PathVariable Long reviewSeq) {
+
+        log.info("reviewCntPlus - 호출");
+
+        if( reviewService.reviewCntPlus(reviewSeq) == 1) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "조회수 증가 성공"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "조회수 증가 실패"));
+        }
+    }
+
 //    READ___________________________________________
     @ApiOperation(value = "작품별 리뷰 글 전체조회")
     @ApiResponses({
@@ -129,6 +147,21 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
 
         log.info("getReviewListByDesignerSeq - 호출");
         Page<ReviewGetRes> reviewList = reviewService.getReviewListByDesignerSeq(pageable,designerSeq);
+
+        return ResponseEntity.status(200).body(reviewList);
+    }
+
+
+    @ApiOperation(value = "조회수 높은 리뷰 글 전체조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/cnt")
+    public ResponseEntity<List<ReviewGetRes>> getTop10ReviewList(){
+
+        log.info("getTop10ReviewList - 호출");
+        List<ReviewGetRes> reviewList = reviewService.getTop10ReviewList();
 
         return ResponseEntity.status(200).body(reviewList);
     }
