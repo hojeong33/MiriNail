@@ -61,6 +61,14 @@ const Wrapper = styled.div`
     }
   }
 }
+
+@media screen and (max-width: 767px) {
+  .clear {
+    li {
+      width:33%;
+    }
+  }
+}
 `
 const Gallery = () => {
   

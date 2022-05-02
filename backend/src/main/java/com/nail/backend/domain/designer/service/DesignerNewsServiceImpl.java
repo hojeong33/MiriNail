@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNews;
 import com.nail.backend.domain.designer.db.entitiy.DesignerNewsImg;
 import com.nail.backend.domain.designer.db.repository.DesignerNewsImgRepository;
+import com.nail.backend.domain.designer.db.repository.DesignerNewsImgRepositorySupport;
 import com.nail.backend.domain.designer.db.repository.DesignerNewsRepository;
 import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
 import com.nail.backend.domain.follow.db.repository.FollowRepositorySupport;
@@ -60,6 +61,9 @@ public class DesignerNewsServiceImpl implements DesignerNewsService{
     @Autowired
     DesignerNewsImgRepository designerNewsImgRepository;
 
+    @Autowired
+    DesignerNewsImgRepositorySupport designerNewsImgRepositorySupport;
+
     public DesignerNewsServiceImpl(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
     }
@@ -88,6 +92,9 @@ public class DesignerNewsServiceImpl implements DesignerNewsService{
     @Override
     public boolean designerNewsRemove(long designerNewsSeq) {
         if(designerNewsRepository.findById(designerNewsSeq).isPresent()) {
+            if(designerNewsImgRepository.findAllByDesignerNewsSeq(designerNewsSeq) != null){
+                designerNewsImgRepositorySupport.DesignerNewImgDelete(designerNewsSeq);
+            }
             designerNewsRepository.deleteById(designerNewsSeq);
             return true;
         } else return false;

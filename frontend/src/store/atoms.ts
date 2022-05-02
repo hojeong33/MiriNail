@@ -54,3 +54,16 @@ export const designerAtom = atom({
   default : {},
   effects_UNSTABLE : [persistAtom],
 })
+
+export const nftFilter = atom({
+  key : "nftFilter",
+  default : {
+    category : "type",
+    color : "",
+    type : "",
+    sort : "",
+    page : 1,
+    size : 12,
+  },
+
+})

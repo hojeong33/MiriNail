@@ -68,6 +68,32 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  @media screen and (max-width: 1023px) {
+    .inputBox .inputBoxLeft select {
+      margin-left:20px;
+    }
+    .inputBox .inputBoxLeft .inputs {
+      margin-left:20px;
+      margin-top:40px;
+      div .underline {
+        margin-left:0px !important;
+        margin-top:5px;
+      }
+    }
+
+    .inputBox .inputBoxRight {
+      margin-top:0px;
+      display: block;
+      .colorBoxRight {
+        margin-left : 0px;
+        margin-top : 20px;
+      }
+      .colorBoxLeft div{
+        margin-bottom :10px !important;
+      }
+    }
+  }
 `;
 //색깔 이름 변환
 // if (color === '#ff0000') {

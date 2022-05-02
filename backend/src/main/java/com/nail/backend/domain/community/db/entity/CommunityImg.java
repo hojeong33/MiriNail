@@ -14,7 +14,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ApiModel(value = "QnA Answer", description = "문의 답변")
+@ApiModel(value = "CommunityImg", description = "소통 글 이미지")
 public class CommunityImg {
 
     @Id
@@ -27,7 +27,7 @@ public class CommunityImg {
     @ManyToOne
     private Community community;
 
-    @ApiModelProperty(value = "소통 글 Seq")
+    @ApiModelProperty(value = "리뷰 이미지 url")
     private String communityImgUrl;
 
 

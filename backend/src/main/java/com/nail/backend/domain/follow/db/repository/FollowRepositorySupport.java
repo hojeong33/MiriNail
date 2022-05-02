@@ -1,5 +1,8 @@
 package com.nail.backend.domain.follow.db.repository;
 
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
+import com.nail.backend.domain.designer.db.entitiy.QDesignerInfo;
+import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.follow.db.entity.Follow;
 import com.nail.backend.domain.follow.db.entity.QFollow;
 import com.nail.backend.domain.follow.response.FollowCountRes;
@@ -26,18 +29,23 @@ public class FollowRepositorySupport {
     @Autowired
     FollowRepository followRepository;
 
+    @Autowired
+    DesignerInfoRepository designerInfoRepository;
+
     QUser qUser = QUser.user;
 
     QFollow qFollow = QFollow.follow;
 
-    public List<User> FollowerList(Long userSeq) {
+    QDesignerInfo qDesignerInfo = QDesignerInfo.designerInfo;
+
+    public List<User> FollowerList(Long designerSeq) {
 
         List<User> userList = jpaQueryFactory.select(qUser)
                 .from(qUser)
                 .where(qUser.userSeq.in(
                         jpaQueryFactory.select(qFollow.followFollower.userSeq)
                                 .from(qFollow)
-                                .where(qFollow.followFollowee.userSeq.eq(userSeq))
+                                .where(qFollow.followFollowee.designerSeq.eq(designerSeq))
                 ))
                 .fetch();
 
@@ -45,35 +53,36 @@ public class FollowRepositorySupport {
 
     }
 
-    public List<User> FolloweeList(Long userSeq) {
+    public List<DesignerInfo> FolloweeList(Long userSeq) {
 
-        List<User> userList = jpaQueryFactory.select(qUser)
-                .from(qUser)
-                .where(qUser.userSeq.in(
-                        jpaQueryFactory.select(qFollow.followFollowee.userSeq)
+        List<DesignerInfo> designerInfoList = jpaQueryFactory.select(qDesignerInfo)
+                .from(qDesignerInfo)
+                .where(qDesignerInfo.designerSeq.in(
+                        jpaQueryFactory.select(qFollow.followFollowee.designerSeq)
                                 .from(qFollow)
                                 .where(qFollow.followFollower.userSeq.eq(userSeq))
                 ))
                 .fetch();
 
-        return userList;
+        return designerInfoList;
     }
 
     public Follow followRegister(Long followeeId, String userId) {
-        User followee = userRepository.findByUserSeq(followeeId);
-        User follower = userRepository.findByUserId(userId);
+
         // 토큰에 카카오 id 값이 들어있다는 전제하에 코딩함.
 
         // 해당 팔로우가 이미 있는지 확인.
         Follow isExist = jpaQueryFactory.select(qFollow)
                 .from(qFollow)
-                .where(qFollow.followFollower.eq(follower)
-                        .and(qFollow.followFollowee.eq(followee)))
+                .where(qFollow.followFollower.userId.eq(userId)
+                        .and(qFollow.followFollowee.designerSeq.eq(followeeId)))
                 .fetchFirst();
 
         if(null == isExist) {
+            DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(followeeId);
+            User follower = userRepository.findByUserId(userId);
             Follow follow = Follow.builder()
-                    .followFollowee(followee)
+                    .followFollowee(designerInfo)
                     .followFollower(follower)
                     .build();
 
@@ -89,7 +98,7 @@ public class FollowRepositorySupport {
         Follow follow = jpaQueryFactory.select(qFollow)
                 .from(qFollow)
                 .where(qFollow.followFollower.userId.eq(userId)
-                        .and(qFollow.followFollowee.userSeq.eq(followeeId)))
+                        .and(qFollow.followFollowee.designerSeq.eq(followeeId)))
                 .fetchOne();
 
         followRepository.delete(follow);
@@ -107,8 +116,8 @@ public class FollowRepositorySupport {
                 .fetch();
         list.forEach( num -> {
             FollowCountRes tmp = new FollowCountRes();
-            User utmp = num.get(qFollow.followFollowee);
-            tmp.setFollowFollowee(utmp.getUserSeq());
+            DesignerInfo utmp = num.get(qFollow.followFollowee);
+            tmp.setFollowFollowee(utmp.getDesignerSeq());
             tmp.setCount(num.get(qFollow.count()));
             result.add(tmp);
         });

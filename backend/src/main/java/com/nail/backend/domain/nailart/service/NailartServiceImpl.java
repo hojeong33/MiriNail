@@ -4,6 +4,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.nail.backend.domain.book.db.repository.BookRepository;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
+import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
+import com.nail.backend.domain.favorite.db.entity.Favorite;
+import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
+import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.entity.NailartImg;
@@ -11,14 +18,14 @@ import com.nail.backend.domain.nailart.db.repository.NailartImgRepository;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
-import com.nail.backend.domain.nailart.response.NailartListGetRes;
+import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -26,13 +33,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static com.google.common.io.Files.getFileExtension;
 
 @RequiredArgsConstructor
 
@@ -49,6 +57,9 @@ public class NailartServiceImpl implements NailartService {
     NailartRepository nailartRepository;
 
     @Autowired
+    NailartRepositorySupport nailartRepositorySupport;
+
+    @Autowired
     NailartImgRepository nailartImgRepository;
 
     @Autowired
@@ -56,6 +67,12 @@ public class NailartServiceImpl implements NailartService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    DesignerInfoRepository designerInfoRepository;
+
+    @Autowired
+    BookRepository bookRepository;
 
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
@@ -70,28 +87,47 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
-    public List<NailartListGetRes> nailartList(int page, int size) {
+    public List<NailartListGetRes> nailartList(String category, String color, String type, String sort, int page, int size) {
         List<NailartListGetRes> nailart = new ArrayList<>();
-        PageRequest pageReuest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
-        nailartRepository.findAll(pageReuest).forEach(art -> {
-            NailartListGetRes tmp = new NailartListGetRes();
-            tmp.setNailartSeq(art.getNailartSeq());
-            tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
-            tmp.setDesignerSeq(art.getDesignerSeq());
-            tmp.setTokenId(art.getTokenId());
-            tmp.setNailartName(art.getNailartName());
-            tmp.setNailartDesc(art.getNailartDesc());
-            tmp.setNailartColor(art.getNailartColor());
-            tmp.setNailartDetailColor(art.getNailartDetailColor());
-            tmp.setNailartWeather(art.getNailartWeather());
-            tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
-            tmp.setNailartType(art.getNailartType());
-//            tmp.setNailartAvailable(art.get);
-            tmp.setNailartPrice(art.getNailartPrice());
-            tmp.setNailartRegedAt(art.getNailartRegedAt());
-            tmp.setNailartRating(art.getNailartRating());
-            nailart.add(tmp);
-        });
+
+        if(category.equals("color")){// color category
+            if(color != ""){// 지정된 색상이 있을시
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyColorFavoite(color, page, size);
+                }else{ // 최신순
+                    nailart = nailartRepositorySupport.getListbyColorLatest(color, page, size);
+                }
+            }else{// 지정된 색상이 없을시
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyFavoite(page, size);
+                }else{ // 최신순
+                    System.out.println("check!!");
+                    nailart = nailartRepositorySupport.getListbyLatest(page, size);
+                }
+            }
+        } else if(category.equals("type")){// type category
+            System.out.println("check1");
+            if(type != ""){// 타입이 없을 시
+                System.out.println("check2");
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyTypeFavoite(type, page, size);
+                }else{ // 최신순
+                    System.out.println(type);
+                    nailart = nailartRepositorySupport.getListbyTypeLatest(type, page, size);
+                }
+
+            }else{// 타입이 있을시
+                System.out.println("check3");
+                if(sort.equals("like")){// 좋아요 순
+                    nailart = nailartRepositorySupport.getListbyFavoite(page, size);
+                }else{ // 최신순
+                    nailart = nailartRepositorySupport.getListbyLatest(page, size);
+                }
+            }
+        }else{// 아무것도 선택 안했을시
+            System.out.println("check4");
+            nailart = nailartRepositorySupport.getListbyLatest(page, size);
+        }
 
         return nailart;
     }
@@ -138,7 +174,9 @@ public class NailartServiceImpl implements NailartService {
         // 아니면 각각 다른 곳에서 호춯하고 controller에서 합치기?\
         NailartDetailGetRes nailartDetailGetRes = new NailartDetailGetRes();
         Nailart nailart = nailartRepository.findByNailartSeq(nailartSeq);
+        DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(nailart.getDesignerSeq());
         nailartDetailGetRes.setNailartSeq(nailart.getNailartSeq());
+        nailartDetailGetRes.setDesignerImgUrl(userRepository.findByUserSeq(nailart.getDesignerSeq()).getUserProfileImg());
         nailartDetailGetRes
                 .setDesignerNickname(userRepository.findByUserSeq(nailart.getDesignerSeq()).getUserNickname());
         nailartDetailGetRes.setDesignerSeq(nailart.getDesignerSeq());
@@ -150,6 +188,7 @@ public class NailartServiceImpl implements NailartService {
         nailartDetailGetRes.setNailartWeather(nailart.getNailartWeather());
         nailartDetailGetRes.setNailartAvailable(nailart.isNailartAvailable());
         nailartDetailGetRes.setNailartThumbnailUrl(nailart.getNailartThumbnailUrl());
+        nailartDetailGetRes.setDesignerShopName(designerInfo.getDesignerShopName());
         nailartDetailGetRes.setNailartPrice(nailart.getNailartPrice());
         nailartDetailGetRes.setNailartRegedAt(nailart.getNailartRegedAt());
         nailartDetailGetRes.setNailartRating(nailart.getNailartRating());
@@ -183,6 +222,7 @@ public class NailartServiceImpl implements NailartService {
                 nailart.setNailartDetailColor(nailartRegisterPostReq.getNailartDetailColor());
                 nailart.setNailartWeather(nailartRegisterPostReq.getNailartWeather());
                 nailart.setNailartPrice(nailartRegisterPostReq.getNailartPrice());
+                nailart.setNailartRegedAt(Timestamp.valueOf(LocalDateTime.now()));
                 // 이미지 업로드
                 String fileName = createFileName(file.getOriginalFilename());
                 ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -223,7 +263,6 @@ public class NailartServiceImpl implements NailartService {
                     System.out.println("두번째파일 s3 진입 실패");
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
                 }
-                //
                 nailartImg.setNailartSeq(nailartSaved.getNailartSeq());
                 nailartImg.setNailartImgUrl(amazonS3.getUrl(bucket, fileName).toString());
 
@@ -238,12 +277,69 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
-    public boolean nailartRemove(long nailartSeq) {
-        if (nailartRepository.findById(nailartSeq).isPresent()) {
-            nailartRepository.deleteById(nailartSeq);
-            return true;
-        } else
-            return false;
+    @Transactional
+    public Nailart nailartUpdate(NailartUpdatePutReq nailartUpdatePutReq, List<MultipartFile> files) {
+        Nailart nailart = new Nailart();
+        NailartImg nailartImg = new NailartImg();
+        Nailart nailartSaved = new Nailart();
+
+        int index = 0;
+        for (MultipartFile file : files) {
+            if (index == 0) {
+                System.out.println("check1!");
+                // 이미지 업로드
+                String fileName = createFileName(file.getOriginalFilename());
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(file.getSize());
+                objectMetadata.setContentType(file.getContentType());
+                try (InputStream inputStream = file.getInputStream()) {
+                    amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+                } catch (IOException e) {
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+                }
+                System.out.println("check2!");
+                nailartUpdatePutReq.setNailartThumbnailUrl(amazonS3.getUrl(bucket, fileName).toString());
+                System.out.println("check3!");
+                System.out.println(nailartUpdatePutReq);
+                nailartRepositorySupport.updateNailartByNailartSeq(nailartUpdatePutReq);
+                System.out.println("check4!");
+            } else {
+                // 이미지 업로드
+                String fileName = createFileName(file.getOriginalFilename());
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(file.getSize());
+                objectMetadata.setContentType(file.getContentType());
+                System.out.println("두번째파일");
+                try (InputStream inputStream = file.getInputStream()) {
+                    System.out.println("두번째파일 s3 진입");
+                    amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+                } catch (IOException e) {
+                    System.out.println("두번째파일 s3 진입 실패");
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+                }
+                System.out.println("check5!");
+                System.out.println(nailartUpdatePutReq.getNailartSeq());
+                NailartImg Img = nailartImgRepository.findByNailartSeq(nailartUpdatePutReq.getNailartSeq());
+                System.out.println(Img.getNailartImgSeq());
+                nailartImgRepository.deleteById(Img.getNailartImgSeq());
+                System.out.println("check6!");
+                nailartImg.setNailartSeq(nailartUpdatePutReq.getNailartSeq());
+                System.out.println("check7!");
+                nailartImg.setNailartImgUrl(amazonS3.getUrl(bucket, fileName).toString());
+                System.out.println("check8!");
+                nailartImgRepository.save(nailartImg);
+                System.out.println("check9!");
+            }
+            index++;
+        }
+        return nailart;
     }
 
+    @Override
+    @Transactional
+    public boolean nailartRemove(long nailartSeq) {
+        return nailartRepositorySupport.deleteNailartByNailartSeq(nailartSeq);
+    }
 }

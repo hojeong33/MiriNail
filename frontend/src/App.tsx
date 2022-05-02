@@ -38,6 +38,14 @@ import AskList from "./components/Designerpage/AskList";
 import CreateAsk from "./components/Designerpage/CreateAsk";
 import Apply from "./components/Mypage/Apply";
 import UpdateIntroduction from "./components/Designerpage/UpdateIntroduction";
+import NFTRevise from "./routes/NFT/NFTRevise";
+import PageNotFound from "./components/PageNotFound";
+import AskDetail from "./components/Designerpage/AskDetail";
+import UpdateAsk from "./components/Designerpage/UpdateAsk";
+import Followers from "./components/Designerpage/Followers";
+import TopButton from "./components/Navbar/TopButton";
+import Admin from "./routes/Admin/Admin";
+import ApplyList from "./components/Admin/ApplyList";
 
 function App() {
   return (
@@ -68,9 +76,15 @@ function App() {
             <Route path="reservation" element={<CreateReservation />}></Route>
             <Route path="reservationcheck" element={<ReservationCheck />}></Route>
             <Route path="asklist" element={<AskList />}></Route>
+            <Route path="askdetail/:qnaSeq" element={<AskDetail />}></Route>
+            <Route path="updateask/:qnaSeq" element={<UpdateAsk />}></Route>
             <Route path="createfeed" element={<CreateFeed />}></Route>
             <Route path="createask" element={<CreateAsk />}></Route>
             <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>
+            <Route path="followers" element={<Followers />}></Route>
+          </Route>
+          <Route path="/admin" element={<Admin />} >
+            <Route path="applylist" element={<ApplyList />}></Route>
           </Route>
           <Route path="/community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />
@@ -78,12 +92,15 @@ function App() {
           <Route path="/nft" element={<NFTList />} />
           <Route path="/nft/:id" element={<NFTDetail />} />
           <Route path="/nft/register" element={<NFTRegister />} />
+          <Route path="/nft/revise" element={<NFTRevise />} />
           <Route path="/designer" element={<DesignerList />} />
           <Route path="/api/users/login" element={<KakaoRedirect />} />
           <Route path="/test" element={<Test />} />
           <Route path="/community/create" element={<CreateCommunity />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
+          <Route path="*" element={<PageNotFound/>} />
         </Routes>
+        <TopButton />
         {/* <Footer /> */}
       </BrowserRouter>
     </>

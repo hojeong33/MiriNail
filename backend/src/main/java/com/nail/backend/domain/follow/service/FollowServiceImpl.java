@@ -1,5 +1,6 @@
 package com.nail.backend.domain.follow.service;
 
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.follow.db.entity.Follow;
 import com.nail.backend.domain.follow.db.repository.FollowRepositorySupport;
 import com.nail.backend.domain.user.db.entity.User;
@@ -33,8 +34,8 @@ public class FollowServiceImpl implements FollowService{
     }
 
     @Override
-    public List<User> getFolloweeList(Long userSeq) {
-        List<User> list = followRepositorySupport.FolloweeList(userSeq);
+    public List<DesignerInfo> getFolloweeList(Long userSeq) {
+        List<DesignerInfo> list = followRepositorySupport.FolloweeList(userSeq);
         return list;
     }
 

@@ -20,6 +20,10 @@ const modalStyle = {
 };
 
 const Content = styled.div`
+  .btn {
+    text-align:center;
+  }
+  
   .buttons {
     display:flex;
     justify-content:center;
@@ -147,9 +151,9 @@ export default function BasicModal(modalStatus:any) {
 
 
   return (
-    <div>
+    <>
       <div className="btn" onClick={handleOpen}>
-        리뷰 작성하기
+        <span>리뷰 작성하기</span>
       </div>
       <Modal
         open={open}
@@ -205,6 +209,6 @@ export default function BasicModal(modalStatus:any) {
           </Typography>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }

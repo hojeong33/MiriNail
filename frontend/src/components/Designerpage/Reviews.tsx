@@ -28,6 +28,7 @@ const TableWrapper = styled.div`
       color: #3d3c3a;
       thead {
         font-weight: 500;
+        background-color: #f8f8fa;
       }
       th {
         font-size: 14px;
@@ -139,7 +140,7 @@ const Reviews = () => {
             </tr>
           </thead>
           <tbody>
-            {reviews.map((review, idx) => {
+            {reviews?.map((review, idx) => {
               return (
                 <tr key={idx}>
                   <th>{review.no}</th>

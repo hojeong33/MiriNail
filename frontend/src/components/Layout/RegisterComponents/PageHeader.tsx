@@ -87,6 +87,43 @@ const Wrapper = styled.div`
       }
     }
 
+    @media screen and (max-width: 1023px) {
+
+      height :250px;
+      .row {
+        height: 100%;
+      
+        .pageHeaderTitle {
+          font-size: 28px;
+          top: 50%;
+          line-height: 50px;
+        }
+  
+        .pageHeaderLinks {
+          position: absolute;
+          top: 35%;
+          // left: 20%;
+          // margin : 0 auto;
+          // transform: translateY(-50%);
+          font-size: 18px;
+          width: 100%;
+          margin-top: 100px;
+          text-align: center;
+          color: #3d3c3a;
+          
+          span {
+            padding: 0px 25px;
+            cursor: pointer;
+            
+          }
+        }
+  
+        .pageHeaderNavigation {
+          display:none;
+        }
+      }
+  
+    }
 
 `
 

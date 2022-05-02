@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,7 +12,7 @@ import InputBase from "@mui/material/InputBase";
 import { styled, alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import styles from "./Navbar.module.css";
 const MenuBtn = styled("div")`
   :hover .menu {
     opacity: 1;
@@ -36,12 +35,6 @@ const CustomButton = styled(Button)({
     color: "black",
   },
 });
-const CustomMenu = styled(Menu)`
-  .MuiPaper-root {
-    box-shadow: none;
-    background-color: rgba(0, 0, 0, 5%);
-  }
-`;
 const CustomIconButton = styled(IconButton)({
   "&:hover": {
     backgroundColor: "rgba( 0, 0, 0, 0 )",
@@ -93,6 +86,25 @@ const Navbar = () => {
   const userNickname = sessionStorage.getItem("userNickname");
   const userProfileImg = sessionStorage.getItem("userProfileImg");
   useEffect(() => {
+    const myNavbar = document.getElementById("myNavbar");
+    console.log("myNavbar", myNavbar);
+    if (myNavbar) {
+      window.addEventListener("scroll", function () {
+        var top =
+          window.scrollY ||
+          window.pageXOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop;
+
+        if (top > 200) {
+          myNavbar.classList.add(styles.active);
+          myNavbar.classList.remove(styles.top);
+        } else {
+          myNavbar.classList.remove(styles.active);
+          myNavbar.classList.add(styles.top);
+        }
+      });
+    }
     if (userNickname) {
       setIsLogin(true);
     }
@@ -108,12 +120,13 @@ const Navbar = () => {
 
   return (
     <AppBar
+      id="myNavbar"
       position="fixed"
       style={{
-        backgroundColor: "rgba( 0, 0, 0, 0 )",
         boxShadow: "none",
-        borderBottom: "0.1rem solid black",
+        borderBottom: "0.05rem solid black",
       }}
+      className={styles.top}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -236,7 +249,9 @@ const Navbar = () => {
                     <li>
                       <button
                         onClick={() => {
-                          navigate(`/mypage`);
+                          navigate(
+                            `/mypage/${sessionStorage.getItem("userSeq")}`
+                          );
                         }}
                       >
                         Mypage

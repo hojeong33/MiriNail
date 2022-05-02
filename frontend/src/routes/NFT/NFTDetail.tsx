@@ -11,17 +11,33 @@ const Wrapper = styled.div`
     text-decoration: none;
     box-sizing: border-box;
   }
+
+  
+  max-width:1300px;
+  margin : 0 auto;
+  margin-top:150px;
+  @media screen and (max-width: 767px) {
+    height:1300px;
+    UpperFrame {
+      // height :1300px;
+    }
+    LowerFrame {
+      margin-top:50px;
+    }
+
+  
+  }
 `
 
 const NFTDetail = () => {
 
   return (
-    <>
+    <Wrapper>
       <UpperFrame />
       <LowerFrame />
-  
+    </Wrapper>
       
-    </>
+    
   )
 }
 
