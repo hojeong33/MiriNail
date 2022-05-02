@@ -67,7 +67,7 @@ public class BookController {
         log.info("getBookListByDesignerSeq - 호출");
         Set<LocalDate> bookLocalDateList = bookService.getBookListByDesignerSeq(designerSeq);
 
-        if(bookLocalDateList.isEmpty()) return ResponseEntity.status(404).body(null);
+        if(bookLocalDateList.isEmpty()) return ResponseEntity.status(200).body(bookLocalDateList);
         return ResponseEntity.status(200).body(bookLocalDateList);
     }
 

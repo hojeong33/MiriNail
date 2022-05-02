@@ -80,7 +80,7 @@ public class DesignerApplicationRepositorySupport {
         DesignerInfo designerInfo = DesignerInfo.builder()
                 .designerSeq(designerApplication.getDesignerSeq())
                 .designerCertificationUrl(designerApplication.getDesignerCertification())
-
+                .designerTel(designerApplication.getDesignerTel())
                 .designerShopName(designerApplication.getDesignerShopName())
                 .designerAddress(designerApplication.getDesignerAddress())
                 .designerRegedAt(LocalDateTime.now())

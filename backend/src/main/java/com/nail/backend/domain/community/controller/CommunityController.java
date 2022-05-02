@@ -110,8 +110,8 @@ public class CommunityController {
     public ResponseEntity<Page<CommunityGetRes>> getCommunityListByUser(@PageableDefault(page = 0, size = 10, sort = "communitySeq", direction = Sort.Direction.DESC) Pageable pageable, Principal principal) {
 
         log.info("getCommunityListByUser - 호출");
-        String userId ="2210624673"; // 2번 유저 - 호정
-//        String userId = principal.getName();
+//        String userId ="2210624673"; // 2번 유저 - 호정
+        String userId = principal.getName();
 
         Page<CommunityGetRes> communityList = communityService.getCommunityListByUser(pageable,userId);
 

@@ -336,7 +336,7 @@ const ReservationCheck = () => {
         </div>
 
         <Divider></Divider>
-        {isLoading ? (
+        {bookLoading ? (
           <LoadingBox className="loading">
             <TailSpin height={50} width={50} color="gray" />
           </LoadingBox>
