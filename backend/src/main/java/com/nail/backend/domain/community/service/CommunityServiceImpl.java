@@ -202,6 +202,9 @@ public class CommunityServiceImpl implements CommunityService{
         long total = communityList.getTotalElements();
         for (Community c : communityList) {
             CommunityGetRes communityGetRes =CommunityGetRes.builder()
+                    .userSeq(c.getUser().getUserSeq())
+                    .userProfileImg(c.getUser().getUserProfileImg())
+                    .userNickname(c.getUser().getUserNickname())
                     .communitySeq(c.getCommunitySeq())
                     .communityTitle(c.getCommunityTitle())
                     .communityCnt(c.getCommunityCnt())
@@ -319,6 +322,7 @@ public class CommunityServiceImpl implements CommunityService{
     public boolean communityRemove(Long communitySeq){
 
         if(communityRepository.findById(communitySeq).isPresent()){
+//            communityImgRepository.deleteCommunityImgByCommunity_CommunitySeq(communitySeq);
             communityRepository.deleteById(communitySeq);
              return true;
         }

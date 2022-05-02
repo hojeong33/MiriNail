@@ -326,7 +326,11 @@ public class QnaServiceImpl implements QnaService {
     public boolean qnaAnswerRemove(Long qnaAnswerSeq){
 
         if(qnaAnswerRepository.findById(qnaAnswerSeq).isPresent()){
+            QnaAnswer qnaAnswer = qnaAnswerRepository.findById(qnaAnswerSeq).orElse(null);
             qnaAnswerRepository.deleteById(qnaAnswerSeq);
+
+            // qnaAnswer - false로 변경
+            qnaRepositorySupport.updateIsAnsweredFalse(qnaAnswer.getQnaSeq());
             return true;
         }
         return false;
