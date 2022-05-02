@@ -4,22 +4,52 @@ import moment from "moment";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useMutation } from "react-query";
+import { deleteFeed } from "../../store/apis/designer";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 768px;
+  margin-top: 20px;
   .dividertop {
+    padding: 5px;
     width: inherit;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 40px;
+    background-color: #f8f8fa;
+    border-bottom: 1px solid black;
+    margin-bottom: 30px;
+    .title {
+      font-weight: 600;
+      margin-left: 10px;
+    }
+    .date {
+      font-weight: 500;
+      margin-right: 5px;
+    }
   }
   .feedcontent {
     width: 650px;
     margin: 30px 0;
+  }
+  .buttons {
+    position: absolute;
+    margin-top: 85px;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    button {
+      margin-left: 10px;
+      padding: 6px 15px;
+      color: white;
+    }
+    .deleteBtn {
+      background-color: #f84a4a;
+    }
   }
 `;
 
@@ -56,10 +86,11 @@ interface IState {
     designerNewsTitle: string;
     designerSeq: number;
   };
+  refetch: any;
 }
 
-const Feed: React.FC<IState> = ({ feed }) => {
-  console.log(feed.designerNewsImgUrl);
+const Feed: React.FC<IState> = ({ feed, refetch }) => {
+  // console.log(feed.designerNewsImgUrl);
   const settings = {
     dots: true,
     infinite: true,
@@ -69,14 +100,28 @@ const Feed: React.FC<IState> = ({ feed }) => {
     // autoplay: true,
     // autoplaySpeed: 2000,
   };
+ 
+
+  const onClickDelete = async (designerNewsSeq:number) => {
+    try {
+      const res = await deleteFeed(designerNewsSeq);
+      console.log(res)
+      refetch();
+    } catch (error) {
+      alert("삭제중 에러발생")
+      console.log(error)
+    }
+  }
 
   return (
     <Wrapper>
       <div className="dividertop">
-        <div>{feed.designerNewsTitle}</div>
-        <div>{moment(feed.designerNewsRegedAt).format("YYYY-MM-DD")}</div>
+        <div className="title">{feed.designerNewsTitle}</div>
+        <div className="date">{moment(feed.designerNewsRegedAt).format("YYYY-MM-DD")}</div>
       </div>
-      <Divider></Divider>
+      <div className="buttons">
+        <button className="deleteBtn" onClick={() => onClickDelete(feed.designerNewsSeq)}>삭제</button>
+      </div>
       {feed.designerNewsImgUrl.length !== 0 && (
         <StyledSlider {...settings}>
           {feed.designerNewsImgUrl.map((pic, idx) => {

@@ -1,6 +1,8 @@
 package com.nail.backend.domain.nailart.db.repository;
 
+
 import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
+import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.favorite.db.entity.QFavorite;
@@ -11,6 +13,7 @@ import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -41,6 +44,8 @@ public class NailartRepositorySupport {
 
     QFavorite qFavorite = QFavorite.favorite;
 
+
+    
     //네일 아트 수정
     @Transactional
     public Long updateNailartByNailartSeq(NailartUpdatePutReq nailartUpdatePutReq) {
@@ -105,13 +110,14 @@ public class NailartRepositorySupport {
 
     // 색상 x, 타입 x, 좋아요 순
     public List<NailartListGetRes> getListbyFavoite(int page, int size){
+
         List<NailartListGetRes> result = new ArrayList<>();
-        List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailartSeq.count())
+        List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
                 .from(qNailart)
                     .leftJoin(qFavorite)
-                    .on(qNailart.nailartSeq.eq(qFavorite.nailartSeq))
+                    .on(qNailart.eq(qFavorite.nailart))
                 .groupBy(qNailart.nailartSeq)
-                .orderBy(qFavorite.nailartSeq.count().desc())
+                .orderBy(qFavorite.nailart.count().desc())
                 .limit(size)
                 .offset((page-1)*size)
                 .fetch();
@@ -175,13 +181,13 @@ public class NailartRepositorySupport {
     // 색상 o, 좋아요 순
     public List<NailartListGetRes> getListbyColorFavoite(String color, int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
-        List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailartSeq.count())
+        List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
                 .from(qNailart)
                 .leftJoin(qFavorite)
-                .on(qNailart.nailartSeq.eq(qFavorite.nailartSeq))
+                .on(qNailart.eq(qFavorite.nailart))
                 .where(qNailart.nailartColor.eq(color))
                 .groupBy(qNailart.nailartSeq)
-                .orderBy(qFavorite.nailartSeq.count().desc())
+                .orderBy(qFavorite.nailart.count().desc())
                 .limit(size)
                 .offset((page-1)*size)
                 .fetch();
@@ -245,13 +251,13 @@ public class NailartRepositorySupport {
     // 타입 o, 좋아요 순
     public List<NailartListGetRes> getListbyTypeFavoite(String type, int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
-        List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailartSeq.count())
+        List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
                 .from(qNailart)
                 .leftJoin(qFavorite)
-                .on(qNailart.nailartSeq.eq(qFavorite.nailartSeq))
+                .on(qNailart.eq(qFavorite.nailart))
                 .where(qNailart.nailartType.eq(type))
                 .groupBy(qNailart.nailartSeq)
-                .orderBy(qFavorite.nailartSeq.count().desc())
+                .orderBy(qFavorite.nailart.count().desc())
                 .limit(size)
                 .offset((page-1)*size)
                 .fetch();
@@ -278,6 +284,4 @@ public class NailartRepositorySupport {
 
         return result;
     }
-
-
 }

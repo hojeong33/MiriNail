@@ -28,6 +28,7 @@ const TableWrapper = styled.div`
       color: #3d3c3a;
       thead {
         font-weight: 500;
+        background-color: #f8f8fa;
       }
       th {
         font-size: 14px;

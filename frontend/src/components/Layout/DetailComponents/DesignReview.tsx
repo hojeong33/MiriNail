@@ -25,7 +25,8 @@ const Wrapper = styled.div`
       margin-top:24px;
       .reviewLeftUp {
         display: flex;
-        margin-left: 30%;
+        // margin-left: 30%;
+        justify-content:center;
         .iconBox {
           font-size :100px;
           line-height:75px;
@@ -42,30 +43,36 @@ const Wrapper = styled.div`
           margin-left : 15px;
         }
       }
-
+      
       .btn {  
         margin-top: 24px;
-        width: 158px;
-        // height: 44px;
-        border-radius: 4px;
-        background-color: #14161a;
-        font-size: 14px;
-        font-weight: bold;
-        // line-height: 44px;
-        text-align: center;
-        color: #ffffff;
+        width: 100%;
+        border-radius: 4px;     
+        margin : 15px auto;
+        color: black;
         // line-height : 26px;
-        margin-left:30%;
+        span {
+          background-color :#14161a;
+          color: white;
+          font-size:14px;
+          font-weight:bold;
+          padding : 5px 10px 5px 10px;
+          border-radius:4px;
+        }
       }
     }
 
     .reviewRight {
       width : 70%;
       .progressSet {
+        align-items:center;
         width:85%;
         display:flex;
         margin:25px;
         margin-left:7%;
+        .test2 {
+          display: none;
+        }
       }
     }
   }
@@ -106,6 +113,116 @@ const Wrapper = styled.div`
    }
   }
   
+  @media screen and (max-width: 1023px) {
+    .review {
+      font-size:40px;
+      border-bottom :3px solid black;
+      padding-bottom : 5px;  
+    }
+    .reviewTotal {
+      display: flex;
+      
+      .reviewLeft {
+        width : 40%;
+        border-right : 1px solid #e3e3e3;
+        margin-top:24px;
+        .reviewLeftUp {
+          display: flex;
+          justify-content : center;
+          .iconBox {
+            font-size :100px;
+            line-height:75px;
+            
+            svg {
+              font-size:60px;
+              color:#F8E71C;
+            }
+          }
+  
+          .score {
+            line-height:95px;
+            font-size : 45px;
+            margin-left : 15px;
+          }
+        }
+  
+        .btn {  
+          margin-top: 24px;
+          width: 100%;
+          border-radius: 4px;     
+          margin : 15px auto;
+          color: black;
+          // line-height : 26px;
+          span {
+            background-color :#14161a;
+            color: white;
+            font-size:14px;
+            font-weight:bold;
+            padding : 5px 10px 5px 10px;
+            border-radius:4px;
+          }
+        }
+      }
+  
+      .reviewRight {
+        width : 60%;
+        .progressSet {
+          width:80%;
+          display:flex;
+          margin:25px;
+          margin-left:3%;
+          .test1 {
+            display:none;
+          }
+          .test2 {
+            color :black;
+            display:block;
+            width: 100px;
+            // padding-bottom:px;
+          }
+        }
+      }
+    }
+  
+    .reviewList {
+      // position:relative
+      .reviewFilter {
+        padding-top : 20px;
+        padding-bottom : 20px;
+        margin-top:20px;
+        border-top : 1px solid #e4e4e4;
+        border-bottom : 1px solid #e4e4e4;
+        display:flex;
+      }
+      
+      .test{
+  
+        .reviewBox{
+          margin-top:24px;
+          display: flex;
+          min-height : 300px;
+      
+          .reviewBoxLeft {
+            width : 75%;
+            height:100%;
+            align-items:center;
+  
+          }
+          .reviewBoxRight {
+            border-left : 1px solid #e4e4e4;
+            width : 25%;
+            height:100%;
+            .userId {
+              margin-left:20px;
+            }
+          }
+        }
+     }
+    }
+  }
+
+  
+
 `
 
 interface Iprops {
@@ -266,27 +383,32 @@ const DesignReview = () => {
         <div className='reviewRight'>
           {/* 100%의 구매자가 이 상품을 좋아합니다.sadasd */}
           <div className="progressSet">
-            <span style={{marginRight:"25px",width:"15%"}}>아주 좋아요</span>
+            <span className="test1" style={{marginRight:"25px",width:"15%"}}>아주 좋아요</span>
+            <div className="test2">BEST</div>
             <ProgressBar bgcolor={'#14161a'} completed={dummy2.best} barWidth={highestBarVote}  />
             <span style={{marginLeft:"20px",width:"5%"}}>{dummy2.best}</span>
           </div>
           <div className="progressSet">
-            <span style={{marginRight:"25px",width:"15%"}}>맘에 들어요</span>
+            <span className="test1" style={{marginRight:"25px",width:"15%"}}>맘에 들어요</span>
+            <div className="test2">GOOD</div>
             <ProgressBar bgcolor={'#14161a'} completed={dummy2.good} barWidth={highestBarVote}/>
             <span style={{marginLeft:"20px",width:"5%"}}>{dummy2.good}</span>
           </div>
           <div className="progressSet">
-            <span style={{marginRight:"25px",width:"15%"}}>보통이에요</span>
+            <span className="test1" style={{marginRight:"25px",width:"15%"}}>보통이에요</span>
+            <div className="test2">SOSO</div>
             <ProgressBar bgcolor={'#14161a'} completed={dummy2.soso} barWidth={highestBarVote}/>
             <span style={{marginLeft:"20px",width:"5%"}}>{dummy2.soso}</span>
           </div>
           <div className="progressSet">
-            <span style={{marginRight:"25px",width:"15%"}}>그냥 그래요</span>
+            <span className="test1" style={{marginRight:"25px",width:"15%"}}>그냥 그래요</span>
+            <div className="test2">BAD</div>
             <ProgressBar bgcolor={'#14161a'} completed={dummy2.bad} barWidth={highestBarVote}/>
             <span style={{marginLeft:"20px",width:"5%"}}>{dummy2.bad}</span>
           </div>
           <div className="progressSet">
-            <span style={{marginRight:"25px",width:"15%"}}>별로에요</span>
+            <span className="test1" style={{marginRight:"25px",width:"15%"}}>별로에요</span>
+            <div className="test2">WORST</div>
             <ProgressBar bgcolor={'#14161a'} completed={dummy2.worst} barWidth={highestBarVote}/>
             <span style={{marginLeft:"20px",width:"5%"}}>{dummy2.worst}</span>
           </div>

@@ -40,17 +40,12 @@ const MainFrame = styled.div`
         padding-top: 75px;
 
         .TypeFilter {
-          a { 
-            display:block; 
-            color:#3D3C3A; 
-            opacity:0.5; 
-            transition:all 0.3s; 
-            font-size:14px; 
-            margin-bottom:20px;
-            cursor : pointer;
+          .rows {
+            display:flex;
+            justify-content:space-between;
+            width:120px;
+            margin-top:15px;
           }
-          a:active{ opacity:1;}
-          a:hover{ opacity:1;}
           
         }
 
@@ -97,7 +92,50 @@ const MainFrame = styled.div`
       }
     }
   }
-  
+  @media screen and (max-width: 1023px) {
+    width :100%;
+    .MainPadding {
+      .ItemList {
+        padding-left: 0px;
+        .LeftBox {
+          position: relative;
+          padding-right: 0px;
+          left: auto;
+          top: auto;
+          z-index: 10;
+          padding-top: 30px;
+          text-align: left;
+          .TypeFilter {
+            display : flex;
+            margin-top : 15px;
+            .filterName {
+              position:absolute;
+              top:-20px;
+            }
+            .rows {
+              display:flex;
+              // justifyContent:space-between;
+              // width:120px;
+              marginTop:15px;
+              margin-right:15px;
+            }
+          }
+          .OrderFilter {
+            display:none;
+          }
+          
+        }
+
+        .RightBox {
+          padding-top: 30px;
+          width: 100%;
+          border-left: 0px solid #d2d2d0;
+          padding-bottom: 100px;
+          text-align: center;
+        }
+      }
+    }
+  }
 `;
 
 const PageContentColor = () => {
@@ -125,23 +163,23 @@ const PageContentColor = () => {
             <div className="ItemList">
               <div className="LeftBox">
                 <div className="TypeFilter">
-                  <div>색상 필터</div>
-                  <div className="rows" style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                  <div className="filterName">색상 필터</div>
+                  <div className="rows" >
                     <div style={{backgroundColor:"red", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'red'})}></div>
                     <div style={{backgroundColor:"orange", width:"33px",height:"30px"}} onClick={() =>setMyFilter({...myFilter,color:'orange'})}></div>
                     <div style={{backgroundColor:"yellow", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'yellow'})}></div>
                   </div>
-                  <div style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                  <div className="rows" >
                     <div style={{backgroundColor:"green", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'green'})}></div>
                     <div style={{backgroundColor:"blue", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'blue'})}></div>
                     <div style={{backgroundColor:"navy", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'navy'})}></div>
                   </div>
-                  <div style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                  <div className="rows" >
                     <div style={{backgroundColor:"purple", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'purple'})}></div>
                     <div style={{backgroundColor:"skyblue", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'skyblue'})}></div>
                     <div style={{backgroundColor:"pink", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'pink'})}></div>
                   </div>
-                  <div style={{display:"flex",justifyContent:"space-between",width:"120px",marginTop:"15px"}}>
+                  <div className="rows" >
                     <div style={{backgroundColor:"gold", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'gold'})}></div>
                     <div style={{backgroundColor:"silver", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'silver'})}></div>
                     <div style={{backgroundColor:"brown", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'brown'})}></div>

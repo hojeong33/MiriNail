@@ -5,14 +5,15 @@ import OneOnOneInquiry from '../Layout/DetailComponents/OneOnOneInquiry'
 import {useState} from 'react'
 
 const Wrapper = styled.div`
-
+  
   max-width: 1300px;
   margin : 0 auto;
-  margin-top :150px;
+  // margin-top :150px;
   zoom : 1;
   
   .imx {
     margin : 5px;
+
   }
   .menus {
     display:flex;
@@ -34,7 +35,10 @@ const Wrapper = styled.div`
     margin-top:100px;
   }
 
-  
+  @media screen and (max-width: 767px) {
+    margin : 0 auto;
+    margin-top: 650px;
+  }
 `
 
 const LowerFrame = () => {

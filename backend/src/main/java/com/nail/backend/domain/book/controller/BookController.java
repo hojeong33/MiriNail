@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -54,6 +56,21 @@ public class BookController {
         return ResponseEntity.status(200).body(bookInfo);
     }
 
+    @GetMapping("/designer/{designerSeq}")
+    @ApiOperation(value = "디자이너 네일아트 예약 여부 확인", notes = "<strong>디자이너 네일아트 예약 여부 확인한다.</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "해당 유저 예약 없음.")
+    })
+    public ResponseEntity<Set<LocalDate>> getBookListByDesignerSeq(@PathVariable("designerSeq") Long designerSeq) {
+
+        log.info("getBookListByDesignerSeq - 호출");
+        Set<LocalDate> bookLocalDateList = bookService.getBookListByDesignerSeq(designerSeq);
+
+        if(bookLocalDateList.isEmpty()) return ResponseEntity.status(404).body(null);
+        return ResponseEntity.status(200).body(bookLocalDateList);
+    }
+
     @GetMapping("/designer/{designerSeq}/{bookDate}")
     @ApiOperation(value = "디자이너 네일아트 예약 조회", notes = "<strong>디자이너 네일아트 예약 조회한다.</strong>")
     @ApiResponses({
@@ -66,7 +83,7 @@ public class BookController {
         log.info("getBookListByDesignerSeq - 호출");
         List<Book> bookList = bookService.getBookLitByDesignerSeqAndBookDate(designerSeq,bookDate);
 
-        if(bookList.isEmpty()) return ResponseEntity.status(404).body(null);
+        if(bookList.isEmpty()) return ResponseEntity.status(200).body(bookList);
         return ResponseEntity.status(200).body(bookList);
     }
 
@@ -80,7 +97,6 @@ public class BookController {
 
         log.info("bookRegister - 호출");
         Book book = bookService.bookRegister(bookPostReq);
-
         if(book == null) {
             log.error("bookRegister - This book doesn't exist.");
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "예약 등록 실패했습니다."));

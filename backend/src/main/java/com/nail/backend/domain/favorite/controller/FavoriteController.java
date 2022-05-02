@@ -3,6 +3,8 @@ package com.nail.backend.domain.favorite.controller;
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.favorite.service.FavoriteService;
+import com.nail.backend.domain.nailart.db.entity.Nailart;
+import com.nail.backend.domain.nailart.service.NailartService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class FavoriteController {
 
     @Autowired
     FavoriteService favoriteService;
+
+    @Autowired
+    NailartService nailartService;
 
     // Create
     @PostMapping("/{nailartSeq}")
@@ -80,12 +85,11 @@ public class FavoriteController {
             @ApiResponse(code = 201 , message = "반환 성공"),
             @ApiResponse(code = 404 , message = "반환 실패")
     })
-    public void getFavoriteList (@ApiParam(value = "유저 seq") @PathVariable("userSeq") Long userSeq,
+    public ResponseEntity<Page<Favorite>> getFavoriteList (@ApiParam(value = "유저 seq") @PathVariable("userSeq") Long userSeq,
                                  @PageableDefault(page = 0, size = 10) Pageable pageable){
         log.info("getFavoriteList - 호출");
         Page<Favorite> favoriteList = favoriteService.getFavoriteListByUserSeq(userSeq, pageable);
-//        Page<Nailart> nailartList = nailartService.getNailartListByUserSeq(userSeq, favoriteList);
-//        return nailartList;
+        return ResponseEntity.status(202).body(favoriteList);
     }
 
     @GetMapping("/{nailartSeq}/count")

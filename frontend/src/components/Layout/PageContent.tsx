@@ -115,10 +115,21 @@ const MainFrame = styled.div`
             display:flex;
             justify-content:center;
             a {
-              
+              margin : 0 10px 0 10px;
             }
           }
+          .OrderFilter {
+            display:none;
+          }
           
+        }
+
+        .RightBox {
+          padding-top: 30px;
+          width: 100%;
+          border-left: 0px solid #d2d2d0;
+          padding-bottom: 100px;
+          text-align: center;
         }
       }
     }

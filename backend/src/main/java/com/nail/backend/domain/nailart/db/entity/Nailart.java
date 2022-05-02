@@ -20,6 +20,7 @@ public class Nailart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "NailArt 작품 번호")
+    @Column(name = "nailart_seq")
     private long nailartSeq;
 
 //    @ManyToOne

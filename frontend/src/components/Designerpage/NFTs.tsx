@@ -4,6 +4,11 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useState } from "react";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useQuery } from "react-query";
+import { getDesignerNailart } from "../../store/apis/nailart";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { TailSpin } from "react-loader-spinner"
 
 const Wrapper = styled.div`
   .pagination {
@@ -40,6 +45,7 @@ const ItemCard = styled.div`
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border: 1px solid #d2d2d0;
     }
     svg {
       position: absolute;
@@ -55,112 +61,104 @@ const ItemCard = styled.div`
   }
 `;
 
-interface IState {
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
+`;
+
+interface INailart {
   item: {
-    title: string;
-    price: number;
-    category: string[];
-    isfollow: boolean;
+    designerSeq: number;
+    nailartAvailable: boolean;
+    nailartColor: string;
+    nailartDesc: string;
+    nailartDetailColor: string;
+    nailartName: string;
+    nailartPrice: number;
+    nailartRating: number;
+    nailartRegedAt: null | number;
+    nailartSeq: number;
+    nailartThumbnailUrl: string;
+    nailartType: string;
+    nailartWeather: string;
+    tokenId: number;
   };
 }
 
 const NFTs = () => {
-  const [items, setItems] = useState<IState["item"][]>([
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-    {
-      title: "글레이즈 - 루비 레드",
-      price: 50000,
-      category: ["겨울", "designer1"],
-      isfollow: true
-    },
-  ])
+  // const [nailarts, setNailarts] = useState<INailart["item"][]>([]);
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
+  const { userSeq } = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
-  }
+    console.log(event);
+    console.log(page);
+    setPage(page);
+  };
   
+  const { data, isLoading } = useQuery<any, Error>(
+    ["getDesignerNailart", page],
+    async () => {
+      return await getDesignerNailart(Number(userSeq), page, 12);
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        setLastPage(res.totalPages);
+        // setNailarts(res.content);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
+
   return (
     <Wrapper>
-      <ItemCards>
-        {items.map((item, idx) => {
-          return (
-            <ItemCard key={idx}>
-              <div className="cardwrapper">
-                <img src="/assets/images/원숭이.png" alt="" />
-                {item.isfollow ? (
-                  <FavoriteIcon color="error" />
-                ) : (
-                  <FavoriteBorderIcon color="error" />
-                )}
-              </div>
-              <div className="title">{item.title}</div>
-              <div className="price">{item.price.toLocaleString()}원</div>
-              <div className="category">
-                {item.category.map((category, idx) => {
-                  return <span key={idx}>#{category} </span>;
-                })}
-              </div>
-            </ItemCard>
-          );
-        })}
-      </ItemCards>
+      {isLoading ? (
+        <LoadingBox className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </LoadingBox>
+      ) : (
+        <ItemCards>
+          {data.content?.map((item: any, idx: any) => {
+            return (
+              <ItemCard key={idx}>
+                <div className="cardwrapper">
+                  <Link to={`/nft/${item.nailartSeq}`}>
+                    <img src={item.nailartThumbnailUrl} alt="" />
+                  </Link>
+                  {/* {item.isfollow ? (
+                    <FavoriteIcon color="error" />
+                  ) : (
+                    <FavoriteBorderIcon color="error" />
+                  )} */}
+                </div>
+                <div className="title">
+                  {item.nailartType} - {item.nailartDetailColor}
+                </div>
+                <div className="price">
+                  {item.nailartPrice.toLocaleString()} 원
+                </div>
+                <div className="category">
+                  <span>#{item.nailartWeather} </span>
+                </div>
+              </ItemCard>
+            );
+          })}
+        </ItemCards>
+      )}
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={10} shape="rounded" onChange={onchangePage} />
+          <Pagination
+            count={lastPage}
+            shape="rounded"
+            onChange={onchangePage}
+          />
         </Stack>
       </div>
     </Wrapper>
