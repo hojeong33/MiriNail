@@ -1,7 +1,6 @@
 package com.nail.backend.domain.review.service;
 
 
-import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
@@ -23,7 +22,10 @@ public interface ReviewService {
 
 
 //    READ___________________________________________
-    Page<ReviewGetRes> getReviewList(Pageable pageable);
+    Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq);
+    Page<ReviewGetRes> getReviewListByUser(Pageable pageable,Long userSeq);
+    Page<ReviewGetRes> getReviewListByDesignerSeq(Pageable pageable,Long designerSeq);
+
 
     //    UPDATE_________________________________________
     Long reviewCommentModify(ReviewCommentModifyPutReq reviewCommentModifyPutReq);

@@ -322,6 +322,7 @@ public class CommunityServiceImpl implements CommunityService{
     public boolean communityRemove(Long communitySeq){
 
         if(communityRepository.findById(communitySeq).isPresent()){
+//            communityImgRepository.deleteCommunityImgByCommunity_CommunitySeq(communitySeq);
             communityRepository.deleteById(communitySeq);
              return true;
         }
