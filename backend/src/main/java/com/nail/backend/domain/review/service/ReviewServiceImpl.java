@@ -203,6 +203,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
                 .reviewDesc(rv.getReviewDesc())
                 .reviewCnt(rv.getReviewCnt())
                 .reviewRegedAt(rv.getReviewRegedAt())
+                .reviewRating(rv.getReviewRating())
                 .reviewImg(reviewImgList)
                 .reviewComments(reviewCommentGetResList)
                 .build();
@@ -257,6 +258,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
                     .reviewDesc(rv.getReviewDesc())
                     .reviewCnt(rv.getReviewCnt())
                     .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
                     .reviewImg(reviewImgList)
                     .reviewComments(reviewCommentGetResList)
                     .build();
@@ -311,6 +313,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
                     .reviewDesc(rv.getReviewDesc())
                     .reviewCnt(rv.getReviewCnt())
                     .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
                     .reviewImg(reviewImgList)
                     .reviewComments(reviewCommentGetResList)
                     .build();
