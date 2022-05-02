@@ -161,7 +161,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
 //    READ___________________________________________
-// 전체조회
+// 네일아트 리뷰 조회
 public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq){
     Page<Review> reviewList = reviewRepository.findAllByNailart_NailartSeq(pageable,nailartSeq);
     List<ReviewGetRes> reviewGetResList = new ArrayList<>();
@@ -248,6 +248,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             // 리뷰 전체 리턴 리스트 만들기
             ReviewGetRes reviewGetRes = ReviewGetRes.builder()
                     .reviewSeq(rv.getReviewSeq())
+                    .nailartSeq(rv.getNailart().getNailartSeq())
                     .userSeq(rv.getUser().getUserSeq())
                     .userNickname(rv.getUser().getUserNickname())
                     .userProfileImg(rv.getUser().getUserProfileImg())
@@ -303,6 +304,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             // 리뷰 전체 리턴 리스트 만들기
             ReviewGetRes reviewGetRes = ReviewGetRes.builder()
                     .reviewSeq(rv.getReviewSeq())
+                    .nailartSeq(rv.getNailart().getNailartSeq())
                     .userSeq(rv.getUser().getUserSeq())
                     .userNickname(rv.getUser().getUserNickname())
                     .userProfileImg(rv.getUser().getUserProfileImg())

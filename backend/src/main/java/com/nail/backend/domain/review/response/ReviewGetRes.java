@@ -19,6 +19,8 @@ import java.util.List;
 public class ReviewGetRes {
 
     private Long reviewSeq;
+    private Long nailartSeq;
+
     private Long userSeq;
     private String userNickname;
     private String userProfileImg;
