@@ -95,6 +95,7 @@ const FormWrapper = styled.div`
       background-color: #333;
       color: white;
     }
+
   }
 `;
 
@@ -261,7 +262,7 @@ const Apply = () => {
               onChange={onChangeShopName}
               defaultValue={shopName}
               spellCheck="false"
-              placeholder="네일 샵 명"
+              placeholder="디자이너명"
             />
             <input
               className="underline"

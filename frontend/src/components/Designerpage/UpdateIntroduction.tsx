@@ -8,6 +8,7 @@ import AddressModal from "../Mypage/AddressModal";
 import { useMutation } from "react-query";
 import { getDesignerinfo, putUpdateIntroduction } from "../../store/apis/designer";
 import { useNavigate, useParams } from "react-router-dom";
+import { convertURLtoFile } from "../Commons/functions";
 
 const Wrapper = styled.div`
   display: flex;
@@ -400,7 +401,7 @@ function UpdateIntroduction() {
           id=""
         ></textarea>
         <UploadBox>
-          <label className={file?.type.slice(0, 5)} htmlFor="chooseFile">
+          <label htmlFor="chooseFile">
             {previewMainImage()}
           </label>
           <input

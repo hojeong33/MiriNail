@@ -46,7 +46,6 @@ const TableWrapper = styled.div`
         font-weight: 500;
       }
       tr {
-        cursor: pointer;
         :hover {
           background-color: #f8f8fa;
         }
@@ -106,9 +105,10 @@ const ApplyList = () => {
               <colgroup>
                 <col width="5%" />
                 <col width="10%" />
-                <col width="39%" />
+                <col width="29%" />
                 <col width="16%" />
                 <col width="16%" />
+                <col width="10%" />
                 <col width="7%" />
                 <col width="7%" />
               </colgroup>
@@ -119,6 +119,7 @@ const ApplyList = () => {
                   <th>네일아트샵명</th>
                   <th>연락처</th>
                   <th>신청일</th>
+                  <th>첨부</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -135,6 +136,9 @@ const ApplyList = () => {
                         {moment(convertDate(apply.designerRegedAt)).format(
                           "YYYY-MM-DD"
                         )}
+                      </th>
+                      <th>
+                        <button>다운</button>
                       </th>
                       <th>
                         <button>승인</button>

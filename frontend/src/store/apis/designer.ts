@@ -38,7 +38,7 @@ export const deleteFeed = async (designerNewsSeq:number) => {
 
 // 디자이너 프로필 사진 변경
 export const putProfileImgUpdate = async (formdata:any, designerSeq:number) => {
-  const response = await apiClient.put<any>(
+  const response = await fileApiClient.put<any>(
     `/designer/profileupdate/${designerSeq}`,
     formdata
   );
@@ -47,7 +47,7 @@ export const putProfileImgUpdate = async (formdata:any, designerSeq:number) => {
 
 // 디자이너 정보 수정
 export const putUpdateIntroduction = async (formdata:any) => {
-  const response = await apiClient.put<any>(
+  const response = await fileApiClient.put<any>(
     `/designer/introduce/`,
     formdata
   );
