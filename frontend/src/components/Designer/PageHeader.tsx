@@ -36,6 +36,14 @@ const Wrapper = styled.div`
       text-align: center;
       color: #3d3c3a;
       font-weight: 500;
+      ::before {
+        content: "";
+        margin: 0 auto;
+        display: block;
+        width: 30px;
+        height: 3px;
+        background: #3d3c3a
+      }
       
     }
 

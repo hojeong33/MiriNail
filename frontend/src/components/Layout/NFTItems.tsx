@@ -14,21 +14,25 @@ const Wrapper = styled.div`
     zoom : 1;
     min-height : 1000px;
     li {
-      height :254px;
+      height :250px;
       float: left;
       width: 25%;
       text-align: center;
       cursor: pointer;
-      margin-bottom: 80px;
+      margin-bottom: 120px;
+      
       .ItemBox {
         width : 100%;
         display:block;
+        
         .imx {
           margin : 0px 10px;
+          
           img {
             width :100%;
             max-width:100%;
             height :254px;
+            margin-bottom :12px;
           }
           .itemName {
             color: #3D3C3A;

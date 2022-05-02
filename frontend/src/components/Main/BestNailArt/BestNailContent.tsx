@@ -69,7 +69,7 @@ const BestNailContent = () => {
   ];
   return (
     <div style={{ display: "flex" }}>
-      {bestReviewData.map((item:any, idx:number) => (
+      {bestReviewData?.map((item:any, idx:number) => (
         <Grid key={idx} style={{ margin: "20PX" }}>
           <img
             src={item.nailartThumbnailUrl}
