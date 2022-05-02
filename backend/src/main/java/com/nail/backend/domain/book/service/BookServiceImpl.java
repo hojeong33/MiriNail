@@ -4,17 +4,14 @@ import com.nail.backend.domain.book.db.entity.Book;
 import com.nail.backend.domain.book.db.entity.BookCheck;
 import com.nail.backend.domain.book.db.repository.BookCheckRepositorySupport;
 import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
-import com.nail.backend.domain.book.request.BookPostReq;
+import com.nail.backend.domain.follow.request.BookPostReq;
 import com.nail.backend.domain.book.response.BookListByUserSeqGetRes;
-import com.querydsl.core.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -73,4 +70,19 @@ public class BookServiceImpl implements BookService{
         List<Book> bookList = bookRepositorySupport.getBookLitByDesignerSeqAndBookDate(designerSeq, bookDate);
         return bookList;
     }
+
+    @Override
+    public Set<LocalDate> getBookListByDesignerSeq(Long designerSeq) {
+        List<Book> bookList = bookRepositorySupport.getBookListByDesignerSeq(designerSeq);
+
+        Set<LocalDate> localDateList = new HashSet<>();
+
+        bookList.forEach(book -> {
+            LocalDate bookDate = book.getBookDatetime().toLocalDate();
+            localDateList.add(bookDate);
+        });
+
+        return localDateList;
+    }
+
 }

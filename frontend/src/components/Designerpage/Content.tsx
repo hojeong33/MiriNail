@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { IDesigner } from '../../routes/Designerpage/Designerpage';
 // import Paginations from '../Layout/Paginations'
@@ -55,6 +55,9 @@ const MainFrame = styled.div`
           a:hover {
             opacity: 1;
           }
+          .selected {
+          opacity: 1;
+        }
         }
 
         .OrderFilter {
@@ -82,10 +85,11 @@ const MainFrame = styled.div`
             }
           }
         }
+
       }
 
       .RightBox {
-        height: 100%;
+        min-height: 100vh;
         padding-top: 55px;
         width: 100%;
         border-left: 1px solid #d2d2d0;
@@ -101,6 +105,9 @@ interface IProps {
 }
 
 const Content:React.FC<IProps> = ({designer}) => {
+  const location = useLocation();
+  const temp = location.pathname.split("/")
+  console.log(temp[temp.length - 1])
 
   return (
     <>
@@ -110,11 +117,36 @@ const Content:React.FC<IProps> = ({designer}) => {
             <div className="ItemList">
               <div className="LeftBox">
                 <div className="TypeFilter">
-                  <Link to="new">새 소식</Link>
-                  <Link to="introduction">디자이너 소개</Link>
-                  <Link to="NFTs">네일아트 목록</Link>
-                  <Link to="reviews">시술 후기들</Link>
-                  <Link to="asklist">문의 내역</Link>
+                  <Link
+                    to="new"
+                    className={`${temp[temp.length - 1] === "new" ? "selected" : ""}`}
+                  >
+                    새 소식
+                  </Link>
+                  <Link
+                    to="introduction"
+                    className={`${temp[temp.length - 1] === "introduction" ? "selected" : ""}`}
+                  >
+                    디자이너 소개
+                  </Link>
+                  <Link
+                    to="NFTs"
+                    className={`${temp[temp.length - 1] === "NFTs" ? "selected" : ""}`}
+                  >
+                    네일아트 목록
+                  </Link>
+                  <Link
+                    to="reviews"
+                    className={`${temp[temp.length - 1] === "reviews" ? "selected" : ""}`}
+                  >
+                    시술 후기들
+                  </Link>
+                  <Link
+                    to="asklist"
+                    className={`${temp[temp.length - 1] === "asklist" ? "selected" : ""}`}
+                  >
+                    문의 내역
+                  </Link>
                 </div>
               </div>
               <div className="RightBox">

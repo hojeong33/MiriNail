@@ -2,7 +2,9 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import AddressModal from "./AddressModal";
-
+import { useMutation } from "react-query";
+import { postApply } from "../../store/apis/authentication";
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -148,11 +150,12 @@ const Divider = styled.div`
 
 const Apply = () => {
   const [shopName, setShopName] = useState("")
-  const [phonNumber, setPhoneNumber] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("")
   const [address, setAddress] = useState(""); // 주소
   const [addressDetail, setAddressDetail] = useState(""); // 상세주소
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [file, setFile] = useState<any>();
+  const navigate = useNavigate()
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -209,21 +212,29 @@ const Apply = () => {
     setAddressDetail(fullAddr);
     setIsOpen(false);
   };
-  // const { data } = useQuery(
-  //   ["logDate", month],
-  //   async () => {
-  //     const result = await axios.get(
-  //       `/api/healthLogs?health_log_type=DIET`
-  //     );
-  //     return result.data;
-  //   },
-  //   {
-  //     onSuccess: (data: any) => {
-  //       setMark(data);
-  //      // ["2022-02-02", "2022-02-02", "2022-02-10"] 형태로 가져옴
-  //     },
-  //   }
-  // );
+
+  const apply = useMutation<any, Error>(
+    "apply",
+    async () => {
+      const formData = new FormData()
+      formData.append("designerAddress", addressDetail)
+      formData.append("designerShopName", shopName)
+      formData.append("designerTel", phoneNumber)
+      formData.append("registrationFile", file)
+      return await postApply(formData);
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        alert("성공적으로 신청되었습니다")
+        navigate(`/mypage/${sessionStorage.getItem("userSeq")}/like`)
+      },
+      onError: (err: any) =>{
+        console.log(err)
+        alert("신청중 오류가 발생하였습니다")
+      },
+    }
+  );
 
   const cutWordLength = (word:string) => {
     if (!word) return;
@@ -232,6 +243,10 @@ const Apply = () => {
       result = result.slice(0,10) + "..."
     }
     return result
+  }
+
+  const onClickSubmit = () => {
+    apply.mutate()
   }
 
   return (
@@ -250,11 +265,11 @@ const Apply = () => {
             />
             <input
               className="underline"
-              type="text"
+              type="tel"
               onChange={onChangePhoneNumber}
-              defaultValue={phonNumber}
+              defaultValue={phoneNumber}
               spellCheck="false"
-              placeholder="연락처 (000-0000-0000)"
+              placeholder='연락처 ("-"제외하고 입력)'
             />
             <div className="addressbtn">
               <input
@@ -272,7 +287,7 @@ const Apply = () => {
           </div>
         </div>
         <div className="menu">
-          <div className="menuSelectText">사업자 등록증 등록</div>
+          <div className="menuSelectText">사업자 등록증 첨부</div>
           <UploadBox>
             <label className={file?.type.slice(0, 5)} htmlFor="chooseFile">
               <div className="filelabel">
@@ -294,7 +309,7 @@ const Apply = () => {
             {/* {file?.type.slice(0, 5)} */}
           </UploadBox>
         </div>
-        <button className="submitbutton">등록 신청하기</button>
+        <button className="submitbutton" onClick={onClickSubmit}>등록 신청하기</button>
       </FormWrapper>
 
       <div>

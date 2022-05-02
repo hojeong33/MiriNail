@@ -1,6 +1,7 @@
 package com.nail.backend.domain.follow.controller;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.follow.db.entity.Follow;
 import com.nail.backend.domain.follow.service.FollowService;
 import com.nail.backend.domain.user.db.entity.User;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +34,15 @@ public class FollowController {
             @ApiResponse(code = 201, message = "팔로우 조회 성공"),
             @ApiResponse(code = 404, message = "팔로우 조회 실패")
     })
-    public ResponseEntity<List<User>> getFollowerList(@PathVariable(value = "userSeq") Long userSeq){
+    public ResponseEntity<List<DesignerInfo>> getFollowerList(@PathVariable(value = "userSeq") Long userSeq,
+                                                              @PageableDefault(size = 10, page = 0) Pageable pageable){
 
         // 0. 토큰으로부터 내 userId를 받아온다.
         // 1. Follower가 입력받은 userId인 값들을 받아온다.
 
         log.info("getFollowerList - 호출");
 
-        List<User> follow = followService.getFolloweeList(userSeq);
+        List<DesignerInfo> follow = followService.getFolloweeList(userSeq);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);
@@ -54,7 +58,8 @@ public class FollowController {
             @ApiResponse(code = 201, message = "팔로우 조회 성공"),
             @ApiResponse(code = 404, message = "팔로우 조회 실패")
     })
-    public ResponseEntity<List<User>> getFolloweeList(@PathVariable(value = "userSeq") Long userSeq){
+    public ResponseEntity<List<User>> getFolloweeList(@PathVariable(value = "userSeq") Long userSeq,
+                                                      @PageableDefault(size = 10, page = 0) Pageable pageable){
 
         // 0. 토큰으로부터 내 userId를 받아온다.
         // 1. Followee가 입력받은 userId인 값들을 받아온다.

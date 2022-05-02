@@ -8,6 +8,7 @@ import FeedCarousels from './FeedCarousels';
 import ImageUploadBox from './FileUpload3';
 import { useMutation } from 'react-query';
 import { postNewFeed } from '../../store/apis/designer';
+import { useParams } from 'react-router-dom';
 
 
 const Container = styled.div`
@@ -77,6 +78,7 @@ const CreateFeed = () => {
   const [content, setContent] = useState<string>("");
   const [postImages,setPostImages] = useState<any[]>([])
   const [imageProcess,setImageProcess] = useState([])
+  const { userSeq } = useParams();
 
 
   const onChangeTitle = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +95,7 @@ const CreateFeed = () => {
     async () => {
       const files = new FormData()
       const data = {
-        designerSeq: 3,
+        designerSeq: userSeq,
         designerNewsTitle: title,
         designerNewsDesc: content,
       };

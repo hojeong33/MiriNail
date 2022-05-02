@@ -77,6 +77,7 @@ public class NailartController {
     // Nailart 삭제
     @DeleteMapping("/{nailartSeq}")
     public ResponseEntity<BaseResponseBody> nailartRemove(@PathVariable long nailartSeq){
+        System.out.println("check");
         if (nailartService.nailartRemove(nailartSeq)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
         } else {

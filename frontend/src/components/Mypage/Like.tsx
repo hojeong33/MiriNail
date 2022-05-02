@@ -4,11 +4,22 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useState } from "react";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getLikeNailarts } from "../../store/apis/favorite";
+import { TailSpin } from "react-loader-spinner"
 
 const Wrapper = styled.div`
   .pagination {
     display: flex;
     margin: 20px 0;
+    justify-content: center;
+    align-items: center;
+  }
+  .loading {
+    width: 100%;
+    height: 300px;
+    display: flex;
     justify-content: center;
     align-items: center;
   }
@@ -40,6 +51,7 @@ const ItemCard = styled.div`
       width: 100%;
       height: 100%;
       object-fit: cover;
+      cursor: pointer;
     }
     svg {
       position: absolute;
@@ -127,40 +139,77 @@ const Like = () => {
       isfollow: true
     },
   ])
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
+  const { userSeq } = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
+    console.log(event);
+    console.log(page);
+    setPage(page);
+  };
+
+  const onClickCard = (nailartSeq:number) => {
+    navigate(`/nft/${nailartSeq}`)
   }
   
+  const { data, isLoading } = useQuery<any, Error>(
+    ["like", page],
+    async () => {
+      return await getLikeNailarts(Number(userSeq), page, 12);
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        setLastPage(res.totalPages)
+        // setNailarts(res.content);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
   return (
     <Wrapper>
-      <ItemCards>
-        {items.map((item, idx) => {
-          return (
-            <ItemCard key={idx}>
-              <div className="cardwrapper">
-                <img src="/assets/images/원숭이.png" alt="" />
-                {item.isfollow ? (
+      {isLoading ? (
+        <div className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </div>
+      ) : (
+        <ItemCards>
+          {data.content?.map((item: any, idx: number) => {
+            return (
+              <ItemCard
+                onClick={() => onClickCard(item.nailart.nailartSeq)}
+                key={idx}
+              >
+                <div className="cardwrapper">
+                  <img src={item.nailart.nailartThumbnailUrl} alt="" />
+                  {/* {item.isfollow ? (
                   <FavoriteIcon color="error" />
                 ) : (
                   <FavoriteBorderIcon color="error" />
-                )}
-              </div>
-              <div className="title">{item.title}</div>
-              <div className="price">{item.price.toLocaleString()}원</div>
-              <div className="category">
-                {item.category.map((category, idx) => {
-                  return <span key={idx}>#{category} </span>;
-                })}
-              </div>
-            </ItemCard>
-          );
-        })}
-      </ItemCards>
+                )} */}
+                </div>
+                <div className="title">
+                  {item.nailart.nailartType} - {item.nailart.nailartDetailColor}
+                </div>
+                <div className="price">
+                  {item.nailart.nailartPrice.toLocaleString()}원
+                </div>
+                <div className="category"># {item.nailart.nailartWeather}</div>
+              </ItemCard>
+            );
+          })}
+        </ItemCards>
+      )}
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={10} shape="rounded" onChange={onchangePage} />
+          <Pagination
+            count={lastPage}
+            shape="rounded"
+            onChange={onchangePage}
+          />
         </Stack>
       </div>
     </Wrapper>

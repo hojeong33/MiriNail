@@ -4,8 +4,10 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.nail.backend.domain.book.db.repository.BookRepository;
 import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
+import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -67,6 +70,9 @@ public class NailartServiceImpl implements NailartService {
 
     @Autowired
     DesignerInfoRepository designerInfoRepository;
+
+    @Autowired
+    BookRepository bookRepository;
 
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
@@ -190,7 +196,6 @@ public class NailartServiceImpl implements NailartService {
 
         return nailartDetailGetRes;
     }
-
 
     @Override
     public Nailart nailartRegister(NailartRegisterPostReq nailartRegisterPostReq, List<MultipartFile> files) {
@@ -336,11 +341,12 @@ public class NailartServiceImpl implements NailartService {
     @Transactional
     public boolean nailartRemove(long nailartSeq) {
         if (nailartRepository.findById(nailartSeq).isPresent()) {
-            nailartImgRepository.deleteById(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
-            nailartRepository.deleteById(nailartSeq);
+//            System.out.println(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
+//            System.out.println(bookRepository.findByNailartSeq(nailartSeq));
+//            nailartImgRepository.deleteById(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
+//            nailartRepository.deleteById(nailartSeq);
             return true;
         } else
             return false;
     }
-
 }

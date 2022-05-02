@@ -1,5 +1,6 @@
 package com.nail.backend.domain.follow.db.entity;
 
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,8 +29,8 @@ public class Follow {
     User followFollower;
 
     @ManyToOne
-    @JoinColumn(name = "follow_followee", referencedColumnName = "user_seq")
+    @JoinColumn(name = "follow_followee", referencedColumnName = "designer_seq")
     @ApiModelProperty(value = "팔로우 요청받는 사람 Seq")
-    User followFollowee;
+    DesignerInfo followFollowee;
 
 }
