@@ -10,11 +10,23 @@ const Container = styled("div")({
   width: "70%",
   position: "absolute",
 });
-export interface BestReviewProps {
-  name: string;
-  price: number;
-  tags: Array<string>;
-  img: string;
+interface BestReviewProps {
+  nailart: NailArtProps;
+}
+interface NailArtProps {
+  designerSeq: number;
+  nailartAvailable: false;
+  nailartColor: string;
+  nailartDesc: string;
+  nailartDetailColor: string;
+  nailartName: string;
+  nailartPrice: number;
+  nailartRating: number;
+  nailartRegedAt: null;
+  nailartSeq: number;
+  nailartThumbnailUrl: string;
+  nailartType: string;
+  nailartWeather: string;
 }
 export interface Props {
   items: BestReviewProps[];
@@ -50,6 +62,9 @@ const StyledSlider2 = styled(Slider)`
   .slick-dots {
     right: 10px;
     bottom: -10vh;
+    li button:before {
+      color: white;
+    }
   }
   color: white;
 `;
@@ -74,7 +89,7 @@ function BestReviewCarousels({ items }: Props) {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 3000,
     pauseOnHover: true,
   };
   const pagingSettings = {
@@ -83,7 +98,7 @@ function BestReviewCarousels({ items }: Props) {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 3000,
     pauseOnHover: true,
   };
   return (
@@ -99,13 +114,26 @@ function BestReviewCarousels({ items }: Props) {
               return (
                 <div key={idx}>
                   {/* <h1>{idx}</h1> */}
-                  <Typography variant="h4">{item.name}</Typography>
-                  <Typography variant="h5">{item.price}원</Typography>
-                  {item.tags.map((tag, i) => (
-                    <Typography variant="h5" key={i}>
-                      {tag}
-                    </Typography>
-                  ))}
+                  <Typography variant="h4">
+                    {item.nailart.nailartName}
+                  </Typography>
+
+                  <Typography variant="h5">
+                    {item.nailart.nailartColor}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartDetailColor}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartType}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartWeather}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartPrice}원
+                  </Typography>
+
                   <button
                     style={{
                       color: "white",
@@ -132,7 +160,7 @@ function BestReviewCarousels({ items }: Props) {
                   <div key={idx}>
                     {/* <h1>{idx}</h1> */}
                     <img
-                      src={item.img}
+                      src={item.nailart.nailartThumbnailUrl}
                       style={{ width: "32vh", height: "32vh" }}
                       alt=""
                     />
@@ -149,14 +177,37 @@ function BestReviewCarousels({ items }: Props) {
               return (
                 <div key={idx}>
                   {/* <h1>{idx}</h1> */}
-                  <Typography variant="h4">{item.name}</Typography>
-                  <Typography variant="h5">{item.price}원</Typography>
-                  {item.tags.map((tag, i) => (
-                    <Typography variant="h5" key={i}>
-                      {tag}
-                    </Typography>
-                  ))}
-                  <button style={{ color: "white" }}>자세히 보러가기</button>
+                  <Typography variant="h4">
+                    {item.nailart.nailartName}
+                  </Typography>
+
+                  <Typography variant="h5">
+                    {item.nailart.nailartColor}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartDetailColor}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartType}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartWeather}
+                  </Typography>
+                  <Typography variant="h5">
+                    {item.nailart.nailartPrice}원
+                  </Typography>
+
+                  <button
+                    style={{
+                      color: "white",
+                      border: "1px solid white",
+                      borderRadius: "12px",
+                      padding: "10px 20px",
+                      marginTop: "30px",
+                    }}
+                  >
+                    자세히 보러가기
+                  </button>
                 </div>
               );
             })}
@@ -166,8 +217,9 @@ function BestReviewCarousels({ items }: Props) {
               {items.map((item, idx) => {
                 return (
                   <div key={idx}>
+                    {/* <h1>{idx}</h1> */}
                     <img
-                      src={item.img}
+                      src={item.nailart.nailartThumbnailUrl}
                       style={{ width: "32vh", height: "32vh" }}
                       alt=""
                     />

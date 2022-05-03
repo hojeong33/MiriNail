@@ -3,6 +3,7 @@ import FileUpload2 from "./FileUpload2";
 import { useState, useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -143,6 +144,7 @@ const MainFrame = styled.div`
 const CreateCommunityContent = () => {
   //작성하기
   const ACCESS_TOKEN = localStorage.getItem("token");
+  const navigate = useNavigate();
   const createCommunity = async () => {
     console.log(communityDesc);
     console.log(communityTitle);
@@ -167,7 +169,9 @@ const CreateCommunityContent = () => {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       })
-      .then(console.log)
+      .then((res) => {
+        navigate("/community");
+      })
       .catch(console.log);
   };
   //리모컨
@@ -247,12 +251,25 @@ const CreateCommunityContent = () => {
                     {imageProcess.length >= 1 &&
                     textProcess2.length >= 1 &&
                     textProcess.length >= 10 ? (
-                      <div className="finBox">
+                      <div className="finBox" style={{ marginTop: "25px" }}>
                         <DoneIcon
                           fontSize="large"
-                          style={{ color: "green", fontWeight: "bold" }}
-                        />{" "}
-                        <button>등록</button>
+                          style={{
+                            color: "green",
+                            fontWeight: "bold",
+                            marginRight: "5px",
+                          }}
+                        />
+                        <button
+                          onClick={CreateCommunityContent}
+                          style={{
+                            border: "1px solid rgb(51,51,51)",
+                            padding: "3px 10px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          등록
+                        </button>
                       </div>
                     ) : (
                       <div style={{ marginTop: "25px" }}>
@@ -272,7 +289,7 @@ const CreateCommunityContent = () => {
                     setPostImages={setPostImages}
                   />
                 </div>
-                <div className="subTitle" style={{ marginTop: "120px" }}>
+                <div className="subTitle" style={{ marginTop: "80px" }}>
                   글제목 작성
                 </div>
                 <input
@@ -281,7 +298,7 @@ const CreateCommunityContent = () => {
                   style={{ width: "100%" }}
                 ></input>
 
-                <div className="subTitle" style={{ marginTop: "120px" }}>
+                <div className="subTitle" style={{ marginTop: "80px" }}>
                   글내용 작성
                 </div>
                 <textarea
@@ -293,10 +310,18 @@ const CreateCommunityContent = () => {
                 ></textarea>
 
                 <div className="buttons">
-                  <div className="btn1" onClick={createCommunity}>
+                  <button
+                    className="btn1"
+                    disabled={
+                      imageProcess.length < 1 ||
+                      textProcess2.length < 1 ||
+                      textProcess.length < 10
+                    }
+                    onClick={createCommunity}
+                  >
                     작성
-                  </div>
-                  <div className="btn2">취소</div>
+                  </button>
+                  <button className="btn2">취소</button>
                 </div>
               </div>
             </div>

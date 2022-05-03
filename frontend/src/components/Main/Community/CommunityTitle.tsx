@@ -8,7 +8,11 @@ const CommunityTitle = () => {
       <Typography variant="h3">COMMUNITY</Typography>
       <Typography variant="h6">다른 사용자와 소통해보세요</Typography>
       <button
-        style={{ border: "0.1rem solid" }}
+        style={{
+          border: "0.1rem solid",
+          padding: "8px 30px",
+          marginTop: "20px",
+        }}
         onClick={() => navigate(`/community`)}
       >
         <Typography variant="button">VIEW MORE</Typography>
