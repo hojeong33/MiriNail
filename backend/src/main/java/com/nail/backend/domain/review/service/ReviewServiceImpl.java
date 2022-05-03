@@ -160,6 +160,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
 
+    // 조회수 증가
+    public Long reviewCntPlus(Long reviewSeq){
+        return reviewRepositorySupport.modifyReviewCnt(reviewSeq);
+    }
+
+
 //    READ___________________________________________
 // 네일아트 리뷰 조회
 public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq){
