@@ -117,7 +117,7 @@ export const isLike = async(param:any) => {
 
   const response = await axios.get(base_url+`favorite/${Number(param)}`,{headers: {
     Authorization: `Bearer ${ACCESS_TOKEN}`,
-  },})
+  }})
   console.log(response.data)
   return response.data
 }
@@ -226,4 +226,40 @@ export const postReview = async(data:any) => {
     }}
     )
   console.log(response)
+}
+
+// 리뷰 조회
+export const getReview = async({queryKey}:any) => {
+  // console.log(queryKey[0])
+  const data = queryKey
+  const response = await axios.get(base_url +`review/nailart/${data[1]}`,{
+    params : {
+      size : 1000
+    }
+  })
+  console.log(response)
+  return response.data
+}
+
+// 리뷰 삭제
+export const delReview = async(param:any) => {
+  const response = await axios.delete(base_url +`review/${param}`)
+}
+
+// 리뷰 댓글 작성
+export const postReviewComment = async(data:any) => {
+  console.log(data)
+  const response = await axios.post(base_url +`review/comment`,data,)
+}
+
+// 리뷰 댓글 수정
+export const revReviewComment = async(data:any) => {
+  console.log(data)
+  const response = await axios.put(base_url +`review/comment`,data,)
+}
+
+// 리뷰 댓글 삭제
+export const delReviewComment = async(param:any) => {
+  console.log(param)
+  const response = await axios.patch(base_url + `review/review/${param}`)
 }

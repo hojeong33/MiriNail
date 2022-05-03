@@ -10,6 +10,7 @@ import { postReview } from '../../../store/api';
 import { useParams } from 'react-router-dom';
 import { designerId } from '../../../store/atoms';
 import { useRecoilValue } from 'recoil';
+import { QueryClient, useMutation, useQueryClient } from 'react-query';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -102,6 +103,7 @@ const Content = styled.div`
 `
 
 export default function BasicModal(modalStatus:any) {
+  const queryClient = useQueryClient()
   const nailartSeq = useParams().id!
   const writerId = useRecoilValue(designerId)
   const [open, setOpen] = useState(false);
@@ -196,9 +198,18 @@ export default function BasicModal(modalStatus:any) {
       console.log(value);
     }
 
-    await postReview(formdata)
+    await postReviewFunc.mutate(formdata)
     handleClose()
   }
+
+  const postReviewFunc = useMutation((data:any) => 
+    postReview(data)
+    ,{
+      onSuccess: () => {
+        queryClient.invalidateQueries('reviews')
+      }
+    })
+
 
 
   return (
