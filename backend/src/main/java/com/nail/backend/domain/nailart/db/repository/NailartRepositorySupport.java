@@ -284,4 +284,14 @@ public class NailartRepositorySupport {
 
         return result;
     }
+
+    // 이삭 작성
+    // 리뷰 평점 update
+    public Long modifyRatingByNailartSeq(float rate , Long nailartSeq){
+        Long execute = jpaQueryFactory.update(qNailart)
+                .set(qNailart.nailartRating,rate)
+                .where(qNailart.nailartSeq.eq(nailartSeq))
+                .execute();
+        return execute;
+    }
 }

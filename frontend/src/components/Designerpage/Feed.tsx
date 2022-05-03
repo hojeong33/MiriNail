@@ -35,6 +35,9 @@ const Wrapper = styled.div`
   .feedcontent {
     width: 650px;
     margin: 30px 0;
+    white-space: pre-wrap;
+    text-align: left;
+
   }
   .buttons {
     position: absolute;

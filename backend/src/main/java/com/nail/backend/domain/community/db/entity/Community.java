@@ -44,7 +44,9 @@ public class Community {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime communityRegedAt;
 
-    @OneToMany(mappedBy = "community")
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<CommunityImg>  communityImg;
 
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
+    private List<CommunityComment>  communityComment;
 }

@@ -46,6 +46,7 @@ import Followers from "./components/Designerpage/Followers";
 import TopButton from "./components/Navbar/TopButton";
 import Admin from "./routes/Admin/Admin";
 import ApplyList from "./components/Admin/ApplyList";
+import UpdateImg from "./components/Designerpage/UpdateProfileImg";
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
             <Route path="createask" element={<CreateAsk />}></Route>
             <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>
             <Route path="followers" element={<Followers />}></Route>
+            <Route path="updateimg" element={<UpdateImg />}></Route>
           </Route>
           <Route path="/admin" element={<Admin />} >
             <Route path="applylist" element={<ApplyList />}></Route>

@@ -190,19 +190,27 @@ const Header: React.FC<IProps> = ({ refetch }) => {
       <Wrapper>
         <div className="row">
           <div className="pageHeader">
-            <img src={designer.designerInfo.designerInfoImgUrl} alt="" />
+            <img src={designer.designerInfo.designerProfileImgUrl ? designer.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
             <div className="designername">
               {designer.designerInfo.designerShopName}
             </div>
             <div className="buttons">
               <Link to="createask">
-                <button className={`${temp[temp.length - 1] === "createask" ? "selected" : ""}`}>
+                <button
+                  className={`${
+                    temp[temp.length - 1] === "createask" ? "selected" : ""
+                  }`}
+                >
                   <CreateIcon />
                   1:1 문의
                 </button>
               </Link>
               <Link to="reservation">
-                <button className={`${temp[temp.length - 1] === "reservation" ? "selected" : ""}`}>
+                <button
+                  className={`${
+                    temp[temp.length - 1] === "reservation" ? "selected" : ""
+                  }`}
+                >
                   <CalendarMonthIcon />
                   예약하기
                 </button>
@@ -220,18 +228,32 @@ const Header: React.FC<IProps> = ({ refetch }) => {
               )}
             </div>
             <div className="buttons">
-              <button>
-                <AccountBoxIcon />
-                사진변경
-              </button>
+              <Link to="updateimg">
+                <button className={`${
+                    temp[temp.length - 1] === "updateimg" ? "selected" : ""
+                  }`}>
+                  <AccountBoxIcon />
+                  사진변경
+                </button>
+              </Link>
               <Link to="reservationcheck">
-                <button className={`${temp[temp.length - 1] === "reservationcheck" ? "selected" : ""}`}>
+                <button
+                  className={`${
+                    temp[temp.length - 1] === "reservationcheck"
+                      ? "selected"
+                      : ""
+                  }`}
+                >
                   <CalendarMonthIcon />
                   예약확인
                 </button>
               </Link>
               <Link to="followers">
-                <button className={`${temp[temp.length - 1] === "followers" ? "selected" : ""}`}>
+                <button
+                  className={`${
+                    temp[temp.length - 1] === "followers" ? "selected" : ""
+                  }`}
+                >
                   <PeopleIcon />
                   팔로워들
                 </button>
