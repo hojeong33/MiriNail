@@ -29,6 +29,7 @@ public class ReviewCommentRepositorySupport {
     public Long deleteReviewComment(Long reviewCommentSeq){
         Long execute = jpaQueryFactory.update(qReviewComment)
                 .set(qReviewComment.reviewCommentDesc,"삭제된 댓글입니다.")
+                .set(qReviewComment.reviewCommentIsDelete,true)
                 .where(qReviewComment.reviewCommentSeq.eq(reviewCommentSeq))
                 .execute();
         return execute;

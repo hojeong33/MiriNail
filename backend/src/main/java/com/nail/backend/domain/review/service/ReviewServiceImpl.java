@@ -183,6 +183,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
         for(ReviewComment rc : reviewCommentList){
 
         ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
                 .userSeq(rc.getUser().getUserSeq())
                 .userNickname(rc.getUser().getUserNickname())
                 .userProfileImg(rc.getUser().getUserProfileImg())
@@ -238,6 +239,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             for(ReviewComment rc : reviewCommentList){
 
                 ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
                         .userSeq(rc.getUser().getUserSeq())
                         .userNickname(rc.getUser().getUserNickname())
                         .userProfileImg(rc.getUser().getUserProfileImg())
@@ -294,6 +296,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             for(ReviewComment rc : reviewCommentList){
 
                 ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
                         .userSeq(rc.getUser().getUserSeq())
                         .userNickname(rc.getUser().getUserNickname())
                         .userProfileImg(rc.getUser().getUserProfileImg())
@@ -349,6 +352,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             for(ReviewComment rc : reviewCommentList){
 
                 ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
                         .userSeq(rc.getUser().getUserSeq())
                         .userNickname(rc.getUser().getUserNickname())
                         .userProfileImg(rc.getUser().getUserProfileImg())
