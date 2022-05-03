@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class CommunityCommentGetRes {
 
     private Long communityCommentSeq;
+    private boolean communityCommentIsDelete;
 
     private Long userSeq;
     private String userNickname;
