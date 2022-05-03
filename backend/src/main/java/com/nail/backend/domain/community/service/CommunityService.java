@@ -23,7 +23,7 @@ public interface CommunityService {
 //    READ___________________________________________
     Page<CommunityGetRes> getCommunityList(Pageable pageable);
     Page<CommunityGetRes> getCommunityListByUser(Pageable pageable, String userId);
-    List<CommunityGetRes> getTop10Community();
+    List<CommunityGetRes> getTop20Community();
 
     CommunityGetRes getCommunity(Long communitySeq);
     // 댓글
