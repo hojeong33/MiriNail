@@ -24,17 +24,13 @@ public class DesignerInfo implements Serializable {
 
     @MapsId
     @ApiModelProperty(value = "유저 정보")
-    @OneToOne
-    @JoinColumn(name = "designer_seq")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "designer_seq", referencedColumnName="user_seq")
     private User user;
 
     // 디자이너 프로필 이미지
     @ApiModelProperty(value = "디자이너 프로필 이미지")
     private String designerProfileImgUrl;
-
-    // 유저 포트폴리오
-    @ApiModelProperty(value = "유저 포트폴리오 url")
-    String designerPortfolioUrl;
 
     // 유저 사업자 등록증
     @ApiModelProperty(value = "유저 사업자등록증 url")

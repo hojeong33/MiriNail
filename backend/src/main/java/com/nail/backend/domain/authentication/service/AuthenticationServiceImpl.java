@@ -69,8 +69,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         file.delete();
 
 
-
-
         User user = userRepository.findByUserId(userId);
         DesignerApplication designerApplication = DesignerApplication.builder()
                 .designerSeq(user.getUserSeq())
@@ -79,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .designerShopName(artistRegisterPostReq.getDesignerShopName())
                 .designerAddress(artistRegisterPostReq.getDesignerAddress())
                 .designerTel(artistRegisterPostReq.getDesignerTel())
-                .designerAuthStatus(true)
+                .designerAuthStatus(0)
                 .designerRegedAt(LocalDateTime.now())
                 .build();
 

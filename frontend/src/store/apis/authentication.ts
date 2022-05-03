@@ -18,10 +18,22 @@ export const getAllApply = async (page:number, size:number) => {
   return response.data
 }
 
-// 인증신청 수락/거절
-export const patchConfirmApply = async () => {
+
+// 인증신청 상세 조회
+export const getDetailApply = async (designerSeq:number) => {
   const response = await apiClient.get<any>(
+    `/authentication/${designerSeq}`,
+    { params : { designerSeq } }
+  )
+  return response
+}
+
+
+// 인증신청 수락/거절
+export const patchConfirmApply = async (accepted:boolean, designerSeq:number) => {
+  const response = await apiClient.patch<any>(
     "/authentication/confirm",
+    { accepted, designerSeq }
   )
   return response.data
 }
