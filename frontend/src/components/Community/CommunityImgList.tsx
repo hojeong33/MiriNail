@@ -8,6 +8,15 @@ import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { notEqual } from "assert";
 import TimeCounting from "time-counting";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const StyledSlider = styled(Slider)`
+  .slick-dots {
+    bottom: 10px;
+  }
+`;
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -65,6 +74,7 @@ const Wrapper = styled.div`
     // flex-directioin : column;
     background-color: #fff;
     width: 40%;
+
     img {
       border-radius: 70px;
       -moz-border-radius: 70px;
@@ -141,6 +151,13 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 }
 
 export default function CommunityImgList() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   interface CommunityImgProp {
     communityImgSeq: number;
     communityImgUrl: string;
@@ -160,7 +177,7 @@ export default function CommunityImgList() {
     communityTitle: string;
     communityDesc: string;
     communityImg: CommunityImgProp[];
-    communityRededAt: Array<number>;
+    communityRededAt: string;
   }
   interface CommentDataProp {
     communityCommentSeq: number;
@@ -168,7 +185,8 @@ export default function CommunityImgList() {
     userNickname: string;
     userProfileImg: string;
     communityCommentDesc: string;
-    communityCommentRegedAt: Array<number>;
+    communityCommentRegedAt: string;
+    communityCommentIsDelete: boolean;
   }
   interface CommentPostDataProp {
     communityCommentDesc: string;
@@ -190,6 +208,8 @@ export default function CommunityImgList() {
   const [inputVal, setInputVal] = useState<string>("");
   const [test, setTest] = useState(1);
   const [time, setTime] = useState<string>("");
+  const [communityTime, setCommunityTime] = useState<string>("");
+
   useEffect(() => {
     fetchData(test);
   }, [test]);
@@ -219,6 +239,7 @@ export default function CommunityImgList() {
       justNow: 3601,
     },
   };
+
   //인피니티 스크롤
   const infiniteScroll = async () => {
     let scrollTop = document.documentElement.scrollTop;
@@ -354,7 +375,9 @@ export default function CommunityImgList() {
           setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
-          console.log(itemDetail, "게시글 상세 데이터");
+          console.log(res.data.communityRegedAt, "게시글 상세 데이터");
+          let temp = TimeCounting(res.data.communityRegedAt, option);
+          setCommunityTime(temp);
           getNowTime();
         })
         .catch((err) => {
@@ -472,10 +495,16 @@ export default function CommunityImgList() {
             >
               <Box sx={modalStyle}>
                 <Wrapper>
-                  <div className="leftDetailBox">
-                    <img
-                      src={itemDetail?.communityImg[0].communityImgUrl}
-                    ></img>
+                  <div className="leftDetailBox" style={{ overflow: "hidden" }}>
+                    <StyledSlider {...settings}>
+                      {itemDetail?.communityImg.map((item, idx) => {
+                        return (
+                          <div key={idx}>
+                            <img src={item.communityImgUrl} alt="" />
+                          </div>
+                        );
+                      })}
+                    </StyledSlider>
                   </div>
                   <div
                     className="rightDetailBox"
@@ -522,144 +551,178 @@ export default function CommunityImgList() {
                         </div>
                         <div style={{ marginLeft: "14px" }}>
                           <div>{itemDetail?.communityDesc}</div>
-                          <div style={{ marginTop: "10px" }}>
-                            {TimeCounting("2022-05-03 00:00:00", option)}
-                          </div>
+                          {itemDetail ? (
+                            <div style={{ marginTop: "10px" }}>
+                              {communityTime}
+                            </div>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </div>
                       <div className="replys">
                         {commentData.map((e: any, idx) => {
                           return (
                             <div className="replyFrame" key={idx}>
-                              <div className="replysInfo">
-                                <div style={{ borderRadius: "70%" }}>
-                                  <img
-                                    src={e.userProfileImg}
-                                    alt=""
-                                    width="32"
-                                    height="32"
-                                  />
+                              {e.communityCommentIsDelete ? (
+                                <div className="replysInfo">
+                                  <div style={{ borderRadius: "70%" }}>
+                                    <img
+                                      src={e.userProfileImg}
+                                      alt=""
+                                      width="32"
+                                      height="32"
+                                    />
+                                  </div>
+                                  <span style={{ marginLeft: "14px" }}>
+                                    {e.userNickname}
+                                  </span>
+
+                                  <div>
+                                    <div style={{ marginLeft: "14px" }}>
+                                      {e.communityCommentDesc}
+                                    </div>
+                                  </div>
                                 </div>
-                                <span style={{ marginLeft: "14px" }}>
-                                  {e.userNickname}
-                                </span>
-                                <div>
-                                  <div style={{ marginLeft: "14px" }}>
-                                    {e.communityCommentDesc}
-                                    {e.userNickname ===
-                                      sessionStorage.getItem(
-                                        "userNickname"
-                                      ) && (
-                                      <button
-                                        onClick={() => {
-                                          deleteComment(e.communityCommentSeq);
-                                        }}
-                                      >
-                                        삭제
-                                      </button>
-                                    )}
+                              ) : (
+                                <div className="replysInfo">
+                                  <div style={{ borderRadius: "70%" }}>
+                                    <img
+                                      src={e.userProfileImg}
+                                      alt=""
+                                      width="32"
+                                      height="32"
+                                    />
                                   </div>
-                                  <div style={{ margin: "10px 0 0 14px" }}>
-                                    <span>
-                                      {TimeCounting(
-                                        "2020-08-10 05:00:00",
-                                        option
+                                  <span style={{ marginLeft: "14px" }}>
+                                    {e.userNickname}
+                                  </span>
+
+                                  <div>
+                                    <div style={{ marginLeft: "14px" }}>
+                                      {e.communityCommentDesc}
+                                      {e.userNickname ===
+                                        sessionStorage.getItem(
+                                          "userNickname"
+                                        ) && (
+                                        <button
+                                          onClick={() => {
+                                            deleteComment(
+                                              e.communityCommentSeq
+                                            );
+                                          }}
+                                        >
+                                          삭제
+                                        </button>
                                       )}
-                                    </span>
-                                    <span
-                                      style={{ marginLeft: "15px" }}
-                                      onClick={() =>
-                                        tagUser(
-                                          e.userNickname,
-                                          e.communityCommentSeq
-                                        )
-                                      }
-                                    >
-                                      답글 달기
-                                    </span>
-                                  </div>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      margin: "10px 0 10px 14px",
-                                    }}
-                                  >
+                                    </div>
+                                    <div style={{ margin: "10px 0 0 14px" }}>
+                                      <span>
+                                        {TimeCounting(
+                                          e.communityCommentRegedAt,
+                                          option
+                                        )}
+                                      </span>
+                                      <span
+                                        style={{ marginLeft: "15px" }}
+                                        onClick={() =>
+                                          tagUser(
+                                            e.userNickname,
+                                            e.communityCommentSeq
+                                          )
+                                        }
+                                      >
+                                        답글 달기
+                                      </span>
+                                    </div>
                                     <div
                                       style={{
-                                        borderBottom: "2px solid #e3e3e3",
-                                        width: "40px",
-                                        height: "13px",
-                                      }}
-                                    ></div>
-                                    <span
-                                      style={{ marginLeft: "15px" }}
-                                      onClick={() => {
-                                        getReplyComments(e.communityCommentSeq);
-                                        toggle(e.communityCommentSeq);
+                                        display: "flex",
+                                        margin: "10px 0 10px 14px",
                                       }}
                                     >
-                                      답글 보기
-                                    </span>
-                                  </div>
-                                  {open === e.communityCommentSeq ? (
-                                    <div style={{ margin: "12px 0 12px 14px" }}>
-                                      <div>
-                                        {replyData.map((ele: any) => {
-                                          return (
-                                            <div
-                                              style={{
-                                                display: "flex",
-                                                margin: "20px 0",
-                                              }}
-                                            >
-                                              <div
-                                                style={{
-                                                  borderRadius: "70%",
-                                                }}
-                                              >
-                                                <img
-                                                  src={ele.userProfileImg}
-                                                  alt=""
-                                                  width="32"
-                                                  height="32"
-                                                />
-                                              </div>
-                                              <div
-                                                style={{
-                                                  marginLeft: "14px",
-                                                }}
-                                              >
-                                                {ele.userNickname}
-                                              </div>
-                                              <div
-                                                style={{
-                                                  marginLeft: "14px",
-                                                }}
-                                              >
-                                                {ele.communityCommentDesc}
-                                                {e.userNickname ===
-                                                  sessionStorage.getItem(
-                                                    "userNickname"
-                                                  ) && (
-                                                  <button
-                                                    onClick={() => {
-                                                      deleteComment(
-                                                        ele.communityCommentSeq
-                                                      );
-                                                    }}
-                                                  >
-                                                    삭제
-                                                  </button>
-                                                )}
-                                              </div>
-                                            </div>
+                                      <div
+                                        style={{
+                                          borderBottom: "2px solid #e3e3e3",
+                                          width: "40px",
+                                          height: "13px",
+                                        }}
+                                      ></div>
+                                      <span
+                                        style={{ marginLeft: "15px" }}
+                                        onClick={() => {
+                                          getReplyComments(
+                                            e.communityCommentSeq
                                           );
-                                        })}
-                                      </div>
+                                          toggle(e.communityCommentSeq);
+                                        }}
+                                      >
+                                        답글 보기
+                                      </span>
                                     </div>
-                                  ) : null}
+                                    {open === e.communityCommentSeq ? (
+                                      <div
+                                        style={{ margin: "12px 0 12px 14px" }}
+                                      >
+                                        <div>
+                                          {replyData.map((ele: any) => {
+                                            return (
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  margin: "20px 0",
+                                                }}
+                                              >
+                                                <div
+                                                  style={{
+                                                    borderRadius: "70%",
+                                                  }}
+                                                >
+                                                  <img
+                                                    src={ele.userProfileImg}
+                                                    alt=""
+                                                    width="32"
+                                                    height="32"
+                                                  />
+                                                </div>
+                                                <div
+                                                  style={{
+                                                    marginLeft: "14px",
+                                                  }}
+                                                >
+                                                  {ele.userNickname}
+                                                </div>
+                                                <div
+                                                  style={{
+                                                    marginLeft: "14px",
+                                                  }}
+                                                >
+                                                  {ele.communityCommentDesc}
+                                                  {e.userNickname ===
+                                                    sessionStorage.getItem(
+                                                      "userNickname"
+                                                    ) && (
+                                                    <button
+                                                      onClick={() => {
+                                                        deleteComment(
+                                                          ele.communityCommentSeq
+                                                        );
+                                                      }}
+                                                    >
+                                                      삭제
+                                                    </button>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    ) : null}
+                                  </div>
                                 </div>
-                              </div>
+                              )}
+
                               <div></div>
                             </div>
                           );
