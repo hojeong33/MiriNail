@@ -89,7 +89,7 @@ const Wrapper = styled.div`
 
 `;
 
-function CreateCommunityHeader() {
+function UpdateCommunityHeader() {
   return (
     <>
       <Wrapper>
@@ -100,7 +100,9 @@ function CreateCommunityHeader() {
             <div className="NavElement">
               <span>Community</span>
               <ChevronRightIcon style={{ top: "0" }} />
-              <span>작성하기</span>
+              <span>CommunityDetail</span>
+              <ChevronRightIcon style={{ top: "0" }} />
+              <span>수정하기</span>
             </div>
           </div>
         </div>
@@ -109,4 +111,4 @@ function CreateCommunityHeader() {
   );
 }
 
-export default CreateCommunityHeader;
+export default UpdateCommunityHeader;

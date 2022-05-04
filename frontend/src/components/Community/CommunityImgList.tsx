@@ -11,7 +11,7 @@ import TimeCounting from "time-counting";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import { useNavigate } from "react-router-dom";
 const StyledSlider = styled(Slider)`
   .slick-dots {
     bottom: 10px;
@@ -209,6 +209,7 @@ export default function CommunityImgList() {
   const [test, setTest] = useState(1);
   const [time, setTime] = useState<string>("");
   const [communityTime, setCommunityTime] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData(test);
@@ -378,6 +379,7 @@ export default function CommunityImgList() {
           console.log(res.data.communityRegedAt, "게시글 상세 데이터");
           let temp = TimeCounting(res.data.communityRegedAt, option);
           setCommunityTime(temp);
+          sessionStorage.setItem("communitySeq", communitySeq.toString());
           getNowTime();
         })
         .catch((err) => {
@@ -481,8 +483,11 @@ export default function CommunityImgList() {
                 )}
                 alt={item.communityTitle}
                 loading="lazy"
-                onClick={() => getDetail(item.communitySeq, idx)}
+                onClick={() => {
+                  getDetail(item.communitySeq, idx);
+                }}
               />
+
               <div className="inner-content">
                 <div>{item.communityTitle}</div>
               </div>
@@ -527,7 +532,20 @@ export default function CommunityImgList() {
                       {itemDetail?.userNickname ===
                         sessionStorage.getItem("userNickname") && (
                         <div>
-                          <button>수정</button>
+                          <button
+                            onClick={() => {
+                              navigate("/community/update", {
+                                state: {
+                                  desc: itemDetail?.communityDesc,
+                                  title: itemDetail.communityTitle,
+                                  img: itemDetail?.communityImg,
+                                },
+                              });
+                            }}
+                          >
+                            수정
+                          </button>
+
                           <button
                             onClick={() => {
                               deleteCommunity(itemDetail.communitySeq);

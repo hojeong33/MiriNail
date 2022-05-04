@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { styled } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   marginLeft: "600px",
@@ -74,6 +75,7 @@ function BestReviewCarousels({ items }: Props) {
   const [pagingSlick, setPagingSlick] = useState(undefined || null);
   const mainSlickRef = useRef(null);
   const pagingSlickRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMainSlick(mainSlickRef.current);
@@ -113,7 +115,6 @@ function BestReviewCarousels({ items }: Props) {
             {items.map((item, idx) => {
               return (
                 <div key={idx}>
-                  {/* <h1>{idx}</h1> */}
                   <Typography variant="h4">
                     {item.nailart.nailartName}
                   </Typography>
@@ -141,6 +142,9 @@ function BestReviewCarousels({ items }: Props) {
                       borderRadius: "12px",
                       padding: "10px 20px",
                       marginTop: "30px",
+                    }}
+                    onClick={() => {
+                      navigate(`nft/${item.nailart.nailartSeq}`);
                     }}
                   >
                     자세히 보러가기

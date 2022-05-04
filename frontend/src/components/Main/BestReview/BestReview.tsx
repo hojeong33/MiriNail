@@ -45,68 +45,6 @@ const BestReview = () => {
     fetchData();
     console.log("베스트 리뷰 데이터 가져오기");
   }, []);
-  // const bestReview: BestReviewProps[] = [
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  //   {
-  //     img: "https://i.pinimg.com/originals/25/ce/ee/25ceee9b74f98d121484e38553ab443a.jpg",
-  //     name: "글레이즈-레드",
-  //     price: 5000,
-  //     tags: ["#겨울", "#Designer1"],
-  //   },
-  // ];
   return (
     <div
       style={{
