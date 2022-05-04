@@ -12,6 +12,7 @@ import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.request.ReviewUpdatePostReq;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.review.service.ReviewService;
 import io.swagger.annotations.*;
@@ -109,12 +110,13 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패")
     })
-    @GetMapping("/nailart/{nailartSeq}")
+    @GetMapping("/nailart/{nailartSeq}/{type}")
     public ResponseEntity<Page<ReviewGetRes>> getReviewListByNailartSeq(@PageableDefault(page = 0, size = 10, sort = "reviewSeq", direction = Sort.Direction.DESC) Pageable pageable,
-                                                                        @ApiParam(value = "네일 아트 Seq") @PathVariable Long nailartSeq) {
+                                                                        @ApiParam(value = "네일 아트 Seq") @PathVariable Long nailartSeq,
+                                                                        @ApiParam(value = "1-최신순, 2-평점, 3-조회순") @PathVariable int type) {
 
         log.info("getReviewList - 호출");
-        Page<ReviewGetRes> reviewList = reviewService.getReviewListByNailartSeq(pageable,nailartSeq);
+        Page<ReviewGetRes> reviewList = reviewService.getReviewListByNailartSeq(pageable,nailartSeq,type);
 
         return ResponseEntity.status(200).body(reviewList);
 }
@@ -166,6 +168,29 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
         return ResponseEntity.status(200).body(reviewList);
     }
 //    UPDATE_________________________________________
+    @Transactional
+    @ApiOperation(value = "리뷰 글 업데이트")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "수정 성공"),
+            @ApiResponse(code = 404, message = "수정 실패")
+    })
+    @PostMapping("/update")
+    public ResponseEntity<BaseResponseBody> reviewUpdate(@RequestPart(value = "reviewFiles", required = false) List<MultipartFile> reviewFiles,
+                                                           @ModelAttribute ReviewUpdatePostReq reviewUpdatePostReq,
+                                                           Principal principal) throws IOException {
+
+        log.info("reviewUpdate - 호출");
+    //    String userId = principal.getName();
+        String userId = "2217289220";
+
+        Review res = reviewService.reviewUpdate(reviewFiles, reviewUpdatePostReq, userId);
+        if (!res.equals(null)) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "수정 성공"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "수정 실패"));
+        }
+    }
+
 
     @Transactional
     @ApiOperation(value ="리뷰 댓글 수정")

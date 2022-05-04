@@ -1,5 +1,6 @@
 package com.nail.backend.domain.community.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,8 @@ public class CommunityCommentGetRes {
     private String communityCommentDesc;
     private Long communityGroupNum;
     private int communityCommentLayer;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime communityCommentRegedAt;
 
 }
