@@ -9,6 +9,7 @@ import com.nail.backend.domain.community.db.repository.*;
 import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
+import com.nail.backend.domain.community.request.CommunityUpdatePostReq;
 import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.qna.response.QnaGetRes;
@@ -328,6 +329,59 @@ public class CommunityServiceImpl implements CommunityService{
 
 //    UPDATE_________________________________________
 
+    public Community communityUpdate(List<MultipartFile> communityFiles,
+                                       CommunityUpdatePostReq communityUpdatePostReq,
+                                       String userId) throws IOException{
+
+        User user = userRepository.findByUserId(userId);
+        Community community = communityRepository.findById(communityUpdatePostReq.getCommunitySeq()).orElse(null);
+        if(community.getUser().getUserId().equals(userId)){
+
+            communityRepositorySupport.modifyCommunity(communityUpdatePostReq);
+            community = communityRepository.findById(communityUpdatePostReq.getCommunitySeq()).orElse(null);
+        //파일 처리
+
+            // 기존 url 삭제
+            communityImgRepository.deleteAllByCommunity_CommunitySeq(communityUpdatePostReq.getCommunitySeq());
+
+            // 다시 업로드
+            if(!communityFiles.isEmpty()){
+                for (MultipartFile f : communityFiles ) {
+
+                    // file 업로드
+                    String fileName  = awsS3Service.createFileName(f.getOriginalFilename());
+
+                    //파일 객체 생성
+                    //        System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
+                    File file = new File(System.getProperty("user.dir")+ fileName);
+
+                    //파일 저장
+                    f.transferTo(file);
+
+                    //S3 파일 업로드
+                    awsS3Service.uploadOnS3(fileName, file);
+
+                    //주소 할당
+                    String communityFileUrl = amazonS3Client.getUrl(bucket,fileName).toString();
+
+                    //파일 삭제
+                    file.delete();
+
+
+                    // 소통게시판 파일 테이블 insert
+                    CommunityImg communityImg = CommunityImg.builder()
+                            .community(community)
+                            .communityImgUrl(communityFileUrl)
+                            .build();
+
+                    communityImgRepository.save(communityImg);
+
+                }
+            }
+        }
+
+        return community;
+    }
     @Override
     @Transactional
     public Long communityCommentModify(CommunityCommentModifyPutReq communityCommentModifyPutReq){
