@@ -6,6 +6,7 @@ import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.request.ReviewUpdatePostReq;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ public interface ReviewService {
     List<ReviewGetRes> getTop10ReviewList();
 
     //    UPDATE_________________________________________
+    Review reviewUpdate(List<MultipartFile> reviewFiles, ReviewUpdatePostReq reviewUpdatePostReq, String userId) throws IOException;
     Long reviewCommentModify(ReviewCommentModifyPutReq reviewCommentModifyPutReq);
 
 //    DELETE_________________________________________

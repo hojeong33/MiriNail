@@ -333,7 +333,6 @@ public class CommunityServiceImpl implements CommunityService{
                                        CommunityUpdatePostReq communityUpdatePostReq,
                                        String userId) throws IOException{
 
-        User user = userRepository.findByUserId(userId);
         Community community = communityRepository.findById(communityUpdatePostReq.getCommunitySeq()).orElse(null);
         if(community.getUser().getUserId().equals(userId)){
 
