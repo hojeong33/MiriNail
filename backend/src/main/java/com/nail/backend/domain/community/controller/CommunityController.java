@@ -49,8 +49,8 @@ public class CommunityController {
                                                               Principal principal) throws IOException {
 
         log.info("communityRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         Community res = communityService.communityRegister(communityFiles, communityRegisterPostReq, userId);
         if (!res.equals(null)) {

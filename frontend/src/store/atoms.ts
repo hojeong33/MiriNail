@@ -67,3 +67,10 @@ export const nftFilter = atom({
   },
 
 })
+
+export const imgProp = atom({
+  key : "imgProp",
+  default : {},
+  effects_UNSTABLE : [persistAtom],
+  }
+)
