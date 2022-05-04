@@ -1,112 +1,41 @@
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-export interface CommunityContentProps {
-  img: string;
-  id: number;
+interface CommunityImgProp {
+  communityImgSeq: number;
+  communityImgUrl: string;
+}
+interface CommunityContentProps {
+  communityImg: CommunityImgProp[];
+  communitySeq: number;
 }
 const CommunityContent = () => {
-  //소통게시글 데이터 가져오기
-  // const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (ACCESS_TOKEN) {
-  //       const result = await axios({
-  //         method: "get",
-  //         url: `http://localhost:8080/api/community/`,
-  //         headers: {
-  //           Authorization: `Bearer ${ACCESS_TOKEN}`,
-  //         },
-  //       });
-  //       console.log(result);
-  //     }
-  //   };
-  //   fetchData();
-  //   console.log("소통게시글 데이터 가져오기");
-  // }, []);
-  //최신 소통게시글 20개
-  const contents: CommunityContentProps[] = [
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-    {
-      img: "https://image.msscdn.net/data/curating/15661/15661_1_org.jpg",
-      id: 1,
-    },
-  ];
+  const [contents, setContens] = useState<CommunityContentProps[]>([]);
+  // 소통게시글 데이터 가져오기
+  const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios({
+        method: "get",
+        url: `http://localhost:8080/api/community/cnt`,
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          setContens(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+    console.log("소통게시글 데이터 가져오기");
+  }, []);
+  // 최신 소통게시글 20개
+
   return (
     <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
       <ImageList
@@ -116,7 +45,7 @@ const CommunityContent = () => {
       >
         {contents.map((item, idx) => (
           <ImageListItem key={idx}>
-            <img src={item.img} />
+            <img src={item.communityImg[0].communityImgUrl} />
           </ImageListItem>
         ))}
       </ImageList>

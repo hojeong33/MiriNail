@@ -5,7 +5,12 @@ const BestNailTitle = () => {
       <Typography variant="h3">BEST</Typography>
       <Typography variant="h3">NAIL ART</Typography>
       <Typography variant="h6">네일 베스트</Typography>
-      <button style={{ border: "0.1rem solid" }}>
+      <button
+        style={{
+          border: "0.1rem solid",
+          padding: "4px 15px",
+        }}
+      >
         <Typography variant="button">VIEW MORE</Typography>
       </button>
     </div>
