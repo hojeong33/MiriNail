@@ -43,6 +43,10 @@ public class CommunityComment {
     @ApiModelProperty(value = "커뮤니티 게시판 댓글 계층 ")
     private int communityCommentLayer;
 
+
+    @ApiModelProperty(value = "커뮤니티 게시판 댓글 계층 ")
+    private boolean communityCommentIsDelete;
+
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime communityCommentRegedAt;

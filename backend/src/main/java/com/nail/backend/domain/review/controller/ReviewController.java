@@ -109,12 +109,13 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패")
     })
-    @GetMapping("/nailart/{nailartSeq}")
+    @GetMapping("/nailart/{nailartSeq}/{type}")
     public ResponseEntity<Page<ReviewGetRes>> getReviewListByNailartSeq(@PageableDefault(page = 0, size = 10, sort = "reviewSeq", direction = Sort.Direction.DESC) Pageable pageable,
-                                                                        @ApiParam(value = "네일 아트 Seq") @PathVariable Long nailartSeq) {
+                                                                        @ApiParam(value = "네일 아트 Seq") @PathVariable Long nailartSeq,
+                                                                        @ApiParam(value = "1-최신순, 2-평점, 3-조회순") @PathVariable int type) {
 
         log.info("getReviewList - 호출");
-        Page<ReviewGetRes> reviewList = reviewService.getReviewListByNailartSeq(pageable,nailartSeq);
+        Page<ReviewGetRes> reviewList = reviewService.getReviewListByNailartSeq(pageable,nailartSeq,type);
 
         return ResponseEntity.status(200).body(reviewList);
 }
