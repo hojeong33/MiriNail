@@ -2,6 +2,8 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ItemCard from "../../Cards/CaptureCard";
+import ModalTest from "../../Community/Modal";
 
 interface CommunityImgProp {
   communityImgSeq: number;
@@ -13,6 +15,8 @@ interface CommunityContentProps {
 }
 const CommunityContent = () => {
   const [contents, setContens] = useState<CommunityContentProps[]>([]);
+  const [modalState, setModalState] = useState(false);
+  const [curCommunitySeq, setCurCommunitySeq] = useState(0);
   // 소통게시글 데이터 가져오기
   const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
   useEffect(() => {
@@ -45,9 +49,22 @@ const CommunityContent = () => {
       >
         {contents.map((item, idx) => (
           <ImageListItem key={idx}>
-            <img src={item.communityImg[0].communityImgUrl} />
+            <img
+              src={item.communityImg[0].communityImgUrl}
+              onClick={() => {
+                setModalState((prev: any) => !prev);
+                setCurCommunitySeq(item.communitySeq);
+              }}
+            />
           </ImageListItem>
         ))}
+        {modalState && (
+          <ModalTest
+            itemData={contents}
+            communitySeq={curCommunitySeq}
+            state={modalState}
+          />
+        )}
       </ImageList>
     </div>
   );

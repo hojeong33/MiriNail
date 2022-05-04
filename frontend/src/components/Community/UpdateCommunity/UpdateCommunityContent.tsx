@@ -191,9 +191,10 @@ const UpdateCommunityContent = () => {
     }
   };
   const updateCommunity = async () => {
-    console.log(communityDesc);
-    console.log(communityTitle);
+    console.log(communityDesc, "내용");
+    console.log(communityTitle, "제목");
     const formdata: any = new FormData();
+    formdata.append("communitySeq", communitySeq);
     formdata.append("communityDesc", communityDesc);
     formdata.append("communityTitle", communityTitle);
     postImages.forEach((e) => {
@@ -208,7 +209,7 @@ const UpdateCommunityContent = () => {
       console.log(value);
     }
     axios
-      .post("http://localhost:8080/api/community", formdata, {
+      .post("http://localhost:8080/api/community/update", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -216,24 +217,25 @@ const UpdateCommunityContent = () => {
       })
       .then((res) => {
         navigate("/community");
+        console.log("수정완료");
       })
       .catch(console.log);
   };
   //리모컨
-  // window.addEventListener("scroll", () => {
-  //   let scrollTop = document.documentElement.scrollTop;
-  //   let clientHeight = document.documentElement.clientHeight;
-  //   let remote: any = document.getElementById("remote");
-  //   if (remote) {
-  //     if (scrollTop + clientHeight >= 1337) {
-  //       remote.style.position = "fixed";
-  //       remote.style.top = "180px";
-  //     } else {
-  //       remote.style.position = "relative";
-  //       remote.style.top = "";
-  //     }
-  //   }
-  // });
+  window.addEventListener("scroll", () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let clientHeight = document.documentElement.clientHeight;
+    let remote: any = document.getElementById("remote");
+    if (remote) {
+      if (scrollTop + clientHeight >= 1337) {
+        remote.style.position = "fixed";
+        remote.style.top = "180px";
+      } else {
+        remote.style.position = "relative";
+        remote.style.top = "";
+      }
+    }
+  });
 
   const [imageProcess, setImageProcess] = useState([]);
   const [textProcess, setTextProcess] = useState("");
@@ -262,7 +264,7 @@ const UpdateCommunityContent = () => {
           <div className="MainPadding">
             <div className="ItemList">
               <div className="LeftBox">
-                {/* <div className="OrderFilter" id="remote">
+                <div className="OrderFilter" id="remote">
                   <a>작성 과정</a>
                   <div className="CheckBox">
                     <input
@@ -322,7 +324,7 @@ const UpdateCommunityContent = () => {
                       </div>
                     )}
                   </div>
-                </div> */}
+                </div>
               </div>
               <div className="RightBox">
                 <div className="subTitle" style={{ marginTop: "48px" }}>
@@ -330,6 +332,7 @@ const UpdateCommunityContent = () => {
                 </div>
                 <div className="fileBox">
                   <FileUpload2
+                    defaultImg={itemDetail?.communityImg}
                     setImageProcess={setImageProcess}
                     setPostImages={setPostImages}
                   />

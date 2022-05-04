@@ -9,7 +9,7 @@ const ImageUploadBox = (props: any) => {
   const uploadBoxRef = useRef<any>();
   const inputRef = useRef<any>();
   const [testImages, setTestImages] = useState<any[]>([]);
-  console.log({ props }, "디폴트이미지!!!!!!!!!!!");
+
   useEffect(() => {
     console.log(uploadedImages);
     props.setImageProcess(uploadedImages);
@@ -70,7 +70,6 @@ const ImageUploadBox = (props: any) => {
 
   useEffect(() => {
     const imageJSXs: any = uploadedImages.map((image, index) => {
-      console.log(image, "이미지 기본");
       const isDeleteImage = (element: any) => {
         return element === image;
       };
@@ -81,6 +80,7 @@ const ImageUploadBox = (props: any) => {
       };
       return (
         <ImagePreview
+          defaultImg={props.defaultImg}
           image={image}
           deleteFunc={deleteFunc}
           test={index}
