@@ -214,7 +214,7 @@ const Wrapper = styled.div`
 
 const DesignReview = () => {
   const param = useParams().id
-  const [filter,setFilter] = useState(0)
+  const [filter,setFilter] = useState(1)
   const [dummy2,setDummy2] = useState({
     best : 0,
     good : 0,
@@ -222,7 +222,8 @@ const DesignReview = () => {
     bad : 0,
     worst : 0
   })
-  const {isLoading:isReviewLoading,data:reviewData} = useQuery(['reviews',param],getReview)
+  const {isLoading:isReviewLoading,data:reviewData} = useQuery(['reviews',param,filter],getReview)
+  const [test,setTest] = useState([])
   
   useEffect(() => {
     const best = reviewData?.content.filter((e:any) => e.reviewRating === 5).length
@@ -238,7 +239,7 @@ const DesignReview = () => {
       bad : bad,
       worst : worst,
     })
-  
+    setTest(reviewData?.content)
   },[reviewData])
   
   const highestBarVote = Math.max(dummy2.best,dummy2.good,dummy2.soso,dummy2.bad,dummy2.worst)
@@ -267,20 +268,20 @@ const DesignReview = () => {
 
   // useEffect(() => {
   //   if (filter === 0) {
-  //     const sortByRegister = data?.concat
-  //     // console.log(sortByRegister)
-  //     sortByRegister?.content.sort((a:any,b:any) => b.reviewSeq - a.reviewSeq)
+  //     const newArr = reviewData?.content.slice(0)
+  //     setTest(newArr)
   //   }
   //   if (filter === 1) {
-  //     const sortByReply = data?.concat
-  //     sortByReply?.content.sort((a:any,b:any) => b.reviewComments.length - a.reviewComments.length)
-  //     // console.log(sortByReply)
+  //     const newArr = reviewData?.content.slice(0).sort((a:any,b:any) => b.reviewRating - a.reviewRating)
+  //     setTest(newArr)
   //   }
 
   //   if (filter === 2) {
-  //     data?.content.sort((a:any,b:any) => b.reviewRating - a.reviewRating)
+  //     const newArr = reviewData?.content.slice(0).sort((a:any,b:any) => b.reviewComments.length - a.reviewComments.length)
+  //     setTest(newArr)
+
   //   }
-  // },[data])
+  // },[filter])
   
 
   return (
@@ -346,7 +347,7 @@ const DesignReview = () => {
 
       <div className="reviewList">
         <div className="reviewFilter">
-          <div onClick={() => handleFilter(0)}>최신순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(1)}>평점순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(2)}>댓글순</div>
+          <div onClick={() => handleFilter(1)}>최신순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(2)}>평점순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(3)}>댓글순</div>
         </div>
         <div className="test">
           

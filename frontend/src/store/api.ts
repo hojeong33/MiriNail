@@ -232,7 +232,8 @@ export const postReview = async(data:any) => {
 export const getReview = async({queryKey}:any) => {
   // console.log(queryKey[0])
   const data = queryKey
-  const response = await axios.get(base_url +`review/nailart/${data[1]}`,{
+  console.log(data)
+  const response = await axios.get(base_url +`review/nailart/${data[1]}/${data[2]}`,{
     params : {
       size : 1000
     }
@@ -240,6 +241,9 @@ export const getReview = async({queryKey}:any) => {
   console.log(response)
   return response.data
 }
+
+// 리뷰 조회순 조회
+
 
 // 리뷰 삭제
 export const delReview = async(param:any) => {
