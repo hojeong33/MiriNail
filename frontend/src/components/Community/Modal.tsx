@@ -13,6 +13,18 @@ const StyledSlider = styled(Slider)`
     bottom: 10px;
   }
   height: 100%;
+  .slick-list {
+    height: 100%;
+  }
+  .slick-track {
+    height: 100%;
+    div {
+      height: 100%;
+    }
+  }
+  img {
+    height: 100%;
+  }
 `;
 
 const modalStyle = {

@@ -10,12 +10,24 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
-import ModalTest from "./Modal";
+// import ModalTest from "./Modal";
 const StyledSlider = styled(Slider)`
   .slick-dots {
     bottom: 10px;
   }
   height: 100%;
+  .slick-list {
+    height: 100%;
+  }
+  .slick-track {
+    height: 100%;
+    div {
+      height: 100%;
+    }
+  }
+  img {
+    height: 100%;
+  }
 `;
 
 const modalStyle = {
@@ -61,9 +73,9 @@ const Wrapper = styled.div`
   .leftDetailBox {
     width: 60%;
     height: 100%;
-    img {
-      height: 900px;
-    }
+    // img {
+    //   height: 900px;
+    // }
   }
 
   .rightDetailBox {
@@ -503,11 +515,7 @@ export default function CommunityImgList() {
                   <div className="leftDetailBox" style={{ overflow: "hidden" }}>
                     <StyledSlider {...settings}>
                       {itemDetail?.communityImg.map((item, idx) => {
-                        return (
-                          // <div key={idx}>
-                          <img src={item.communityImgUrl} alt="" />
-                          // </div>
-                        );
+                        return <img src={item.communityImgUrl} alt="" />;
                       })}
                     </StyledSlider>
                   </div>
