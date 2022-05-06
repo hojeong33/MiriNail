@@ -1,24 +1,22 @@
 import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import image66 from "../../assets/img/sample/image66.png";
-import image67 from "../../assets/img/sample/image67.png";
-import image68 from "../../assets/img/sample/image68.png";
-import image69 from "../../assets/img/sample/image69.png";
-import image70 from "../../assets/img/sample/image70.png";
-import image71 from "../../assets/img/sample/image71.png";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
 import axios from "axios";
-import { fetchDesigns } from "../../store/api";
+import { notEqual } from "assert";
+import TimeCounting from "time-counting";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from "react-router-dom";
+const StyledSlider = styled(Slider)`
+  .slick-dots {
+    bottom: 10px;
+  }
+`;
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -50,6 +48,7 @@ const CustomImageListItem = styled(ImageListItem)`
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
   :hover .inner-content {
     opacity: 1;
@@ -75,6 +74,7 @@ const Wrapper = styled.div`
     // flex-directioin : column;
     background-color: #fff;
     width: 40%;
+
     img {
       border-radius: 70px;
       -moz-border-radius: 70px;
@@ -151,6 +151,13 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 }
 
 export default function CommunityImgList() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   interface CommunityImgProp {
     communityImgSeq: number;
     communityImgUrl: string;
@@ -170,7 +177,7 @@ export default function CommunityImgList() {
     communityTitle: string;
     communityDesc: string;
     communityImg: CommunityImgProp[];
-    communityRededAt: Array<object>;
+    communityRededAt: string;
   }
   interface CommentDataProp {
     communityCommentSeq: number;
@@ -178,32 +185,73 @@ export default function CommunityImgList() {
     userNickname: string;
     userProfileImg: string;
     communityCommentDesc: string;
+    communityCommentRegedAt: string;
+    communityCommentIsDelete: boolean;
+  }
+  interface CommentPostDataProp {
+    communityCommentDesc: string;
+    communityCommentLayer: number;
+    communitySeq: number;
+    communityCommentSeq: number | null;
   }
 
   const [itemData, setItemData] = useState<CommunityItemProp[]>([]);
   const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
   const [commentData, setCommentData] = useState<CommentDataProp[]>([]);
   const [replyData, setreplyData] = useState<CommentDataProp[]>([]);
-  const observerRef = React.useRef<IntersectionObserver>();
-  const boxRef = React.useRef<HTMLDivElement>(null);
   const ACCESS_TOKEN = localStorage.getItem("token");
-  const [page, setPage] = React.useState(1);
-  const [size, setSize] = React.useState(4);
-  const [totalitem, setTotalItem] = React.useState(9999);
-  const [totalPage, setTotalPage] = React.useState(9999);
   const [communityCommentLayer, setCommunityCommentLayer] = useState<number>(1);
   const [currentCommunitySeq, setCurrentCommunitySeq] = useState<number>(0);
   const [currentCommentSeq, setCurrentCommentSeq] = useState<number>(0);
+  const [commentPostData, setCommentPostData] = useState<CommentPostDataProp>();
+  const [currentCommunityIdx, setCurrentCommunityIdx] = useState<number>(0);
+  const [inputVal, setInputVal] = useState<string>("");
+  const [test, setTest] = useState(1);
+  const [time, setTime] = useState<string>("");
+  const [communityTime, setCommunityTime] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData(page);
-    setPage(page + 1);
+    fetchData(test);
+  }, [test]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", infiniteScroll, true);
   }, []);
+  //현재 시간 가져오기
+  const getNowTime = () => {
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    var day = ("0" + today.getDate()).slice(-2);
+    var hours = ("0" + today.getHours()).slice(-2);
+    var minutes = ("0" + today.getMinutes()).slice(-2);
+    var seconds = ("0" + today.getSeconds()).slice(-2);
 
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(intersectionObserver);
-    boxRef.current && observerRef.current.observe(boxRef.current);
-  }, [itemData]);
+    var dateString = year + "-" + month + "-" + day;
+    var timeString = hours + ":" + minutes + ":" + seconds;
+    setTime(dateString + " " + timeString);
+  };
+  //시간차 계산하기
+  const option = {
+    lang: undefined,
+    objectTime: time,
+    calculate: {
+      justNow: 3601,
+    },
+  };
+
+  //인피니티 스크롤
+  const infiniteScroll = async () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let scrollHeight = document.documentElement.scrollHeight;
+    let clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+      setTest((e) => e + 1);
+    }
+  };
+
+  //커뮤니티 게시글 가져오기
 
   const fetchData = async (page: number) => {
     if (ACCESS_TOKEN) {
@@ -212,22 +260,14 @@ export default function CommunityImgList() {
         url: `http://localhost:8080/api/community`,
         params: {
           page: page,
-          size: 20,
+          size: 10,
         },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       })
         .then((res) => {
-          console.log(res.data);
-          setTotalPage(res.data.totalPages);
-          setPage(page + 1);
           setItemData((curItemData) => [...curItemData, ...res.data.content]); // state에 추가
-          setTotalItem(res.data.totalElements);
-          console.log(page, "page");
-          console.log(size, "size");
-          console.log(totalPage, "totalPage");
-          console.log(totalitem, "totalItem");
         })
         .catch((err) => {
           console.log(err);
@@ -235,22 +275,44 @@ export default function CommunityImgList() {
     }
   };
 
-  const intersectionObserver = (
-    entries: IntersectionObserverEntry[],
-    io: IntersectionObserver
-  ) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting && page <= totalPage) {
-        // 관찰하고 있는 entry가 화면에 보여지는 경우
-        io.unobserve(entry.target); // entry 관찰 해제
-        if (size * (page + 1) > totalitem) {
-          setSize(totalitem - (page + 1) * size);
-        }
-        fetchData(page); // 데이터 가져오기
-      }
-    });
+  //커뮤니티 게시글 삭제하기
+  const deleteCommunity = async (communitySeq: number) => {
+    await axios({
+      method: "delete",
+      url: `http://localhost:8080/api/community/${communitySeq}`,
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    })
+      .then((res) => {
+        setModalStatus((prev: any) => !prev);
+        var array = [...itemData];
+        array.splice(currentCommunityIdx, 1);
+        setItemData(array);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
+  //댓글 삭제하기
+  const deleteComment = async (communityCommentSeq: number) => {
+    axios({
+      method: "patch",
+      url: `http://localhost:8080/api/community/comment/${communityCommentSeq}`,
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    })
+      .then((res) => {
+        getComments(currentCommunitySeq);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //댓글 가져오기
   const getComments = async (communitySeq: number) => {
     if (ACCESS_TOKEN) {
       axios({
@@ -258,7 +320,7 @@ export default function CommunityImgList() {
         url: `http://localhost:8080/api/community/comment/${communitySeq}`,
         params: {
           page: 0,
-          size: 1,
+          size: 10,
         },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -274,6 +336,7 @@ export default function CommunityImgList() {
     }
   };
 
+  //대댓글 가져오기
   const getReplyComments = async (communityCommentSeq: number) => {
     if (ACCESS_TOKEN) {
       axios({
@@ -281,7 +344,7 @@ export default function CommunityImgList() {
         url: `http://localhost:8080/api/community/comment/layer/${communityCommentSeq}`,
         params: {
           page: 0,
-          size: 1,
+          size: 10,
         },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -298,7 +361,8 @@ export default function CommunityImgList() {
   };
 
   //게시글 상세 정보 받아오기
-  const getDetail = async (communitySeq: number) => {
+  const getDetail = async (communitySeq: number, idx: number) => {
+    setCurrentCommunityIdx(idx);
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
@@ -308,54 +372,66 @@ export default function CommunityImgList() {
         },
       })
         .then((res) => {
-          console.log("디테일 데이터", res);
           setItemDetail(res.data);
           setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
+          console.log(res.data.communityRegedAt, "게시글 상세 데이터");
+          let temp = TimeCounting(res.data.communityRegedAt, option);
+          setCommunityTime(temp);
+          sessionStorage.setItem("communitySeq", communitySeq.toString());
+          getNowTime();
         })
         .catch((err) => {
           console.log(err);
         });
     }
   };
+
   // 답글 달기
-  const [inputVal, setInputVal] = useState("");
+
   const tagUser = (userName: string, communityCommentSeq: number) => {
     setInputVal("@" + userName + " ");
     setCommunityCommentLayer(3);
     setCurrentCommentSeq(communityCommentSeq);
   };
+  //댓글 입력
+  const onChangeText = (content: string) => {
+    setInputVal(content);
+    if (communityCommentLayer === 3) {
+      setCommentPostData({
+        communityCommentDesc: content,
+        communityCommentLayer: communityCommentLayer,
+        communitySeq: currentCommunitySeq,
+        communityCommentSeq: currentCommentSeq,
+      });
+    } else {
+      setCommentPostData({
+        communityCommentDesc: content,
+        communityCommentLayer: communityCommentLayer,
+        communitySeq: currentCommunitySeq,
+        communityCommentSeq: currentCommentSeq,
+      });
+    }
 
-  //댓글 작성
+    console.log(commentPostData, "댓글데이터");
+  };
+
+  //댓글 작성하기
   const createComment = async () => {
-    const data: object = {
-      communityCommentDesc: inputVal,
-      communityCommentLayer: communityCommentLayer,
-      communitySeq: currentCommunitySeq,
-    };
-    // if(communityCommentLayer===3){
-    //   data[]
-    // }
-    console.log(inputVal);
-    console.log(communityCommentLayer);
-    console.log(currentCommunitySeq);
-    if (ACCESS_TOKEN) {
-      axios({
+    if (commentPostData !== undefined) {
+      await axios({
         method: "post",
         url: `http://localhost:8080/api/community/comment`,
-        data: {
-          communityCommentDesc: inputVal,
-          communityCommentLayer: communityCommentLayer,
-          communitySeq: currentCommunitySeq,
-        },
+        data: commentPostData,
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       })
         .then((res) => {
-          console.log(res);
+          getComments(currentCommunitySeq);
+          setInputVal("");
         })
         .catch((err) => {
           console.log(err);
@@ -389,20 +465,14 @@ export default function CommunityImgList() {
   const [modalStatus, setModalStatus] = useState(false);
   const handleOpen = () => setModalStatus(true);
   const handleClose = () => setModalStatus(false);
-  useEffect(() => {
-    console.log(modalStatus);
-  }, [modalStatus]);
+
+  useEffect(() => {}, [modalStatus]);
 
   return (
-    <ImageList
-      sx={{ height: "100%" }}
-      variant="quilted"
-      cols={5}
-      //   rowHeight={500}
-    >
-      {itemData.map((item) => {
+    <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}>
+      {itemData.map((item, idx) => {
         return (
-          <div ref={boxRef} key={item.communitySeq}>
+          <div key={item.communitySeq}>
             <CustomImageListItem cols={item.cols || 1} rows={item.rows || 1}>
               <img
                 {...srcset(
@@ -413,190 +483,303 @@ export default function CommunityImgList() {
                 )}
                 alt={item.communityTitle}
                 loading="lazy"
-                onClick={() => getDetail(item.communitySeq)}
+                onClick={() => {
+                  getDetail(item.communitySeq, idx);
+                }}
               />
+
               <div className="inner-content">
-                <span>{item.communityTitle}</span>
+                <div>{item.communityTitle}</div>
               </div>
             </CustomImageListItem>
+            <Modal
+              open={modalStatus}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={modalStyle}>
+                <Wrapper>
+                  <div className="leftDetailBox" style={{ overflow: "hidden" }}>
+                    <StyledSlider {...settings}>
+                      {itemDetail?.communityImg.map((item, idx) => {
+                        return (
+                          <div key={idx}>
+                            <img src={item.communityImgUrl} alt="" />
+                          </div>
+                        );
+                      })}
+                    </StyledSlider>
+                  </div>
+                  <div
+                    className="rightDetailBox"
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <div
+                      className="rightDetailBoxTop"
+                      style={{ justifyContent: "space-between" }}
+                    >
+                      <div>
+                        <img
+                          src={itemDetail?.userProfileImg}
+                          alt=""
+                          width="32"
+                          height="32"
+                          style={{ marginRight: "14px" }}
+                        />
+                        {itemDetail?.userNickname}
+                      </div>
+                      {itemDetail?.userNickname ===
+                        sessionStorage.getItem("userNickname") && (
+                        <div>
+                          <button
+                            onClick={() => {
+                              navigate("/community/update", {
+                                state: {
+                                  desc: itemDetail?.communityDesc,
+                                  title: itemDetail.communityTitle,
+                                  img: itemDetail?.communityImg,
+                                },
+                              });
+                            }}
+                          >
+                            수정
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              deleteCommunity(itemDetail.communitySeq);
+                            }}
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <div className="rightDetailBoxMiddle">
+                      <div className="postWriter" style={{ display: "flex" }}>
+                        <img
+                          src={itemDetail?.userProfileImg}
+                          alt=""
+                          width="32"
+                          height="32"
+                        />
+                        <div style={{ marginLeft: "14px" }}>
+                          {itemDetail?.userNickname}
+                        </div>
+                        <div style={{ marginLeft: "14px" }}>
+                          <div>{itemDetail?.communityDesc}</div>
+                          {itemDetail ? (
+                            <div style={{ marginTop: "10px" }}>
+                              {communityTime}
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                      </div>
+                      <div className="replys">
+                        {commentData.map((e: any, idx) => {
+                          return (
+                            <div className="replyFrame" key={idx}>
+                              {e.communityCommentIsDelete ? (
+                                <div className="replysInfo">
+                                  <div style={{ borderRadius: "70%" }}>
+                                    <img
+                                      src={e.userProfileImg}
+                                      alt=""
+                                      width="32"
+                                      height="32"
+                                    />
+                                  </div>
+                                  <span style={{ marginLeft: "14px" }}>
+                                    {e.userNickname}
+                                  </span>
+
+                                  <div>
+                                    <div style={{ marginLeft: "14px" }}>
+                                      {e.communityCommentDesc}
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="replysInfo">
+                                  <div style={{ borderRadius: "70%" }}>
+                                    <img
+                                      src={e.userProfileImg}
+                                      alt=""
+                                      width="32"
+                                      height="32"
+                                    />
+                                  </div>
+                                  <span style={{ marginLeft: "14px" }}>
+                                    {e.userNickname}
+                                  </span>
+
+                                  <div>
+                                    <div style={{ marginLeft: "14px" }}>
+                                      {e.communityCommentDesc}
+                                      {e.userNickname ===
+                                        sessionStorage.getItem(
+                                          "userNickname"
+                                        ) && (
+                                        <button
+                                          onClick={() => {
+                                            deleteComment(
+                                              e.communityCommentSeq
+                                            );
+                                          }}
+                                        >
+                                          삭제
+                                        </button>
+                                      )}
+                                    </div>
+                                    <div style={{ margin: "10px 0 0 14px" }}>
+                                      <span>
+                                        {TimeCounting(
+                                          e.communityCommentRegedAt,
+                                          option
+                                        )}
+                                      </span>
+                                      <span
+                                        style={{ marginLeft: "15px" }}
+                                        onClick={() =>
+                                          tagUser(
+                                            e.userNickname,
+                                            e.communityCommentSeq
+                                          )
+                                        }
+                                      >
+                                        답글 달기
+                                      </span>
+                                    </div>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        margin: "10px 0 10px 14px",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          borderBottom: "2px solid #e3e3e3",
+                                          width: "40px",
+                                          height: "13px",
+                                        }}
+                                      ></div>
+                                      <span
+                                        style={{ marginLeft: "15px" }}
+                                        onClick={() => {
+                                          getReplyComments(
+                                            e.communityCommentSeq
+                                          );
+                                          toggle(e.communityCommentSeq);
+                                        }}
+                                      >
+                                        답글 보기
+                                      </span>
+                                    </div>
+                                    {open === e.communityCommentSeq ? (
+                                      <div
+                                        style={{ margin: "12px 0 12px 14px" }}
+                                      >
+                                        <div>
+                                          {replyData.map((ele: any) => {
+                                            return (
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  margin: "20px 0",
+                                                }}
+                                              >
+                                                <div
+                                                  style={{
+                                                    borderRadius: "70%",
+                                                  }}
+                                                >
+                                                  <img
+                                                    src={ele.userProfileImg}
+                                                    alt=""
+                                                    width="32"
+                                                    height="32"
+                                                  />
+                                                </div>
+                                                <div
+                                                  style={{
+                                                    marginLeft: "14px",
+                                                  }}
+                                                >
+                                                  {ele.userNickname}
+                                                </div>
+                                                <div
+                                                  style={{
+                                                    marginLeft: "14px",
+                                                  }}
+                                                >
+                                                  {ele.communityCommentDesc}
+                                                  {e.userNickname ===
+                                                    sessionStorage.getItem(
+                                                      "userNickname"
+                                                    ) && (
+                                                    <button
+                                                      onClick={() => {
+                                                        deleteComment(
+                                                          ele.communityCommentSeq
+                                                        );
+                                                      }}
+                                                    >
+                                                      삭제
+                                                    </button>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                </div>
+                              )}
+
+                              <div></div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        position: "absolute",
+                        width: "100%",
+                        bottom: "0px",
+                        borderTop: "1px solid #e3e3e3",
+                        height: "50px",
+                        paddingRight: "16px",
+                        paddingLeft: "16px",
+                      }}
+                    >
+                      <div className="inputBox">
+                        <input
+                          type="text"
+                          value={inputVal}
+                          onChange={(e) => {
+                            onChangeText(e.target.value);
+                          }}
+                          onKeyPress={(e) => {
+                            if (e.code === "Enter") createComment();
+                          }}
+                        />
+                        <Button />
+                      </div>
+                    </div>
+                  </div>
+                </Wrapper>
+              </Box>
+            </Modal>
           </div>
         );
       })}
-      <Modal
-        open={modalStatus}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={modalStyle}>
-          <Wrapper>
-            <div className="leftDetailBox">
-              <img src={itemDetail?.communityImg[0].communityImgUrl}></img>
-              {/* {itemDetail.communityImg.map((img, idx) => {
-                <img src={img.communityImgUrl} alt="" />;
-              })} */}
-            </div>
-            <div
-              className="rightDetailBox"
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <div className="rightDetailBoxTop">
-                <img
-                  src={itemDetail?.userProfileImg}
-                  alt=""
-                  width="32"
-                  height="32"
-                />
-                <div style={{ marginLeft: "14px" }}>
-                  {itemDetail?.userNickname}
-                </div>
-              </div>
-              <div className="rightDetailBoxMiddle">
-                <div className="postWriter" style={{ display: "flex" }}>
-                  <img
-                    src={itemDetail?.userProfileImg}
-                    alt=""
-                    width="32"
-                    height="32"
-                  />
-                  <div style={{ marginLeft: "14px" }}>
-                    {itemDetail?.userNickname}
-                  </div>
-                  <div style={{ marginLeft: "14px" }}>
-                    <div>{itemDetail?.communityDesc}</div>
-                    <div style={{ marginTop: "10px" }}>6시간</div>
-                  </div>
-                </div>
-                <div className="replys">
-                  {commentData.map((e: any, idx) => {
-                    return (
-                      <div className="replyFrame" key={idx}>
-                        <div className="replysInfo">
-                          <div style={{ borderRadius: "70%" }}>
-                            <img
-                              src={e.userProfileImg}
-                              alt=""
-                              width="32"
-                              height="32"
-                            />
-                          </div>
-                          <span style={{ marginLeft: "14px" }}>
-                            {e.userNickname}
-                          </span>
-                          <div>
-                            <div style={{ marginLeft: "14px" }}>
-                              {e.communityCommentDesc}
-                            </div>
-                            <div style={{ margin: "10px 0 0 14px" }}>
-                              <span>6시간</span>
-                              <span
-                                style={{ marginLeft: "15px" }}
-                                onClick={() =>
-                                  tagUser(e.userNickname, e.communityCommentSeq)
-                                }
-                              >
-                                답글 달기
-                              </span>
-                            </div>
-                            <div
-                              style={{
-                                display: "flex",
-                                margin: "10px 0 10px 14px",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  borderBottom: "2px solid #e3e3e3",
-                                  width: "40px",
-                                  height: "13px",
-                                }}
-                              ></div>
-                              <span
-                                style={{ marginLeft: "15px" }}
-                                onClick={() => {
-                                  getReplyComments(e.communityCommentSeq);
-                                  toggle(e.userNickname);
-                                }}
-                              >
-                                답글 보기
-                              </span>
-                            </div>
-                            {open === e.userNickname ? (
-                              <div style={{ margin: "12px 0 12px 14px" }}>
-                                <div>
-                                  {replyData.map((ele: any) => {
-                                    return (
-                                      <div
-                                        style={{
-                                          display: "flex",
-                                          margin: "20px 0",
-                                        }}
-                                      >
-                                        <div
-                                          style={{
-                                            borderRadius: "70%",
-                                          }}
-                                        >
-                                          <img
-                                            src={ele.userProfileImg}
-                                            alt=""
-                                            width="32"
-                                            height="32"
-                                          />
-                                        </div>
-                                        <div
-                                          style={{
-                                            marginLeft: "14px",
-                                          }}
-                                        >
-                                          {ele.userNickname}
-                                        </div>
-                                        <div
-                                          style={{
-                                            marginLeft: "14px",
-                                          }}
-                                        >
-                                          {ele.communityCommentDesc}
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                        <div></div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  bottom: "0px",
-                  borderTop: "1px solid #e3e3e3",
-                  height: "50px",
-                  paddingRight: "16px",
-                  paddingLeft: "16px",
-                }}
-              >
-                <div className="inputBox">
-                  <input
-                    type="text"
-                    value={inputVal}
-                    onChange={(e) => setInputVal(e.target.value)}
-                  />
-                  <Button />
-                </div>
-              </div>
-            </div>
-          </Wrapper>
-        </Box>
-      </Modal>
     </ImageList>
   );
 }

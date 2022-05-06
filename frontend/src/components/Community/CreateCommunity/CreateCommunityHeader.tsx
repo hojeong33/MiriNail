@@ -94,7 +94,7 @@ function CreateCommunityHeader() {
     <>
       <Wrapper>
         <div className="row">
-          <div className="pageHeaderTitle">Community</div>
+          <div className="pageHeaderTitle">COMMUNITY</div>
           <div className="pageHeaderLinks"></div>
           <div className="pageHeaderNavigation">
             <div className="NavElement">

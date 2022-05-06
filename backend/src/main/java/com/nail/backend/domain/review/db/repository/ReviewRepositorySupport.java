@@ -15,9 +15,9 @@ public class ReviewRepositorySupport {
     QReview qReview = QReview.review;
 
     @Transactional
-    public Long modifyReviewCnt(Long reviewCnt, Long reviewSeq){
+    public Long modifyReviewCnt(Long reviewSeq){
         Long execute = jpaQueryFactory.update(qReview)
-                .set(qReview.reviewCnt,reviewCnt+1)
+                .set(qReview.reviewCnt, qReview.reviewCnt.add(1))
                 .where(qReview.reviewSeq.eq(reviewSeq))
                 .execute();
         return execute;

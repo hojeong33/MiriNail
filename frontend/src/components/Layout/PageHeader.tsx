@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { nftFilter } from '../../store/atoms';
+import { useState } from 'react';
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -36,6 +37,15 @@ const Wrapper = styled.div`
       text-align: center;
       color: #3d3c3a;
       font-weight: 500;
+
+      ::before {
+        content: "";
+        margin: 0 auto;
+        display: block;
+        width: 30px;
+        height: 3px;
+        background: #3d3c3a
+      }
     }
 
     .pageHeaderLinks {
@@ -49,7 +59,7 @@ const Wrapper = styled.div`
       color: #3d3c3a;
 
       span {
-        padding: 0px 25px;
+        margin: 0px 25px;
         cursor: pointer;
       }
     }
@@ -122,11 +132,12 @@ const Wrapper = styled.div`
         margin-top: 100px;
         text-align: center;
         color: #3d3c3a;
+        opacity : 0.5;
         
         span {
           padding: 0px 25px;
           cursor: pointer;
-          
+
         }
       }
 
@@ -139,10 +150,15 @@ const Wrapper = styled.div`
 `;
 
 function PageHeader({setType}:any) {
+  const [status,setStatus] = useState(0)
   const resetFilter = useResetRecoilState(nftFilter)
   const [colorFilter,setColorFilter] = useRecoilState(nftFilter)
 
-  
+  const handleType = (e:boolean,flag:number) => {
+    setType(e)
+    resetFilter()
+    setStatus(flag)
+  }
 
   return (
     <>
@@ -152,10 +168,10 @@ function PageHeader({setType}:any) {
           SHOPPING
         </div>
         <div className="pageHeaderLinks">
-          <span onClick={() => {setType(true); resetFilter()}}>
+          <span style={status === 0 ? {opacity:"1",borderBottom:"1px solid #3d3c3a"} : {opacity:"0.5"}} onClick={() => {handleType(true,0)}}>
             타입별
           </span>
-          <span onClick={() => {setType(false); resetFilter(); setColorFilter({
+          <span style={status === 1 ? {opacity:"1",borderBottom:"1px solid #3d3c3a"} : {opacity:"0.5"}} onClick={() => {handleType(false,1); setColorFilter({
             category : "color",
             color : "",
             type : "",

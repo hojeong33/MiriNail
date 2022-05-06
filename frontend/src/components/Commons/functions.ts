@@ -31,3 +31,12 @@ export const convertDate = (dateArray:string[]) => {
   const second = String(dateArray[5] ? dateArray[5] : "00")
   return year + "-" + leadingZeros(month, 2) + "-" + leadingZeros(day, 2) + " " + leadingZeros(hour, 2) + ":" + leadingZeros(minute, 2)+ ":" + leadingZeros(second, 2)
 }
+
+export const convertURLtoFile = async (url: string) => {
+  const response = await fetch(url);
+  const data = await response.blob();
+  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+  const metadata = { type: `image/${ext}` };
+  return new File([data], filename!, metadata);
+};

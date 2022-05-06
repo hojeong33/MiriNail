@@ -69,8 +69,8 @@ public class DesignerContorller {
 
     @ApiOperation(value = "디자이너 프로필 수정")
     @PutMapping(value="/profileupdate/{designerSeq}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponseBody> designerInfoImgUrlUpdate (@PathVariable long designerSeq, @RequestPart("file") MultipartFile file) throws JsonProcessingException{
-        if(designerInfoService.designerInfoImgUrlupdate(designerSeq, file)) {
+    public ResponseEntity<BaseResponseBody> designerProfileImgUrlUpdate (@PathVariable long designerSeq, @RequestPart("file") MultipartFile file) throws JsonProcessingException{
+        if(designerInfoService.designerProfileImgUrlupdate(designerSeq, file)) {
             return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
         }else{
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This designerNewsSeq doesn't exist."));
@@ -78,7 +78,7 @@ public class DesignerContorller {
     }
 
     @ApiOperation(value = "디자이너 소개 작성, 수정")
-    @PutMapping(value = "/intorduce", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
+    @PutMapping(value = "/introduce", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
     public ResponseEntity<BaseResponseBody> designerIntroduceRegister(@RequestParam("jsonList") String jsonList, @RequestPart("file") MultipartFile file) throws JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         DesignerInfo designerInfo = objectMapper.readValue(jsonList, new TypeReference<DesignerInfo>() {});

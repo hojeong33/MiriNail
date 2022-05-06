@@ -22,6 +22,7 @@ const Container = styled.div`
 
     margin-right: 12px;
   }
+  padding-left:"15px"
 `;
 
 const Question = styled.div`

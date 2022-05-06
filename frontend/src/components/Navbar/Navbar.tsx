@@ -231,7 +231,12 @@ const Navbar = () => {
                     <Avatar alt="Remy Sharp" src={userProfileImg} />
                     <Typography
                       textAlign="center"
-                      style={{ color: "black", marginLeft: "5px" }}
+                      style={{
+                        color: "black",
+                        marginLeft: "5px",
+                        fontWeight: "500",
+                        fontSize: "17px",
+                      }}
                     >
                       {userNickname}
                     </Typography>

@@ -38,7 +38,9 @@ const Wrapper = styled.div`
       margin: 20px;
     }
     .infocontent {
+      margin-top: 10px;
       display: flex;
+      align-items: center;
       .tag {
         text-align: left;
         font-size: 20px;
@@ -49,6 +51,7 @@ const Wrapper = styled.div`
   }
   .introductionbox {
     display: flex;
+    justify-content: space-between;
     margin-top: 20px;
     width: 768px;
     min-height: 100px;
@@ -61,6 +64,9 @@ const Wrapper = styled.div`
     }
     .content {
       /* padding: 20px; */
+      white-space: pre-wrap;
+      margin: 20px;
+      font-size: 18px;
     }
   }
 `;
@@ -101,13 +107,7 @@ function Introduction() {
           <div className="infocontent">
             <div className="tag">연락처</div>
             <div className="tagcontent">
-              {designer.designerInfo.user.userTel}
-            </div>
-          </div>
-          <div className="infocontent">
-            <div className="tag">샵 위치</div>
-            <div className="tagcontent">
-              {designer.designerInfo.designerAddress}
+              {designer.designerInfo.designerTel}
             </div>
           </div>
           <div className="infocontent">
@@ -117,6 +117,12 @@ function Introduction() {
               {designer.designerInfo.designerShopClose}
             </div>
           </div>
+          <div className="infocontent">
+            <div className="tag">샵 위치</div>
+          </div>
+          <div className="tagcontent">
+            {designer.designerInfo.designerAddress}
+          </div>
         </div>
         <Map
           location={designer.designerInfo.designerAddress}
@@ -124,7 +130,11 @@ function Introduction() {
         />
       </div>
       <div className="introductionbox">
-        <div className="content">{designer.designerInfo.designerInfoDesc ? designer.designerInfo.designerInfoDesc : "소개글이 없습니다."}</div>
+        <div className="content">
+          {designer.designerInfo.designerInfoDesc
+            ? designer.designerInfo.designerInfoDesc
+            : "소개글이 없습니다."}
+        </div>
         {designer.designerInfo.designerInfoImgUrl && (
           <img src={designer.designerInfo.designerInfoImgUrl} alt="" />
         )}

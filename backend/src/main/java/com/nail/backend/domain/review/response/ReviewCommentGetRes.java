@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class ReviewCommentGetRes {
 
     private Long reviewCommentSeq;
+    private boolean reviewCommentIsDelete;
 
     private Long userSeq;
     private String userNickname;

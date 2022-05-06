@@ -55,6 +55,12 @@ export const designerAtom = atom({
   effects_UNSTABLE : [persistAtom],
 })
 
+export const refetchDesigner = atom({
+  key : "refetchDesigner",
+  default : () => {},
+  effects_UNSTABLE : [persistAtom],
+})
+
 export const nftFilter = atom({
   key : "nftFilter",
   default : {
@@ -67,3 +73,10 @@ export const nftFilter = atom({
   },
 
 })
+
+export const imgProp = atom({
+  key : "imgProp",
+  default : {},
+  effects_UNSTABLE : [persistAtom],
+  }
+)
