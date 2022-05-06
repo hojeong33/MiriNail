@@ -65,7 +65,7 @@ public class AuthenticationController {
     @ApiOperation(value = "인증 파일 다운로드", notes = "<strong>인증 파일 다운로드</strong>")
     public ResponseEntity<byte[]> authenticationFileDownload(@RequestParam String authUrl) throws IOException{
         log.info("authenticationFileDownload - 호출");
-
+        authUrl = authUrl.replaceAll("https://mirinail-bucket.s3.ap-northeast-2.amazonaws.com/","");
         return awsS3Service.downloadOnS3(authUrl);
     }
 
@@ -148,7 +148,7 @@ public class AuthenticationController {
 
         if(applications == null) {
             log.error("getDesignerApplicationDetailByUserSeq - User doesn't exist.");
-            return ResponseEntity.status(404).body(null);
+            return ResponseEntity.status(404).body(applications);
         }
         return ResponseEntity.status(201).body(applications);
     }

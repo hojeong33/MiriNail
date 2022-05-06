@@ -2,7 +2,6 @@ package com.nail.backend.domain.review.db.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.nail.backend.domain.community.db.entity.Community;
 import com.nail.backend.domain.user.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,9 +25,7 @@ public class ReviewComment {
     private Long reviewCommentSeq;
 
     @ApiModelProperty(value = "리뷰 글 ")
-    @ManyToOne(targetEntity = Community.class)
-    @JoinColumn(name = "review_seq")
-    private Review review;
+    private Long reviewSeq;
 
     @ApiModelProperty(value = "유저 번호")
     @ManyToOne(targetEntity = User.class)
@@ -38,11 +35,8 @@ public class ReviewComment {
     @ApiModelProperty(value = "리뷰 게시판 댓글 내용 ")
     private String reviewCommentDesc;
 
-    @ApiModelProperty(value = "리뷰 게시판 댓글 그룹 ")
-    private Long reviewGroupNum;
-
-    @ApiModelProperty(value = "리뷰 게시판 댓글 계층 ")
-    private int reviewCommentLayer;
+    @ApiModelProperty(value = "리뷰 게시판 댓글 삭제여부 ")
+    private boolean reviewCommentIsDelete;
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)

@@ -101,10 +101,9 @@ const MainFrame = styled.div`
 `;
 
 interface IProps {
-  designer?: IDesigner
+  refetch: any
 }
-
-const Content:React.FC<IProps> = ({designer}) => {
+const Content:React.FC<IProps> = ({refetch}) => {
   const location = useLocation();
   const temp = location.pathname.split("/")
   console.log(temp[temp.length - 1])

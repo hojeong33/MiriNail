@@ -3,21 +3,17 @@ package com.nail.backend.domain.review.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.nail.backend.domain.authentication.service.AwsS3Service;
-import com.nail.backend.domain.community.db.entity.Community;
-import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
-import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
+import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.db.entity.ReviewImg;
-import com.nail.backend.domain.review.db.repository.ReviewCommentRepository;
-import com.nail.backend.domain.review.db.repository.ReviewCommentRepositorySupport;
-import com.nail.backend.domain.review.db.repository.ReviewImgRepository;
-import com.nail.backend.domain.review.db.repository.ReviewRepository;
+import com.nail.backend.domain.review.db.repository.*;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.request.ReviewUpdatePostReq;
 import com.nail.backend.domain.review.response.ReviewCommentGetRes;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.user.db.entity.User;
@@ -57,6 +53,9 @@ public class ReviewServiceImpl implements ReviewService {
     ReviewRepository reviewRepository;
 
     @Autowired
+    ReviewRepositorySupport reviewRepositorySupport;
+
+    @Autowired
     ReviewCommentRepository reviewCommentRepository;
 
     @Autowired
@@ -67,6 +66,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     NailartRepository nailartRepository;
+
+    @Autowired
+    NailartRepositorySupport nailartRepositorySupport;
 
     @Autowired
     UserRepository userRepository;
@@ -120,7 +122,7 @@ public class ReviewServiceImpl implements ReviewService {
 
                 // 리뷰게시판 파일 테이블 insert
                 ReviewImg reviewImg = ReviewImg.builder()
-                        .review(saveReview)
+                        .reviewSeq(saveReview.getReviewSeq())
                         .reviewImgUrl(reviewFileUrl)
                         .build();
 
@@ -130,84 +132,434 @@ public class ReviewServiceImpl implements ReviewService {
 
         }
 
+        // 전체 리뷰 평점 수정
+
+        double avgRate = reviewRepositorySupport.getAvgRate(reviewRegisterPostReq.getNailartSeq());
+
+        nailartRepositorySupport.modifyRatingByNailartSeq((float) avgRate,saveReview.getNailart().getNailartSeq());
+
         return saveReview;
     }
 
     public ReviewComment reviewCommentRegister(ReviewCommentRegisterPostReq reviewCommentRegisterPostReq,
                                                String userId){
-        Review review = reviewRepository.findById(reviewCommentRegisterPostReq.getReviewSeq()).orElse(null);
         User user = userRepository.findByUserId(userId);
+        Review review = reviewRepository.findByReviewSeq(reviewCommentRegisterPostReq.getReviewSeq());
 
-        if(reviewCommentRegisterPostReq.getReviewCommentLayer() == 1){
-            // 댓글 작성 layer == 1 일 경우
+
+
             ReviewComment reviewComment = ReviewComment.builder()
-                    .review(review)
+                    .reviewSeq(review.getReviewSeq())
                     .user(user)
                     .reviewCommentDesc(reviewCommentRegisterPostReq.getReviewCommentDesc())
-                    .reviewCommentLayer(reviewCommentRegisterPostReq.getReviewCommentLayer())
                     .reviewCommentRegedAt(LocalDateTime.now())
                     .build();
 
             ReviewComment res = reviewCommentRepository.save(reviewComment);
 
-            reviewCommentRepositorySupport.setCommentGroup(res.getReviewCommentSeq());
             return res;
-
-        }else{
-            // 대댓글 작성
-            ReviewComment reviewComment = ReviewComment.builder()
-                    .review(review)
-                    .user(user)
-                    .reviewCommentDesc(reviewCommentRegisterPostReq.getReviewCommentDesc())
-                    .reviewGroupNum(reviewCommentRegisterPostReq.getReviewCommentSeq())
-                    .reviewCommentLayer(reviewCommentRegisterPostReq.getReviewCommentLayer())
-                    .reviewCommentRegedAt(LocalDateTime.now())
-                    .build();
-
-            ReviewComment res = reviewCommentRepository.save(reviewComment);
-
-            //원댓글에 대댓글 있다는표시 -  layer2로 변경
-            if(reviewCommentRepository.findById(reviewCommentRegisterPostReq.getReviewCommentSeq())
-                    .get().getReviewCommentLayer() == 1){
-                reviewCommentRepositorySupport.modifyCommentLayer(reviewCommentRegisterPostReq.getReviewCommentSeq());
-            }
-            return res;
-
-        }
 
     }
+
+    // 조회수 증가
+    public Long reviewCntPlus(Long reviewSeq){
+        return reviewRepositorySupport.modifyReviewCnt(reviewSeq);
+    }
+
 
 //    READ___________________________________________
-// 전체조회
-public Page<ReviewGetRes> getReviewList(Pageable pageable){
-    Page<Review> reviewList = reviewRepository.findAll(pageable);
-//    List<ReviewCommentGetRes> reviewCommentList = reviewCommentRepository.findAllByReview_ReviewSeqAndReviewCommentLayerIsNot()
-    List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+// 네일아트 리뷰 조회
+public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq, int type) {
 
-    long total = reviewList.getTotalElements();
-    for (Review rv : reviewList) {
-        ReviewGetRes reviewGetRes = ReviewGetRes.builder()
-                .reviewSeq(rv.getReviewSeq())
-                .userSeq(rv.getUser().getUserSeq())
-                .userNickname(rv.getUser().getUserNickname())
-                .userProfileImg(rv.getUser().getUserProfileImg())
-                .designerSeq(rv.getDesigner().getUserSeq())
-                .designerNickname(rv.getDesigner().getUserNickname())
-                .designerProfileImg(rv.getDesigner().getUserProfileImg())
-                .reviewTitle(rv.getReviewTitle())
-                .reviewDesc(rv.getReviewDesc())
-                .reviewCnt(rv.getReviewCnt())
-                .reviewRegedAt(rv.getReviewRegedAt())
-                .reviewImg(rv.getReviewImg())
-                .build();
-        reviewGetResList.add(reviewGetRes);
+    if (type == 1) {
+        // 최신순
+        Page<Review> reviewList = reviewRepository.findAllByNailart_NailartSeq(pageable, nailartSeq);
+
+        List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+        long total = reviewList.getTotalElements();
+        for (Review rv : reviewList) {
+
+            // 댓글
+            List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+            List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+            // 댓글 리턴 리스트 만들기
+            for (ReviewComment rc : reviewCommentList) {
+
+                ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
+                        .userSeq(rc.getUser().getUserSeq())
+                        .userNickname(rc.getUser().getUserNickname())
+                        .userProfileImg(rc.getUser().getUserProfileImg())
+                        .reviewCommentSeq(rc.getReviewCommentSeq())
+                        .reviewCommentDesc(rc.getReviewCommentDesc())
+                        .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                        .build();
+                reviewCommentGetResList.add(reviewCommentGetRes);
+            }
+
+            // 이미지
+            List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+            // 리뷰 전체 리턴 리스트 만들기
+            ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                    .reviewSeq(rv.getReviewSeq())
+                    .userSeq(rv.getUser().getUserSeq())
+                    .userNickname(rv.getUser().getUserNickname())
+                    .userProfileImg(rv.getUser().getUserProfileImg())
+                    .designerSeq(rv.getDesigner().getUserSeq())
+                    .designerNickname(rv.getDesigner().getUserNickname())
+                    .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .reviewTitle(rv.getReviewTitle())
+                    .reviewDesc(rv.getReviewDesc())
+                    .reviewCnt(rv.getReviewCnt())
+                    .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
+                    .reviewImg(reviewImgList)
+                    .reviewComments(reviewCommentGetResList)
+                    .build();
+            reviewGetResList.add(reviewGetRes);
+        }
+        Page<ReviewGetRes> res = new PageImpl<>(reviewGetResList, pageable, total);
+
+
+        return res;
+    } else if (type == 2) {
+        // 평점순
+        Page<Review> reviewList = reviewRepository.findAllByNailart_NailartSeqOrderByReviewRatingDesc(pageable, nailartSeq);
+
+        List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+        long total = reviewList.getTotalElements();
+        for (Review rv : reviewList) {
+
+            // 댓글
+            List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+            List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+            // 댓글 리턴 리스트 만들기
+            for (ReviewComment rc : reviewCommentList) {
+
+                ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
+                        .userSeq(rc.getUser().getUserSeq())
+                        .userNickname(rc.getUser().getUserNickname())
+                        .userProfileImg(rc.getUser().getUserProfileImg())
+                        .reviewCommentSeq(rc.getReviewCommentSeq())
+                        .reviewCommentDesc(rc.getReviewCommentDesc())
+                        .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                        .build();
+                reviewCommentGetResList.add(reviewCommentGetRes);
+            }
+
+            // 이미지
+            List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+            // 리뷰 전체 리턴 리스트 만들기
+            ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                    .reviewSeq(rv.getReviewSeq())
+                    .userSeq(rv.getUser().getUserSeq())
+                    .userNickname(rv.getUser().getUserNickname())
+                    .userProfileImg(rv.getUser().getUserProfileImg())
+                    .designerSeq(rv.getDesigner().getUserSeq())
+                    .designerNickname(rv.getDesigner().getUserNickname())
+                    .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .reviewTitle(rv.getReviewTitle())
+                    .reviewDesc(rv.getReviewDesc())
+                    .reviewCnt(rv.getReviewCnt())
+                    .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
+                    .reviewImg(reviewImgList)
+                    .reviewComments(reviewCommentGetResList)
+                    .build();
+            reviewGetResList.add(reviewGetRes);
+        }
+        Page<ReviewGetRes> res = new PageImpl<>(reviewGetResList, pageable, total);
+
+
+        return res;
+    } else {
+        // 조회순
+        Page<Review> reviewList = reviewRepository.findAllByNailart_NailartSeqOrderByReviewCntDesc(pageable, nailartSeq);
+
+        List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+        long total = reviewList.getTotalElements();
+        for (Review rv : reviewList) {
+
+            // 댓글
+            List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+            List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+            // 댓글 리턴 리스트 만들기
+            for (ReviewComment rc : reviewCommentList) {
+
+                ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
+                        .userSeq(rc.getUser().getUserSeq())
+                        .userNickname(rc.getUser().getUserNickname())
+                        .userProfileImg(rc.getUser().getUserProfileImg())
+                        .reviewCommentSeq(rc.getReviewCommentSeq())
+                        .reviewCommentDesc(rc.getReviewCommentDesc())
+                        .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                        .build();
+                reviewCommentGetResList.add(reviewCommentGetRes);
+            }
+
+            // 이미지
+            List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+            // 리뷰 전체 리턴 리스트 만들기
+            ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                    .reviewSeq(rv.getReviewSeq())
+                    .userSeq(rv.getUser().getUserSeq())
+                    .userNickname(rv.getUser().getUserNickname())
+                    .userProfileImg(rv.getUser().getUserProfileImg())
+                    .designerSeq(rv.getDesigner().getUserSeq())
+                    .designerNickname(rv.getDesigner().getUserNickname())
+                    .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .reviewTitle(rv.getReviewTitle())
+                    .reviewDesc(rv.getReviewDesc())
+                    .reviewCnt(rv.getReviewCnt())
+                    .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
+                    .reviewImg(reviewImgList)
+                    .reviewComments(reviewCommentGetResList)
+                    .build();
+            reviewGetResList.add(reviewGetRes);
+        }
+        Page<ReviewGetRes> res = new PageImpl<>(reviewGetResList, pageable, total);
+
+
+        return res;
     }
-    Page<ReviewGetRes> res = new PageImpl<>(reviewGetResList, pageable, total);
-
-
-    return res;
 }
+
+
+    // 유저가 작성한 글 전체조회
+    public Page<ReviewGetRes> getReviewListByUser(Pageable pageable, Long userSeq){
+        Page<Review> reviewList = reviewRepository.findAllByUser_UserSeq(pageable,userSeq);
+        List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+        long total = reviewList.getTotalElements();
+        for (Review rv : reviewList) {
+
+            // 댓글
+            List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+            List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+            // 댓글 리턴 리스트 만들기
+            for(ReviewComment rc : reviewCommentList){
+
+                ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
+                        .userSeq(rc.getUser().getUserSeq())
+                        .userNickname(rc.getUser().getUserNickname())
+                        .userProfileImg(rc.getUser().getUserProfileImg())
+                        .reviewCommentSeq(rc.getReviewCommentSeq())
+                        .reviewCommentDesc(rc.getReviewCommentDesc())
+                        .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                        .build();
+                reviewCommentGetResList.add(reviewCommentGetRes);
+            }
+
+            // 이미지
+            List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+            // 리뷰 전체 리턴 리스트 만들기
+            ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                    .reviewSeq(rv.getReviewSeq())
+                    .nailart(rv.getNailart())
+                    .userSeq(rv.getUser().getUserSeq())
+                    .userNickname(rv.getUser().getUserNickname())
+                    .userProfileImg(rv.getUser().getUserProfileImg())
+                    .designerSeq(rv.getDesigner().getUserSeq())
+                    .designerNickname(rv.getDesigner().getUserNickname())
+                    .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .reviewTitle(rv.getReviewTitle())
+                    .reviewDesc(rv.getReviewDesc())
+                    .reviewCnt(rv.getReviewCnt())
+                    .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
+                    .reviewImg(reviewImgList)
+                    .reviewComments(reviewCommentGetResList)
+                    .build();
+            reviewGetResList.add(reviewGetRes);
+        }
+        Page<ReviewGetRes> res = new PageImpl<>(reviewGetResList, pageable, total);
+
+
+        return res;
+    }
+
+
+    // 디자이너에게 작성된 리뷰 전체조회
+    public Page<ReviewGetRes> getReviewListByDesignerSeq(Pageable pageable, Long designerSeq){
+        Page<Review> reviewList = reviewRepository.findAllByDesigner_UserSeq(pageable,designerSeq);
+        List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+        long total = reviewList.getTotalElements();
+        for (Review rv : reviewList) {
+
+            // 댓글
+            List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+            List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+            // 댓글 리턴 리스트 만들기
+            for(ReviewComment rc : reviewCommentList){
+
+                ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
+                        .userSeq(rc.getUser().getUserSeq())
+                        .userNickname(rc.getUser().getUserNickname())
+                        .userProfileImg(rc.getUser().getUserProfileImg())
+                        .reviewCommentSeq(rc.getReviewCommentSeq())
+                        .reviewCommentDesc(rc.getReviewCommentDesc())
+                        .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                        .build();
+                reviewCommentGetResList.add(reviewCommentGetRes);
+            }
+
+            // 이미지
+            List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+            // 리뷰 전체 리턴 리스트 만들기
+            ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                    .reviewSeq(rv.getReviewSeq())
+                    .nailart(rv.getNailart())
+                    .userSeq(rv.getUser().getUserSeq())
+                    .userNickname(rv.getUser().getUserNickname())
+                    .userProfileImg(rv.getUser().getUserProfileImg())
+                    .designerSeq(rv.getDesigner().getUserSeq())
+                    .designerNickname(rv.getDesigner().getUserNickname())
+                    .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .reviewTitle(rv.getReviewTitle())
+                    .reviewDesc(rv.getReviewDesc())
+                    .reviewCnt(rv.getReviewCnt())
+                    .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
+                    .reviewImg(reviewImgList)
+                    .reviewComments(reviewCommentGetResList)
+                    .build();
+            reviewGetResList.add(reviewGetRes);
+        }
+        Page<ReviewGetRes> res = new PageImpl<>(reviewGetResList, pageable, total);
+
+
+        return res;
+    }
+
+
+    // Top10 리뷰 전체조회
+    public List<ReviewGetRes> getTop10ReviewList(){
+        List<Review> reviewList = reviewRepository.findTop10ByOrderByReviewCntDesc();
+        List<ReviewGetRes> reviewGetResList = new ArrayList<>();
+
+        for (Review rv : reviewList) {
+
+            // 댓글
+            List<ReviewComment> reviewCommentList = reviewCommentRepository.findAllByReviewSeq(rv.getReviewSeq());
+            List<ReviewCommentGetRes> reviewCommentGetResList = new ArrayList<>();
+
+            // 댓글 리턴 리스트 만들기
+            for(ReviewComment rc : reviewCommentList){
+
+                ReviewCommentGetRes reviewCommentGetRes = ReviewCommentGetRes.builder()
+                        .reviewCommentIsDelete(rc.isReviewCommentIsDelete())
+                        .userSeq(rc.getUser().getUserSeq())
+                        .userNickname(rc.getUser().getUserNickname())
+                        .userProfileImg(rc.getUser().getUserProfileImg())
+                        .reviewCommentSeq(rc.getReviewCommentSeq())
+                        .reviewCommentDesc(rc.getReviewCommentDesc())
+                        .reviewCommentRegedAt(rc.getReviewCommentRegedAt())
+                        .build();
+                reviewCommentGetResList.add(reviewCommentGetRes);
+            }
+
+            // 이미지
+            List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
+
+            // 리뷰 전체 리턴 리스트 만들기
+            ReviewGetRes reviewGetRes = ReviewGetRes.builder()
+                    .reviewSeq(rv.getReviewSeq())
+                    .nailart(rv.getNailart())
+                    .userSeq(rv.getUser().getUserSeq())
+                    .userNickname(rv.getUser().getUserNickname())
+                    .userProfileImg(rv.getUser().getUserProfileImg())
+                    .designerSeq(rv.getDesigner().getUserSeq())
+                    .designerNickname(rv.getDesigner().getUserNickname())
+                    .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .reviewTitle(rv.getReviewTitle())
+                    .reviewDesc(rv.getReviewDesc())
+                    .reviewCnt(rv.getReviewCnt())
+                    .reviewRegedAt(rv.getReviewRegedAt())
+                    .reviewRating(rv.getReviewRating())
+                    .reviewImg(reviewImgList)
+                    .reviewComments(reviewCommentGetResList)
+                    .build();
+            reviewGetResList.add(reviewGetRes);
+        }
+
+        return reviewGetResList;
+    }
 //    UPDATE_________________________________________
+    public Review reviewUpdate(List<MultipartFile> reviewFiles,
+                                 ReviewUpdatePostReq reviewUpdatePostReq,
+                                 String userId) throws IOException {
+        Review review = reviewRepository.findByReviewSeq(reviewUpdatePostReq.getReviewSeq());
+
+        //작성자 일치 할 때
+        if(review.getUser().getUserId().equals(userId)){
+            //리뷰 데이터 변경
+            reviewRepositorySupport.modifyReview(reviewUpdatePostReq);
+            review = reviewRepository.findByReviewSeq(reviewUpdatePostReq.getReviewSeq());
+            //파일 처리
+            // 기존 파일 url 삭제
+            reviewImgRepository.deleteAllByReviewSeq(reviewUpdatePostReq.getReviewSeq());
+            if(!reviewFiles.isEmpty()){
+                for (MultipartFile f : reviewFiles ) {
+
+                    // file 업로드
+                    String fileName  = awsS3Service.createFileName(f.getOriginalFilename());
+
+                    //파일 객체 생성
+                    //        System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
+                    File file = new File(System.getProperty("user.dir")+ fileName);
+
+                    //파일 저장
+                    f.transferTo(file);
+
+                    //S3 파일 업로드
+                    awsS3Service.uploadOnS3(fileName, file);
+
+                    //주소 할당
+                    String reviewFileUrl = amazonS3Client.getUrl(bucket,fileName).toString();
+
+                    //파일 삭제
+                    file.delete();
+
+
+                    // 리뷰게시판 파일 테이블 insert
+                    ReviewImg reviewImg = ReviewImg.builder()
+                            .reviewSeq(review.getReviewSeq())
+                            .reviewImgUrl(reviewFileUrl)
+                            .build();
+
+                    reviewImgRepository.save(reviewImg);
+
+                }
+
+            }
+
+        }
+        // 전체 리뷰 평점 수정
+        double avgRate = reviewRepositorySupport.getAvgRate(review.getNailart().getNailartSeq());
+        nailartRepositorySupport.modifyRatingByNailartSeq((float) avgRate,review.getNailart().getNailartSeq());
+
+        return review;
+    }
+
 
     @Override
     @Transactional

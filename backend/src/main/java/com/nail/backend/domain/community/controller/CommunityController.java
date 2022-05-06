@@ -6,6 +6,7 @@ import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
+import com.nail.backend.domain.community.request.CommunityUpdatePostReq;
 import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.community.service.CommunityService;
@@ -49,8 +50,8 @@ public class CommunityController {
                                                               Principal principal) throws IOException {
 
         log.info("communityRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         Community res = communityService.communityRegister(communityFiles, communityRegisterPostReq, userId);
         if (!res.equals(null)) {
@@ -110,13 +111,30 @@ public class CommunityController {
     public ResponseEntity<Page<CommunityGetRes>> getCommunityListByUser(@PageableDefault(page = 0, size = 10, sort = "communitySeq", direction = Sort.Direction.DESC) Pageable pageable, Principal principal) {
 
         log.info("getCommunityListByUser - 호출");
-        String userId ="2210624673"; // 2번 유저 - 호정
-//        String userId = principal.getName();
+//        String userId ="2210624673"; // 2번 유저 - 호정
+        String userId = principal.getName();
 
         Page<CommunityGetRes> communityList = communityService.getCommunityListByUser(pageable,userId);
 
         return ResponseEntity.status(200).body(communityList);
     }
+
+    // top10 조회
+    @ApiOperation(value = "커뮤니티 조회수 top20 조회 ")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+
+    @GetMapping("/cnt")
+    public ResponseEntity<List<CommunityGetRes>> getTop20Community() {
+
+        log.info("getTop20Community - 호출");
+        List<CommunityGetRes> community = communityService.getTop20Community();
+
+        return ResponseEntity.status(200).body(community);
+    }
+
 
     // 댓글은 따로 넘겨주자!
     @ApiOperation(value = "커뮤니티 글 상세조회")
@@ -151,6 +169,7 @@ public class CommunityController {
     }
 
 
+
     @ApiOperation(value = "커뮤니티 댓글 답글(만) 조회 ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
@@ -167,9 +186,30 @@ public class CommunityController {
         return ResponseEntity.status(200).body(communityComment);
     }
 
-
 //    UPDATE_________________________________________
 
+    @Transactional
+    @ApiOperation(value = "커뮤니티 글 수정")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "수정 성공"),
+            @ApiResponse(code = 404, message = "수정 실패")
+    })
+    @PostMapping("/update")
+    public ResponseEntity<BaseResponseBody> communityUpdate(@RequestPart(value = "communityFiles", required = false) List<MultipartFile> communityFiles,
+                                                              @ModelAttribute CommunityUpdatePostReq communityUpdatePostReq,
+                                                              Principal principal) throws IOException {
+
+        log.info("communityUpdate - 호출");
+        String userId = principal.getName();
+//        String userId = "2217289220";
+
+        Community res = communityService.communityUpdate(communityFiles, communityUpdatePostReq, userId);
+        if (!res.equals(null)) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "수정 성공"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "수정 실패"));
+        }
+    }
     @Transactional
     @ApiOperation(value ="커뮤니티 댓글 수정")
     @ApiResponses({

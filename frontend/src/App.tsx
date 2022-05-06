@@ -31,8 +31,8 @@ import Reviews from "./components/Designerpage/Reviews";
 import ReservationCheck from "./components/Designerpage/ReservationCheck";
 import CreateCommunity from "./routes/Community/CreateCommunity";
 import Auth from "./components/Login/Auth";
-import CreateReservation from './components/Designerpage/CreateReservation';
-import Ask from './components/Designerpage/AskList';
+import CreateReservation from "./components/Designerpage/CreateReservation";
+import Ask from "./components/Designerpage/AskList";
 import CreateFeed from "./components/Designerpage/CreateFeed";
 import AskList from "./components/Designerpage/AskList";
 import CreateAsk from "./components/Designerpage/CreateAsk";
@@ -46,12 +46,16 @@ import Followers from "./components/Designerpage/Followers";
 import TopButton from "./components/Navbar/TopButton";
 import Admin from "./routes/Admin/Admin";
 import ApplyList from "./components/Admin/ApplyList";
+import UpdateImg from "./components/Designerpage/UpdateProfileImg";
+import ScrollToTop from "./components/ScrollToTop";
+import UpdateCommunity from "./routes/Community/UpdateCommunity";
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <BrowserRouter>
+        <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
@@ -74,16 +78,23 @@ function App() {
             <Route path="NFTs" element={<NFTs />}></Route>
             <Route path="reviews" element={<Reviews />}></Route>
             <Route path="reservation" element={<CreateReservation />}></Route>
-            <Route path="reservationcheck" element={<ReservationCheck />}></Route>
+            <Route
+              path="reservationcheck"
+              element={<ReservationCheck />}
+            ></Route>
             <Route path="asklist" element={<AskList />}></Route>
             <Route path="askdetail/:qnaSeq" element={<AskDetail />}></Route>
             <Route path="updateask/:qnaSeq" element={<UpdateAsk />}></Route>
             <Route path="createfeed" element={<CreateFeed />}></Route>
             <Route path="createask" element={<CreateAsk />}></Route>
-            <Route path="updateintroduction" element={<UpdateIntroduction />}></Route>
+            <Route
+              path="updateintroduction"
+              element={<UpdateIntroduction />}
+            ></Route>
             <Route path="followers" element={<Followers />}></Route>
+            <Route path="updateimg" element={<UpdateImg />}></Route>
           </Route>
-          <Route path="/admin" element={<Admin />} >
+          <Route path="/admin" element={<Admin />}>
             <Route path="applylist" element={<ApplyList />}></Route>
           </Route>
           <Route path="/community" element={<Community />} />
@@ -97,8 +108,9 @@ function App() {
           <Route path="/api/users/login" element={<KakaoRedirect />} />
           <Route path="/test" element={<Test />} />
           <Route path="/community/create" element={<CreateCommunity />} />
+          <Route path="/community/update" element={<UpdateCommunity />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
-          <Route path="*" element={<PageNotFound/>} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
         <TopButton />
         {/* <Footer /> */}

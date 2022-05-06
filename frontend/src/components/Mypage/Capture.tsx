@@ -5,6 +5,9 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useState } from "react";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useQuery } from "react-query";
+import { getFittingImg } from "../../store/apis/user";
+import { useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
   .pagination {
@@ -116,12 +119,27 @@ const Capture = () => {
       category: ["겨울", "designer1"]
     },
   ])
+  const {userSeq} = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event)
     console.log(page)
   }
   
+  const { data, isLoading, refetch } = useQuery<any, Error>(
+    ["getFitting"],
+    async () => {
+      return await getFittingImg(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        // setLastPage(res.totalPages);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
   return (
     <Wrapper>
       <ItemCards>

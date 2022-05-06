@@ -17,10 +17,15 @@ public class DesignerInfoRepositorySupport {
     QDesignerInfo qDesignerInfo = QDesignerInfo.designerInfo;
 
     @Transactional
-    public long DesignerInfoIntroduceUpdate(DesignerInfo designerInfo, String designerProfileImgUrl){
+    public long DesignerInfoIntroduceUpdate(DesignerInfo designerInfo, String designerInfoImgUrl){
         long excute = jpaQueryFactory.update(qDesignerInfo)
-                .set(qDesignerInfo.designerProfileImgUrl, designerProfileImgUrl)
+                .set(qDesignerInfo.designerInfoImgUrl, designerInfoImgUrl)
                 .set(qDesignerInfo.designerInfoDesc, designerInfo.getDesignerInfoDesc())
+                .set(qDesignerInfo.designerShopName, designerInfo.getDesignerShopName())
+                .set(qDesignerInfo.designerAddress, designerInfo.getDesignerAddress())
+                .set(qDesignerInfo.designerShopOpen, designerInfo.getDesignerShopOpen())
+                .set(qDesignerInfo.designerShopClose, designerInfo.getDesignerShopClose())
+                .set(qDesignerInfo.designerTel, designerInfo.getDesignerTel())
                 .where(qDesignerInfo.designerSeq.eq(designerInfo.getDesignerSeq()))
                 .execute();
         return excute;

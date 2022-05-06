@@ -12,18 +12,17 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("ReviewGetCommentRes")
+@ApiModel("ReviewCommentGetRes")
 public class ReviewCommentGetRes {
 
     private Long reviewCommentSeq;
+    private boolean reviewCommentIsDelete;
 
     private Long userSeq;
     private String userNickname;
     private String userProfileImg;
 
     private String reviewCommentDesc;
-    private Long reviewGroupNum;
-    private int reviewCommentLayer;
     private LocalDateTime reviewCommentRegedAt;
 
 }

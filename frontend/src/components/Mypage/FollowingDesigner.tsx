@@ -105,6 +105,10 @@ const Wrapper = styled.div`
     align-items: center;
     height: 300px;
   }
+  .shop {
+    font-size: 13px;
+    opacity: 0.8;
+  }
 `;
 
 interface IState {
@@ -156,7 +160,7 @@ const FollowingDesigner = () => {
                 }}
               >
                 <div className="cardleft">
-                  <img src={designer.user.userProfileImg} alt="" />
+                  <img src={designer.designerProfileImgUrl ? designer.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
                 </div>
                 <div className="cardright">
                   <div className="cardright-top">

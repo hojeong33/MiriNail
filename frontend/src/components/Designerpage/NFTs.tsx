@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useState } from "react";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 import { useQuery } from "react-query";
 import { getDesignerNailart } from "../../store/apis/nailart";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { TailSpin } from "react-loader-spinner"
+import { TailSpin } from "react-loader-spinner";
 
 const Wrapper = styled.div`
   .pagination {
@@ -20,15 +20,14 @@ const Wrapper = styled.div`
 `;
 
 const ItemCards = styled.div`
-  display: flex ;
-  flex-wrap: wrap ;
+  display: flex;
+  flex-wrap: wrap;
   /* justify-content: center; */
   margin: 20px 0 0 40px;
   /* &:last-child {
     margin-right: auto;
   } */
-
-`
+`;
 
 const ItemCard = styled.div`
   height: 300px;
@@ -57,7 +56,7 @@ const ItemCard = styled.div`
     }
   }
   .category {
-    color: #6E6E6E;
+    color: #6e6e6e;
   }
 `;
 
@@ -100,7 +99,7 @@ const NFTs = () => {
     console.log(page);
     setPage(page);
   };
-  
+
   const { data, isLoading } = useQuery<any, Error>(
     ["getDesignerNailart", page],
     async () => {
@@ -115,7 +114,6 @@ const NFTs = () => {
       onError: (err: any) => console.log(err),
     }
   );
-
 
   return (
     <Wrapper>
@@ -152,16 +150,19 @@ const NFTs = () => {
           })}
         </ItemCards>
       )}
-      <div className="pagination">
-        <Stack spacing={2}>
-          <Pagination
-            count={lastPage}
-            shape="rounded"
-            onChange={onchangePage}
-          />
-        </Stack>
-      </div>
+      {data?.totalElements === 0 && <div>등록된 네일아트가 없습니다</div>}
+      {data?.totalElements !== 0 && (
+        <div className="pagination">
+          <Stack spacing={2}>
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          </Stack>
+        </div>
+      )}
     </Wrapper>
   );
-}
+};
 export default NFTs;

@@ -45,6 +45,9 @@ const MainFrame = styled.div`
             justify-content:space-between;
             width:120px;
             margin-top:15px;
+            div {
+              cursor : pointer
+            }
           }
           
         }
@@ -79,6 +82,7 @@ const MainFrame = styled.div`
 
       .RightBox {
         // height: 100%;
+        padding-left: 40px;
         padding-top: 75px;
         width: 100%;
         border-left: 1px solid #d2d2d0;

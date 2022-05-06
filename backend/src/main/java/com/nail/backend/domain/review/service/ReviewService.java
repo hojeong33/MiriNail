@@ -1,12 +1,12 @@
 package com.nail.backend.domain.review.service;
 
 
-import com.nail.backend.domain.community.response.CommunityGetRes;
 import com.nail.backend.domain.review.db.entity.Review;
 import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.request.ReviewUpdatePostReq;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +20,17 @@ public interface ReviewService {
     //    CREATE_________________________________________
     Review reviewRegister(List<MultipartFile> reviewFiles, ReviewRegisterPostReq reviewRegisterPostReq, String userId) throws IOException;
     ReviewComment reviewCommentRegister(ReviewCommentRegisterPostReq reviewCommentRegisterPostReq, String userId);
-
+    Long reviewCntPlus(Long reviewSeq);
 
 //    READ___________________________________________
-    Page<ReviewGetRes> getReviewList(Pageable pageable);
+    Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq, int type);
+    Page<ReviewGetRes> getReviewListByUser(Pageable pageable,Long userSeq);
+    Page<ReviewGetRes> getReviewListByDesignerSeq(Pageable pageable,Long designerSeq);
+
+    List<ReviewGetRes> getTop10ReviewList();
 
     //    UPDATE_________________________________________
+    Review reviewUpdate(List<MultipartFile> reviewFiles, ReviewUpdatePostReq reviewUpdatePostReq, String userId) throws IOException;
     Long reviewCommentModify(ReviewCommentModifyPutReq reviewCommentModifyPutReq);
 
 //    DELETE_________________________________________

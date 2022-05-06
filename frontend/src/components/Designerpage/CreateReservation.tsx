@@ -221,7 +221,6 @@ const FormWrapper = styled.div`
       padding-left: 60px;
       position: relative;
       display: flex;
-      flex-direction: column;
       align-items: flex-start;
       height: 130px;
       border-top: 1px solid black;
@@ -232,6 +231,16 @@ const FormWrapper = styled.div`
       input {
         position: absolute;
         left: 10px;
+      }
+      img {
+        height: 70px;
+        width: 70px;
+      }
+      .nextimg {
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
     svg {
@@ -548,26 +557,30 @@ const CreateReservation = () => {
                   className="menucontent"
                   onClick={() => onClickNailart(item.nailartSeq)}
                 >
-                  { item.nailartSeq === selectedMenu ? <CheckCircleOutlineIcon /> : <RadioButtonUncheckedIcon/>}
-                  <div className="nailname">
-                    {item.nailartType} - {item.nailartDetailColor}
+                  {item.nailartSeq === selectedMenu ? (
+                    <CheckCircleOutlineIcon />
+                  ) : (
+                    <RadioButtonUncheckedIcon />
+                  )}
+                  <div className="thumbnailurl">
+                    <img src={item.nailartThumbnailUrl} alt="" />
                   </div>
-                  <div className="nailhash"># {item.nailartColor.toUpperCase()} # {item.nailartWeather}</div>
-                  <div className="nailprice">{item.nailartPrice.toLocaleString()}원</div>
+                  <div className="nextimg">
+                    <div className="nailname">
+                      {item.nailartType} - {item.nailartDetailColor}
+                    </div>
+                    <div className="nailhash">
+                      # {item.nailartColor.toUpperCase()} #{" "}
+                      {item.nailartWeather}
+                    </div>
+                    <div className="nailprice">
+                      {item.nailartPrice.toLocaleString()}원
+                    </div>
+                  </div>
                 </div>
               );
             })}
             {menuType === 1 && type2?.map((item:any, idx:any) => {
-              return (
-                <div key={idx} className="menucontent" onClick={() => onClickNailart(item.nailartSeq)}>
-                  { item.nailartSeq === selectedMenu ? <CheckCircleOutlineIcon /> : <RadioButtonUncheckedIcon/>}
-                  <div>{item.nailartType} - {item.nailartDetailColor}</div>
-                  <div># {item.nailartColor.toUpperCase()}</div>
-                  <div>{item.nailartPrice.toLocaleString()}원</div>
-                </div>
-              );
-            })}
-            {menuType === 2 && type3?.map((item:any, idx:any) => {
               return (
                 <div
                   key={idx}
@@ -579,11 +592,50 @@ const CreateReservation = () => {
                   ) : (
                     <RadioButtonUncheckedIcon />
                   )}
-                  <div>
-                    {item.nailartType} - {item.nailartDetailColor}
+                  <div className="thumbnailurl">
+                    <img src={item.nailartThumbnailUrl} alt="" />
                   </div>
-                  <div>{item.nailartDesc}</div>
-                  <div>{item.nailartPrice.toLocaleString()}원</div>
+                  <div className="nextimg">
+                    <div className="nailname">
+                      {item.nailartType} - {item.nailartDetailColor}
+                    </div>
+                    <div className="nailhash">
+                      # {item.nailartColor.toUpperCase()} #{" "}
+                      {item.nailartWeather}
+                    </div>
+                    <div className="nailprice">
+                      {item.nailartPrice.toLocaleString()}원
+                    </div>
+                  </div>
+                </div>
+              );
+            })}{menuType === 2 && type3?.map((item:any, idx:any) => {
+              return (
+                <div
+                  key={idx}
+                  className="menucontent"
+                  onClick={() => onClickNailart(item.nailartSeq)}
+                >
+                  {item.nailartSeq === selectedMenu ? (
+                    <CheckCircleOutlineIcon />
+                  ) : (
+                    <RadioButtonUncheckedIcon />
+                  )}
+                  <div className="thumbnailurl">
+                    <img src={item.nailartThumbnailUrl} alt="" />
+                  </div>
+                  <div className="nextimg">
+                    <div className="nailname">
+                      {item.nailartType} - {item.nailartDetailColor}
+                    </div>
+                    <div className="nailhash">
+                      # {item.nailartColor.toUpperCase()} #{" "}
+                      {item.nailartWeather}
+                    </div>
+                    <div className="nailprice">
+                      {item.nailartPrice.toLocaleString()}원
+                    </div>
+                  </div>
                 </div>
               );
             })}
