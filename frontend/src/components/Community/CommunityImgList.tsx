@@ -248,7 +248,7 @@ export default function CommunityImgList() {
     lang: undefined,
     objectTime: time,
     calculate: {
-      justNow: 3601,
+      justNow: 60,
     },
   };
 
@@ -392,6 +392,7 @@ export default function CommunityImgList() {
           setCommunityTime(temp);
           sessionStorage.setItem("communitySeq", communitySeq.toString());
           getNowTime();
+          console.log(time, "시간");
         })
         .catch((err) => {
           console.log(err);

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useQuery } from "react-query";
 import { getFollowers } from "../../store/apis/follow";
 import { useParams } from "react-router-dom";
@@ -93,18 +93,21 @@ interface IState {
     shop: string;
     imgurl: string;
     follower: number;
-  }
+  };
 }
 
 const FollowingDesigner = () => {
-  const {userSeq} = useParams();
+  const { userSeq } = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
-  }
+    console.log(event);
+    console.log(page);
+  };
 
-  const { data:followersData, isLoading:followersLoading } = useQuery<any, Error>(
+  const { data: followersData, isLoading: followersLoading } = useQuery<
+    any,
+    Error
+  >(
     ["followers"],
     async () => {
       return await getFollowers(Number(userSeq));
@@ -124,27 +127,33 @@ const FollowingDesigner = () => {
           <TailSpin height={50} width={50} color="gray" />
         </LoadingBox>
       ) : (
-        <div className="cards">
-          {followersData?.map((follower: any, idx: any) => {
-            return (
-              <Link to={`/mypage/${follower.userSeq}`}>
-                <div className="card" key={idx}>
-                  <div className="cardleft">
-                    <img src={follower.userProfileImg} alt="" />
-                  </div>
-                  <div className="cardright">
-                    <div className="cardright-top">
-                      <div className="name">{follower.userNickname}</div>
-                      <div className="shop">{follower.userEmail}</div>
+        <>
+          {followersData.length === 0 ? (
+            <div>팔로워가 없습니다</div>
+          ) : (
+            <div className="cards">
+              {followersData?.map((follower: any, idx: any) => {
+                return (
+                  <Link to={`/mypage/${follower.userSeq}`}>
+                    <div className="card" key={idx}>
+                      <div className="cardleft">
+                        <img src={follower.userProfileImg} alt="" />
+                      </div>
+                      <div className="cardright">
+                        <div className="cardright-top">
+                          <div className="name">{follower.userNickname}</div>
+                          <div className="shop">{follower.userEmail}</div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </>
       )}
     </Wrapper>
   );
-}
-export default FollowingDesigner
+};
+export default FollowingDesigner;
