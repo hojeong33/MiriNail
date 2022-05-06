@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
-from flasktest import get_stream_video
+# from flasktest import get_stream_video
 from testtemp3guhyun import testVideo
 from matplotlib import pyplot as plt
 import tensorflow as tf
@@ -28,7 +28,7 @@ def read_root():
     print('음... 이ㅐ건떠야하는데')
     return {"Hello": "World"}
 
-@app.get("/video")
+@app.get("/nail/video")
 def main():
     # StringResponse함수를 return하고,
     # 인자로 OpenCV에서 가져온 "바이트"이미지와 type을 명시
