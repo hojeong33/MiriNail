@@ -23,7 +23,7 @@ def video_streaming():
     print(2)
     return testVideo()
 
-@app.get("/")
+@app.get("/nail")
 def read_root():
     print('음... 이ㅐ건떠야하는데')
     return {"Hello": "World"}
@@ -35,6 +35,6 @@ def main():
     print('video url 접근')
     return StreamingResponse(video_streaming(), media_type="multipart/x-mixed-replace; boundary=frame")
 
-@app.get("/items/{item_id}")
+@app.get("/nail/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
