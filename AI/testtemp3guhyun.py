@@ -253,7 +253,20 @@ def testVideo():
 
 
 
-                    cv2.imshow("Output", image_2)
+                    # cv2.imshow("Output", image_2)
+                    ret, buffer = cv2.imencode('.jpg', image_2)
+                    # frame을 byte로 변경 후 특정 식??으로 변환 후에
+                    # yield로 하나씩 넘겨준다.
+                    image_2 = buffer.tobytes()
+                    yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+                    bytearray(image_2) + b'\r\n')
+
+
+
+
+
+
+                    
                     # ret, buffer = cv2.imencode('.jpg', image_2)
                     # image_2 = buffer.tobytes()
                     # yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
