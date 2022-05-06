@@ -241,7 +241,7 @@ const ReservationCheck = () => {
   const navigate = useNavigate();
   const { userSeq } = useParams();
 
-  const { data, isLoading } = useQuery<any, Error>(
+  const { data, isLoading, refetch:daterefetch } = useQuery<any, Error>(
     ["getIsBooked"],
     async () => {
       return await getReservationDate(Number(userSeq));
@@ -296,6 +296,7 @@ const ReservationCheck = () => {
       const res = await deleteCancelReservation(bookSeq);
       console.log(res);
       refetch();
+      daterefetch();
     } catch (error) {
       console.log(error);
       alert("예약 취소중 오류발생");
@@ -336,7 +337,7 @@ const ReservationCheck = () => {
         </div>
 
         <Divider></Divider>
-        {isLoading ? (
+        {bookLoading ? (
           <LoadingBox className="loading">
             <TailSpin height={50} width={50} color="gray" />
           </LoadingBox>
@@ -350,7 +351,8 @@ const ReservationCheck = () => {
                 <colgroup>
                   <col width="5%" />
                   <col width="10%" />
-                  <col width="55%" />
+                  <col width="30%" />
+                  <col width="25%" />
                   <col width="15%" />
                   <col width="15%" />
                 </colgroup>
@@ -358,6 +360,7 @@ const ReservationCheck = () => {
                   <tr>
                     <th>No</th>
                     <th>예약자</th>
+                    <th>이메일</th>
                     <th>네일아트</th>
                     <th>예약시간</th>
                     <th></th>
@@ -380,9 +383,14 @@ const ReservationCheck = () => {
                           </th>
                           <th
                             onClick={() => onClickBook(book.nailart.nailartSeq)}
+                          >
+                            {book.user.userEmail}
+                          </th>
+                          <th
+                            onClick={() => onClickBook(book.nailart.nailartSeq)}
                             className="title"
                           >
-                            {book.nailart.nailartType} -{" "}
+                            {book.nailart.nailartType} - {" "}
                             {book.nailart.nailartDetailColor}
                           </th>
                           <th
@@ -391,11 +399,15 @@ const ReservationCheck = () => {
                             {convertDate(book.bookDatetime).slice(10, 16)}
                           </th>
                           <th>
-                            <button
-                              onClick={() => onClickCancelBtn(book.bookSeq)}
-                            >
-                              취소
-                            </button>
+                            {moment(convertDate(book.bookDatetime)).isAfter(
+                              moment()
+                            ) && (
+                              <button
+                                onClick={() => onClickCancelBtn(book.bookSeq)}
+                              >
+                                취소
+                              </button>
+                            )}
                           </th>
                         </tr>
                       );

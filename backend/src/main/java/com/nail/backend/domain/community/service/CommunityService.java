@@ -5,6 +5,7 @@ import com.nail.backend.domain.community.db.entity.CommunityComment;
 import com.nail.backend.domain.community.request.CommunityCommentModifyPutReq;
 import com.nail.backend.domain.community.request.CommunityCommentRegisterPostReq;
 import com.nail.backend.domain.community.request.CommunityRegisterPostReq;
+import com.nail.backend.domain.community.request.CommunityUpdatePostReq;
 import com.nail.backend.domain.community.response.CommunityCommentGetRes;
 import com.nail.backend.domain.community.response.CommunityGetRes;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,7 @@ public interface CommunityService {
 
 
 //    UPDATE_________________________________________
+    Community communityUpdate(List<MultipartFile> communityFiles, CommunityUpdatePostReq communityUpdatePostReq, String userId) throws IOException;
     Long communityCommentModify(CommunityCommentModifyPutReq communityCommentModifyPutReq);
 
 //    DELETE_________________________________________

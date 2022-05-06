@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import Header from "../../components/Designerpage/Header"
 import Content from "../../components/Designerpage/Content"
-import { designerAtom } from "../../store/atoms"
+import { designerAtom, refetchDesigner } from "../../store/atoms"
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
@@ -44,6 +44,7 @@ const DesignerPage = () => {
   })
   const { userSeq } = useParams();
   const setterFn = useSetRecoilState(designerAtom)
+  const designerRefetch = useSetRecoilState(refetchDesigner)
 
   const { data, isLoading, refetch} = useQuery<any, Error>(
     ["getDesigner"],
@@ -62,7 +63,7 @@ const DesignerPage = () => {
   return (
     <>
       <Header refetch={refetch}></Header>
-      <Content designer={designer}></Content>
+      <Content refetch={refetch}></Content>
     </>
   );
 }

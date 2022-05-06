@@ -12,6 +12,7 @@ import com.nail.backend.domain.review.db.entity.ReviewComment;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.request.ReviewUpdatePostReq;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.review.service.ReviewService;
 import io.swagger.annotations.*;
@@ -52,8 +53,8 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
                                                           Principal principal) throws IOException {
     System.out.println(reviewRegisterPostReq);
     log.info("reviewRegister - 호출");
-//    String userId = principal.getName();
-        String userId = "2217289220";
+    String userId = principal.getName();
+//        String userId = "2217289220";
 
     Review res = reviewService.reviewRegister(reviewFiles, reviewRegisterPostReq, userId);
     if (!res.equals(null)) {
@@ -74,8 +75,8 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
                                                                      Principal principal) {
 
         log.info("reviewCommentRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         ReviewComment res = reviewService.reviewCommentRegister(reviewCommentRegisterPostReq, userId);
         if (!res.equals(null)) {
@@ -167,6 +168,29 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
         return ResponseEntity.status(200).body(reviewList);
     }
 //    UPDATE_________________________________________
+    @Transactional
+    @ApiOperation(value = "리뷰 글 업데이트")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "수정 성공"),
+            @ApiResponse(code = 404, message = "수정 실패")
+    })
+    @PostMapping("/update")
+    public ResponseEntity<BaseResponseBody> reviewUpdate(@RequestPart(value = "reviewFiles", required = false) List<MultipartFile> reviewFiles,
+                                                           @ModelAttribute ReviewUpdatePostReq reviewUpdatePostReq,
+                                                           Principal principal) throws IOException {
+
+        log.info("reviewUpdate - 호출");
+        String userId = principal.getName();
+//        String userId = "2217289220";
+
+        Review res = reviewService.reviewUpdate(reviewFiles, reviewUpdatePostReq, userId);
+        if (!res.equals(null)) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(201, "수정 성공"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "수정 실패"));
+        }
+    }
+
 
     @Transactional
     @ApiOperation(value ="리뷰 댓글 수정")

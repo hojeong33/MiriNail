@@ -2,6 +2,13 @@ import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { getDesignerReview } from "../../store/apis/review";
+import { useNavigate, useParams } from "react-router-dom";
+import { TailSpin } from "react-loader-spinner"
+import { convertDate } from "../Commons/functions";
+import moment from "moment";
+import Rating from '@mui/material/Rating';
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -55,6 +62,22 @@ const TableWrapper = styled.div`
   }
 `;
 
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
+`;
+
+const CustomRating = styled(Rating)`
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`
+
 interface IState {
   review: {
     no: number;
@@ -64,88 +87,82 @@ interface IState {
 }
 
 const Reviews = () => {
-  const [reviews, setReviewss] = useState<IState["review"][]>([
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28"
-    }
-  ]);
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
+  const { userSeq } = useParams();
+  const navigate = useNavigate();
 
-  const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
+  const { data, isLoading, refetch } = useQuery<any, Error>(
+    ["getReviews", page],
+    async () => {
+      return await getDesignerReview(page, 10, Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        setLastPage(res.totalPages);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
+  const cutWordLength = (word:string) => {
+    if (!word) return;
+    let result = word
+    if (word.length > 15) {
+      result = result.slice(0,10) + "..."
+    }
+    return result
   }
 
-  return (
+  const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    console.log(event);
+    console.log(page);
+    setPage(page);
+  };
+
+  const onClickReview = (nailartSeq:number) => {
+    navigate(`/nft/${nailartSeq}`)
+  }
+
+
+  return isLoading ? (
+    <LoadingBox className="loading">
+      <TailSpin height={50} width={50} color="gray" />
+    </LoadingBox>
+  ) : (
     <TableWrapper>
       <div className="table">
-        <div className="count">총 10 건</div>
+        <div className="count">총 {data.totalElements ? data.totalElements : "0"} 건</div>
         <table>
           <colgroup>
+            <col width="5%" />
             <col width="15%" />
-            <col width="70%" />
+            <col width="15%" />
+            <col width="40%" />
+            <col width="10%" />
             <col width="15%" />
           </colgroup>
           <thead>
             <tr>
               <th>No</th>
-              <th>제목</th>
+              <th>작성자</th>
+              <th>네일아트명</th>
+              <th>내용</th>
+              <th>평점</th>
               <th>작성일</th>
             </tr>
           </thead>
           <tbody>
-            {reviews?.map((review, idx) => {
+            {data.content?.map((review:any, idx:number) => {
               return (
-                <tr key={idx}>
-                  <th>{review.no}</th>
-                  <th className="title">{review.title}</th>
-                  <th>{review.date}</th>
+                <tr onClick={() => onClickReview(review.nailartSeq)} key={idx}>
+                  <th>{review.reviewSeq}</th>
+                  <th className="title">{review.userNickname}</th>
+                  <th>{review.nailart.nailartType} - {review.nailart.nailartDetailColor}</th>
+                  <th>{cutWordLength(review.reviewDesc)}</th>
+                  <th><CustomRating name="read-only" value={review.reviewRating} readOnly /></th>
+                  <th>{moment(convertDate(review.reviewRegedAt)).format("YYYY-MM-DD")}</th>
                 </tr>
               );
             })}
@@ -153,10 +170,13 @@ const Reviews = () => {
         </table>
       </div>
       <div className="pagination">
-
-      <Stack spacing={2}>
-        <Pagination count={10} shape="rounded" onChange={onchangePage}/>
-      </Stack>
+        <Stack spacing={2}>
+          <Pagination
+            count={lastPage}
+            shape="rounded"
+            onChange={onchangePage}
+          />
+        </Stack>
       </div>
     </TableWrapper>
   );

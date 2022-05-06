@@ -13,6 +13,7 @@ import com.nail.backend.domain.review.db.repository.*;
 import com.nail.backend.domain.review.request.ReviewCommentModifyPutReq;
 import com.nail.backend.domain.review.request.ReviewCommentRegisterPostReq;
 import com.nail.backend.domain.review.request.ReviewRegisterPostReq;
+import com.nail.backend.domain.review.request.ReviewUpdatePostReq;
 import com.nail.backend.domain.review.response.ReviewCommentGetRes;
 import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.user.db.entity.User;
@@ -503,6 +504,62 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
         return reviewGetResList;
     }
 //    UPDATE_________________________________________
+    public Review reviewUpdate(List<MultipartFile> reviewFiles,
+                                 ReviewUpdatePostReq reviewUpdatePostReq,
+                                 String userId) throws IOException {
+        Review review = reviewRepository.findByReviewSeq(reviewUpdatePostReq.getReviewSeq());
+
+        //작성자 일치 할 때
+        if(review.getUser().getUserId().equals(userId)){
+            //리뷰 데이터 변경
+            reviewRepositorySupport.modifyReview(reviewUpdatePostReq);
+            review = reviewRepository.findByReviewSeq(reviewUpdatePostReq.getReviewSeq());
+            //파일 처리
+            // 기존 파일 url 삭제
+            reviewImgRepository.deleteAllByReviewSeq(reviewUpdatePostReq.getReviewSeq());
+            if(!reviewFiles.isEmpty()){
+                for (MultipartFile f : reviewFiles ) {
+
+                    // file 업로드
+                    String fileName  = awsS3Service.createFileName(f.getOriginalFilename());
+
+                    //파일 객체 생성
+                    //        System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
+                    File file = new File(System.getProperty("user.dir")+ fileName);
+
+                    //파일 저장
+                    f.transferTo(file);
+
+                    //S3 파일 업로드
+                    awsS3Service.uploadOnS3(fileName, file);
+
+                    //주소 할당
+                    String reviewFileUrl = amazonS3Client.getUrl(bucket,fileName).toString();
+
+                    //파일 삭제
+                    file.delete();
+
+
+                    // 리뷰게시판 파일 테이블 insert
+                    ReviewImg reviewImg = ReviewImg.builder()
+                            .reviewSeq(review.getReviewSeq())
+                            .reviewImgUrl(reviewFileUrl)
+                            .build();
+
+                    reviewImgRepository.save(reviewImg);
+
+                }
+
+            }
+
+        }
+        // 전체 리뷰 평점 수정
+        double avgRate = reviewRepositorySupport.getAvgRate(review.getNailart().getNailartSeq());
+        nailartRepositorySupport.modifyRatingByNailartSeq((float) avgRate,review.getNailart().getNailartSeq());
+
+        return review;
+    }
+
 
     @Override
     @Transactional

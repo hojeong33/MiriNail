@@ -1,4 +1,13 @@
-import { apiClient, fileApiClient } from "./apiClient";
+import { apiClient, fileApiClient } from "./apiClient"
+
+// 내가 쓴 글 조회
+export const getUserCommunity = async (page:number, size:number) => {
+  const response = await apiClient.get<any>(
+    `/community/user`,
+    { params: { page, size }}
+  )
+  return response.data
+}
 
 // 커뮤니티 게시글 목록 조회
 export const getCommunityList = async (page: number, size: number) => {

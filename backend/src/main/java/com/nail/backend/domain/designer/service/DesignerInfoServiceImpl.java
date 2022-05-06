@@ -69,7 +69,7 @@ public class DesignerInfoServiceImpl implements DesignerInfoService{
     }
 
     @Override
-    public boolean designerInfoImgUrlupdate(long designerSeq, MultipartFile file) {
+    public boolean designerProfileImgUrlupdate(long designerSeq, MultipartFile file) {
         if(designerInfoRepository.findByDesignerSeq(designerSeq).getDesignerSeq() != null){
             String fileName = createFileName(file.getOriginalFilename());
             ObjectMetadata objectMetadata = new ObjectMetadata();

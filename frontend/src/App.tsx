@@ -46,6 +46,7 @@ import Followers from "./components/Designerpage/Followers";
 import TopButton from "./components/Navbar/TopButton";
 import Admin from "./routes/Admin/Admin";
 import ApplyList from "./components/Admin/ApplyList";
+import UpdateImg from "./components/Designerpage/UpdateProfileImg";
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateCommunity from "./routes/Community/UpdateCommunity";
 
@@ -91,6 +92,7 @@ function App() {
               element={<UpdateIntroduction />}
             ></Route>
             <Route path="followers" element={<Followers />}></Route>
+            <Route path="updateimg" element={<UpdateImg />}></Route>
           </Route>
           <Route path="/admin" element={<Admin />}>
             <Route path="applylist" element={<ApplyList />}></Route>
