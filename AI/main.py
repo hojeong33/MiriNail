@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
-from flasktest import get_stream_video
+# from flasktest import get_stream_video
 from testtemp3guhyun import testVideo
 from matplotlib import pyplot as plt
 import tensorflow as tf
