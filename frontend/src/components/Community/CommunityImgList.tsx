@@ -10,7 +10,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
-// import ModalTest from "./Modal";
+import image69 from "../../assets/img/sample/image69.png";
+import image70 from "../../assets/img/sample/image70.png";
+import image68 from "../../assets/img/sample/image68.png";
+
 const StyledSlider = styled(Slider)`
   .slick-dots {
     bottom: 10px;
@@ -481,33 +484,110 @@ export default function CommunityImgList() {
     setReplyTitle("답글 보기");
     setOpen("");
   };
+  const temp = [image68, image69, image70];
 
   useEffect(() => {}, [modalStatus]);
 
   return (
-    <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}>
+    <div
+      style={{
+        display: "flex",
+        width: "100rem",
+        flexWrap: "wrap",
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
+      {/* // <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}> */}
+      {/* <img src={image69} style={{ width: "40rem", height: "20rem" }}></img> */}
       {itemData.map((item, idx) => {
         return (
-          <div key={item.communitySeq}>
-            <CustomImageListItem cols={item.cols || 1} rows={item.rows || 1}>
-              <img
-                {...srcset(
-                  item.communityImg[0].communityImgUrl,
-                  121,
-                  item.rows,
-                  item.cols
-                )}
-                alt={item.communityTitle}
-                loading="lazy"
-                onClick={() => {
-                  getDetail(item.communitySeq, idx);
-                }}
-              />
+          <div style={{ margin: "5px" }}>
+            {idx % 10 == 5 ? (
+              <div style={{ display: "flex" }}>
+                <div key={item.communitySeq}>
+                  <CustomImageListItem
+                    cols={item.cols || 1}
+                    rows={item.rows || 1}
+                  >
+                    <img
+                      style={{
+                        width: "18rem",
+                        height: "18rem",
+                        marginRight: "10px",
+                      }}
+                      src={item.communityImg[0].communityImgUrl}
+                      alt={item.communityTitle}
+                      loading="lazy"
+                      onClick={() => {
+                        getDetail(item.communitySeq, idx);
+                      }}
+                    />
 
-              <div className="inner-content">
-                <div>{item.communityTitle}</div>
+                    <div className="inner-content">
+                      <div>{item.communityTitle}</div>
+                    </div>
+                  </CustomImageListItem>
+                </div>
+                <img
+                  src={temp[idx % 3]}
+                  style={{ width: "36.5rem", height: "18rem" }}
+                ></img>
               </div>
-            </CustomImageListItem>
+            ) : (
+              <>
+                {idx % 10 == 9 ? (
+                  <div style={{ display: "flex" }}>
+                    <div key={item.communitySeq}>
+                      <CustomImageListItem
+                        cols={item.cols || 1}
+                        rows={item.rows || 1}
+                      >
+                        <img
+                          style={{
+                            width: "18rem",
+                            height: "18rem",
+                            marginRight: "10px",
+                          }}
+                          src={item.communityImg[0].communityImgUrl}
+                          alt={item.communityTitle}
+                          loading="lazy"
+                          onClick={() => {
+                            getDetail(item.communitySeq, idx);
+                          }}
+                        />
+
+                        <div className="inner-content">
+                          <div>{item.communityTitle}</div>
+                        </div>
+                      </CustomImageListItem>
+                    </div>
+                    <img
+                      src={temp[idx % 3]}
+                      style={{ width: "55rem", height: "18rem" }}
+                    ></img>
+                  </div>
+                ) : (
+                  <div key={item.communitySeq}>
+                    <CustomImageListItem>
+                      <img
+                        style={{ width: "18rem", height: "18rem" }}
+                        src={item.communityImg[0].communityImgUrl}
+                        alt={item.communityTitle}
+                        loading="lazy"
+                        onClick={() => {
+                          getDetail(item.communitySeq, idx);
+                        }}
+                      />
+
+                      <div className="inner-content">
+                        <div>{item.communityTitle}</div>
+                      </div>
+                    </CustomImageListItem>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         );
       })}
@@ -789,53 +869,8 @@ export default function CommunityImgList() {
           state={modalStatus}
         />
       )} */}
-    </ImageList>
+      {/* </ImageList>
+       */}
+    </div>
   );
 }
-interface sizeDataProp {
-  rows: number;
-  cols: number;
-}
-const sizeData: sizeDataProp[] = [];
-// const itemData = [
-//   {
-//     img: image66,
-//     title: "sample",
-//     rows: 2,
-//     cols: 2,
-//     id: 1,
-//   },
-//   {
-//     img: image67,
-//     title: "sample",
-//     id: 2,
-//   },
-//   {
-//     img: image68,
-//     title: "sample",
-//     cols: 2,
-//     id: 3,
-//   },
-//   {
-//     img: image69,
-//     title: "sample",
-//     cols: 3,
-//     id: 4,
-//   },
-//   {
-//     img: image70,
-//     title: "sample",
-//     cols: 3,
-//     id: 5,
-//   },
-//   {
-//     img: image71,
-//     title: "sample",
-//     id: 6,
-//   },
-//   {
-//     img: image67,
-//     title: "sample",
-//     id: 7,
-//   },
-// ];
