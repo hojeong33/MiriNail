@@ -46,9 +46,6 @@ const Wrapper = styled.div`
   .leftDetailBox {
     width: 60%;
     height: 100%;
-    // img {
-    //   height: 100%;
-    // }
   }
 
   .rightDetailBox {
@@ -182,6 +179,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const [inputVal, setInputVal] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [communityTime, setCommunityTime] = useState<string>("");
+  const [replyTitle, setReplyTitle] = useState("답글 보기");
   const navigate = useNavigate();
 
   const ACCESS_TOKEN = localStorage.getItem("token");
@@ -391,15 +389,21 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const toggle = (className: any) => {
     if (open === className) {
       setOpen("");
+      setReplyTitle("답글 보기");
     } else {
       setOpen(className);
+      setReplyTitle("답글 닫기");
     }
   };
 
   // 모달
   const [modalStatus, setModalStatus] = useState(state);
   const handleOpen = () => setModalStatus(true);
-  const handleClose = () => setModalStatus(false);
+  const handleClose = () => {
+    setModalStatus(false);
+    setReplyTitle("답글 보기");
+    setOpen("");
+  };
 
   useEffect(() => {}, [modalStatus]);
 
@@ -572,7 +576,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                   toggle(e.communityCommentSeq);
                                 }}
                               >
-                                답글 보기
+                                {replyTitle}
                               </span>
                             </div>
                             {open === e.communityCommentSeq ? (
@@ -611,7 +615,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                           }}
                                         >
                                           {ele.communityCommentDesc}
-                                          {e.userNickname ===
+                                          {ele.userNickname ===
                                             sessionStorage.getItem(
                                               "userNickname"
                                             ) && (
