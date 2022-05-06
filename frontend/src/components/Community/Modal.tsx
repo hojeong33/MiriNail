@@ -205,7 +205,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
     lang: undefined,
     objectTime: time,
     calculate: {
-      justNow: 3601,
+      justNow: 60,
     },
   };
 

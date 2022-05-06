@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { getDesignerReview } from "../../store/apis/review";
 import { useNavigate, useParams } from "react-router-dom";
-import { TailSpin } from "react-loader-spinner"
+import { TailSpin } from "react-loader-spinner";
 import { convertDate } from "../Commons/functions";
 import moment from "moment";
-import Rating from '@mui/material/Rating';
+import Rating from "@mui/material/Rating";
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -49,11 +49,11 @@ const TableWrapper = styled.div`
           cursor: pointer;
         }
         tr {
-        cursor: pointer;
-        :hover {
-          background-color: #f8f8fa;
+          cursor: pointer;
+          :hover {
+            background-color: #f8f8fa;
+          }
         }
-      }
       }
     }
   }
@@ -76,14 +76,14 @@ const CustomRating = styled(Rating)`
     width: 20px;
     height: 20px;
   }
-`
+`;
 
 interface IState {
   review: {
     no: number;
     title: string;
     date: string;
-  }
+  };
 }
 
 const Reviews = () => {
@@ -106,14 +106,14 @@ const Reviews = () => {
     }
   );
 
-  const cutWordLength = (word:string) => {
+  const cutWordLength = (word: string) => {
     if (!word) return;
-    let result = word
+    let result = word;
     if (word.length > 15) {
-      result = result.slice(0,10) + "..."
+      result = result.slice(0, 10) + "...";
     }
-    return result
-  }
+    return result;
+  };
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event);
@@ -121,10 +121,9 @@ const Reviews = () => {
     setPage(page);
   };
 
-  const onClickReview = (nailartSeq:number) => {
-    navigate(`/nft/${nailartSeq}`)
-  }
-
+  const onClickReview = (nailartSeq: number) => {
+    navigate(`/nft/${nailartSeq}`);
+  };
 
   return isLoading ? (
     <LoadingBox className="loading">
@@ -133,7 +132,9 @@ const Reviews = () => {
   ) : (
     <TableWrapper>
       <div className="table">
-        <div className="count">총 {data.totalElements ? data.totalElements : "0"} 건</div>
+        <div className="count">
+          총 {data.totalElements ? data.totalElements : "0"} 건
+        </div>
         <table>
           <colgroup>
             <col width="5%" />
@@ -154,20 +155,34 @@ const Reviews = () => {
             </tr>
           </thead>
           <tbody>
-            {data.content?.map((review:any, idx:number) => {
+            {data.content?.map((review: any, idx: number) => {
               return (
                 <tr onClick={() => onClickReview(review.nailartSeq)} key={idx}>
                   <th>{review.reviewSeq}</th>
                   <th className="title">{review.userNickname}</th>
-                  <th>{review.nailart.nailartType} - {review.nailart.nailartDetailColor}</th>
+                  <th>
+                    {review.nailart.nailartType} -{" "}
+                    {review.nailart.nailartDetailColor}
+                  </th>
                   <th>{cutWordLength(review.reviewDesc)}</th>
-                  <th><CustomRating name="read-only" value={review.reviewRating} readOnly /></th>
-                  <th>{moment(convertDate(review.reviewRegedAt)).format("YYYY-MM-DD")}</th>
+                  <th>
+                    <CustomRating
+                      name="read-only"
+                      value={review.reviewRating}
+                      readOnly
+                    />
+                  </th>
+                  <th>
+                    {moment(convertDate(review.reviewRegedAt)).format(
+                      "YYYY-MM-DD"
+                    )}
+                  </th>
                 </tr>
               );
             })}
           </tbody>
         </table>
+        {data.empty && <div className="nodata">등록된 후기가 없습니다</div>}
       </div>
       <div className="pagination">
         <Stack spacing={2}>
@@ -180,6 +195,5 @@ const Reviews = () => {
       </div>
     </TableWrapper>
   );
-  
-}
+};
 export default Reviews;

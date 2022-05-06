@@ -16,6 +16,10 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  .nodata {
+    border: none;
+    padding: 10px 0;
+  }
   .count {
     text-align: start;
     padding: 10px;
@@ -187,6 +191,7 @@ const MyReview = () => {
               })}
             </tbody>
           </table>
+          {data.empty && <div className="nodata">작성한 후기가 없습니다</div>}
         </div>
       )}
       <div className="pagination">
