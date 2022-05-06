@@ -218,8 +218,8 @@ public class CommunityServiceImpl implements CommunityService{
         return res;
     }
 
-    public List<CommunityGetRes> getTop10Community(){
-        List<Community> communityList = communityRepository.findTop10ByOrderByCommunityCntDesc();
+    public List<CommunityGetRes> getTop20Community(){
+        List<Community> communityList = communityRepository.findTop20ByOrderByCommunityCntDesc();
 
         List<CommunityGetRes> communityGetResList = new ArrayList<>();
 
@@ -279,6 +279,7 @@ public class CommunityServiceImpl implements CommunityService{
 
             CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
                     .communityCommentSeq(comments.getCommunityCommentSeq())
+                    .communityCommentIsDelete(comments.isCommunityCommentIsDelete())
                     .userSeq(comments.getUser().getUserSeq())
                     .userNickname(comments.getUser().getUserNickname())
                     .userProfileImg(comments.getUser().getUserProfileImg())
@@ -306,6 +307,7 @@ public class CommunityServiceImpl implements CommunityService{
 
             CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
                     .communityCommentSeq(comments.getCommunityCommentSeq())
+                    .communityCommentIsDelete(comments.isCommunityCommentIsDelete())
                     .userSeq(comments.getUser().getUserSeq())
                     .userNickname(comments.getUser().getUserNickname())
                     .userProfileImg(comments.getUser().getUserProfileImg())

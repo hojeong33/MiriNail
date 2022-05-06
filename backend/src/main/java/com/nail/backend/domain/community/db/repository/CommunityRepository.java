@@ -14,5 +14,5 @@ import java.util.List;
 public interface CommunityRepository extends JpaRepository<Community,Long> {
     Page<Community> findAllByUser(Pageable pageable, User user);
 
-    List<Community> findTop10ByOrderByCommunityCntDesc();
+    List<Community> findTop20ByOrderByCommunityCntDesc();
 }

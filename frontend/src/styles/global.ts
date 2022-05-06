@@ -38,5 +38,9 @@ const GlobalStyle = createGlobalStyle`
   }
   input:focus {outline:none;}
   textarea:focus {outline:none;}
+
+  textarea {
+    padding:10px;
+  }
 `;
 export default GlobalStyle;

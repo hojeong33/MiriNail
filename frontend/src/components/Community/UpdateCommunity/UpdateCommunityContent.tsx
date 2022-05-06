@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { imgProp } from "../../../store/atoms";
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -166,11 +168,18 @@ const UpdateCommunityContent = () => {
   const ACCESS_TOKEN = localStorage.getItem("token");
   const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
   const communitySeq = sessionStorage.getItem("communitySeq");
+  const [myTest,setMyTest] = useRecoilState(imgProp)
+
   //게시글 상세 정보 받아오기
   useEffect(() => {
     getDetail(communitySeq);
     console.log(itemDetail, "아이템디테일!");
   }, []);
+
+  useEffect(() => {
+    console.log(itemDetail)
+    setMyTest(itemDetail?.communityImg)
+  },[itemDetail])
 
   const getDetail = async (communitySeq: number | string | null) => {
     if (ACCESS_TOKEN) {
@@ -335,6 +344,7 @@ const UpdateCommunityContent = () => {
                     defaultImg={itemDetail?.communityImg}
                     setImageProcess={setImageProcess}
                     setPostImages={setPostImages}
+                    itemDetail={itemDetail}
                   />
                 </div>
                 <div className="subTitle" style={{ marginTop: "80px" }}>

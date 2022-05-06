@@ -22,7 +22,7 @@ public interface ReviewService {
     Long reviewCntPlus(Long reviewSeq);
 
 //    READ___________________________________________
-    Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq);
+    Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long nailartSeq, int type);
     Page<ReviewGetRes> getReviewListByUser(Pageable pageable,Long userSeq);
     Page<ReviewGetRes> getReviewListByDesignerSeq(Pageable pageable,Long designerSeq);
 

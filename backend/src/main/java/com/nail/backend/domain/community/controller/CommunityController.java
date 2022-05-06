@@ -49,8 +49,8 @@ public class CommunityController {
                                                               Principal principal) throws IOException {
 
         log.info("communityRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         Community res = communityService.communityRegister(communityFiles, communityRegisterPostReq, userId);
         if (!res.equals(null)) {
@@ -119,17 +119,17 @@ public class CommunityController {
     }
 
     // top10 조회
-    @ApiOperation(value = "커뮤니티 조회수 top10 조회 ")
+    @ApiOperation(value = "커뮤니티 조회수 top20 조회 ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패")
     })
 
     @GetMapping("/cnt")
-    public ResponseEntity<List<CommunityGetRes>> getTop10Community() {
+    public ResponseEntity<List<CommunityGetRes>> getTop20Community() {
 
-        log.info("getTop10Community - 호출");
-        List<CommunityGetRes> community = communityService.getTop10Community();
+        log.info("getTop20Community - 호출");
+        List<CommunityGetRes> community = communityService.getTop20Community();
 
         return ResponseEntity.status(200).body(community);
     }

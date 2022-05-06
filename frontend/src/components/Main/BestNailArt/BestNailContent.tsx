@@ -2,6 +2,10 @@ import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
+import { fetchDesigns } from "../../../store/api";
+import { useQuery } from "react-query";
+import { useRecoilState } from "recoil";
+import { nftFilter } from "../../../store/atoms";
 export interface BestNailProps {
   img: string;
   name: string;
@@ -9,6 +13,16 @@ export interface BestNailProps {
   tags: Array<string>;
 }
 const BestNailContent = () => {
+  // 베스트 리뷰 데이터
+  const [myFilter,setMyFilter] = useRecoilState(nftFilter)
+  const {isLoading:bestReviewLoading, data : bestReviewData} = useQuery(["bestReview",myFilter],fetchDesigns)
+  useEffect(() => {
+    setMyFilter({
+      ...myFilter,
+      sort:"like",
+      size:4,
+    })
+  },[])
   //베스트 네일 데이터 가져오기
   const ACCESS_TOKEN = new URL(window.location.href).searchParams.get("token");
   // useEffect(() => {
@@ -55,23 +69,20 @@ const BestNailContent = () => {
   ];
   return (
     <div style={{ display: "flex" }}>
-      {bestNail.map((item, idx) => (
+      {bestReviewData?.map((item:any, idx:number) => (
         <Grid key={idx} style={{ margin: "20PX" }}>
           <img
-            src={item.img}
+            src={item.nailartThumbnailUrl}
             alt=""
             style={{ width: "250px", height: "250px" }}
           />
           <div style={{ textAlign: "center", marginTop: "10px" }}>
-            <Typography>{item.name}</Typography>
-            <Typography>{item.price}원</Typography>
+            <Typography>{item.nailartType} - {item.nailartDetailColor}</Typography>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              {item.tags.map((tag, i) => (
-                <Typography style={{ margin: "0px 2px" }} key={i}>
-                  {tag}
-                </Typography>
-              ))}
+              #{item.nailartWeather} #{item.nailartColor} #{item.designerNickname}
             </div>
+            <Typography>{item.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</Typography>
+            
           </div>
         </Grid>
       ))}

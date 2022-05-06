@@ -35,6 +35,8 @@ public class ReviewComment {
     @ApiModelProperty(value = "리뷰 게시판 댓글 내용 ")
     private String reviewCommentDesc;
 
+    @ApiModelProperty(value = "리뷰 게시판 댓글 삭제여부 ")
+    private boolean reviewCommentIsDelete;
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
