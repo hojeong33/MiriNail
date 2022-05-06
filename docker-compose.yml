@@ -32,7 +32,7 @@ services:
       context: AI/
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"  
+      - "8888:8888"  
         # [인증서 파일 저장 경로]:/root 
     volumes:
       - /home/ubuntu/docker-volume/ssl:/root
