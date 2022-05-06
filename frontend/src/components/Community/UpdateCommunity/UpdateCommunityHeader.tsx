@@ -1,8 +1,5 @@
-
-import styled from 'styled-components'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useState } from 'react';
-
+import styled from "styled-components";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -36,14 +33,6 @@ const Wrapper = styled.div`
       text-align: center;
       color: #3d3c3a;
       font-weight: 500;
-      ::before {
-        content: "";
-        margin: 0 auto;
-        display: block;
-        width: 30px;
-        height: 3px;
-        background: #3d3c3a
-      }
       
     }
 
@@ -75,7 +64,7 @@ const Wrapper = styled.div`
           position: absolute;
           width: 100%;
           height: 30px;
-          // bottom: 10px;
+          bottom: 10px;
           font-size: 14px;
           color: #bfbfbd;
           * {
@@ -88,7 +77,7 @@ const Wrapper = styled.div`
           }
           
           svg {
-            top: 0%;
+            top: 20%;
           }
           
 
@@ -98,37 +87,28 @@ const Wrapper = styled.div`
     }
 
 
-`
+`;
 
-function PageHeader({changeThema,changeAll}:any) {
-  const [flag,setFlag] = useState(true)
-
+function UpdateCommunityHeader() {
   return (
     <>
-    <Wrapper>
-      <div className="row">
-        <div className="pageHeaderTitle">
-          DESIGNER
-        </div>
-        <div className="pageHeaderLinks">
-          <span onClick={() => {changeThema(); setFlag(true)}} style={flag ? {color:"black"} : {color:"gray"}}>
-            테마보기
-          </span>
-          <span onClick={() => {changeAll(); setFlag(false)}} style={flag ? {color:"gray"} : {color:"black"}}>
-            전체보기
-          </span>
-        </div>
-        <div className="pageHeaderNavigation">
-          <div className="NavElement">
-            <span>디자이너</span>
-            <ChevronRightIcon />
-            {flag ? <span>테마보기</span> : <span>전체보기</span>}
+      <Wrapper>
+        <div className="row">
+          <div className="pageHeaderTitle">COMMUNITY</div>
+          <div className="pageHeaderLinks"></div>
+          <div className="pageHeaderNavigation">
+            <div className="NavElement">
+              <span>Community</span>
+              <ChevronRightIcon style={{ top: "0" }} />
+              <span>CommunityDetail</span>
+              <ChevronRightIcon style={{ top: "0" }} />
+              <span>수정하기</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
     </>
-  )
+  );
 }
 
-export default PageHeader
+export default UpdateCommunityHeader;

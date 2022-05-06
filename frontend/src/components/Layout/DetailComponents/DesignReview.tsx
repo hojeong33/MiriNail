@@ -1,11 +1,14 @@
 import styled from 'styled-components'
 import StarIcon from '@mui/icons-material/Star';
 import ProgressBar from './ProgressBar';
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import BasicModal from './Modal';
 // import { Modals } from '@mui/material';
 // import Popup from './Modals'
 import Collapse from './Collapse'
+import { useParams } from 'react-router-dom';
+import { getReview } from '../../../store/api';
+import { useQuery } from 'react-query';
 
 
 
@@ -94,19 +97,27 @@ const Wrapper = styled.div`
         margin-top:24px;
         display: flex;
         min-height : 300px;
+        border-bottom : 1px solid #e4e4e4;
     
         .reviewBoxLeft {
           width : 75%;
           height:100%;
           align-items:center;
-
+          border-right : 1px solid #e4e4e4;
+          img {
+            width :147px;
+            height : 147px;
+            margin-top : 40px;
+          }
         }
         .reviewBoxRight {
-          border-left : 1px solid #e4e4e4;
+          
           width : 25%;
           height:100%;
+          padding-top:5px;
           .userId {
             margin-left:20px;
+            font-weight:bold;
           }
         }
       }
@@ -115,51 +126,34 @@ const Wrapper = styled.div`
   
   @media screen and (max-width: 1023px) {
     .review {
-      font-size:40px;
-      border-bottom :3px solid black;
-      padding-bottom : 5px;  
+   
     }
     .reviewTotal {
-      display: flex;
+  
       
       .reviewLeft {
         width : 40%;
-        border-right : 1px solid #e3e3e3;
-        margin-top:24px;
+       
         .reviewLeftUp {
-          display: flex;
-          justify-content : center;
+        
           .iconBox {
-            font-size :100px;
-            line-height:75px;
+       
             
             svg {
-              font-size:60px;
-              color:#F8E71C;
+       
             }
           }
   
           .score {
-            line-height:95px;
-            font-size : 45px;
-            margin-left : 15px;
+
           }
         }
   
         .btn {  
-          margin-top: 24px;
-          width: 100%;
-          border-radius: 4px;     
-          margin : 15px auto;
-          color: black;
+      
           // line-height : 26px;
           span {
-            background-color :#14161a;
-            color: white;
-            font-size:14px;
-            font-weight:bold;
-            padding : 5px 10px 5px 10px;
-            border-radius:4px;
+          
           }
         }
       }
@@ -187,25 +181,17 @@ const Wrapper = styled.div`
     .reviewList {
       // position:relative
       .reviewFilter {
-        padding-top : 20px;
-        padding-bottom : 20px;
-        margin-top:20px;
-        border-top : 1px solid #e4e4e4;
-        border-bottom : 1px solid #e4e4e4;
-        display:flex;
+ 
       }
       
       .test{
   
         .reviewBox{
-          margin-top:24px;
-          display: flex;
+  
           min-height : 300px;
       
           .reviewBoxLeft {
-            width : 75%;
-            height:100%;
-            align-items:center;
+   
   
           }
           .reviewBoxRight {
@@ -225,118 +211,37 @@ const Wrapper = styled.div`
 
 `
 
-interface Iprops {
-  mStatus : boolean
-}
 
 const DesignReview = () => {
-  const [sibal,setSibal] = useState(['가나다라',123,'이씨이이ㅣ바라라라ㅏㄹ'])
-  const [dummy,setDummy] = useState([
-    {
-      rating : 1,
-      replyContent : '답변 내용입니다. 나중에 엔터처리 추가해주세요.',
-      userId : '회원 아이디입니다. 끝부분은 별표로 처리해주세요.',
-      image : "https://kouve.kr/web/product/small/202203/fd9264794a352a353b844ff75c9455c8.jpg",
-      reviewReplyList : [
-        {
-          content : '저도 사용해봤는데 너무 깔끔하고 좋은 것 같아요. 추천드립니다.',
-          userId : '@rhkrehd6169',
-          date : '2020-02-02'
-        },
-        {
-          content : '이렇게 좋은 디자인이 있었나요?? 저도 내일 당장 네일샵 방문해보고 싶어졌네요. 그리고 두줄 되면 어떻게 되는지도 좀 확인해 보고 싶어졌습니다. 알겠습니까ㅣ?',
-          userId : '@userId123',
-          date : '2020-02-02'
-        },
-        {
-          content : '짧은 댓글 확인한번 해봐야겠네',
-          userId : '@testuserId7913',
-          date : '2020-02-02'
-        },
-        
-      ]
-    },
-    {
-      rating : 2,
-      replyContent : '답변 내용입니다. 나중에 엔터처리 추가해주세요.',
-      userId : '회원 아이디입니다. 끝부분은 별표로 처리해주세요.',
-      image : "https://kouve.kr/web/product/small/202203/fd9264794a352a353b844ff75c9455c8.jpg",
-      reviewReplyList : [
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        
-      ]
-    },
-    {
-      rating : 3,
-      replyContent : '답변 내용입니다. 나중에 엔터처리 추가해주세요.',
-      userId : '회원 아이디입니다. 끝부분은 별표로 처리해주세요.',
-      image : "https://kouve.kr/web/product/small/202203/fd9264794a352a353b844ff75c9455c8.jpg",
-      reviewReplyList : [
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        
-      ]
-    },
-    {
-      rating : 4,
-      replyContent : '답변 내용입니다. 나중에 엔터처리 추가해주세요.',
-      userId : '회원 아이디입니다. 끝부분은 별표로 처리해주세요.',
-      image : "https://kouve.kr/web/product/small/202203/fd9264794a352a353b844ff75c9455c8.jpg",
-      reviewReplyList : [
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        {
-          content : '댓글1 입니다.',
-          userId : '댓글유저 아이디',
-          date : '2020-02-02'
-        },
-        
-      ]
-    },
-  ])
-
+  const param = useParams().id
+  const [filter,setFilter] = useState(1)
   const [dummy2,setDummy2] = useState({
-    best : 47,
-    good : 4,
-    soso : 5,
-    bad : 6,
-    worst : 20
+    best : 0,
+    good : 0,
+    soso : 0,
+    bad : 0,
+    worst : 0
   })
+  const {isLoading:isReviewLoading,data:reviewData} = useQuery(['reviews',param,filter],getReview)
+  const [test,setTest] = useState([])
+  
+  useEffect(() => {
+    const best = reviewData?.content.filter((e:any) => e.reviewRating === 5).length
+    const good = reviewData?.content.filter((e:any) => e.reviewRating === 4).length
+    const soso = reviewData?.content.filter((e:any) => e.reviewRating === 3).length
+    const bad = reviewData?.content.filter((e:any) => e.reviewRating === 2).length
+    const worst = reviewData?.content.filter((e:any) => e.reviewRating === 1).length
+    console.log(best, good, soso, bad, worst)
+    setDummy2({
+      best : best,
+      good : good,
+      soso : soso,
+      bad : bad,
+      worst : worst,
+    })
+    setTest(reviewData?.content)
+  },[reviewData])
+  
   const highestBarVote = Math.max(dummy2.best,dummy2.good,dummy2.soso,dummy2.bad,dummy2.worst)
   const ratingCal = (rate:number) => {
       const array2 = []; 
@@ -347,11 +252,36 @@ const DesignReview = () => {
     
   }
 
-  // 모달
+  // // 필터
+  // const [data,setData] = useState([])
+  // // const sortByRating = reviewData?.content.sort((a:any,b:any) => b.reviewRating - a.reviewRating)
+  // // const sortByReply = reviewData?.content.sort((a:any,b:any) => b.reviewComments.length - a.reviewComments.length)
+  // // console.log(sortByRating)
+  // // console.log(sortByReply)
+  // useEffect(() => {
+  //   data.eff
+  // })
 
-  
-  
-  
+  const handleFilter = (e:number) => {
+    setFilter(e)
+  }
+
+  // useEffect(() => {
+  //   if (filter === 0) {
+  //     const newArr = reviewData?.content.slice(0)
+  //     setTest(newArr)
+  //   }
+  //   if (filter === 1) {
+  //     const newArr = reviewData?.content.slice(0).sort((a:any,b:any) => b.reviewRating - a.reviewRating)
+  //     setTest(newArr)
+  //   }
+
+  //   if (filter === 2) {
+  //     const newArr = reviewData?.content.slice(0).sort((a:any,b:any) => b.reviewComments.length - a.reviewComments.length)
+  //     setTest(newArr)
+
+  //   }
+  // },[filter])
   
 
   return (
@@ -417,26 +347,26 @@ const DesignReview = () => {
 
       <div className="reviewList">
         <div className="reviewFilter">
-          <div>최신순</div><div style={{marginLeft:"25px"}}>평점순</div><div style={{marginLeft:"25px"}}>댓글순</div>
+          <div onClick={() => handleFilter(1)}>최신순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(2)}>평점순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(3)}>댓글순</div>
         </div>
         <div className="test">
-          {dummy.map(e => 
+          
+          {reviewData && reviewData.content.map((e:any,idx:number) => 
             <div className="reviewBox">
               <div className='reviewBoxLeft'>
-                <div>{ratingCal(e.rating)}</div>
+                <div>{ratingCal(e.reviewRating)}</div>
                 <div style={{marginTop:"10px"}}>
-                  {e.replyContent}
+                  {e.reviewDesc}
                 </div>
-                <img src="https://kouve.kr/web/product/small/202203/fd9264794a352a353b844ff75c9455c8.jpg" alt="" width="200" height="200" style={{marginTop:"10px"}}/>
+                <img src={e.reviewImg[0].reviewImgUrl} alt="이미지 오류" width="200" height="200" />
                 <div className="reviewReplyBox">
-                  <Collapse replyList={e.reviewReplyList}/>
+                  <Collapse replyList={e.reviewComments} reviewSeq={e.reviewSeq}/>
                 </div>
-                {/* <div style={{position:'relative',zIndex:3,color:'red'}}><div>sadfjs</div><div>sadfjs</div><div>sadfjs</div><div>sadfjs</div><div>sadfjs</div><div>sadfjs</div><div>sadfjs</div></div> */}
               </div>
               <div className='reviewBoxRight'>
-                <div className='userId'>{e.userId}</div>     
+                <span className='userId'>{e.userNickname}</span><span>님의 리뷰입니다.</span>
               </div>
-                
+             
             </div>
           )}  
           

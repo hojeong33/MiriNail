@@ -51,10 +51,10 @@ public class ReviewController {
 public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "reviewFiles", required = false) List<MultipartFile> reviewFiles,
                                                           @ModelAttribute ReviewRegisterPostReq reviewRegisterPostReq,
                                                           Principal principal) throws IOException {
-
+    System.out.println(reviewRegisterPostReq);
     log.info("reviewRegister - 호출");
-//    String userId = principal.getName();
-        String userId = "2217289220";
+    String userId = principal.getName();
+//        String userId = "2217289220";
 
     Review res = reviewService.reviewRegister(reviewFiles, reviewRegisterPostReq, userId);
     if (!res.equals(null)) {
@@ -75,8 +75,8 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
                                                                      Principal principal) {
 
         log.info("reviewCommentRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         ReviewComment res = reviewService.reviewCommentRegister(reviewCommentRegisterPostReq, userId);
         if (!res.equals(null)) {
@@ -180,8 +180,8 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
                                                            Principal principal) throws IOException {
 
         log.info("reviewUpdate - 호출");
-    //    String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         Review res = reviewService.reviewUpdate(reviewFiles, reviewUpdatePostReq, userId);
         if (!res.equals(null)) {

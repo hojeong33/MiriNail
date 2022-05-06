@@ -118,7 +118,6 @@ const HistoryTab = styled.div`
   }
 `;
 
-
 const Content = () => {
   const [hisTog, setHisTog] = useState<boolean>(false);
   const location = useLocation();

@@ -41,7 +41,7 @@ const MainFrame = styled.div`
         padding-top: 75px;
 
         .TypeFilter {
-          a { 
+          div { 
             display:block; 
             color:#3D3C3A; 
             opacity:0.5; 
@@ -50,8 +50,8 @@ const MainFrame = styled.div`
             margin-bottom:20px;
             cursor : pointer;
           }
-          a:active{ opacity:1;}
-          a:hover{ opacity:1;}
+          div:active{ opacity:1;}
+          div:hover{ opacity:1;}
         }
 
         .OrderFilter {
@@ -87,12 +87,14 @@ const MainFrame = styled.div`
         padding-top: 75px;
         width: 100%;
         border-left: 1px solid #d2d2d0;
+        padding-left:40px;
         padding-bottom: 160px;
         text-align: center;
         display:flex;
         flex-direction : column;
         .pagination {
           margin : 0 auto;
+          margin-top:50px;
         }
       }
     }
@@ -126,6 +128,7 @@ const MainFrame = styled.div`
 
         .RightBox {
           padding-top: 30px;
+          padding-left:0px;
           width: 100%;
           border-left: 0px solid #d2d2d0;
           padding-bottom: 100px;
@@ -138,6 +141,7 @@ const MainFrame = styled.div`
 `;
 
 const PageContent = () => {
+  const [status,setStatus] = useState(0)
   const [myFilter,setMyFilter] = useRecoilState(nftFilter)
   const [sortFilter,setSortFilter] = useState('')
   const reset = useResetRecoilState(nftFilter)
@@ -165,10 +169,10 @@ const PageContent = () => {
             <div className="ItemList">
               <div className="LeftBox">
                 <div className="TypeFilter">
-                  <a onClick={() => reset()}>전체</a>
-                  <a onClick={() => setMyFilter({...myFilter,type:'젤'})}>GEL NAIL</a>
-                  <a onClick={() => setMyFilter({...myFilter,type:'프렌치'})}>FRENCH NAIL</a>
-                  <a onClick={() => setMyFilter({...myFilter,type:'라인스톤'})}>LINESTONE NAIL</a>
+                  <div style={status === 0 ? {opacity:"1"} : {}} onClick={() => {reset(); setStatus(0)}}>전체</div>
+                  <div style={status === 1 ? {opacity:"1"} : {}} onClick={() => {setMyFilter({...myFilter,type:'젤'}); setStatus(1)}} >GEL NAIL</div>
+                  <div style={status === 2 ? {opacity:"1"} : {}} onClick={() => {setMyFilter({...myFilter,type:'프렌치'}); setStatus(2)}}>FRENCH NAIL</div>
+                  <div style={status === 3 ? {opacity:"1"} : {}} onClick={() => {setMyFilter({...myFilter,type:'라인스톤'}); setStatus(3)}}>LINESTONE NAIL</div>
                 </div>
                 <div className="OrderFilter">
                   <a>정렬</a>

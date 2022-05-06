@@ -1,14 +1,12 @@
 import styled from "styled-components";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
-import { getDesignerAsk } from "../../store/apis/qna";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
-import { Link } from "react-router-dom";
-import { convertDate, convertQnatypeToText } from "../Commons/functions";
-import { getAllApply } from "../../store/apis/authentication";
+import { convertDate } from "../Commons/functions";
+import { getAllApply, getDetailApply, getDownloadApply, patchConfirmApply } from "../../store/apis/authentication";
 import { TailSpin } from "react-loader-spinner"
 
 const TableWrapper = styled.div`
@@ -46,7 +44,6 @@ const TableWrapper = styled.div`
         font-weight: 500;
       }
       tr {
-        cursor: pointer;
         :hover {
           background-color: #f8f8fa;
         }
@@ -63,7 +60,6 @@ const TableWrapper = styled.div`
 const ApplyList = () => {
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
-  const { userSeq } = useParams();
   const navigate = useNavigate();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
@@ -72,7 +68,7 @@ const ApplyList = () => {
     setPage(page);
   };
 
-  const { data, isLoading } = useQuery<any, Error>(
+  const { data, isLoading, refetch } = useQuery<any, Error>(
     ["getApplyList", page],
     async () => {
       return await getAllApply(page, 10);
@@ -86,11 +82,36 @@ const ApplyList = () => {
     }
   );
 
-
-
-  const onClickAsk = (qnaSeq:number) => {
-    navigate(`/designerpage/${userSeq}/askdetail/${qnaSeq}`)
+  const onClickConfirm = async (confirm:boolean, designerSeq:number) => {
+    try {
+      const res = await patchConfirmApply(confirm, designerSeq)
+      console.log(res)
+      refetch()
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  
+  const onclickDownload = async (designerSeq:number) => {
+    try {
+      const res:any = await getDetailApply(designerSeq)
+      const url = res.data.designerCertification
+      console.log(url)
+      const res2 = await getDownloadApply(url)
+      const url2 = window.URL.createObjectURL(new Blob([res2]));
+      const link = document.createElement("a");
+      link.href = url2;
+      link.setAttribute("download", "첨부.png");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
 
   return (
     <TableWrapper>
@@ -106,9 +127,10 @@ const ApplyList = () => {
               <colgroup>
                 <col width="5%" />
                 <col width="10%" />
-                <col width="39%" />
+                <col width="29%" />
                 <col width="16%" />
                 <col width="16%" />
+                <col width="10%" />
                 <col width="7%" />
                 <col width="7%" />
               </colgroup>
@@ -119,6 +141,7 @@ const ApplyList = () => {
                   <th>네일아트샵명</th>
                   <th>연락처</th>
                   <th>신청일</th>
+                  <th>첨부</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -137,10 +160,27 @@ const ApplyList = () => {
                         )}
                       </th>
                       <th>
-                        <button>승인</button>
+                        <a href={apply.designerCertification}>
+                          <button>보기</button>
+                        </a>
                       </th>
                       <th>
-                        <button>거절</button>
+                        <button
+                          onClick={() =>
+                            onClickConfirm(true, apply.designerSeq)
+                          }
+                        >
+                          승인
+                        </button>
+                      </th>
+                      <th>
+                        <button
+                          onClick={() =>
+                            onClickConfirm(false, apply.designerSeq)
+                          }
+                        >
+                          거절
+                        </button>
                       </th>
                     </tr>
                   );

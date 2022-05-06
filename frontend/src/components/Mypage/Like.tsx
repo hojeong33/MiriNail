@@ -194,15 +194,16 @@ const Like = () => {
                 <div className="title">
                   {item.nailart.nailartType} - {item.nailart.nailartDetailColor}
                 </div>
+                <div className="category"># {item.nailart.nailartWeather}</div>
                 <div className="price">
                   {item.nailart.nailartPrice.toLocaleString()}원
                 </div>
-                <div className="category"># {item.nailart.nailartWeather}</div>
               </ItemCard>
             );
           })}
         </ItemCards>
       )}
+     {data?.content.length === 0 && <div>좋아요한 네일아트가 없습니다</div>}
       <div className="pagination">
         <Stack spacing={2}>
           <Pagination

@@ -3,7 +3,9 @@ import FileUpload2 from "./FileUpload2";
 import { useState, useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { imgProp } from "../../../store/atoms";
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -141,14 +143,67 @@ const MainFrame = styled.div`
   }
 `;
 
-const CreateCommunityContent = () => {
+const UpdateCommunityContent = () => {
   //작성하기
-  const ACCESS_TOKEN = localStorage.getItem("token");
+  // interface temp2 {
+  //   img: Array<string>;
+  //   title: string;
+  //   desc: string;
+  // }
+  // interface Ilocation {
+  //   myState: temp2;
+  // }
+  // const location = useLocation();
+  // console.log(location.state, "!!!!!!!!!!!!!!!!!");
+  interface CommunityImgProp {
+    communityImgSeq: number;
+    communityImgUrl: string;
+  }
+  interface CommunityDetailProp {
+    communityTitle: string;
+    communityDesc: string;
+    communityImg: CommunityImgProp[];
+  }
   const navigate = useNavigate();
-  const createCommunity = async () => {
-    console.log(communityDesc);
-    console.log(communityTitle);
+  const ACCESS_TOKEN = localStorage.getItem("token");
+  const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
+  const communitySeq = sessionStorage.getItem("communitySeq");
+  const [myTest,setMyTest] = useRecoilState(imgProp)
+
+  //게시글 상세 정보 받아오기
+  useEffect(() => {
+    getDetail(communitySeq);
+    console.log(itemDetail, "아이템디테일!");
+  }, []);
+
+  useEffect(() => {
+    console.log(itemDetail)
+    setMyTest(itemDetail?.communityImg)
+  },[itemDetail])
+
+  const getDetail = async (communitySeq: number | string | null) => {
+    if (ACCESS_TOKEN) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/community/${communitySeq}`,
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      })
+        .then((res) => {
+          setItemDetail(res.data);
+          console.log(res.data, "아이템디테일");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  const updateCommunity = async () => {
+    console.log(communityDesc, "내용");
+    console.log(communityTitle, "제목");
     const formdata: any = new FormData();
+    formdata.append("communitySeq", communitySeq);
     formdata.append("communityDesc", communityDesc);
     formdata.append("communityTitle", communityTitle);
     postImages.forEach((e) => {
@@ -163,7 +218,7 @@ const CreateCommunityContent = () => {
       console.log(value);
     }
     axios
-      .post("http://localhost:8080/api/community", formdata, {
+      .post("http://localhost:8080/api/community/update", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -171,6 +226,7 @@ const CreateCommunityContent = () => {
       })
       .then((res) => {
         navigate("/community");
+        console.log("수정완료");
       })
       .catch(console.log);
   };
@@ -226,7 +282,7 @@ const CreateCommunityContent = () => {
                       checked={imageProcess.length >= 1 ? true : false}
                     />
                     <label htmlFor="cb1">
-                      이미지 등록 ({imageProcess.length >= 1 ? 1 : 0}/1)
+                      이미지 수정 ({imageProcess.length >= 1 ? 1 : 0}/1)
                     </label>
                   </div>
                   <div className="CheckBox">
@@ -236,7 +292,7 @@ const CreateCommunityContent = () => {
                       checked={textProcess2.length >= 1 ? true : false}
                     />
                     <label htmlFor="cb2">
-                      글제목 작성 ({textProcess2.length >= 1 ? 1 : 0}/1)
+                      글제목 수정 ({textProcess2.length >= 1 ? 1 : 0}/1)
                     </label>
                   </div>
                   <div className="CheckBox">
@@ -246,7 +302,7 @@ const CreateCommunityContent = () => {
                       checked={textProcess.length >= 10 ? true : false}
                     />
                     <label htmlFor="cb3">
-                      글내용 작성 ({textProcess.length >= 10 ? 1 : 0}/1)
+                      글내용 수정 ({textProcess.length >= 10 ? 1 : 0}/1)
                     </label>
                     {imageProcess.length >= 1 &&
                     textProcess2.length >= 1 &&
@@ -261,14 +317,14 @@ const CreateCommunityContent = () => {
                           }}
                         />
                         <button
-                          onClick={createCommunity}
+                          onClick={updateCommunity}
                           style={{
                             border: "1px solid rgb(51,51,51)",
                             padding: "3px 10px",
                             borderRadius: "5px",
                           }}
                         >
-                          등록
+                          수정
                         </button>
                       </div>
                     ) : (
@@ -281,25 +337,28 @@ const CreateCommunityContent = () => {
               </div>
               <div className="RightBox">
                 <div className="subTitle" style={{ marginTop: "48px" }}>
-                  이미지 등록
+                  이미지 수정
                 </div>
                 <div className="fileBox">
                   <FileUpload2
+                    defaultImg={itemDetail?.communityImg}
                     setImageProcess={setImageProcess}
                     setPostImages={setPostImages}
+                    itemDetail={itemDetail}
                   />
                 </div>
                 <div className="subTitle" style={{ marginTop: "80px" }}>
-                  글제목 작성
+                  글제목 수정
                 </div>
                 <input
                   type="text"
                   onChange={onChangeText2}
                   style={{ width: "100%" }}
+                  defaultValue={itemDetail?.communityTitle}
                 ></input>
 
                 <div className="subTitle" style={{ marginTop: "80px" }}>
-                  글내용 작성
+                  글내용 수정
                 </div>
                 <textarea
                   name="textVal"
@@ -307,6 +366,7 @@ const CreateCommunityContent = () => {
                   onChange={onChangeText}
                   style={{ resize: "none" }}
                   placeholder="10자 이상 입력해주세요."
+                  defaultValue={itemDetail?.communityDesc}
                 ></textarea>
 
                 <div className="buttons">
@@ -317,9 +377,9 @@ const CreateCommunityContent = () => {
                       textProcess2.length < 1 ||
                       textProcess.length < 10
                     }
-                    onClick={createCommunity}
+                    onClick={updateCommunity}
                   >
-                    작성
+                    수정
                   </button>
                   <button
                     className="btn2"
@@ -340,4 +400,4 @@ const CreateCommunityContent = () => {
   );
 };
 
-export default CreateCommunityContent;
+export default UpdateCommunityContent;

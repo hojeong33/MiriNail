@@ -5,6 +5,10 @@ import Map from "../Commons/Map";
 import { useRecoilValue } from "recoil";
 import { designerAtom } from "../../store/atoms";
 import AddressModal from "../Mypage/AddressModal";
+import { useMutation } from "react-query";
+import { getDesignerinfo, putUpdateIntroduction } from "../../store/apis/designer";
+import { useNavigate, useParams } from "react-router-dom";
+import { convertURLtoFile } from "../Commons/functions";
 
 const Wrapper = styled.div`
   display: flex;
@@ -167,21 +171,22 @@ interface IState {
 
 function UpdateIntroduction() {
   const designer = useRecoilValue(designerAtom);
-  const [shopName, setShopName] = useState(designer.name);
-  const [phoneNumber, setPhoneNumber] = useState(designer.number);
-  const [content, setContent] = useState(designer.desc);
-  const [contentImgurl, setContentImgurl] = useState(designer.descImgurl);
+  const [shopName, setShopName] = useState(designer.designerInfo.designerShopName);
+  const [phoneNumber, setPhoneNumber] = useState(designer.designerInfo.designerTel);
+  const [content, setContent] = useState(designer.designerInfo.designerInfoDesc);
+  const [contentImgurl, setContentImgurl] = useState("");
   const [address, setAddress] = useState(""); // 주소
-  const [addressDetail, setAddressDetail] = useState(designer.location); // 상세주소
+  const [addressDetail, setAddressDetail] = useState(designer.designerInfo.designerAddress); // 상세주소
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [file, setFile] = useState<any>();
   const [designerShopOpen, setDesignerShopOpen] = useState(
-    designer.designerShopOpen
+    designer.designerInfo.designerShopOpen
   );
   const [designerShopClose, setDesignerShopClose] = useState(
-    designer.designerShopClose
+    designer.designerInfo.designerShopClose
   );
-
+  const { userSeq } = useParams();
+  const navigate = useNavigate();
   const onChangeShopName = (e: any) => {
     setShopName(e.target.value);
   };
@@ -249,6 +254,49 @@ function UpdateIntroduction() {
     setAddressDetail(fullAddr);
     setIsOpen(false);
   };
+
+  const getDesigner = useMutation<any, Error>(
+    ["getDesigner"],
+    async () => {
+      return await getDesignerinfo(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
+  const update = async () => {
+    try {
+      const files = new FormData();
+      const data = {
+        designerSeq: userSeq,
+        designerShopName: shopName,
+        designerAddress: addressDetail,
+        designerInfoDesc: content,
+        designerShopOpen: designerShopOpen,
+        designerShopClose: designerShopClose,
+        designerTel: phoneNumber,
+      };
+      files.append("jsonList", JSON.stringify(data));
+      files.append("file", file);
+
+      const res =  await putUpdateIntroduction(files);
+      console.log(res)
+      alert("정보가 수정되었습니다.")
+      getDesigner.mutate();
+      navigate(`/designerpage/${userSeq}/new`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const onClickUpdate = () => {
+    update()
+  }
 
   const previewMainImage = () => {
     if (contentImgurl) {
@@ -353,7 +401,7 @@ function UpdateIntroduction() {
           id=""
         ></textarea>
         <UploadBox>
-          <label className={file?.type.slice(0, 5)} htmlFor="chooseFile">
+          <label htmlFor="chooseFile">
             {previewMainImage()}
           </label>
           <input
@@ -369,7 +417,7 @@ function UpdateIntroduction() {
           {file?.type.slice(0, 5)} */}
         </UploadBox>
       </div>
-      <button className="submitbutton">수정하기</button>
+      <button className="submitbutton" onClick={onClickUpdate}>수정하기</button>
       <div>
         <AddressModal
           visible={isOpen}

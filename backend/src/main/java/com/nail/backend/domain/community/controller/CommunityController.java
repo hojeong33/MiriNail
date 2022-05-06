@@ -50,8 +50,8 @@ public class CommunityController {
                                                               Principal principal) throws IOException {
 
         log.info("communityRegister - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         Community res = communityService.communityRegister(communityFiles, communityRegisterPostReq, userId);
         if (!res.equals(null)) {
@@ -111,8 +111,8 @@ public class CommunityController {
     public ResponseEntity<Page<CommunityGetRes>> getCommunityListByUser(@PageableDefault(page = 0, size = 10, sort = "communitySeq", direction = Sort.Direction.DESC) Pageable pageable, Principal principal) {
 
         log.info("getCommunityListByUser - 호출");
-        String userId ="2210624673"; // 2번 유저 - 호정
-//        String userId = principal.getName();
+//        String userId ="2210624673"; // 2번 유저 - 호정
+        String userId = principal.getName();
 
         Page<CommunityGetRes> communityList = communityService.getCommunityListByUser(pageable,userId);
 
@@ -200,8 +200,8 @@ public class CommunityController {
                                                               Principal principal) throws IOException {
 
         log.info("communityUpdate - 호출");
-//        String userId = principal.getName();
-        String userId = "2217289220";
+        String userId = principal.getName();
+//        String userId = "2217289220";
 
         Community res = communityService.communityUpdate(communityFiles, communityUpdatePostReq, userId);
         if (!res.equals(null)) {

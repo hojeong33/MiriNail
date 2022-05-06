@@ -37,6 +37,7 @@ public class DesignerApplicationRepositorySupport {
     public Page<DesignerApplication> findDesignerApplicationList(Pageable pageable) {
         List<DesignerApplication> designerApplications = jpaQueryFactory.select(qDesignerApplication)
                 .from(qDesignerApplication)
+                .where(qDesignerApplication.designerAuthStatus.eq(0))
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetch();
@@ -71,7 +72,8 @@ public class DesignerApplicationRepositorySupport {
         // 2. 해당하는 신청 처리
         // 2-1 거절 인 경우
         if (!updateDesignerApplicationPatchReq.isAccepted()) {
-            designerApplication.setDesignerAuthStatus(false);
+            designerApplication.setDesignerAuthStatus(2);
+            designerApplicationRepository.save(designerApplication);
             return false;
         }
 
@@ -79,8 +81,9 @@ public class DesignerApplicationRepositorySupport {
 
         DesignerInfo designerInfo = DesignerInfo.builder()
                 .designerSeq(designerApplication.getDesignerSeq())
+                .user(designerApplication.getUser())
                 .designerCertificationUrl(designerApplication.getDesignerCertification())
-
+                .designerTel(designerApplication.getDesignerTel())
                 .designerShopName(designerApplication.getDesignerShopName())
                 .designerAddress(designerApplication.getDesignerAddress())
                 .designerRegedAt(LocalDateTime.now())
@@ -89,8 +92,9 @@ public class DesignerApplicationRepositorySupport {
         // 디자인너 정보에 등록
         designerInfoRepository.save(designerInfo);
 
-        // 인증 신청 목록에서 삭제삭제
-        designerApplicationRepository.delete(designerApplication);
+        // 인증 신청 목록에서 상태 승인됨으로 처리
+        designerApplication.setDesignerAuthStatus(1);
+        designerApplicationRepository.save(designerApplication);
 
         User user = designerApplication.getUser();
         user.setUserRole("ROLE_DESIGNER");

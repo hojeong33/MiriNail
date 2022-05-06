@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components"
 import Cards from "../Commons/Cards";
-import { IHotDesigner,ILatestDesigner } from "./PageContentThema";
+import { IHighRateDesigner, IHotDesigner,ILatestDesigner } from "./PageContentThema";
 const Wrapper = styled.div`
   button {
   //  background-color:green;
@@ -43,10 +43,14 @@ interface ILatestDesignerProps {
   items : ILatestDesigner[]
 }
 
+interface IHighRateDesignerProps {
+  items : IHighRateDesigner[]
+}
 
 
 
-const  DesignerCarousel = ({items}: IHotDesignerProps|ILatestDesignerProps) => {
+
+const  DesignerCarousel = ({items}: IHotDesignerProps|ILatestDesignerProps|IHighRateDesignerProps) => {
   const settings = {
     dots: false,
     className: "center",

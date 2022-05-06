@@ -5,7 +5,7 @@ import 'react-calendar/dist/Calendar.css'; // css import
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import moment from 'moment'
 import { useQuery } from "react-query";
-import { getUserReservation } from "../../store/apis/book";
+import { deleteCancelReservation, getUserReservation } from "../../store/apis/book";
 import { useNavigate, useParams } from "react-router-dom";
 import { convertDate } from "../Commons/functions";
 import { TailSpin } from "react-loader-spinner"
@@ -36,7 +36,11 @@ const Wrapper = styled.div`
   .subtitle {
     font-size: 20px;
     font-weight: 500;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+  }
+  .subexplain{
+    margin-bottom: 10px;
+    opacity: 0.8;
   }
   .cards {
     width: 100%;
@@ -102,6 +106,23 @@ const Wrapper = styled.div`
             height: 10px;
             margin-right: 5px;
           }
+        }
+        .btnbox {
+        }
+        .confirm {
+          border: 1px solid #333;
+          padding: 3px 8px;
+          position: absolute;
+          margin-left: 160px;
+          color: #333;
+          cursor: default;
+        }
+        button {
+          border: 1px solid #ff3939;
+          padding: 3px 8px;
+          position: absolute;
+          margin-left: 160px;
+          color: #ff3939;
         }
       }
     }
@@ -174,7 +195,7 @@ const MyReservation = () => {
   const navigate = useNavigate();
   const { userSeq } = useParams();
 
-  const { data, isLoading } = useQuery<any, Error>(
+  const { data, isLoading, refetch } = useQuery<any, Error>(
     ["getBookByDate" ],
     async () => {
       return await getUserReservation(Number(userSeq));
@@ -196,6 +217,16 @@ const MyReservation = () => {
     navigate(`/designerpage/${designerSeq}/new`)
   }
 
+  const onClickCancel = async (bookSeq:number) => {
+    try {
+      const res = await deleteCancelReservation(bookSeq)
+      console.log(res)
+      refetch();
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return isLoading ? (
     <LoadingBox className="loading">
       <TailSpin height={50} width={50} color="gray" />
@@ -205,6 +236,9 @@ const MyReservation = () => {
       <div className="nowRV">
         <div className="subtitle">
           현재 <span>예약</span> 내역
+        </div>
+        <div className="subexplain">
+          예약 취소는 예약일로부터 최소 이틀 이전에 가능합니다.
         </div>
         <div className="cards">
           {data.bookList.length !== 0 &&
@@ -243,6 +277,14 @@ const MyReservation = () => {
                         <ArrowForwardIosIcon />
                         가격: {book.nailart.nailartPrice.toLocaleString()}원
                       </div>
+                      <div className="btnbox">
+                        {parseInt(
+                          moment(convertDate(book.bookDatetime)).fromNow(true)
+                        ) >= 2 ? <button onClick={(e) => {
+                          e.stopPropagation();
+                          onClickCancel(book.bookSeq);
+                        }}>예약취소</button> : <button className="confirm">예약확정</button>}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -253,10 +295,10 @@ const MyReservation = () => {
       </div>
       <div className="history">
         <div className="subtitle">
-          현재까지 총 <span>{data.visitCount}</span>회 예약하셨습니다.
+          현재까지 총 <span>{data.visitCount ? data.visitCount : "0"}</span>회 예약하셨습니다.
         </div>
         <div className="designertextbox">
-          아티스트
+          디자이너
           <div className="line"></div>
         </div>
         <table>

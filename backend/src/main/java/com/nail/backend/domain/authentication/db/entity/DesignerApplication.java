@@ -47,8 +47,8 @@ public class DesignerApplication implements Serializable {
     String designerTel;
 
     // 인증 신청 상태
-    @ApiModelProperty(value = "유저 인증신청 상태 default : true(진행중)이고 false 는 거절")
-    boolean designerAuthStatus;
+    @ApiModelProperty(value = "유저 인증신청 상태 0 : 진행중, 1 : 승인 , 2 : 거절")
+    int designerAuthStatus;
 
     // 인증신청 등록날짜
     @ApiModelProperty(value = "인증신청 등록날짜")
