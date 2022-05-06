@@ -66,6 +66,14 @@ const Wrapper = styled.div`
               .boxsRight {
                 margin-right :20px;
                 display:flex;
+                .rev {
+                  :hover {
+                    background-color: #3D3C3A;
+                    color :white;
+                    border : 1px solid white; 
+                  }
+                }
+
                 div {
                   padding: 5px 20px;
                   border: 1px solid #3D3C3A;
@@ -168,6 +176,8 @@ const Wrapper = styled.div`
                 border-right: 0px;
                 background-color: #F7F7F5;
                 color: #3D3C3A;
+                
+                
               }
             }
           }
@@ -323,7 +333,7 @@ const UpperFrame = () => {
                       {nailData?.nailartType}
                     </div>
                     { myId === designerSeq ? <div className="boxsRight">
-                      <div onClick={() => navigate('/nft/Revise',{state:params})}>
+                      <div className="rev" onClick={() => navigate('/nft/Revise',{state:params})}>
                         수정
                       </div>
                       <div style={{marginLeft:"10px"}} onClick={() => delDesign(params)}>
@@ -363,9 +373,9 @@ const UpperFrame = () => {
                   </div>
                   <div className='btns'>
                     <a style={{backgroundColor:"red",color:"white",}}><CalendarMonthIcon style={{visibility:"hidden",width:"0px"}}></CalendarMonthIcon>AR 피팅하기</a>
-                    <a style={{backgroundColor:'white'}}><CalendarMonthIcon />예약하기</a>
+                    <a style={{backgroundColor:'white'}}><CalendarMonthIcon style={{marginBottom:"2px"}}/>예약하기</a>
                     <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}} onClick={() => likeHandler()}>
-                      { isLikeData ? <span ><FavoriteIcon style={{color:"red"}}/><span></span>{likeData}</span> : <span><FavoriteBorderIcon /><span>{likeData}</span></span>}
+                      { isLikeData ? <span ><FavoriteIcon style={{color:"red",marginBottom:"1px",marginRight:"10px"}}/><span style={{fontWeight:"bold"}}>{likeData}</span></span> : <span><FavoriteBorderIcon style={{marginBottom:"1px",marginRight:"10px"}}/><span style={{fontWeight:"bold"}}>{likeData}</span></span>}
                       
                     </a>
                     <div>

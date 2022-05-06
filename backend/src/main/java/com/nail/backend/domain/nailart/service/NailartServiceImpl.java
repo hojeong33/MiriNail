@@ -340,13 +340,6 @@ public class NailartServiceImpl implements NailartService {
     @Override
     @Transactional
     public boolean nailartRemove(long nailartSeq) {
-        if (nailartRepository.findById(nailartSeq).isPresent()) {
-//            System.out.println(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
-//            System.out.println(bookRepository.findByNailartSeq(nailartSeq));
-//            nailartImgRepository.deleteById(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgSeq());
-//            nailartRepository.deleteById(nailartSeq);
-            return true;
-        } else
-            return false;
+        return nailartRepositorySupport.deleteNailartByNailartSeq(nailartSeq);
     }
 }

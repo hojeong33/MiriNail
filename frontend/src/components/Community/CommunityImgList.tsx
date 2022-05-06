@@ -1,4 +1,3 @@
-import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import styled from "styled-components";
@@ -6,16 +5,17 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import { notEqual } from "assert";
 import TimeCounting from "time-counting";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
+import ModalTest from "./Modal";
 const StyledSlider = styled(Slider)`
   .slick-dots {
     bottom: 10px;
   }
+  height: 100%;
 `;
 
 const modalStyle = {
@@ -62,8 +62,7 @@ const Wrapper = styled.div`
     width: 60%;
     height: 100%;
     img {
-      width: 100%;
-      height: 100%;
+      height: 900px;
     }
   }
 
@@ -492,6 +491,7 @@ export default function CommunityImgList() {
                 <div>{item.communityTitle}</div>
               </div>
             </CustomImageListItem>
+
             <Modal
               open={modalStatus}
               onClose={handleClose}
@@ -504,9 +504,9 @@ export default function CommunityImgList() {
                     <StyledSlider {...settings}>
                       {itemDetail?.communityImg.map((item, idx) => {
                         return (
-                          <div key={idx}>
-                            <img src={item.communityImgUrl} alt="" />
-                          </div>
+                          // <div key={idx}>
+                          <img src={item.communityImgUrl} alt="" />
+                          // </div>
                         );
                       })}
                     </StyledSlider>
@@ -780,6 +780,13 @@ export default function CommunityImgList() {
           </div>
         );
       })}
+      {/* {modalStatus && (
+        <ModalTest
+          itemData={itemData}
+          communitySeq={currentCommunitySeq}
+          state={modalStatus}
+        />
+      )} */}
     </ImageList>
   );
 }

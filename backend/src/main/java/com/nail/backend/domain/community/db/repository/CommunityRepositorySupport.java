@@ -5,6 +5,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
 @Repository
 public class CommunityRepositorySupport {
     @Autowired
@@ -12,10 +14,11 @@ public class CommunityRepositorySupport {
 
     QCommunity qCommunity = QCommunity.community;
 
+    @Transactional
     public Long modifyCommunityCnt(Long communityCnt, Long communitySeq){
         Long execute = jpaQueryFactory.update(qCommunity)
                 .set(qCommunity.communityCnt,communityCnt+1)
-                .where(qCommunity.communitySeq.eq(communityCnt))
+                .where(qCommunity.communitySeq.eq(communitySeq))
                 .execute();
         return execute;
     }

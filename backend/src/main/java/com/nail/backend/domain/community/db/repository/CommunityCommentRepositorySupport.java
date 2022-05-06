@@ -47,6 +47,7 @@ public class CommunityCommentRepositorySupport {
     public Long deleteCommunityComment(Long communityCommentSeq){
         Long execute = jpaQueryFactory.update(qCommunityComment)
                 .set(qCommunityComment.communityCommentDesc,"삭제된 댓글입니다.")
+                .set(qCommunityComment.communityCommentIsDelete,true)
                 .where(qCommunityComment.communityCommentSeq.eq(communityCommentSeq))
                 .execute();
         return execute;

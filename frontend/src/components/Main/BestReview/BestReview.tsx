@@ -4,6 +4,7 @@ import BestReviewTitle from "./BestReviewTitle";
 import axios from "axios";
 interface BestReviewProps {
   nailart: NailArtProps;
+  designerNickname: string;
 }
 interface NailArtProps {
   designerSeq: number;

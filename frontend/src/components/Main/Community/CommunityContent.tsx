@@ -2,7 +2,6 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ItemCard from "../../Cards/CaptureCard";
 import ModalTest from "../../Community/Modal";
 
 interface CommunityImgProp {

@@ -4,7 +4,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
+import com.nail.backend.domain.designer.db.repository.DesignerInfoRepositorySupport;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.designer.db.repository.DesignerRepositorySupport;
 import com.nail.backend.domain.designer.response.DesignerInfoGetRes;
@@ -31,6 +33,9 @@ public class DesignerInfoServiceImpl implements DesignerInfoService{
 
     @Autowired
     DesignerRepositorySupport designerRepositorySupport;
+
+    @Autowired
+    DesignerInfoRepositorySupport designerInfoRepositorySupport;
 
     @Autowired
     FollowService followService;
@@ -77,6 +82,24 @@ public class DesignerInfoServiceImpl implements DesignerInfoService{
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
             }
             designerRepositorySupport.DesignerProfileUpdate(designerSeq, amazonS3.getUrl(bucket, fileName).toString());
+            return true;
+        }else return false;
+    }
+
+    @Override
+    public boolean designerIntroduceRegister(DesignerInfo designerInfo, MultipartFile file) {
+        if(designerInfoRepository.findByDesignerSeq(designerInfo.getDesignerSeq()).getDesignerSeq() != null){
+            String fileName = createFileName(file.getOriginalFilename());
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(file.getSize());
+            objectMetadata.setContentType(file.getContentType());
+            try (InputStream inputStream = file.getInputStream()) {
+                amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+            }
+            designerInfoRepositorySupport.DesignerInfoIntroduceUpdate(designerInfo, amazonS3.getUrl(bucket, fileName).toString());
             return true;
         }else return false;
     }
