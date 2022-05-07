@@ -97,7 +97,7 @@ const Wrapper = styled.div`
     }
 
     .inputBox {
-      // position : absolute;
+      // position: relative;
       // bottom : 0px;
       height: 50px;
       display: flex;
@@ -179,7 +179,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const [inputVal, setInputVal] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [communityTime, setCommunityTime] = useState<string>("");
-  const [replyTitle, setReplyTitle] = useState("답글 보기");
+  const [tagName, setTagName] = useState("");
   const navigate = useNavigate();
 
   const ACCESS_TOKEN = localStorage.getItem("token");
@@ -239,7 +239,12 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
       },
     })
       .then((res) => {
-        getComments(currentCommunitySeq);
+        {
+          communityCommentLayer === 3
+            ? getReplyComments(communityCommentSeq)
+            : getComments(currentCommunitySeq);
+        }
+        setOpen("");
       })
       .catch((err) => {
         console.log(err);
@@ -324,7 +329,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   // 답글 달기
 
   const tagUser = (userName: string, communityCommentSeq: number) => {
-    setInputVal("@" + userName + " ");
+    setTagName("@" + userName + " ");
+    // setInputVal("@" + userName + " ");
     setCommunityCommentLayer(3);
     setCurrentCommentSeq(communityCommentSeq);
   };
@@ -365,6 +371,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
         .then((res) => {
           getComments(currentCommunitySeq);
           setInputVal("");
+          setOpen("");
+          setTagName("");
         })
         .catch((err) => {
           console.log(err);
@@ -375,12 +383,15 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const Button = () => {
     if (inputVal) {
       return (
-        <div style={{ color: "#0095f6" }} onClick={createComment}>
+        <div
+          style={{ color: "#0095f6", width: "100px", marginLeft: "5px" }}
+          onClick={createComment}
+        >
           게시
         </div>
       );
     } else {
-      return <div>게시</div>;
+      return <div style={{ width: "100px", marginLeft: "5px" }}>게시</div>;
     }
   };
 
@@ -389,10 +400,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const toggle = (className: any) => {
     if (open === className) {
       setOpen("");
-      setReplyTitle("답글 보기");
     } else {
       setOpen(className);
-      setReplyTitle("답글 닫기");
     }
   };
 
@@ -401,8 +410,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const handleOpen = () => setModalStatus(true);
   const handleClose = () => {
     setModalStatus(false);
-    setReplyTitle("답글 보기");
     setOpen("");
+    setTagName("");
   };
 
   useEffect(() => {}, [modalStatus]);
@@ -569,15 +578,27 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                   height: "13px",
                                 }}
                               ></div>
-                              <span
-                                style={{ marginLeft: "15px" }}
-                                onClick={() => {
-                                  getReplyComments(e.communityCommentSeq);
-                                  toggle(e.communityCommentSeq);
-                                }}
-                              >
-                                {replyTitle}
-                              </span>
+                              {open == e.communityCommentSeq ? (
+                                <span
+                                  style={{ marginLeft: "15px" }}
+                                  onClick={() => {
+                                    getReplyComments(e.communityCommentSeq);
+                                    toggle(e.communityCommentSeq);
+                                  }}
+                                >
+                                  댓글 닫기
+                                </span>
+                              ) : (
+                                <span
+                                  style={{ marginLeft: "15px" }}
+                                  onClick={() => {
+                                    getReplyComments(e.communityCommentSeq);
+                                    toggle(e.communityCommentSeq);
+                                  }}
+                                >
+                                  댓글 보기
+                                </span>
+                              )}
                             </div>
                             {open === e.communityCommentSeq ? (
                               <div style={{ margin: "12px 0 12px 14px" }}>
@@ -604,30 +625,46 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                         </div>
                                         <div
                                           style={{
-                                            marginLeft: "14px",
+                                            margin: "0px 10px",
                                           }}
                                         >
                                           {ele.userNickname}
                                         </div>
+                                        {!ele.communityCommentIsDelete && (
+                                          <div
+                                            style={{
+                                              color: "rgb(11 122 227)",
+                                            }}
+                                          >
+                                            @{e.userNickname}
+                                          </div>
+                                        )}
                                         <div
                                           style={{
-                                            marginLeft: "14px",
+                                            marginLeft: "7px",
                                           }}
                                         >
                                           {ele.communityCommentDesc}
-                                          {ele.userNickname ===
-                                            sessionStorage.getItem(
-                                              "userNickname"
-                                            ) && (
-                                            <button
-                                              onClick={() => {
-                                                deleteComment(
-                                                  ele.communityCommentSeq
-                                                );
-                                              }}
-                                            >
-                                              삭제
-                                            </button>
+                                          {ele.communityCommentIsDelete ? (
+                                            <></>
+                                          ) : (
+                                            <>
+                                              {" "}
+                                              {ele.userNickname ===
+                                                sessionStorage.getItem(
+                                                  "userNickname"
+                                                ) && (
+                                                <button
+                                                  onClick={() => {
+                                                    deleteComment(
+                                                      ele.communityCommentSeq
+                                                    );
+                                                  }}
+                                                >
+                                                  삭제
+                                                </button>
+                                              )}
+                                            </>
                                           )}
                                         </div>
                                       </div>
@@ -659,6 +696,25 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
               }}
             >
               <div className="inputBox">
+                {tagName && (
+                  <div
+                    style={{
+                      color: "rgb(11 122 227)",
+                      width: "150px",
+                    }}
+                  >
+                    {tagName}
+                    <button
+                      onClick={() => {
+                        setTagName("");
+                        setCommunityCommentLayer(1);
+                      }}
+                    >
+                      x
+                    </button>
+                  </div>
+                )}
+
                 <input
                   type="text"
                   value={inputVal}
