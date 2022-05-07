@@ -71,22 +71,24 @@ def testVideo():
                 classesTensor = model.get_tensor_by_name("detection_classes:0")
                 numDetections = model.get_tensor_by_name("num_detections:0")
                 drawboxes = []
-                # cap = cv2.VideoCapture(url)
-                vs = WebcamVideoStream(src=0)
-                vs.start()
+                cap = cv2.VideoCapture(0)
+                # vs = WebcamVideoStream(src=0)
+                # vs.start()
                 while True:
                     print('3 : 캠읽음')
                     status += 1
                     # if status == 10:
                     #     break
-                    frame = vs.read()
+                    ret, frame = cap.read()
+                    if not ret:
+                        cv2.destroyAllWindows()
+                        break
                     img = cv2.imread("sss.png")
                     
                     
                 
 
-                    if frame is None:
-                        continue
+                    
                     frame = cv2.flip(frame, 1)
                     image = frame
                     (H, W) = image.shape[:2]
