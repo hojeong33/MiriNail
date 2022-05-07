@@ -14,7 +14,7 @@ import find_finger as ff
 import math
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
-
+import asyncio
 
 app = FastAPI()
 
@@ -27,6 +27,21 @@ def video_streaming():
 def read_root():
     print('음... 이ㅐ건떠야하는데')
     return {"Hello": "World"}
+
+
+async def streamer(gen):
+    try:
+        for i in gen:
+            yield i
+            await asyncio.sleep(0.25)
+    except asyncio.CancelledError:
+        cv2.destroyAllWindows()
+        cv2.VideoCapture(0, cv2.CAP_DSHOW).release() 
+        WebcamVideoStream(src=0).stop()
+        print('되기는 하는건가?')
+        # print(cv2.VideoCapture.isOpend())
+        print("caught cancelled error")
+
 
 @app.get("/nail/video")
 def main():
