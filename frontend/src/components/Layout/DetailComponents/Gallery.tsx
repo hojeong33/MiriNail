@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { TailSpin } from 'react-loader-spinner'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
 
 
 .clear {
+  min-height : 500px;
   zoom : 1;
   li {
 
@@ -87,7 +89,7 @@ const Gallery = () => {
         </div>
       </div>
       <ul className="clear">
-        {data?.map((e:any,idx:any) => {
+        { isLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : data.map((e:any,idx:any) => {
           return (
             <li className="ItemListType">
               <a href="" className="ItemBox">
@@ -98,6 +100,7 @@ const Gallery = () => {
             </li>
           )
         })}
+        
         
       </ul>
     </Wrapper>

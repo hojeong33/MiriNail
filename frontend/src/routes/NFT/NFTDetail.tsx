@@ -1,6 +1,9 @@
 import UpperFrame from '../../components/NFTDetail/UpperFrame'
 import styled from 'styled-components'
 import LowerFrame from '../../components/NFTDetail/LowerFrame'
+import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { countView } from '../../store/api'
 
 const Wrapper = styled.div`
   * {
@@ -30,7 +33,11 @@ const Wrapper = styled.div`
 `
 
 const NFTDetail = () => {
-
+  const param = useParams().id
+  
+  useEffect(() => {
+    // countView(param)
+  },[])
   return (
     <Wrapper>
       <UpperFrame />

@@ -84,6 +84,7 @@ const Wrapper = styled.div`
 const NFTItems = (props:any) => {
 
   const [myFilter,setMyFilter] = useRecoilState(nftFilter)
+  console.log(myFilter)
   const [mypage,setMyPage] = useRecoilState(page)
   const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",myFilter], fetchDesigns)
   const navigate = useNavigate();

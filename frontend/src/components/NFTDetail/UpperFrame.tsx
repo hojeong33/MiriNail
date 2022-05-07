@@ -333,7 +333,7 @@ const UpperFrame = () => {
                       {nailData?.nailartType}
                     </div>
                     { myId === designerSeq ? <div className="boxsRight">
-                      <div className="rev" onClick={() => navigate('/nft/Revise',{state:params})}>
+                      <div className="rev" onClick={() => navigate('/nft/Revise',{state:nailData})}>
                         수정
                       </div>
                       <div style={{marginLeft:"10px"}} onClick={() => delDesign(params)}>
@@ -360,10 +360,10 @@ const UpperFrame = () => {
                   <div className='designerInfo'>
                     
                     <div className="designerImg">
-                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)} />
+                      <img src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg" alt="" onClick={() =>navigate(`/designerpage/${nailData?.designerSeq}`)} />
                     </div> 
                     <div className='designerName'>
-                      <div style={{fontSize:"1.2em"}} onClick={() =>navigate(`/mypage/${nailData?.designerSeq}`)}>
+                      <div style={{fontSize:"1.2em"}} onClick={() =>navigate(`/designerpage/${nailData?.designerSeq}`)}>
                         {nailData?.designerNickname}
                       </div>
                       <div style={{color:'gray'}}>
@@ -373,7 +373,7 @@ const UpperFrame = () => {
                   </div>
                   <div className='btns'>
                     <a style={{backgroundColor:"red",color:"white",}}><CalendarMonthIcon style={{visibility:"hidden",width:"0px"}}></CalendarMonthIcon>AR 피팅하기</a>
-                    <a style={{backgroundColor:'white'}}><CalendarMonthIcon style={{marginBottom:"2px"}}/>예약하기</a>
+                    <a style={{backgroundColor:'white'}}><CalendarMonthIcon style={{marginBottom:"2px"}} onClick={() =>navigate(`/designerpage/${nailData?.designerSeq}/reservation`)}/>예약하기</a>
                     <a  style={{backgroundColor:"white",borderRight:"1px solid rgba(61,60,58,0.4)"}} onClick={() => likeHandler()}>
                       { isLikeData ? <span ><FavoriteIcon style={{color:"red",marginBottom:"1px",marginRight:"10px"}}/><span style={{fontWeight:"bold"}}>{likeData}</span></span> : <span><FavoriteBorderIcon style={{marginBottom:"1px",marginRight:"10px"}}/><span style={{fontWeight:"bold"}}>{likeData}</span></span>}
                       

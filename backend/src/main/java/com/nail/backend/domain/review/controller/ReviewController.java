@@ -201,7 +201,6 @@ public ResponseEntity<BaseResponseBody> reviewRegister(@RequestPart(value = "rev
     @PutMapping("/comment")
     public ResponseEntity<BaseResponseBody> reviewCommentUpdate(@RequestBody ReviewCommentModifyPutReq reviewCommentModifyPutReq){
         log.info("reviewCommentUpdate - 호출");
-
         if(reviewService.reviewCommentModify(reviewCommentModifyPutReq)== 0) {
             log.error("reviewCommentModify - This reviewCommentSeq doesn't exist");
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"수정 실패"));
