@@ -14,6 +14,7 @@ import { designerAtom } from "../../store/atoms";
 import { deleteFollow, postFollow } from "../../store/apis/follow";
 import { useMutation, useQuery } from "react-query";
 import { getDesignerinfo } from "../../store/apis/designer";
+import { TailSpin } from "react-loader-spinner";
 
 const Wrapper = styled.div`
   * {
@@ -115,6 +116,15 @@ const Wrapper = styled.div`
   }
 `;
 
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
+`;
+
 interface IProps {
   designer?: IDesigner;
   refetch: any;
@@ -199,7 +209,9 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   }, [designer]);
   return (
     <>
-      {isLoading ? null : (
+      {isLoading ?     <LoadingBox className="loading">
+      <TailSpin height={50} width={50} color="gray" />
+    </LoadingBox> : (
         <Wrapper>
           <div className="row">
             <div className="pageHeader">

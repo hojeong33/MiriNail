@@ -1,15 +1,31 @@
 import styled from "styled-components";
-import React, { useState } from 'react';
-import DaumPostcode from 'react-daum-postcode';
+import React, { useState } from "react";
+import DaumPostcode from "react-daum-postcode";
 import AddressModal from "./AddressModal";
 import { useMutation, useQuery } from "react-query";
 import { getApplyDetail, postApply } from "../../store/apis/authentication";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
+import CheckIcon from "@mui/icons-material/Check";
+import { TailSpin } from "react-loader-spinner";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const Ing = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  svg {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
 `;
 
 const FormWrapper = styled.div`
@@ -62,12 +78,12 @@ const FormWrapper = styled.div`
     font-weight: 600;
   }
   .postcode {
-    display: 'block';
-    position: 'relative';
-    top: '0%';
-    width: '400px';
-    height: '400px';
-    padding: '7px';
+    display: "block";
+    position: "relative";
+    top: "0%";
+    width: "400px";
+    height: "400px";
+    padding: "7px";
   }
   .underline {
     border-left-width: 0;
@@ -82,9 +98,7 @@ const FormWrapper = styled.div`
   input:focus {
     outline: none;
   }
-
   .addressbtn {
-
     input {
       width: 400px;
       border-bottom-width: 2px;
@@ -95,7 +109,6 @@ const FormWrapper = styled.div`
       background-color: #333;
       color: white;
     }
-
   }
 `;
 
@@ -135,7 +148,7 @@ const UploadBox = styled.div`
     margin-left: 15px;
     font-weight: bold;
     font-size: 18px;
-    color: #6225E6;
+    color: #6225e6;
     text-align: left;
     p {
       margin: 0;
@@ -143,21 +156,24 @@ const UploadBox = styled.div`
   }
 `;
 
-const Divider = styled.div`
-  margin: 20px auto;
-  width: 95%;
-  border-bottom: 1px solid #bcbcbc;
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
 `;
 
 const Apply = () => {
-  const [shopName, setShopName] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const [shopName, setShopName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState(""); // 주소
   const [addressDetail, setAddressDetail] = useState(""); // 상세주소
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [file, setFile] = useState<any>();
   const { userSeq } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -167,13 +183,13 @@ const Apply = () => {
     setIsOpen(false);
   };
 
-  const onChangeShopName = (e:any) => {
-    setShopName(e.target.value)
-  }
+  const onChangeShopName = (e: any) => {
+    setShopName(e.target.value);
+  };
 
-  const onChangePhoneNumber = (e:any) => {
-    setPhoneNumber(e.target.value)
-  }
+  const onChangePhoneNumber = (e: any) => {
+    setPhoneNumber(e.target.value);
+  };
 
   const handleFileOnChange = (e: React.ChangeEvent) => {
     console.log("메인파일변화");
@@ -181,20 +197,19 @@ const Apply = () => {
     console.log((e.target as HTMLInputElement).files?.item(0));
   };
 
-
-
-  const onCompletePost = (data:any) => {
+  const onCompletePost = (data: any) => {
     let fullAddr = data.address;
-    let extraAddr = '';
+    let extraAddr = "";
 
-    if (data.addressType === 'R') {
-      if (data.bname !== '') {
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
         extraAddr += data.bname;
       }
-      if (data.buildingName !== '') {
-        extraAddr += extraAddr !== '' ? `, ${data.buildingName}` : data.buildingName;
+      if (data.buildingName !== "") {
+        extraAddr +=
+          extraAddr !== "" ? `, ${data.buildingName}` : data.buildingName;
       }
-      fullAddr += extraAddr !== '' ? ` (${extraAddr})` : '';
+      fullAddr += extraAddr !== "" ? ` (${extraAddr})` : "";
     }
 
     setAddress(data.zonecode);
@@ -215,48 +230,56 @@ const Apply = () => {
     }
   );
 
-
   const apply = useMutation<any, Error>(
     "apply",
     async () => {
-      const formData = new FormData()
-      formData.append("designerAddress", addressDetail)
-      formData.append("designerShopName", shopName)
-      formData.append("designerTel", phoneNumber)
-      formData.append("registrationFile", file)
+      const formData = new FormData();
+      formData.append("designerAddress", addressDetail);
+      formData.append("designerShopName", shopName);
+      formData.append("designerTel", phoneNumber);
+      formData.append("registrationFile", file);
       return await postApply(formData);
     },
     {
       onSuccess: (res) => {
         console.log(res);
-        alert("성공적으로 신청되었습니다")
-        navigate(`/mypage/${sessionStorage.getItem("userSeq")}/like`)
+        alert("성공적으로 신청되었습니다");
+        navigate(`/mypage/${sessionStorage.getItem("userSeq")}/like`);
       },
-      onError: (err: any) =>{
-        console.log(err)
-        alert("신청중 오류가 발생하였습니다")
+      onError: (err: any) => {
+        console.log(err);
+        alert("신청중 오류가 발생하였습니다");
       },
     }
   );
 
-  const cutWordLength = (word:string) => {
+  const cutWordLength = (word: string) => {
     if (!word) return;
-    let result = word
+    let result = word;
     if (word.length > 10) {
-      result = result.slice(0,10) + "..."
+      result = result.slice(0, 10) + "...";
     }
-    return result
-  }
+    return result;
+  };
 
   const onClickSubmit = () => {
-    apply.mutate()
-  }
+    apply.mutate();
+  };
 
-  return (
-    isLoading ? null : 
-    data.data.designerAuthStatus === 0 ? <div>신청등록 심사중입니다.</div> :
+  return isLoading ? (
+    <LoadingBox className="loading">
+      <TailSpin height={50} width={50} color="gray" />
+    </LoadingBox>
+  ) : data.data.designerAuthStatus === 0 ? (
+    <Ing>
+      <CheckIcon />
+      신청등록 심사중입니다.
+    </Ing>
+  ) : (
     <Wrapper>
-      {data.data.designerAuthStatus === 2 && <div>이전의 신청등록이 거절되었습니다.</div>}
+      {data.data.designerAuthStatus === 2 && (
+        <div>이전의 신청등록이 거절되었습니다.</div>
+      )}
       <FormWrapper>
         <div className="menu">
           <div className="menuSelectText">디자이너 정보 입력</div>
@@ -315,7 +338,9 @@ const Apply = () => {
             {/* {file?.type.slice(0, 5)} */}
           </UploadBox>
         </div>
-        <button className="submitbutton" onClick={onClickSubmit}>등록 신청하기</button>
+        <button className="submitbutton" onClick={onClickSubmit}>
+          등록 신청하기
+        </button>
       </FormWrapper>
 
       <div>
@@ -327,5 +352,5 @@ const Apply = () => {
       </div>
     </Wrapper>
   );
-}
+};
 export default Apply;
