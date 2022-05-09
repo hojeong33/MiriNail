@@ -42,4 +42,6 @@ public class NailartListGetRes {
     private float nailartRating;
 
     private int totalCount;
+
+    private boolean isFavorited;
 }

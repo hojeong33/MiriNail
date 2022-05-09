@@ -87,23 +87,23 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
-    public List<NailartListGetRes> nailartList(String category, String color, String type, String sort, int page, int size) {
+    public List<NailartListGetRes> nailartList(long userSeq, String category, String color, String type, String sort, int page, int size) {
         List<NailartListGetRes> nailart = new ArrayList<>();
 
         if(category.equals("color")){// color category
             if(color != ""){// 지정된 색상이 있을시
                 if(sort.equals("like")){// 좋아요 순
-                    nailart = nailartRepositorySupport.getListbyColorFavoite(color, page, size);
+                    nailart = nailartRepositorySupport.getListbyColorFavoite(userSeq, color, page, size);
                 }else{ // 최신순
                     System.out.println("dddd");
-                    nailart = nailartRepositorySupport.getListbyColorLatest(color, page, size);
+                    nailart = nailartRepositorySupport.getListbyColorLatest(userSeq, color, page, size);
                 }
             }else{// 지정된 색상이 없을시
                 if(sort.equals("like")){// 좋아요 순
-                    nailart = nailartRepositorySupport.getListbyFavoite(page, size);
+                    nailart = nailartRepositorySupport.getListbyFavoite(userSeq, page, size);
                 }else{ // 최신순
                     System.out.println("check!!");
-                    nailart = nailartRepositorySupport.getListbyLatest(page, size);
+                    nailart = nailartRepositorySupport.getListbyLatest(userSeq, page, size);
                 }
             }
         } else if(category.equals("type")){// type category
@@ -111,23 +111,23 @@ public class NailartServiceImpl implements NailartService {
             if(type != ""){// 타입이 없을 시
                 System.out.println("check2");
                 if(sort.equals("like")){// 좋아요 순
-                    nailart = nailartRepositorySupport.getListbyTypeFavoite(type, page, size);
+                    nailart = nailartRepositorySupport.getListbyTypeFavoite(userSeq, type, page, size);
                 }else{ // 최신순
                     System.out.println(type);
-                    nailart = nailartRepositorySupport.getListbyTypeLatest(type, page, size);
+                    nailart = nailartRepositorySupport.getListbyTypeLatest(userSeq, type, page, size);
                 }
 
             }else{// 타입이 있을시
                 System.out.println("check3");
                 if(sort.equals("like")){// 좋아요 순
-                    nailart = nailartRepositorySupport.getListbyFavoite(page, size);
+                    nailart = nailartRepositorySupport.getListbyFavoite(userSeq, page, size);
                 }else{ // 최신순
-                    nailart = nailartRepositorySupport.getListbyLatest(page, size);
+                    nailart = nailartRepositorySupport.getListbyLatest(userSeq, page, size);
                 }
             }
         }else{// 아무것도 선택 안했을시
             System.out.println("check4");
-            nailart = nailartRepositorySupport.getListbyLatest(page, size);
+            nailart = nailartRepositorySupport.getListbyLatest(userSeq, page, size);
         }
 
         return nailart;
