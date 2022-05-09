@@ -270,14 +270,14 @@ const Apply = () => {
     <LoadingBox className="loading">
       <TailSpin height={50} width={50} color="gray" />
     </LoadingBox>
-  ) : data.data.designerAuthStatus === 0 ? (
+  ) : data.data?.designerAuthStatus === 0 ? (
     <Ing>
       <CheckIcon />
       신청등록 심사중입니다.
     </Ing>
   ) : (
     <Wrapper>
-      {data.data.designerAuthStatus === 2 && (
+      {data.data?.designerAuthStatus === 2 && (
         <div>이전의 신청등록이 거절되었습니다.</div>
       )}
       <FormWrapper>
