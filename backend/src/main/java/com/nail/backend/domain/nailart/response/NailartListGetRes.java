@@ -40,4 +40,8 @@ public class NailartListGetRes {
     private Timestamp nailartRegedAt;
 
     private float nailartRating;
+
+    private int totalCount;
+
+    private boolean isFavorited;
 }

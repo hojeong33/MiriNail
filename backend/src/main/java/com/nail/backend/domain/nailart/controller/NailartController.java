@@ -34,9 +34,9 @@ public class NailartController {
 
     // Nailart 리스트 전체 조회
     @GetMapping("/list")
-    public List<NailartListGetRes> nailartList(@RequestParam String category, @RequestParam String color, @RequestParam String type, @RequestParam String sort, @RequestParam int page, @RequestParam int size){
+    public List<NailartListGetRes> nailartList(@RequestParam long userSeq, @RequestParam String category, @RequestParam String color, @RequestParam String type, @RequestParam String sort, @RequestParam int page, @RequestParam int size){
 
-        return nailartService.nailartList(category, color, type, sort, page, size);
+        return nailartService.nailartList(userSeq, category, color, type, sort, page, size);
     }
 
     // Nailart nailartSeq로 작품 상세 조회
