@@ -1,6 +1,5 @@
-
-import styled from 'styled-components'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import styled from "styled-components";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -32,11 +31,11 @@ const Wrapper = styled.div`
 
   .pageHeaderTitle {
     div {
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
     }
     display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -79,27 +78,25 @@ const Wrapper = styled.div`
 `;
 
 function Header() {
-  
-
   return (
     <>
-    <Wrapper>
-      <div className="row">
-        <div className="pageHeaderTitle">
-        <div className="line"></div>
-          <div>MY PAGE</div> 
-        </div>
-        <div className="pageHeaderNavigation">
-          <div className="NavElement">
-            <span>마이</span>
-            <ChevronRightIcon />
-            <span>마이페이지</span>
+      <Wrapper>
+        <div className="row">
+          <div className="pageHeaderTitle">
+            <div className="line"></div>
+            <div>MY PAGE</div>
+          </div>
+          <div className="pageHeaderNavigation">
+            <div className="NavElement">
+              <span>마이</span>
+              <ChevronRightIcon />
+              <span>마이페이지</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
     </>
-  )
+  );
 }
 
-export default Header
+export default Header;

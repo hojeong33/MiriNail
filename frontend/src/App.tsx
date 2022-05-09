@@ -50,6 +50,10 @@ import UpdateImg from "./components/Designerpage/UpdateProfileImg";
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateCommunity from "./routes/Community/UpdateCommunity";
 import AR from "./routes/AR/AR";
+import Event from "./routes/EventPage/Event";
+import Sample1 from "./components/EventPage/EventDetail/Sample1";
+import Sample2 from "./components/EventPage/EventDetail/Sample2";
+import Sample3 from "./components/EventPage/EventDetail/Sample3";
 
 function App() {
   return (
@@ -112,10 +116,14 @@ function App() {
           <Route path="/community/create" element={<CreateCommunity />} />
           <Route path="/community/update" element={<UpdateCommunity />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
+          <Route path="/event" element={<Event />} />
+          <Route path="/event/1" element={<Sample1 />} />
+          <Route path="/event/2" element={<Sample2 />} />
+          <Route path="/event/3" element={<Sample3 />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <TopButton />
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   );
