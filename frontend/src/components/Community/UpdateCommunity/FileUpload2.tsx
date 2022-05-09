@@ -9,9 +9,8 @@ const ImageUploadBox = (props: any) => {
   const uploadBoxRef = useRef<any>();
   const inputRef = useRef<any>();
   const [testImages, setTestImages] = useState<any[]>([]);
-  const [convertedTest,setConvertedTest] = useState<any>([])
+  const [convertedTest, setConvertedTest] = useState<any>([]);
   // console.log(props.itemDetail, "디폴트이미지!!!!!!!!!!!");
-  
 
   useEffect(() => {
     // console.log(uploadedImages);
@@ -22,15 +21,13 @@ const ImageUploadBox = (props: any) => {
   useEffect(() => {
     // console.log(testImages);
     props.setPostImages(testImages);
-    
-  },[props]);
+  }, [props]);
 
   useEffect(() => {
     const uploadBox = uploadBoxRef.current;
     const input = inputRef.current;
 
     const handleFiles = (files: any) => {
-
       for (const file of files) {
         if (!file.type.startsWith("image/")) continue;
         const reader = new FileReader();
@@ -93,41 +90,38 @@ const ImageUploadBox = (props: any) => {
           deleteFunc={deleteFunc}
           test={index}
           key={index}
-
         />
       );
     });
     setPreviewImages(imageJSXs);
   }, [uploadedImages]);
 
-  // 1. props가 들어올 경우 handler 함수실행 
+  // 1. props가 들어올 경우 handler 함수실행
   useEffect(() => {
-    const handler = async() => {
+    const handler = async () => {
       if (props) {
-        let ls:any = []
-        console.log(props.itemDetail.communityImg)
+        let ls: any = [];
+        console.log(props.itemDetail.communityImg);
         for await (const file of props.itemDetail.communityImg) {
-          
           // 2. 파일 변환 함수 실행
-          const response = await convertURLtoFile(file.communityImgUrl)
-          ls.push(response)
+          const response = await convertURLtoFile(file.communityImgUrl);
+          ls.push(response);
         }
 
         // 4. convertedTest 에 변환된 파일 넣기
-        setConvertedTest(ls)
+        setConvertedTest(ls);
       }
-    }
-    handler()
-  },[props.itemDetail])
+    };
+    handler();
+  }, [props.itemDetail]);
 
-  
   // 5. convertedTest 들어오면 실행(파일을 추가하는거랑 똑같은 로직으로 돌아감) fin
   useEffect(() => {
-    console.log(convertedTest)
-    
+    console.log(convertedTest);
+
     for (const file of convertedTest) {
-      console.log(file)
-      console.log('들어는갓니?')
+      console.log(file);
+      console.log("들어는갓니?");
       if (!file.type.startsWith("image/")) continue;
       const reader = new FileReader();
       reader.onloadend = (e: any) => {
@@ -139,7 +133,7 @@ const ImageUploadBox = (props: any) => {
       };
       reader.readAsDataURL(file);
     }
-  },[convertedTest])
+  }, [convertedTest]);
 
   // 3. 파일로 변환
   const convertURLtoFile = async (url: string) => {
@@ -153,7 +147,6 @@ const ImageUploadBox = (props: any) => {
 
   return (
     <div className="ImageUploadBox2">
-      
       <div>
         <label
           className="drag_or_click"

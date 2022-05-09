@@ -1,56 +1,55 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styled from "styled-components"
+import styled from "styled-components";
 import Cards from "../Commons/Cards";
-import { IHighRateDesigner, IHotDesigner,ILatestDesigner } from "./PageContentThema";
+import {
+  IHighRateDesigner,
+  IHotDesigner,
+  ILatestDesigner,
+} from "./PageContentThema";
 const Wrapper = styled.div`
   button {
-  //  background-color:green;
+    //  background-color:green;
   }
 
   .slick-slider {
-  position : relative;
+    position: relative;
   }
 
-
-
   .slick-next {
-  // background-color:blue;
-  position :absolute
+    // background-color:blue;
+    position: absolute;
   }
 
   .slick-prev {
-
-  position :absolute;
+    position: absolute;
   }
 
   .slick-prev::before {
-  color:gray;
+    color: gray;
   }
 
   .slick-next::before {
-  color:gray;
-
+    color: gray;
   }
-
-`
+`;
 interface IHotDesignerProps {
-  items : IHotDesigner[]
+  items: IHotDesigner[];
 }
 
 interface ILatestDesignerProps {
-  items : ILatestDesigner[]
+  items: ILatestDesigner[];
 }
 
 interface IHighRateDesignerProps {
-  items : IHighRateDesigner[]
+  items: IHighRateDesigner[];
 }
 
-
-
-
-const  DesignerCarousel = ({items}: IHotDesignerProps|ILatestDesignerProps|IHighRateDesignerProps) => {
+const DesignerCarousel = (
+  { items }: IHotDesignerProps | ILatestDesignerProps | IHighRateDesignerProps,
+  url: "designerpage"
+) => {
   const settings = {
     dots: false,
     className: "center",
@@ -59,21 +58,22 @@ const  DesignerCarousel = ({items}: IHotDesignerProps|ILatestDesignerProps|IHigh
     // centerPadding: "70px",
     slidesToShow: 5,
     speed: 500,
-    adaptiveHeight : false,
+    adaptiveHeight: false,
   };
   return (
     <Wrapper>
       <Slider {...settings}>
-        {items ? items.map((item:any) => {
-          return (
-            <div >
-              <Cards info={item}/>
-            </div>
-          );
-        }) : null }
+        {items
+          ? items.map((item: any) => {
+              return (
+                <div>
+                  <Cards info={item} url="designerpage" />
+                </div>
+              );
+            })
+          : null}
       </Slider>
-      
     </Wrapper>
   );
-}
-export default DesignerCarousel
+};
+export default DesignerCarousel;

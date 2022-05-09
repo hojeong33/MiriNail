@@ -1,4 +1,3 @@
-import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import styled from "styled-components";
@@ -6,15 +5,31 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import { notEqual } from "assert";
 import TimeCounting from "time-counting";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
+import image69 from "../../assets/img/sample/image69.png";
+import image70 from "../../assets/img/sample/image70.png";
+import image68 from "../../assets/img/sample/image68.png";
+
 const StyledSlider = styled(Slider)`
   .slick-dots {
     bottom: 10px;
+  }
+  height: 100%;
+  .slick-list {
+    height: 100%;
+  }
+  .slick-track {
+    height: 100%;
+    div {
+      height: 100%;
+    }
+  }
+  img {
+    height: 100%;
   }
 `;
 
@@ -27,7 +42,7 @@ const modalStyle = {
   height: "90%",
   bgcolor: "background.paper",
   border: "2px solid #000",
-  boxShadow: 24,
+  boxShadow: "none",
   // p: 4,
 };
 
@@ -61,10 +76,6 @@ const Wrapper = styled.div`
   .leftDetailBox {
     width: 60%;
     height: 100%;
-    img {
-      width: 100%;
-      height: 100%;
-    }
   }
 
   .rightDetailBox {
@@ -116,7 +127,7 @@ const Wrapper = styled.div`
     }
 
     .inputBox {
-      // position : absolute;
+      // position: relative;
       // bottom : 0px;
       height: 50px;
       display: flex;
@@ -140,15 +151,6 @@ const Wrapper = styled.div`
     }
   }
 `;
-
-function srcset(image: string, size: number, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${
-      size * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
 
 export default function CommunityImgList() {
   const settings = {
@@ -209,8 +211,9 @@ export default function CommunityImgList() {
   const [test, setTest] = useState(1);
   const [time, setTime] = useState<string>("");
   const [communityTime, setCommunityTime] = useState<string>("");
-  const navigate = useNavigate();
 
+  const [tagName, setTagName] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     fetchData(test);
   }, [test]);
@@ -237,7 +240,7 @@ export default function CommunityImgList() {
     lang: undefined,
     objectTime: time,
     calculate: {
-      justNow: 3601,
+      justNow: 60,
     },
   };
 
@@ -305,7 +308,12 @@ export default function CommunityImgList() {
       },
     })
       .then((res) => {
-        getComments(currentCommunitySeq);
+        {
+          communityCommentLayer === 3
+            ? getReplyComments(communityCommentSeq)
+            : getComments(currentCommunitySeq);
+        }
+        setOpen("");
       })
       .catch((err) => {
         console.log(err);
@@ -381,6 +389,7 @@ export default function CommunityImgList() {
           setCommunityTime(temp);
           sessionStorage.setItem("communitySeq", communitySeq.toString());
           getNowTime();
+          console.log(time, "시간");
         })
         .catch((err) => {
           console.log(err);
@@ -391,7 +400,8 @@ export default function CommunityImgList() {
   // 답글 달기
 
   const tagUser = (userName: string, communityCommentSeq: number) => {
-    setInputVal("@" + userName + " ");
+    setTagName("@" + userName + " ");
+    // setInputVal("@" + userName + " ");
     setCommunityCommentLayer(3);
     setCurrentCommentSeq(communityCommentSeq);
   };
@@ -432,6 +442,8 @@ export default function CommunityImgList() {
         .then((res) => {
           getComments(currentCommunitySeq);
           setInputVal("");
+          setOpen("");
+          setTagName("");
         })
         .catch((err) => {
           console.log(err);
@@ -442,12 +454,15 @@ export default function CommunityImgList() {
   const Button = () => {
     if (inputVal) {
       return (
-        <div style={{ color: "#0095f6" }} onClick={createComment}>
+        <div
+          style={{ color: "#0095f6", width: "100px", marginLeft: "5px" }}
+          onClick={createComment}
+        >
           게시
         </div>
       );
     } else {
-      return <div>게시</div>;
+      return <div style={{ width: "100px", marginLeft: "5px" }}>게시</div>;
     }
   };
 
@@ -464,369 +479,437 @@ export default function CommunityImgList() {
   // 모달
   const [modalStatus, setModalStatus] = useState(false);
   const handleOpen = () => setModalStatus(true);
-  const handleClose = () => setModalStatus(false);
+  const handleClose = () => {
+    setModalStatus(false);
+
+    setOpen("");
+    setTagName("");
+  };
+  const temp = [image68, image69, image70];
 
   useEffect(() => {}, [modalStatus]);
 
   return (
-    <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}>
+    <div
+      style={{
+        display: "flex",
+        width: "100rem",
+        flexWrap: "wrap",
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
+      {/* // <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}> */}
+      {/* <img src={image69} style={{ width: "40rem", height: "20rem" }}></img> */}
       {itemData.map((item, idx) => {
         return (
-          <div key={item.communitySeq}>
-            <CustomImageListItem cols={item.cols || 1} rows={item.rows || 1}>
-              <img
-                {...srcset(
-                  item.communityImg[0].communityImgUrl,
-                  121,
-                  item.rows,
-                  item.cols
-                )}
-                alt={item.communityTitle}
-                loading="lazy"
-                onClick={() => {
-                  getDetail(item.communitySeq, idx);
-                }}
-              />
-
-              <div className="inner-content">
-                <div>{item.communityTitle}</div>
-              </div>
-            </CustomImageListItem>
-            <Modal
-              open={modalStatus}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={modalStyle}>
-                <Wrapper>
-                  <div className="leftDetailBox" style={{ overflow: "hidden" }}>
-                    <StyledSlider {...settings}>
-                      {itemDetail?.communityImg.map((item, idx) => {
-                        return (
-                          <div key={idx}>
-                            <img src={item.communityImgUrl} alt="" />
-                          </div>
-                        );
-                      })}
-                    </StyledSlider>
-                  </div>
-                  <div
-                    className="rightDetailBox"
-                    style={{ display: "flex", flexDirection: "column" }}
+          <div style={{ margin: "5px" }}>
+            {idx % 10 == 5 ? (
+              <div style={{ display: "flex" }}>
+                <div key={item.communitySeq}>
+                  <CustomImageListItem
+                    cols={item.cols || 1}
+                    rows={item.rows || 1}
                   >
-                    <div
-                      className="rightDetailBoxTop"
-                      style={{ justifyContent: "space-between" }}
-                    >
-                      <div>
-                        <img
-                          src={itemDetail?.userProfileImg}
-                          alt=""
-                          width="32"
-                          height="32"
-                          style={{ marginRight: "14px" }}
-                        />
-                        {itemDetail?.userNickname}
-                      </div>
-                      {itemDetail?.userNickname ===
-                        sessionStorage.getItem("userNickname") && (
-                        <div>
-                          <button
-                            onClick={() => {
-                              navigate("/community/update", {
-                                state: {
-                                  desc: itemDetail?.communityDesc,
-                                  title: itemDetail.communityTitle,
-                                  img: itemDetail?.communityImg,
-                                },
-                              });
-                            }}
-                          >
-                            수정
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              deleteCommunity(itemDetail.communitySeq);
-                            }}
-                          >
-                            삭제
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    <div className="rightDetailBoxMiddle">
-                      <div className="postWriter" style={{ display: "flex" }}>
-                        <img
-                          src={itemDetail?.userProfileImg}
-                          alt=""
-                          width="32"
-                          height="32"
-                        />
-                        <div style={{ marginLeft: "14px" }}>
-                          {itemDetail?.userNickname}
-                        </div>
-                        <div style={{ marginLeft: "14px" }}>
-                          <div>{itemDetail?.communityDesc}</div>
-                          {itemDetail ? (
-                            <div style={{ marginTop: "10px" }}>
-                              {communityTime}
-                            </div>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                      </div>
-                      <div className="replys">
-                        {commentData.map((e: any, idx) => {
-                          return (
-                            <div className="replyFrame" key={idx}>
-                              {e.communityCommentIsDelete ? (
-                                <div className="replysInfo">
-                                  <div style={{ borderRadius: "70%" }}>
-                                    <img
-                                      src={e.userProfileImg}
-                                      alt=""
-                                      width="32"
-                                      height="32"
-                                    />
-                                  </div>
-                                  <span style={{ marginLeft: "14px" }}>
-                                    {e.userNickname}
-                                  </span>
-
-                                  <div>
-                                    <div style={{ marginLeft: "14px" }}>
-                                      {e.communityCommentDesc}
-                                    </div>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="replysInfo">
-                                  <div style={{ borderRadius: "70%" }}>
-                                    <img
-                                      src={e.userProfileImg}
-                                      alt=""
-                                      width="32"
-                                      height="32"
-                                    />
-                                  </div>
-                                  <span style={{ marginLeft: "14px" }}>
-                                    {e.userNickname}
-                                  </span>
-
-                                  <div>
-                                    <div style={{ marginLeft: "14px" }}>
-                                      {e.communityCommentDesc}
-                                      {e.userNickname ===
-                                        sessionStorage.getItem(
-                                          "userNickname"
-                                        ) && (
-                                        <button
-                                          onClick={() => {
-                                            deleteComment(
-                                              e.communityCommentSeq
-                                            );
-                                          }}
-                                        >
-                                          삭제
-                                        </button>
-                                      )}
-                                    </div>
-                                    <div style={{ margin: "10px 0 0 14px" }}>
-                                      <span>
-                                        {TimeCounting(
-                                          e.communityCommentRegedAt,
-                                          option
-                                        )}
-                                      </span>
-                                      <span
-                                        style={{ marginLeft: "15px" }}
-                                        onClick={() =>
-                                          tagUser(
-                                            e.userNickname,
-                                            e.communityCommentSeq
-                                          )
-                                        }
-                                      >
-                                        답글 달기
-                                      </span>
-                                    </div>
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        margin: "10px 0 10px 14px",
-                                      }}
-                                    >
-                                      <div
-                                        style={{
-                                          borderBottom: "2px solid #e3e3e3",
-                                          width: "40px",
-                                          height: "13px",
-                                        }}
-                                      ></div>
-                                      <span
-                                        style={{ marginLeft: "15px" }}
-                                        onClick={() => {
-                                          getReplyComments(
-                                            e.communityCommentSeq
-                                          );
-                                          toggle(e.communityCommentSeq);
-                                        }}
-                                      >
-                                        답글 보기
-                                      </span>
-                                    </div>
-                                    {open === e.communityCommentSeq ? (
-                                      <div
-                                        style={{ margin: "12px 0 12px 14px" }}
-                                      >
-                                        <div>
-                                          {replyData.map((ele: any) => {
-                                            return (
-                                              <div
-                                                style={{
-                                                  display: "flex",
-                                                  margin: "20px 0",
-                                                }}
-                                              >
-                                                <div
-                                                  style={{
-                                                    borderRadius: "70%",
-                                                  }}
-                                                >
-                                                  <img
-                                                    src={ele.userProfileImg}
-                                                    alt=""
-                                                    width="32"
-                                                    height="32"
-                                                  />
-                                                </div>
-                                                <div
-                                                  style={{
-                                                    marginLeft: "14px",
-                                                  }}
-                                                >
-                                                  {ele.userNickname}
-                                                </div>
-                                                <div
-                                                  style={{
-                                                    marginLeft: "14px",
-                                                  }}
-                                                >
-                                                  {ele.communityCommentDesc}
-                                                  {e.userNickname ===
-                                                    sessionStorage.getItem(
-                                                      "userNickname"
-                                                    ) && (
-                                                    <button
-                                                      onClick={() => {
-                                                        deleteComment(
-                                                          ele.communityCommentSeq
-                                                        );
-                                                      }}
-                                                    >
-                                                      삭제
-                                                    </button>
-                                                  )}
-                                                </div>
-                                              </div>
-                                            );
-                                          })}
-                                        </div>
-                                      </div>
-                                    ) : null}
-                                  </div>
-                                </div>
-                              )}
-
-                              <div></div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <div
+                    <img
                       style={{
-                        position: "absolute",
-                        width: "100%",
-                        bottom: "0px",
-                        borderTop: "1px solid #e3e3e3",
-                        height: "50px",
-                        paddingRight: "16px",
-                        paddingLeft: "16px",
+                        width: "18rem",
+                        height: "18rem",
+                        marginRight: "10px",
                       }}
-                    >
-                      <div className="inputBox">
-                        <input
-                          type="text"
-                          value={inputVal}
-                          onChange={(e) => {
-                            onChangeText(e.target.value);
+                      src={item.communityImg[0].communityImgUrl}
+                      alt={item.communityTitle}
+                      loading="lazy"
+                      onClick={() => {
+                        getDetail(item.communitySeq, idx);
+                      }}
+                    />
+
+                    <div className="inner-content">
+                      <div>{item.communityTitle}</div>
+                    </div>
+                  </CustomImageListItem>
+                </div>
+                <img
+                  src={temp[idx % 3]}
+                  style={{ width: "36.5rem", height: "18rem" }}
+                ></img>
+              </div>
+            ) : (
+              <>
+                {idx % 10 == 9 ? (
+                  <div style={{ display: "flex" }}>
+                    <div key={item.communitySeq}>
+                      <CustomImageListItem
+                        cols={item.cols || 1}
+                        rows={item.rows || 1}
+                      >
+                        <img
+                          style={{
+                            width: "18rem",
+                            height: "18rem",
+                            marginRight: "10px",
                           }}
-                          onKeyPress={(e) => {
-                            if (e.code === "Enter") createComment();
+                          src={item.communityImg[0].communityImgUrl}
+                          alt={item.communityTitle}
+                          loading="lazy"
+                          onClick={() => {
+                            getDetail(item.communitySeq, idx);
                           }}
                         />
-                        <Button />
-                      </div>
+
+                        <div className="inner-content">
+                          <div>{item.communityTitle}</div>
+                        </div>
+                      </CustomImageListItem>
                     </div>
+                    <img
+                      src={temp[idx % 3]}
+                      style={{ width: "55rem", height: "18rem" }}
+                    ></img>
                   </div>
-                </Wrapper>
-              </Box>
-            </Modal>
+                ) : (
+                  <div key={item.communitySeq}>
+                    <CustomImageListItem>
+                      <img
+                        style={{ width: "18rem", height: "18rem" }}
+                        src={item.communityImg[0].communityImgUrl}
+                        alt={item.communityTitle}
+                        loading="lazy"
+                        onClick={() => {
+                          getDetail(item.communitySeq, idx);
+                        }}
+                      />
+
+                      <div className="inner-content">
+                        <div>{item.communityTitle}</div>
+                      </div>
+                    </CustomImageListItem>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         );
       })}
-    </ImageList>
+      <Modal
+        open={modalStatus}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Wrapper>
+            <div className="leftDetailBox" style={{ overflow: "hidden" }}>
+              <StyledSlider {...settings}>
+                {itemDetail?.communityImg.map((item, idx) => {
+                  return <img src={item.communityImgUrl} alt="" />;
+                })}
+              </StyledSlider>
+            </div>
+            <div
+              className="rightDetailBox"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <div
+                className="rightDetailBoxTop"
+                style={{ justifyContent: "space-between" }}
+              >
+                <div>
+                  <img
+                    src={itemDetail?.userProfileImg}
+                    alt=""
+                    width="32"
+                    height="32"
+                    style={{ marginRight: "14px" }}
+                  />
+                  {itemDetail?.userNickname}
+                </div>
+                {itemDetail?.userNickname ===
+                  sessionStorage.getItem("userNickname") && (
+                  <div>
+                    <button
+                      onClick={() => {
+                        navigate("/community/update", {
+                          state: {
+                            desc: itemDetail?.communityDesc,
+                            title: itemDetail.communityTitle,
+                            img: itemDetail?.communityImg,
+                          },
+                        });
+                      }}
+                    >
+                      수정
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        deleteCommunity(itemDetail.communitySeq);
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="rightDetailBoxMiddle">
+                <div className="postWriter" style={{ display: "flex" }}>
+                  <img
+                    src={itemDetail?.userProfileImg}
+                    alt=""
+                    width="32"
+                    height="32"
+                  />
+                  <div style={{ marginLeft: "14px" }}>
+                    {itemDetail?.userNickname}
+                  </div>
+                  <div style={{ marginLeft: "14px" }}>
+                    <div>{itemDetail?.communityDesc}</div>
+                    {itemDetail ? (
+                      <div style={{ marginTop: "10px" }}>{communityTime}</div>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </div>
+                <div className="replys">
+                  {commentData.map((e: any, idx) => {
+                    return (
+                      <div className="replyFrame" key={idx}>
+                        {e.communityCommentIsDelete ? (
+                          <div className="replysInfo">
+                            <div style={{ borderRadius: "70%" }}>
+                              <img
+                                src={e.userProfileImg}
+                                alt=""
+                                width="32"
+                                height="32"
+                              />
+                            </div>
+                            <span style={{ marginLeft: "14px" }}>
+                              {e.userNickname}
+                            </span>
+
+                            <div>
+                              <div style={{ marginLeft: "14px" }}>
+                                {e.communityCommentDesc}
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="replysInfo">
+                            <div style={{ borderRadius: "70%" }}>
+                              <img
+                                src={e.userProfileImg}
+                                alt=""
+                                width="32"
+                                height="32"
+                              />
+                            </div>
+                            <span style={{ marginLeft: "14px" }}>
+                              {e.userNickname}
+                            </span>
+
+                            <div>
+                              <div style={{ marginLeft: "14px" }}>
+                                {e.communityCommentDesc}
+                                {e.userNickname ===
+                                  sessionStorage.getItem("userNickname") && (
+                                  <button
+                                    onClick={() => {
+                                      deleteComment(e.communityCommentSeq);
+                                    }}
+                                  >
+                                    삭제
+                                  </button>
+                                )}
+                              </div>
+                              <div style={{ margin: "10px 0 0 14px" }}>
+                                <span>
+                                  {TimeCounting(
+                                    e.communityCommentRegedAt,
+                                    option
+                                  )}
+                                </span>
+                                <span
+                                  style={{ marginLeft: "15px" }}
+                                  onClick={() =>
+                                    tagUser(
+                                      e.userNickname,
+                                      e.communityCommentSeq
+                                    )
+                                  }
+                                >
+                                  답글 달기
+                                </span>
+                              </div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  margin: "10px 0 10px 14px",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    borderBottom: "2px solid #e3e3e3",
+                                    width: "40px",
+                                    height: "13px",
+                                  }}
+                                ></div>
+                                {open == e.communityCommentSeq ? (
+                                  <span
+                                    style={{ marginLeft: "15px" }}
+                                    onClick={() => {
+                                      getReplyComments(e.communityCommentSeq);
+                                      toggle(e.communityCommentSeq);
+                                    }}
+                                  >
+                                    댓글 닫기
+                                  </span>
+                                ) : (
+                                  <span
+                                    style={{ marginLeft: "15px" }}
+                                    onClick={() => {
+                                      getReplyComments(e.communityCommentSeq);
+                                      toggle(e.communityCommentSeq);
+                                    }}
+                                  >
+                                    댓글 보기
+                                  </span>
+                                )}
+                              </div>
+                              {open === e.communityCommentSeq ? (
+                                <div style={{ margin: "12px 0 12px 14px" }}>
+                                  <div>
+                                    {replyData.map((ele: any) => {
+                                      return (
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            margin: "20px 0",
+                                          }}
+                                        >
+                                          <div
+                                            style={{
+                                              borderRadius: "70%",
+                                            }}
+                                          >
+                                            <img
+                                              src={ele.userProfileImg}
+                                              alt=""
+                                              width="32"
+                                              height="32"
+                                            />
+                                          </div>
+                                          <div
+                                            style={{
+                                              margin: "0px 10px",
+                                            }}
+                                          >
+                                            {ele.userNickname}
+                                          </div>
+                                          {!ele.communityCommentIsDelete && (
+                                            <div
+                                              style={{
+                                                color: "rgb(11 122 227)",
+                                              }}
+                                            >
+                                              @{e.userNickname}
+                                            </div>
+                                          )}
+                                          <div
+                                            style={{
+                                              marginLeft: "7px",
+                                            }}
+                                          >
+                                            {ele.communityCommentDesc}
+                                            {ele.communityCommentIsDelete ? (
+                                              <></>
+                                            ) : (
+                                              <>
+                                                {" "}
+                                                {ele.userNickname ===
+                                                  sessionStorage.getItem(
+                                                    "userNickname"
+                                                  ) && (
+                                                  <button
+                                                    onClick={() => {
+                                                      deleteComment(
+                                                        ele.communityCommentSeq
+                                                      );
+                                                    }}
+                                                  >
+                                                    삭제
+                                                  </button>
+                                                )}
+                                              </>
+                                            )}
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              ) : null}
+                            </div>
+                          </div>
+                        )}
+
+                        <div></div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  bottom: "0px",
+                  borderTop: "1px solid #e3e3e3",
+                  height: "50px",
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
+              >
+                <div className="inputBox">
+                  {tagName && (
+                    <div
+                      style={{
+                        color: "rgb(11 122 227)",
+                        width: "150px",
+                      }}
+                    >
+                      {tagName}
+                      <button
+                        onClick={() => {
+                          setTagName("");
+                          setCommunityCommentLayer(1);
+                        }}
+                      >
+                        x
+                      </button>
+                    </div>
+                  )}
+
+                  <input
+                    type="text"
+                    value={inputVal}
+                    onChange={(e) => {
+                      onChangeText(e.target.value);
+                    }}
+                    onKeyPress={(e) => {
+                      if (e.code === "Enter") createComment();
+                    }}
+                  />
+                  <Button />
+                </div>
+              </div>
+            </div>
+          </Wrapper>
+        </Box>
+      </Modal>
+    </div>
   );
 }
-interface sizeDataProp {
-  rows: number;
-  cols: number;
-}
-const sizeData: sizeDataProp[] = [];
-// const itemData = [
-//   {
-//     img: image66,
-//     title: "sample",
-//     rows: 2,
-//     cols: 2,
-//     id: 1,
-//   },
-//   {
-//     img: image67,
-//     title: "sample",
-//     id: 2,
-//   },
-//   {
-//     img: image68,
-//     title: "sample",
-//     cols: 2,
-//     id: 3,
-//   },
-//   {
-//     img: image69,
-//     title: "sample",
-//     cols: 3,
-//     id: 4,
-//   },
-//   {
-//     img: image70,
-//     title: "sample",
-//     cols: 3,
-//     id: 5,
-//   },
-//   {
-//     img: image71,
-//     title: "sample",
-//     id: 6,
-//   },
-//   {
-//     img: image67,
-//     title: "sample",
-//     id: 7,
-//   },
-// ];

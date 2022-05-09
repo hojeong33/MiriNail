@@ -1,7 +1,4 @@
-
-
-const ImagePreview = ({ image, deleteFunc, test,pImage }: any) => {
-  
+const ImagePreview = ({ image, deleteFunc, test, pImage }: any) => {
   return (
     <div className="ImagePreview" draggable>
       <img src={image} alt="preview" />

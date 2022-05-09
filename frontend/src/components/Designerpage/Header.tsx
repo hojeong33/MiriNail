@@ -209,9 +209,11 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   }, [designer]);
   return (
     <>
-      {isLoading ?     <LoadingBox className="loading">
-      <TailSpin height={50} width={50} color="gray" />
-    </LoadingBox> : (
+      {isLoading ? (
+        <LoadingBox className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </LoadingBox>
+      ) : (
         <Wrapper>
           <div className="row">
             <div className="pageHeader">

@@ -49,6 +49,7 @@ import ApplyList from "./components/Admin/ApplyList";
 import UpdateImg from "./components/Designerpage/UpdateProfileImg";
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateCommunity from "./routes/Community/UpdateCommunity";
+import AR from "./routes/AR/AR";
 
 function App() {
   return (
@@ -99,6 +100,7 @@ function App() {
           </Route>
           <Route path="/community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/ar" element={<AR />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/nft" element={<NFTList />} />
           <Route path="/nft/:id" element={<NFTDetail />} />
@@ -113,7 +115,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <TopButton />
-        {/* <Footer /> */}
+        <Footer />
       </BrowserRouter>
     </>
   );

@@ -1,9 +1,9 @@
-import styled from "styled-components"
-import Header from "../../components/Designerpage/Header"
-import Content from "../../components/Designerpage/Content"
-import { designerAtom, refetchDesigner } from "../../store/atoms"
+import styled from "styled-components";
+import Header from "../../components/Designerpage/Header";
+import Content from "../../components/Designerpage/Content";
+import { designerAtom, refetchDesigner } from "../../store/atoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getDesignerinfo } from "../../store/apis/designer";
@@ -27,10 +27,10 @@ export interface IDesigner {
 
 const DesignerPage = () => {
   const { userSeq } = useParams();
-  const setterFn = useSetRecoilState(designerAtom)
-  const designerRefetch = useSetRecoilState(refetchDesigner)
+  const setterFn = useSetRecoilState(designerAtom);
+  const designerRefetch = useSetRecoilState(refetchDesigner);
 
-  const { data, isLoading, refetch} = useQuery<any, Error>(
+  const { data, isLoading, refetch } = useQuery<any, Error>(
     ["getDesigner"],
     async () => {
       return await getDesignerinfo(Number(userSeq));
@@ -38,7 +38,7 @@ const DesignerPage = () => {
     {
       onSuccess: (res) => {
         // console.log(res);
-        setterFn(res)
+        setterFn(res);
       },
       onError: (err: any) => console.log(err),
     }
@@ -50,6 +50,6 @@ const DesignerPage = () => {
       <Content refetch={refetch}></Content>
     </>
   );
-}
+};
 
-export default DesignerPage
+export default DesignerPage;

@@ -1,12 +1,8 @@
-import * as React from "react";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import { notEqual } from "assert";
 import TimeCounting from "time-counting";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -15,6 +11,19 @@ import { useNavigate } from "react-router-dom";
 const StyledSlider = styled(Slider)`
   .slick-dots {
     bottom: 10px;
+  }
+  height: 100%;
+  .slick-list {
+    height: 100%;
+  }
+  .slick-track {
+    height: 100%;
+    div {
+      height: 100%;
+    }
+  }
+  img {
+    height: 100%;
   }
 `;
 
@@ -37,10 +46,6 @@ const Wrapper = styled.div`
   .leftDetailBox {
     width: 60%;
     height: 100%;
-    img {
-      width: 100%;
-      height: 100%;
-    }
   }
 
   .rightDetailBox {
@@ -92,7 +97,7 @@ const Wrapper = styled.div`
     }
 
     .inputBox {
-      // position : absolute;
+      // position: relative;
       // bottom : 0px;
       height: 50px;
       display: flex;
@@ -174,6 +179,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const [inputVal, setInputVal] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [communityTime, setCommunityTime] = useState<string>("");
+  const [tagName, setTagName] = useState("");
   const navigate = useNavigate();
 
   const ACCESS_TOKEN = localStorage.getItem("token");
@@ -199,7 +205,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
     lang: undefined,
     objectTime: time,
     calculate: {
-      justNow: 3601,
+      justNow: 60,
     },
   };
 
@@ -233,7 +239,12 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
       },
     })
       .then((res) => {
-        getComments(currentCommunitySeq);
+        {
+          communityCommentLayer === 3
+            ? getReplyComments(communityCommentSeq)
+            : getComments(currentCommunitySeq);
+        }
+        setOpen("");
       })
       .catch((err) => {
         console.log(err);
@@ -318,7 +329,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   // 답글 달기
 
   const tagUser = (userName: string, communityCommentSeq: number) => {
-    setInputVal("@" + userName + " ");
+    setTagName("@" + userName + " ");
+    // setInputVal("@" + userName + " ");
     setCommunityCommentLayer(3);
     setCurrentCommentSeq(communityCommentSeq);
   };
@@ -359,6 +371,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
         .then((res) => {
           getComments(currentCommunitySeq);
           setInputVal("");
+          setOpen("");
+          setTagName("");
         })
         .catch((err) => {
           console.log(err);
@@ -369,12 +383,15 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const Button = () => {
     if (inputVal) {
       return (
-        <div style={{ color: "#0095f6" }} onClick={createComment}>
+        <div
+          style={{ color: "#0095f6", width: "100px", marginLeft: "5px" }}
+          onClick={createComment}
+        >
           게시
         </div>
       );
     } else {
-      return <div>게시</div>;
+      return <div style={{ width: "100px", marginLeft: "5px" }}>게시</div>;
     }
   };
 
@@ -391,7 +408,11 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   // 모달
   const [modalStatus, setModalStatus] = useState(state);
   const handleOpen = () => setModalStatus(true);
-  const handleClose = () => setModalStatus(false);
+  const handleClose = () => {
+    setModalStatus(false);
+    setOpen("");
+    setTagName("");
+  };
 
   useEffect(() => {}, [modalStatus]);
 
@@ -407,11 +428,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
           <div className="leftDetailBox" style={{ overflow: "hidden" }}>
             <StyledSlider {...settings}>
               {itemDetail?.communityImg.map((item, idx) => {
-                return (
-                  <div key={idx}>
-                    <img src={item.communityImgUrl} alt="" />
-                  </div>
-                );
+                return <img src={item.communityImgUrl} alt="" />;
               })}
             </StyledSlider>
           </div>
@@ -561,15 +578,27 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                   height: "13px",
                                 }}
                               ></div>
-                              <span
-                                style={{ marginLeft: "15px" }}
-                                onClick={() => {
-                                  getReplyComments(e.communityCommentSeq);
-                                  toggle(e.communityCommentSeq);
-                                }}
-                              >
-                                답글 보기
-                              </span>
+                              {open == e.communityCommentSeq ? (
+                                <span
+                                  style={{ marginLeft: "15px" }}
+                                  onClick={() => {
+                                    getReplyComments(e.communityCommentSeq);
+                                    toggle(e.communityCommentSeq);
+                                  }}
+                                >
+                                  댓글 닫기
+                                </span>
+                              ) : (
+                                <span
+                                  style={{ marginLeft: "15px" }}
+                                  onClick={() => {
+                                    getReplyComments(e.communityCommentSeq);
+                                    toggle(e.communityCommentSeq);
+                                  }}
+                                >
+                                  댓글 보기
+                                </span>
+                              )}
                             </div>
                             {open === e.communityCommentSeq ? (
                               <div style={{ margin: "12px 0 12px 14px" }}>
@@ -596,30 +625,46 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                         </div>
                                         <div
                                           style={{
-                                            marginLeft: "14px",
+                                            margin: "0px 10px",
                                           }}
                                         >
                                           {ele.userNickname}
                                         </div>
+                                        {!ele.communityCommentIsDelete && (
+                                          <div
+                                            style={{
+                                              color: "rgb(11 122 227)",
+                                            }}
+                                          >
+                                            @{e.userNickname}
+                                          </div>
+                                        )}
                                         <div
                                           style={{
-                                            marginLeft: "14px",
+                                            marginLeft: "7px",
                                           }}
                                         >
                                           {ele.communityCommentDesc}
-                                          {e.userNickname ===
-                                            sessionStorage.getItem(
-                                              "userNickname"
-                                            ) && (
-                                            <button
-                                              onClick={() => {
-                                                deleteComment(
-                                                  ele.communityCommentSeq
-                                                );
-                                              }}
-                                            >
-                                              삭제
-                                            </button>
+                                          {ele.communityCommentIsDelete ? (
+                                            <></>
+                                          ) : (
+                                            <>
+                                              {" "}
+                                              {ele.userNickname ===
+                                                sessionStorage.getItem(
+                                                  "userNickname"
+                                                ) && (
+                                                <button
+                                                  onClick={() => {
+                                                    deleteComment(
+                                                      ele.communityCommentSeq
+                                                    );
+                                                  }}
+                                                >
+                                                  삭제
+                                                </button>
+                                              )}
+                                            </>
                                           )}
                                         </div>
                                       </div>
@@ -651,6 +696,25 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
               }}
             >
               <div className="inputBox">
+                {tagName && (
+                  <div
+                    style={{
+                      color: "rgb(11 122 227)",
+                      width: "150px",
+                    }}
+                  >
+                    {tagName}
+                    <button
+                      onClick={() => {
+                        setTagName("");
+                        setCommunityCommentLayer(1);
+                      }}
+                    >
+                      x
+                    </button>
+                  </div>
+                )}
+
                 <input
                   type="text"
                   value={inputVal}
