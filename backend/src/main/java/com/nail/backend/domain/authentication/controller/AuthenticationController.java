@@ -106,28 +106,7 @@ public class AuthenticationController {
 
         if(applications == null) {
             log.error("getDesignerApplicationDetail - User doesn't exist.");
-            return ResponseEntity.status(404).body(null);
-        }
-        return ResponseEntity.status(201).body(applications);
-    }
-
-    /**
-     인증신청 진행상황 조회
-     */
-    @GetMapping("/{designerSeq}")
-    @ApiOperation(value = "인증 등록 상세 정보 조회", notes = "<strong>인증 등록 상세 정보</strong>를 넘겨준다.")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
-            @ApiResponse(code = 404, message = "유저 없음.")
-    })
-    public ResponseEntity<DesignerApplication>getDesignerApplicationStatus(@PathVariable("designerSeq") Long designerSeq) {
-
-         log.info("getDesignerApplicationStatus - 호출");
-        DesignerApplication applications = authenticationService.getDesignerApplicationStatus(designerSeq);
-
-        if(applications == null) {
-            log.error("getDesignerApplicationStatus - User doesn't exist.");
-            return ResponseEntity.status(404).body(null);
+            return ResponseEntity.status(201).body(applications);
         }
         return ResponseEntity.status(201).body(applications);
     }

@@ -46,3 +46,12 @@ export const getDownloadApply = async (authUrl:string) => {
   )
   return response.data
 }
+
+// 인등등록 상세정보 조회
+export const getApplyDetail = async (designerSeq:number) => {
+  const response = await apiClient.get<any>(
+    `/authentication/detail/${designerSeq}`,
+    { params : { designerSeq } }
+  )
+  return response
+}

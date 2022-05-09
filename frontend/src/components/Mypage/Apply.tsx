@@ -2,9 +2,9 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import AddressModal from "./AddressModal";
-import { useMutation } from "react-query";
-import { postApply } from "../../store/apis/authentication";
-import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from "react-query";
+import { getApplyDetail, postApply } from "../../store/apis/authentication";
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -156,6 +156,7 @@ const Apply = () => {
   const [addressDetail, setAddressDetail] = useState(""); // 상세주소
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [file, setFile] = useState<any>();
+  const { userSeq } = useParams();
   const navigate = useNavigate()
 
   const handleModalOpen = () => {
@@ -178,22 +179,9 @@ const Apply = () => {
     console.log("메인파일변화");
     setFile((e.target as HTMLInputElement).files?.item(0));
     console.log((e.target as HTMLInputElement).files?.item(0));
-    // if ((e.target as HTMLInputElement).files) {
-    //   encodeMainFileToBasek64((e.target as HTMLInputElement).files?.item(0));
-    // }
   };
 
-  // const encodeMainFileToBasek64 = (fileBlob: any) => {
-  //   const reader: any = new FileReader();
-  //   if (fileBlob) {
-  //     reader.readAsDataURL(fileBlob);
-  //   }
-  //   return new Promise(() => {
-  //     reader.onload = () => {
-  //       setFileSrc(reader.result);
-  //     };
-  //   });
-  // };
+
 
   const onCompletePost = (data:any) => {
     let fullAddr = data.address;
@@ -213,6 +201,20 @@ const Apply = () => {
     setAddressDetail(fullAddr);
     setIsOpen(false);
   };
+
+  const { data, isLoading } = useQuery<any, Error>(
+    ["getApplyInfo"],
+    async () => {
+      return await getApplyDetail(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
+
 
   const apply = useMutation<any, Error>(
     "apply",
@@ -251,7 +253,10 @@ const Apply = () => {
   }
 
   return (
+    isLoading ? null : 
+    data.data.designerAuthStatus === 0 ? <div>신청등록 심사중입니다.</div> :
     <Wrapper>
+      {data.data.designerAuthStatus === 2 && <div>이전의 신청등록이 거절되었습니다.</div>}
       <FormWrapper>
         <div className="menu">
           <div className="menuSelectText">디자이너 정보 입력</div>
