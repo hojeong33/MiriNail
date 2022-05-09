@@ -7,6 +7,7 @@ import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -33,4 +34,8 @@ public interface NailartService {
     // 네일 아트 삭제
     boolean nailartRemove(long nailartSeq);
 
+
+    // 이삭 ---------------------------------------------------------------
+    // 네일 아트 검색
+    Page<NailartListGetRes> getNailartListByNailartName(Pageable pageable, String name);
 }

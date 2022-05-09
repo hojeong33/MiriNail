@@ -22,6 +22,7 @@ public class ReviewComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "review_comment_seq")
     private Long reviewCommentSeq;
 
     @ApiModelProperty(value = "리뷰 글 ")

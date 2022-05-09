@@ -18,15 +18,17 @@ import com.nail.backend.domain.nailart.db.repository.NailartImgRepository;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
+import com.nail.backend.domain.review.db.entity.Review;
+import com.nail.backend.domain.review.db.entity.ReviewComment;
+import com.nail.backend.domain.review.db.entity.ReviewImg;
+import com.nail.backend.domain.review.response.ReviewCommentGetRes;
+import com.nail.backend.domain.review.response.ReviewGetRes;
 import com.nail.backend.domain.user.db.entity.User;
 import com.nail.backend.domain.user.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -342,5 +344,46 @@ public class NailartServiceImpl implements NailartService {
     @Transactional
     public boolean nailartRemove(long nailartSeq) {
         return nailartRepositorySupport.deleteNailartByNailartSeq(nailartSeq);
+    }
+
+
+
+
+    // sac ------------------------------------------------------------------------------
+    // 네일아트 검색
+    @Override
+    @Transactional
+    public Page<NailartListGetRes> getNailartListByNailartName(Pageable pageable, String name){
+
+        Page<Nailart> nailartList = nailartRepository.findByNailartNameContainingIgnoreCase(pageable, name);
+        List<NailartListGetRes> nailartGetResList = new ArrayList<>();
+
+        long total = nailartList.getTotalElements();
+
+        for (Nailart n : nailartList) {
+            DesignerInfo designer = designerRepository.findById(n.getDesignerSeq()).orElse(null);
+
+            // nailart 검색 리턴 리스트 만들기
+            NailartListGetRes nailartGetRes = NailartListGetRes.builder()
+                    .nailartSeq(n.getNailartSeq())
+                    .nailartName(n.getNailartName())
+                    .nailartDesc(n.getNailartDesc())
+                    .nailartType(n.getNailartType())
+                    .nailartColor(n.getNailartColor())
+                    .nailartDetailColor(n.getNailartDetailColor())
+                    .nailartWeather(n.getNailartWeather())
+                    .nailartThumbnailUrl(n.getNailartThumbnailUrl())
+                    .nailartPrice(n.getNailartPrice())
+                    .nailartAvailable(n.isNailartAvailable())
+                    .nailartRegedAt(n.getNailartRegedAt())
+                    .nailartRating(n.getNailartRating())
+                    .build();
+            nailartGetResList.add(nailartGetRes);
+        }
+        Page<NailartListGetRes> res = new PageImpl<>(nailartGetResList, pageable, total);
+
+        return res;
+
+
     }
 }

@@ -16,4 +16,7 @@ public interface NailartRepository extends JpaRepository<Nailart, Long> {
     @Transactional
     Nailart deleteByNailartSeq(long nailartSeq);
 
+    // sac --------------------------------------------------
+    Page<Nailart> findByNailartNameContainingIgnoreCase(Pageable pageable,String nailartName);
+
 }
