@@ -165,9 +165,9 @@ function BestReviewCarousels({ items }: Props) {
                       src={item.nailart.nailartThumbnailUrl}
                       style={{ width: "32vh", height: "32vh" }}
                       alt=""
-                      onClick={() => {
-                        navigate(`nft/${item.nailart.nailartSeq}`);
-                      }}
+                      // onClick={() => {
+                      //   navigate(`nft/${item.nailart.nailartSeq}`);
+                      // }}
                     />
                   </div>
                 );

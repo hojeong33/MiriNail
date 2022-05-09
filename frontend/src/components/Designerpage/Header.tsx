@@ -123,11 +123,11 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isFollow, setIsFollow] = useState<boolean>(false);
   const designer = useRecoilValue(designerAtom);
-  const [selected, setSelected] = useState(0)
-  const [selectedByDesigner, setSelectedByDesigner] = useState(0)
+  const [selected, setSelected] = useState(0);
+  const [selectedByDesigner, setSelectedByDesigner] = useState(0);
   const { userSeq } = useParams();
   const location = useLocation();
-  const temp = location.pathname.split("/")
+  const temp = location.pathname.split("/");
   // console.log(temp[temp.length - 1])
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -190,7 +190,14 @@ const Header: React.FC<IProps> = ({ refetch }) => {
       <Wrapper>
         <div className="row">
           <div className="pageHeader">
-            <img src={designer.designerInfo.designerProfileImgUrl ? designer.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
+            <img
+              src={
+                designer.designerInfo.designerProfileImgUrl
+                  ? designer.designerInfo.designerProfileImgUrl
+                  : "/assets/images/default_profile.png"
+              }
+              alt=""
+            />
             <div className="designername">
               {designer.designerInfo.designerShopName}
             </div>
@@ -229,9 +236,11 @@ const Header: React.FC<IProps> = ({ refetch }) => {
             </div>
             <div className="buttons">
               <Link to="updateimg">
-                <button className={`${
+                <button
+                  className={`${
                     temp[temp.length - 1] === "updateimg" ? "selected" : ""
-                  }`}>
+                  }`}
+                >
                   <AccountBoxIcon />
                   사진변경
                 </button>
