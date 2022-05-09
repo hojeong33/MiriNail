@@ -95,6 +95,7 @@ public class NailartServiceImpl implements NailartService {
                 if(sort.equals("like")){// 좋아요 순
                     nailart = nailartRepositorySupport.getListbyColorFavoite(color, page, size);
                 }else{ // 최신순
+                    System.out.println("dddd");
                     nailart = nailartRepositorySupport.getListbyColorLatest(color, page, size);
                 }
             }else{// 지정된 색상이 없을시
