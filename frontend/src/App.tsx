@@ -46,12 +46,9 @@ import Followers from "./components/Designerpage/Followers";
 import TopButton from "./components/Navbar/TopButton";
 import Admin from "./routes/Admin/Admin";
 import ApplyList from "./components/Admin/ApplyList";
-<<<<<<< HEAD
 import UpdateImg from "./components/Designerpage/UpdateProfileImg";
-=======
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateCommunity from "./routes/Community/UpdateCommunity";
->>>>>>> d0d66ad5647f4fb5d6620e75058281256f2fdca1
 
 function App() {
   return (

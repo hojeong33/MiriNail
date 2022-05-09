@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { apiClient, fileApiClient } from "./apiClient"
 
 // 내가 쓴 글 조회
@@ -9,8 +8,6 @@ export const getUserCommunity = async (page:number, size:number) => {
   )
   return response.data
 }
-=======
-import { apiClient, fileApiClient } from "./apiClient";
 
 // 커뮤니티 게시글 목록 조회
 export const getCommunityList = async (page: number, size: number) => {
@@ -90,4 +87,3 @@ export const putAsk = async (
   });
   return response.data;
 };
->>>>>>> d0d66ad5647f4fb5d6620e75058281256f2fdca1
