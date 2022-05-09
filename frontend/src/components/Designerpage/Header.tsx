@@ -12,7 +12,8 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { designerAtom } from "../../store/atoms";
 import { deleteFollow, postFollow } from "../../store/apis/follow";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import { getDesignerinfo } from "../../store/apis/designer";
 
 const Wrapper = styled.div`
   * {
@@ -129,13 +130,19 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   const location = useLocation();
   const temp = location.pathname.split("/")
   // console.log(temp[temp.length - 1])
-  const handleModalOpen = () => {
-    setIsOpen(true);
-  };
 
-  const handleModalClose = () => {
-    setIsOpen(false);
-  };
+  const { data, isLoading, refetch:designerRefetch} = useQuery<any, Error>(
+    ["getDesigner"],
+    async () => {
+      return await getDesignerinfo(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
 
   const follow = useMutation<any, Error>(
     ["follow"],
@@ -145,7 +152,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     {
       onSuccess: (res) => {
         console.log(res);
-        refetch();
+        designerRefetch()
       },
       onError: (err: any) => console.log(err),
     }
@@ -159,7 +166,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     {
       onSuccess: (res) => {
         console.log(res);
-        refetch();
+        designerRefetch()
       },
       onError: (err: any) => console.log(err),
     }
@@ -186,90 +193,90 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     findIsFollow();
   }, [designer]);
   return (
-    <>
-      <Wrapper>
-        <div className="row">
-          <div className="pageHeader">
-            <img src={designer.designerInfo.designerProfileImgUrl ? designer.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
-            <div className="designername">
-              {designer.designerInfo.designerShopName}
-            </div>
-            <div className="buttons">
-              <Link to="createask">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "createask" ? "selected" : ""
-                  }`}
-                >
-                  <CreateIcon />
-                  1:1 문의
-                </button>
-              </Link>
-              <Link to="reservation">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "reservation" ? "selected" : ""
-                  }`}
-                >
-                  <CalendarMonthIcon />
-                  예약하기
-                </button>
-              </Link>
-              {isFollow ? (
-                <button onClick={onClickUnFollow}>
-                  <FavoriteIcon color="error" />
-                  언팔로우
-                </button>
-              ) : (
-                <button onClick={onClickFollow}>
-                  <FavoriteBorderIcon color="error" />
-                  팔로우
-                </button>
-              )}
-            </div>
-            <div className="buttons">
-              <Link to="updateimg">
-                <button className={`${
-                    temp[temp.length - 1] === "updateimg" ? "selected" : ""
-                  }`}>
-                  <AccountBoxIcon />
-                  사진변경
-                </button>
-              </Link>
-              <Link to="reservationcheck">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "reservationcheck"
-                      ? "selected"
-                      : ""
-                  }`}
-                >
-                  <CalendarMonthIcon />
-                  예약확인
-                </button>
-              </Link>
-              <Link to="followers">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "followers" ? "selected" : ""
-                  }`}
-                >
-                  <PeopleIcon />
-                  팔로워들
-                </button>
-              </Link>
-            </div>
+    <>{isLoading ? null : <Wrapper>
+      <div className="row">
+        <div className="pageHeader">
+          <img src={data.designerInfo.designerProfileImgUrl ? data.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
+          <div className="designername">
+            {data.designerInfo.designerShopName}
           </div>
-          <div className="pageHeaderNavigation">
-            <div className="NavElement">
-              <span>DESIGNER</span>
-              <ChevronRightIcon />
-              <span>디자이너페이지</span>
-            </div>
+          <div className="buttons">
+            <Link to="createask">
+              <button
+                className={`${
+                  temp[temp.length - 1] === "createask" ? "selected" : ""
+                }`}
+              >
+                <CreateIcon />
+                1:1 문의
+              </button>
+            </Link>
+            <Link to="reservation">
+              <button
+                className={`${
+                  temp[temp.length - 1] === "reservation" ? "selected" : ""
+                }`}
+              >
+                <CalendarMonthIcon />
+                예약하기
+              </button>
+            </Link>
+            {isFollow ? (
+              <button onClick={onClickUnFollow}>
+                <FavoriteIcon color="error" />
+                언팔로우
+              </button>
+            ) : (
+              <button onClick={onClickFollow}>
+                <FavoriteBorderIcon color="error" />
+                팔로우
+              </button>
+            )}
+          </div>
+          <div className="buttons">
+            <Link to="updateimg">
+              <button className={`${
+                  temp[temp.length - 1] === "updateimg" ? "selected" : ""
+                }`}>
+                <AccountBoxIcon />
+                사진변경
+              </button>
+            </Link>
+            <Link to="reservationcheck">
+              <button
+                className={`${
+                  temp[temp.length - 1] === "reservationcheck"
+                    ? "selected"
+                    : ""
+                }`}
+              >
+                <CalendarMonthIcon />
+                예약확인
+              </button>
+            </Link>
+            <Link to="followers">
+              <button
+                className={`${
+                  temp[temp.length - 1] === "followers" ? "selected" : ""
+                }`}
+              >
+                <PeopleIcon />
+                팔로워들
+              </button>
+            </Link>
           </div>
         </div>
-        <div></div>
-      </Wrapper>
+        <div className="pageHeaderNavigation">
+          <div className="NavElement">
+            <span>DESIGNER</span>
+            <ChevronRightIcon />
+            <span>디자이너페이지</span>
+          </div>
+        </div>
+      </div>
+      <div></div>
+    </Wrapper>}
+      
     </>
   );
 };
