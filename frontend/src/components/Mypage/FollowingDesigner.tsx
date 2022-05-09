@@ -17,7 +17,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  min-height: 100vh;
+  
   .cards {
     width: 90%;
     /* border: 1px solid black; */
@@ -25,6 +26,7 @@ const Wrapper = styled.div`
     flex-wrap: wrap;
     /* justify-content: center; */
     margin: 20px 0 0 40px;
+    min-height: 30vh;
   }
   .card {
     position: relative;
@@ -122,18 +124,26 @@ interface IState {
 
 const FollowingDesigner = () => {
   const navigate = useNavigate();
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
   const { userSeq } = useParams();
 
+  const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    console.log(event);
+    console.log(page);
+    setPage(page);
+  };
+
   const { data, isLoading } = useQuery<any, Error>(
-    ["getFollowee"],
+    ["getFollowee", page],
     async () => {
-      return await getFollowees(Number(userSeq));
+      return await getFollowees(Number(userSeq), page, 10);
     },
     {
       onSuccess: (res) => {
         console.log(res, "designerdata");
-        console.log(data, "!!!!!!!");
-        // setNailarts(res.content);
+        // console.log(data, "!!!!!!!");
+        setLastPage(res.totalPages)
       },
       onError: (err: any) => console.log(err),
     }
@@ -151,11 +161,11 @@ const FollowingDesigner = () => {
         </div>
       ) : (
         <>
-          {data.length === 0 ? (
+          {data.totalElements === 0 ? (
             <div>팔로우한 디자이너가 없습니다</div>
           ) : (
             <div className="cards">
-              {data.map((designer: any, idx: number) => {
+              {data.content?.map((designer: any, idx: number) => {
                 return (
                   <div
                     className="card"
@@ -209,6 +219,15 @@ const FollowingDesigner = () => {
               })}
             </div>
           )}
+          <div className="pagination">
+            <Stack spacing={2}>
+              <Pagination
+                count={lastPage}
+                shape="rounded"
+                onChange={onchangePage}
+              />
+            </Stack>
+          </div>
         </>
       )}
     </Wrapper>
