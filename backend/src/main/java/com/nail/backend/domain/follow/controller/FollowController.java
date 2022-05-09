@@ -42,7 +42,7 @@ public class FollowController {
 
         log.info("getFollowerList - 호출");
 
-        List<DesignerInfo> follow = followService.getFolloweeList(userSeq);
+        List<DesignerInfo> follow = followService.getFolloweeList(userSeq, pageable);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);
@@ -66,7 +66,7 @@ public class FollowController {
 
         log.info("getFolloweeList - 호출");
 
-        List<User> follow = followService.getFollowerList(userSeq);
+        List<User> follow = followService.getFollowerList(userSeq, pageable);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);

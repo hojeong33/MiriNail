@@ -12,6 +12,7 @@ import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class FollowRepositorySupport {
 
     QDesignerInfo qDesignerInfo = QDesignerInfo.designerInfo;
 
-    public List<User> FollowerList(Long designerSeq) {
+    public List<User> FollowerList(Long designerSeq, Pageable pageable) {
 
         List<User> userList = jpaQueryFactory.select(qUser)
                 .from(qUser)
@@ -47,13 +48,15 @@ public class FollowRepositorySupport {
                                 .from(qFollow)
                                 .where(qFollow.followFollowee.designerSeq.eq(designerSeq))
                 ))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return userList;
 
     }
 
-    public List<DesignerInfo> FolloweeList(Long userSeq) {
+    public List<DesignerInfo> FolloweeList(Long userSeq, Pageable pageable) {
 
         List<DesignerInfo> designerInfoList = jpaQueryFactory.select(qDesignerInfo)
                 .from(qDesignerInfo)
@@ -62,6 +65,8 @@ public class FollowRepositorySupport {
                                 .from(qFollow)
                                 .where(qFollow.followFollower.userSeq.eq(userSeq))
                 ))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return designerInfoList;
@@ -122,5 +127,18 @@ public class FollowRepositorySupport {
             result.add(tmp);
         });
         return result;
+    }
+
+    public List<User> FollowerListAll(Long designerSeq) {
+        List<User> userList = jpaQueryFactory.select(qUser)
+                .from(qUser)
+                .where(qUser.userSeq.in(
+                        jpaQueryFactory.select(qFollow.followFollower.userSeq)
+                                .from(qFollow)
+                                .where(qFollow.followFollowee.designerSeq.eq(designerSeq))
+                ))
+                .fetch();
+
+        return userList;
     }
 }
