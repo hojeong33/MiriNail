@@ -23,13 +23,13 @@ import math
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 
-def testVideo():
-    
-    print('test.py에는 들어옴')
+def testVideo(test):
+    # print(imgt,'아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아')
+    print('test.py에는 들어옴',test)
     mp_drawing = mp.solutions.drawing_utils
     mp_drawing_styles = mp.solutions.drawing_styles
     mp_hands = mp.solutions.hands
-    print(f'{mp_hands} 일단 선언?')
+    # print(f'{mp_hands} 일단 선언?')
     args = {
         "model": "./model/export_model_008/frozen_inference_graph.pb",
         # "model":"/media/todd/38714CA0C89E958E/147/yl_tmp/readingbook/model/export_model_015/frozen_inference_graph.pb",
@@ -56,9 +56,9 @@ def testVideo():
         print(">  ====== NAIL Inference graph loaded.")
         # return graphDef, sess
 
-    status = 0
+
     with mp_hands.Hands(min_detection_confidence=0.8,min_tracking_confidence=0.5) as hands:
-        print(status)
+   
         with model.as_default():
             with tf.Session(graph=model) as sess:
                 print('2 : 텐서플로우 실행')
@@ -71,18 +71,21 @@ def testVideo():
                 classesTensor = model.get_tensor_by_name("detection_classes:0")
                 numDetections = model.get_tensor_by_name("num_detections:0")
                 drawboxes = []
-                cap = cv2.VideoCapture(0)
+                # cap = cv2.VideoCapture(0)
+                # print(cap)
                 # vs = WebcamVideoStream(src=0)
                 # vs.start()
+                i = 0 
                 while True:
                     print('3 : 캠읽음')
-                    status += 1
-                    # if status == 10:
+                    
+                    # # ret, frame = cap.read()
+                    # print(frame)
+                    # if not ret:
+                    #     cv2.destroyAllWindows()
                     #     break
-                    ret, frame = cap.read()
-                    if not ret:
-                        cv2.destroyAllWindows()
-                        break
+                    frame = test
+                    print(frame)
                     img = cv2.imread("sss.png")
                     
                     
@@ -255,13 +258,14 @@ def testVideo():
 
 
 
-                    # cv2.imshow("Output", image_2)
-                    ret, buffer = cv2.imencode('.jpg', image_2)
-                    # frame을 byte로 변경 후 특정 식??으로 변환 후에
-                    # yield로 하나씩 넘겨준다.
-                    image_2 = buffer.tobytes()
-                    yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-                    bytearray(image_2) + b'\r\n')
+                    # # cv2.imshow("Output", image_2)
+                    # ret, buffer = cv2.imencode('.jpg', image_2)
+                    # # return buffer
+                    # # frame을 byte로 변경 후 특정 식??으로 변환 후에
+                    # # yield로 하나씩 넘겨준다.
+                    # image_2 = buffer.tobytes()
+                    # yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+                    # bytearray(image_2) + b'\r\n')
 
 
 
@@ -269,18 +273,18 @@ def testVideo():
 
 
                     
-                    # ret, buffer = cv2.imencode('.jpg', image_2)
-                    # image_2 = buffer.tobytes()
-                    # yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-                    # bytearray(image_2) + b'\r\n')
-                    # src = cv2.imread("sss.png")
-                    # cv2.imshow("sss", src)
+    #                 # ret, buffer = cv2.imencode('.jpg', image_2)
+    #                 # image_2 = buffer.tobytes()
+    #                 # yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+    #                 # bytearray(image_2) + b'\r\n')
+    #                 # src = cv2.imread("sss.png")
+    #                 # cv2.imshow("sss", src)
 
-                    if cv2.waitKey(1) & 0xFF == ord("q"):
-                        cv2.destroyAllWindows()
-                        break
+    #                 if cv2.waitKey(1) & 0xFF == ord("q"):
+    #                     cv2.destroyAllWindows()
+    #                     break
 
-                    # vs.stop()
+    #                 # vs.stop()
 
 
 
@@ -288,49 +292,3 @@ def testVideo():
 
 # testVideo()
 
-
-
-# # load the overlay image. size should be smaller than video frame size
-# img = cv2.imread("sss.png")
-
-# # Get Image dimensions
-# img_height, img_width, _ = img.shape
-
-# # Start Captured
-# cap = cv2.VideoCapture(0)
-
-# # Get frame dimensions
-# frame_width  = cap.get(cv2.CAP_PROP_FRAME_WIDTH )
-# frame_height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT )
-
-# # Print dimensions
-# print('image dimensions (HxW):',img_height,"x",img_width)
-# print('frame dimensions (HxW):',int(frame_height),"x",int(frame_width))
-
-# # Decide X,Y location of overlay image inside video frame. 
-# # following should be valid:
-# #   * image dimensions must be smaller than frame dimensions
-# #   * x+img_width <= frame_width
-# #   * y+img_height <= frame_height
-# # otherwise you can resize image as part of your code if required
-
-# x = 50
-# y = 50
-
-# while(True):
-#     # Capture frame-by-frame
-#     ret, frame = cap.read()
-
-#     # add image to frame
-#     frame[ y:y+img_height , x:x+img_width ] = img
-
-#     # Display the resulting frame
-#     cv2.imshow('frame',frame)
-
-#     # Exit if ESC key is pressed
-#     if cv2.waitKey(20) & 0xFF == 27:
-#         break
-
-# # When everything done, release the capture
-# cap.release()
-# cv2.destroyAllWindows()

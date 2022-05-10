@@ -23,7 +23,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.logger import logger
 from imageio import imread
 from sockett import summ
-from fastapi.staticfiles import StaticFiles 
 app = FastAPI()
 
 
@@ -65,7 +64,6 @@ def read_item(item_id: int, q: Optional[str] = None):
 
 # 웹소켓 연결을 테스트 할 수 있는 웹페이지 (http://127.0.0.1:8000/client)
 templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static") 
 @app.get("/client")
 async def client(request: Request):
     # /templates/client.html파일을 response함
@@ -128,7 +126,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 # vs.start()
 
 
-                
+
 
                 while True:
                     print('3 : 캠읽음')
@@ -307,19 +305,15 @@ async def websocket_endpoint(websocket: WebSocket):
                     
                     # i += 1
                     ret, buffer = cv2.imencode('.jpg', image_2)
-                    # print(buffer)
+  
                     # frame을 byte로 변경 후 특정 식??으로 변환 후에
                     # yield로 하나씩 넘겨준다.
                     image_2 = buffer.tobytes()
-                    # print(image_2)
-                    
+                    # await websocket.send_text(f"imgData : {image_2}")
                     # print(f"message received : {image_2} from : {websocket.client}")
                     # print(image_2)
-                    # yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-                    # bytearray(image_2) + b'\r\n')
-                    # senddata =(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-                    # bytearray(image_2) + b'\r\n')
-                    await websocket.send_text(image_2)
+                    yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+                    bytearray(image_2) + b'\r\n')
 
                     # return StreamingResponse(, media_type="multipart/x-mixed-replace; boundary=frame")
         
