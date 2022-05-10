@@ -151,6 +151,7 @@ const SearchDesigner = () => {
     {
       onSuccess: (res) => {
         console.log(res);
+        setLastPage(res.totalPages)
       },
       onError: (err: any) => console.log(err),
     }

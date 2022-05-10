@@ -103,11 +103,12 @@ const SearchNailart = () => {
   const { data, isLoading, refetch } = useQuery<any, Error>(
     ["searchNailart", page, searchvalue, 0],
     async () => {
-      return await getSearchNailart(searchvalue ? searchvalue : "", page, 10);
+      return await getSearchNailart(searchvalue ? searchvalue : "", page, 12);
     },
     {
       onSuccess: (res) => {
         console.log(res);
+        setLastPage(res.totalPages)
       },
       onError: (err: any) => console.log(err),
     }
