@@ -129,7 +129,7 @@ const Wrapper = styled.div`
     .inputBox {
       // position: relative;
       // bottom : 0px;
-      height: 50px;
+      height: 48px;
       display: flex;
       background-color: #fff;
       input {
@@ -660,7 +660,7 @@ export default function CommunityImgList() {
                     width="32"
                     height="32"
                   />
-                  <div style={{ marginLeft: "14px" }}>
+                  <div style={{ marginLeft: "14px", whiteSpace: "nowrap" }}>
                     {itemDetail?.userNickname}
                   </div>
                   <div style={{ marginLeft: "14px" }}>
@@ -686,7 +686,12 @@ export default function CommunityImgList() {
                                 height="32"
                               />
                             </div>
-                            <span style={{ marginLeft: "14px" }}>
+                            <span
+                              style={{
+                                marginLeft: "14px",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
                               {e.userNickname}
                             </span>
 
@@ -706,7 +711,12 @@ export default function CommunityImgList() {
                                 height="32"
                               />
                             </div>
-                            <span style={{ marginLeft: "14px" }}>
+                            <span
+                              style={{
+                                marginLeft: "14px",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
                               {e.userNickname}
                             </span>
 
@@ -804,6 +814,7 @@ export default function CommunityImgList() {
                                           <div
                                             style={{
                                               margin: "0px 10px",
+                                              whiteSpace: "nowrap",
                                             }}
                                           >
                                             {ele.userNickname}
@@ -812,6 +823,7 @@ export default function CommunityImgList() {
                                             <div
                                               style={{
                                                 color: "rgb(11 122 227)",
+                                                whiteSpace: "nowrap",
                                               }}
                                             >
                                               @{e.userNickname}

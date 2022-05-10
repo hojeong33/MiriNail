@@ -1,4 +1,3 @@
-import EventContent from "../../components/EventPage/EventContent";
 import Header from "../../components/EventPage/Header";
 
 const Event = () => {

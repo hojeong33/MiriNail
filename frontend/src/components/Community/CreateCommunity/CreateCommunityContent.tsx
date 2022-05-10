@@ -310,17 +310,23 @@ const CreateCommunityContent = () => {
                 ></textarea>
 
                 <div className="buttons">
-                  <button
-                    className="btn1"
-                    disabled={
-                      imageProcess.length < 1 ||
-                      textProcess2.length < 1 ||
-                      textProcess.length < 10
-                    }
-                    onClick={createCommunity}
-                  >
-                    작성
-                  </button>
+                  {imageProcess.length > 0 &&
+                  textProcess2.length > 0 &&
+                  textProcess.length > 9 ? (
+                    <button className="btn1" onClick={createCommunity}>
+                      작성
+                    </button>
+                  ) : (
+                    <button
+                      className="btn1"
+                      disabled
+                      style={{ backgroundColor: "rgba(175,175,175)" }}
+                      onClick={createCommunity}
+                    >
+                      작성
+                    </button>
+                  )}
+
                   <button
                     className="btn2"
                     onClick={() => {

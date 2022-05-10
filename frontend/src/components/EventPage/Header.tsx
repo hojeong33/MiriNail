@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useState } from "react";
 import EventContent from "./EventContent";
+import { isQueryKey } from "react-query/types/core/utils";
 
 const Wrapper = styled.div`
   * {
@@ -102,6 +103,7 @@ const Wrapper = styled.div`
 interface Props {
   isShow: boolean;
   title?: string;
+  days?: string;
 }
 function Header(isShow: Props) {
   const [flag, setFlag] = useState("전체 이벤트");
@@ -162,7 +164,10 @@ function Header(isShow: Props) {
               </span>
             </div>
           ) : (
-            <div className="pageHeaderLinks">{isShow.title}</div>
+            <div className="pageHeaderLinks">
+              <div style={{ fontSize: "24px" }}>{isShow.title}</div>
+              <div>{isShow.days}</div>
+            </div>
           )}
           <div className="pageHeaderNavigation">
             <div className="NavElement">

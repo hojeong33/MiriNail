@@ -19,7 +19,7 @@ const ArCard = () => {
         marginRight: "auto",
         marginLeft: "auto",
         position: "relative",
-        top: "35rem",
+        top: "-15rem",
       }}
     >
       <Typography variant="h3">미리네일 Virtual Nail Try On</Typography>
@@ -88,6 +88,7 @@ const ArCard = () => {
           color: "red",
           textDecoration: "underline",
           cursor: "pointer",
+          height: "4rem",
         }}
       >
         Try Virtual Try on Now

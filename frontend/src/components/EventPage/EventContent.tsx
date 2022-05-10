@@ -12,7 +12,9 @@ const EventContent = (flag: Props) => {
   return (
     <div style={{ marginTop: "30px" }}>
       {flag.flag === "종료된 이벤트" ? (
-        <div style={{ textAlign: "center" }}>종료된 이벤트가 없습니다</div>
+        <div style={{ textAlign: "center", minHeight: "500px" }}>
+          종료된 이벤트가 없습니다
+        </div>
       ) : (
         <>
           {items.map((item, idx) => {
