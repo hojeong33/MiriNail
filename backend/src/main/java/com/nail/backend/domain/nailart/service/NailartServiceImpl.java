@@ -354,7 +354,7 @@ public class NailartServiceImpl implements NailartService {
     @Transactional
     public Page<NailartListGetRes> getNailartListByNailartName(Pageable pageable, String name){
 
-        Page<Nailart> nailartList = nailartRepository.findByNailartNameContainingIgnoreCase(pageable, name);
+        Page<Nailart> nailartList = nailartRepository.searchByNailartName(name,pageable);
         List<NailartListGetRes> nailartGetResList = new ArrayList<>();
 
         long total = nailartList.getTotalElements();
