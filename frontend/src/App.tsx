@@ -50,6 +50,7 @@ import UpdateImg from "./components/Designerpage/UpdateProfileImg";
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateCommunity from "./routes/Community/UpdateCommunity";
 import AR from "./routes/AR/AR";
+import Search from "./routes/Search/Search";
 
 function App() {
   return (
@@ -112,10 +113,11 @@ function App() {
           <Route path="/community/create" element={<CreateCommunity />} />
           <Route path="/community/update" element={<UpdateCommunity />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
+          <Route path="/search/:searchvalue" element={<Search />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <TopButton />
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   );

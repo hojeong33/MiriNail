@@ -53,3 +53,12 @@ export const putUpdateIntroduction = async (formdata:any) => {
   );
   return response.data
 }
+
+// 디자이너 검색 조회
+export const getSearchDesigner = async (name:string, page:number, size:number) => {
+  const response = await apiClient.get<any>(
+    `/designer/search/${name}`,
+    { params: { name, page, size } }
+  );
+  return response.data
+}
