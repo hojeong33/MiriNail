@@ -81,7 +81,7 @@ public class NailartRepositorySupport {
     }
 
    // 색상 x, 타입 x, 최신 순
-    public List<NailartListGetRes> getListbyLatest(long userSeq, int page, int size){
+    public List<NailartListGetRes> getListbyLatest(int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
         List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
@@ -111,14 +111,13 @@ public class NailartRepositorySupport {
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
             tmp.setTotalCount(totalCount.size());
-            tmp.setFavorited(favoriteRepositorySupport.getIsFavorited(userSeq, art.getNailartSeq()));
             result.add(tmp);
         });
         return result;
     }
 
     // 색상 x, 타입 x, 좋아요 순
-    public List<NailartListGetRes> getListbyFavoite(long userSeq, int page, int size){
+    public List<NailartListGetRes> getListbyFavoite(int page, int size){
 
         List<NailartListGetRes> result = new ArrayList<>();
         List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
@@ -156,7 +155,6 @@ public class NailartRepositorySupport {
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
             tmp.setTotalCount(totalCount.size());
-            tmp.setFavorited(favoriteRepositorySupport.getIsFavorited(userSeq, art.getNailartSeq()));
             result.add(tmp);
         });
 
@@ -164,7 +162,7 @@ public class NailartRepositorySupport {
     }
 
     // 색상 o, 최신순
-    public List<NailartListGetRes> getListbyColorLatest(long userSeq, String color, int page, int size){
+    public List<NailartListGetRes> getListbyColorLatest(String color, int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
         List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
@@ -197,14 +195,13 @@ public class NailartRepositorySupport {
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
             tmp.setTotalCount(totalCount.size());
-            tmp.setFavorited(favoriteRepositorySupport.getIsFavorited(userSeq, art.getNailartSeq()));
             result.add(tmp);
         });
         return result;
     }
 
     // 색상 o, 좋아요 순
-    public List<NailartListGetRes> getListbyColorFavoite(long userSeq, String color, int page, int size){
+    public List<NailartListGetRes> getListbyColorFavoite(String color, int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
         List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
                 .from(qNailart)
@@ -243,7 +240,6 @@ public class NailartRepositorySupport {
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
             tmp.setTotalCount(totalCount.size());
-            tmp.setFavorited(favoriteRepositorySupport.getIsFavorited(userSeq, art.getNailartSeq()));
             result.add(tmp);
         });
 
@@ -251,7 +247,7 @@ public class NailartRepositorySupport {
     }
 
     // 타입 o, 최신순
-    public List<NailartListGetRes> getListbyTypeLatest(long userSeq, String type, int page, int size){
+    public List<NailartListGetRes> getListbyTypeLatest(String type, int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
         List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
@@ -284,14 +280,13 @@ public class NailartRepositorySupport {
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
             tmp.setTotalCount(totalCount.size());
-            tmp.setFavorited(favoriteRepositorySupport.getIsFavorited(userSeq, art.getNailartSeq()));
             result.add(tmp);
         });
         return result;
     }
 
     // 타입 o, 좋아요 순
-    public List<NailartListGetRes> getListbyTypeFavoite(long userSeq, String type, int page, int size){
+    public List<NailartListGetRes> getListbyTypeFavoite(String type, int page, int size){
         List<NailartListGetRes> result = new ArrayList<>();
         List<Tuple> list = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
                 .from(qNailart)
@@ -329,7 +324,6 @@ public class NailartRepositorySupport {
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
             tmp.setTotalCount(totalCount.size());
-            tmp.setFavorited(favoriteRepositorySupport.getIsFavorited(userSeq, art.getNailartSeq()));
             result.add(tmp);
         });
 
