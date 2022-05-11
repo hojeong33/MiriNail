@@ -17,7 +17,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  .Box {
+    min-height: 30vh;
+  }
   .cards {
     width: 100%;
     /* border: 1px solid black; */
@@ -98,23 +100,27 @@ interface IState {
 
 const FollowingDesigner = () => {
   const { userSeq } = useParams();
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     console.log(event);
     console.log(page);
+    setPage(page);
   };
 
   const { data: followersData, isLoading: followersLoading } = useQuery<
     any,
     Error
   >(
-    ["followers"],
+    ["followers", page],
     async () => {
-      return await getFollowers(Number(userSeq));
+      return await getFollowers(Number(userSeq), page, 10);
     },
     {
       onSuccess: (res) => {
         console.log(res);
+        setLastPage(res.totalPages)
       },
       onError: (err: any) => console.log(err),
     }
@@ -127,12 +133,12 @@ const FollowingDesigner = () => {
           <TailSpin height={50} width={50} color="gray" />
         </LoadingBox>
       ) : (
-        <>
-          {followersData.length === 0 ? (
+        <div className="Box">
+          {followersData.totalElements === 0 ? (
             <div>팔로워가 없습니다</div>
           ) : (
             <div className="cards">
-              {followersData?.map((follower: any, idx: any) => {
+              {followersData.content?.map((follower: any, idx: any) => {
                 return (
                   <Link to={`/mypage/${follower.userSeq}`}>
                     <div className="card" key={idx}>
@@ -151,8 +157,17 @@ const FollowingDesigner = () => {
               })}
             </div>
           )}
-        </>
+        </div>
       )}
+          <div className="pagination">
+            <Stack spacing={2}>
+              <Pagination
+                count={lastPage}
+                shape="rounded"
+                onChange={onchangePage}
+              />
+            </Stack>
+          </div>
     </Wrapper>
   );
 };

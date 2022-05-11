@@ -82,6 +82,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const [isLogin, setIsLogin] = React.useState<boolean>(false);
+  const [searchValue, setSearchValue] = React.useState("")
   //회원정보
   const userNickname = sessionStorage.getItem("userNickname");
   const userProfileImg = sessionStorage.getItem("userProfileImg");
@@ -117,6 +118,25 @@ const Navbar = () => {
   };
   // URL 이동
   const navigate = useNavigate();
+
+  const onKeyDownEnter = (e:any) => {
+    if (e.code === "Enter") {
+      console.log("엔터")
+      console.log(searchValue)
+      if (searchValue === "") {
+        alert("검색어를 입력해주세요")
+        return
+      }
+      navigate(`/search/${searchValue}`)
+      // otherOneTouch(e)
+      // setSearchValue("")
+      
+    }
+  }
+
+  const otherOneTouch = React.useCallback((event: TouchEvent) => {
+  	(document.activeElement as HTMLElement).blur()
+  }, []);
 
   return (
     <AppBar
@@ -212,6 +232,10 @@ const Navbar = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => onKeyDownEnter(e)}
+              spellCheck="false"
             />
           </Search>
 

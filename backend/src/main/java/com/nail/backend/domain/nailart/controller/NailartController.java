@@ -12,9 +12,17 @@ import com.nail.backend.domain.nailart.service.NailartService;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
+import com.nail.backend.domain.review.response.ReviewGetRes;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +42,9 @@ public class NailartController {
 
     // Nailart 리스트 전체 조회
     @GetMapping("/list")
-    public List<NailartListGetRes> nailartList(@RequestParam String category, @RequestParam String color, @RequestParam String type, @RequestParam String sort, @RequestParam int page, @RequestParam int size){
+    public List<NailartListGetRes> nailartList(@RequestParam long userSeq, @RequestParam String category, @RequestParam String color, @RequestParam String type, @RequestParam String sort, @RequestParam int page, @RequestParam int size){
 
-        return nailartService.nailartList(category, color, type, sort, page, size);
+        return nailartService.nailartList(userSeq, category, color, type, sort, page, size);
     }
 
     // Nailart nailartSeq로 작품 상세 조회
@@ -86,5 +94,21 @@ public class NailartController {
     }
 
 
+    // 이삭 작성 ------------------------------------------------------------------------------------------------
+    // 네일아트 검색
+    @ApiOperation(value = "네일아트 검색조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Page<NailartListGetRes>> getNailartListByNailartName(@PageableDefault(page = 0, size = 10, sort = "nailartSeq", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                        @ApiParam(value = "네일 아트 이름") @PathVariable String name) {
+
+        log.info("getNailartListByNailartName - 호출");
+        Page<NailartListGetRes> nailartList = nailartService.getNailartListByNailartName(pageable,name);
+
+        return ResponseEntity.status(200).body(nailartList);
+    }
 
 }

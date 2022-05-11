@@ -9,3 +9,11 @@ export const getDesignerNailart = async (designerSeq:number, page:number, size:n
   return response.data
 }
 
+// 네일아트 검색 조회
+export const getSearchNailart = async (name:string, page:number, size:number) => {
+  const response = await apiClient.get<any>(
+    `/nailart/search/${name}`,
+    { params: { name, page, size } }
+  );
+  return response.data
+}
