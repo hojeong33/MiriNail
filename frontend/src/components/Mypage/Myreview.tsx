@@ -143,8 +143,8 @@ const MyReview = () => {
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="15%" />
-              <col width="15%" />
+              <col width="16%" />
+              <col width="14%" />
               <col width="40%" />
               <col width="10%" />
               <col width="15%" />
@@ -167,7 +167,7 @@ const MyReview = () => {
                     key={idx}
                   >
                     <th>{review.reviewSeq}</th>
-                    <th className="title">{review.designerNickname}</th>
+                    <th className="title">{review.shopName}</th>
                     <th>
                       {review.nailart.nailartType} -{" "}
                       {review.nailart.nailartDetailColor}
