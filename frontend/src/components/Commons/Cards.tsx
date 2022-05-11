@@ -166,7 +166,7 @@ const Cards = ({
       <Wrapper>
         <div
           className="col-md-12"
-          onClick={() => navigate(`/${url}/${info.designerSeq}`)}
+          onClick={() => navigate(`/${url}/${info.designerSeq}/new`)}
         >
           <div className="profile-card-6">
             <img src={info.designerImgUrl} className="img img-responsive" />

@@ -503,92 +503,53 @@ export default function CommunityImgList() {
       {/* <img src={image69} style={{ width: "40rem", height: "20rem" }}></img> */}
       {itemData.map((item, idx) => {
         return (
-          <div style={{ margin: "5px" }}>
-            {idx % 10 == 5 ? (
-              <div style={{ display: "flex" }}>
-                <div key={item.communitySeq}>
-                  <CustomImageListItem
-                    cols={item.cols || 1}
-                    rows={item.rows || 1}
-                  >
-                    <img
-                      style={{
-                        width: "18rem",
-                        height: "18rem",
-                        marginRight: "10px",
-                      }}
-                      src={item.communityImg[0].communityImgUrl}
-                      alt={item.communityTitle}
-                      loading="lazy"
-                      onClick={() => {
-                        getDetail(item.communitySeq, idx);
-                      }}
-                    />
-
-                    <div className="inner-content">
-                      <div>{item.communityTitle}</div>
-                    </div>
-                  </CustomImageListItem>
+          <div className="main-container">
+            <div className="grid-container">
+              <div className="card--2x">
+                <div className="card__image">
+                  <img
+                    src={itemData[idx].communityImg[0].communityImgUrl}
+                    alt=""
+                  />
                 </div>
-                <img
-                  src={temp[idx % 3]}
-                  style={{ width: "36.5rem", height: "18rem" }}
-                ></img>
               </div>
-            ) : (
-              <>
-                {idx % 10 == 9 ? (
-                  <div style={{ display: "flex" }}>
-                    <div key={item.communitySeq}>
-                      <CustomImageListItem
-                        cols={item.cols || 1}
-                        rows={item.rows || 1}
-                      >
-                        <img
-                          style={{
-                            width: "18rem",
-                            height: "18rem",
-                            marginRight: "10px",
-                          }}
-                          src={item.communityImg[0].communityImgUrl}
-                          alt={item.communityTitle}
-                          loading="lazy"
-                          onClick={() => {
-                            getDetail(item.communitySeq, idx);
-                          }}
-                        />
-
-                        <div className="inner-content">
-                          <div>{item.communityTitle}</div>
-                        </div>
-                      </CustomImageListItem>
-                    </div>
-                    <img
-                      src={temp[idx % 3]}
-                      style={{ width: "55rem", height: "18rem" }}
-                    ></img>
-                  </div>
-                ) : (
-                  <div key={item.communitySeq}>
-                    <CustomImageListItem>
-                      <img
-                        style={{ width: "18rem", height: "18rem" }}
-                        src={item.communityImg[0].communityImgUrl}
-                        alt={item.communityTitle}
-                        loading="lazy"
-                        onClick={() => {
-                          getDetail(item.communitySeq, idx);
-                        }}
-                      />
-
-                      <div className="inner-content">
-                        <div>{item.communityTitle}</div>
-                      </div>
-                    </CustomImageListItem>
-                  </div>
-                )}
-              </>
-            )}
+              <div className="card">
+                <div className="card__image">
+                  <img
+                    src={itemData[idx].communityImg[0].communityImgUrl}
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div className="card">
+                <div className="card__content">dfsklfjskdlfjkls</div>
+              </div>
+              <div className="card card--horizontal">
+                <div className="card__image">
+                  <img
+                    src={itemData[idx].communityImg[0].communityImgUrl}
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div className="card card--featured card__side-by-side--m">
+                <div className="card__image">
+                  <img
+                    src={itemData[idx].communityImg[0].communityImgUrl}
+                    alt=""
+                  />
+                  <div className="card__content padding-large--l">dsfsdfs</div>
+                </div>
+              </div>
+              <div className="card card--vertical">
+                <div className="card__image">
+                  <img
+                    src={itemData[idx].communityImg[0].communityImgUrl}
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         );
       })}

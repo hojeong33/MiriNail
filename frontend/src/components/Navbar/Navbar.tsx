@@ -86,6 +86,7 @@ const Navbar = () => {
   //회원정보
   const userNickname = sessionStorage.getItem("userNickname");
   const userProfileImg = sessionStorage.getItem("userProfileImg");
+  const userRole = sessionStorage.getItem("userRole");
   useEffect(() => {
     const myNavbar = document.getElementById("myNavbar");
     console.log("myNavbar", myNavbar);
@@ -276,15 +277,39 @@ const Navbar = () => {
                     }}
                   >
                     <li>
-                      <button
-                        onClick={() => {
-                          navigate(
-                            `/mypage/${sessionStorage.getItem("userSeq")}`
-                          );
-                        }}
-                      >
-                        Mypage
-                      </button>
+                      {userRole === "ROLE_USER" && (
+                        <button
+                          onClick={() => {
+                            navigate(
+                              `/mypage/${sessionStorage.getItem("userSeq")}`
+                            );
+                          }}
+                        >
+                          MyPage
+                        </button>
+                      )}
+                      {userRole === "ROLE_ARTIST" && (
+                        <button
+                          onClick={() => {
+                            navigate(
+                              `/designerpage/${sessionStorage.getItem(
+                                "userSeq"
+                              )}/new`
+                            );
+                          }}
+                        >
+                          DesignerPage
+                        </button>
+                      )}
+                      {userRole === "ROLE_ADMIN" && (
+                        <button
+                          onClick={() => {
+                            navigate(`/admin/applylist`);
+                          }}
+                        >
+                          Admin
+                        </button>
+                      )}
                     </li>
                     <li>
                       <button onClick={logout}>Logout</button>

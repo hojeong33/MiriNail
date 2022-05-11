@@ -144,17 +144,6 @@ const MainFrame = styled.div`
 `;
 
 const UpdateCommunityContent = () => {
-  //작성하기
-  // interface temp2 {
-  //   img: Array<string>;
-  //   title: string;
-  //   desc: string;
-  // }
-  // interface Ilocation {
-  //   myState: temp2;
-  // }
-  // const location = useLocation();
-  // console.log(location.state, "!!!!!!!!!!!!!!!!!");
   interface CommunityImgProp {
     communityImgSeq: number;
     communityImgUrl: string;
@@ -168,7 +157,7 @@ const UpdateCommunityContent = () => {
   const ACCESS_TOKEN = localStorage.getItem("token");
   const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
   const communitySeq = sessionStorage.getItem("communitySeq");
-  const [myTest,setMyTest] = useRecoilState(imgProp)
+  const [myTest, setMyTest] = useRecoilState(imgProp);
 
   //게시글 상세 정보 받아오기
   useEffect(() => {
@@ -177,9 +166,9 @@ const UpdateCommunityContent = () => {
   }, []);
 
   useEffect(() => {
-    console.log(itemDetail)
-    setMyTest(itemDetail?.communityImg)
-  },[itemDetail])
+    console.log(itemDetail);
+    setMyTest(itemDetail?.communityImg);
+  }, [itemDetail]);
 
   const getDetail = async (communitySeq: number | string | null) => {
     if (ACCESS_TOKEN) {
@@ -192,6 +181,9 @@ const UpdateCommunityContent = () => {
       })
         .then((res) => {
           setItemDetail(res.data);
+          setCommunityDesc(res.data.communityDesc);
+          setCommunityTitle(res.data.communityTitle);
+          setPostImages(res.data.communityImg);
           console.log(res.data, "아이템디테일");
         })
         .catch((err) => {
@@ -265,76 +257,12 @@ const UpdateCommunityContent = () => {
     setTextProcess2(e.target.value);
     setCommunityTitle(e.target.value);
   };
-
   return (
     <>
       <Wrapper>
         <MainFrame>
           <div className="MainPadding">
             <div className="ItemList">
-              <div className="LeftBox">
-                <div className="OrderFilter" id="remote">
-                  <a>작성 과정</a>
-                  <div className="CheckBox">
-                    <input
-                      type="checkbox"
-                      id="cb1"
-                      checked={imageProcess.length >= 1 ? true : false}
-                    />
-                    <label htmlFor="cb1">
-                      이미지 수정 ({imageProcess.length >= 1 ? 1 : 0}/1)
-                    </label>
-                  </div>
-                  <div className="CheckBox">
-                    <input
-                      type="checkbox"
-                      id="cb2"
-                      checked={textProcess2.length >= 1 ? true : false}
-                    />
-                    <label htmlFor="cb2">
-                      글제목 수정 ({textProcess2.length >= 1 ? 1 : 0}/1)
-                    </label>
-                  </div>
-                  <div className="CheckBox">
-                    <input
-                      type="checkbox"
-                      id="cb3"
-                      checked={textProcess.length >= 10 ? true : false}
-                    />
-                    <label htmlFor="cb3">
-                      글내용 수정 ({textProcess.length >= 10 ? 1 : 0}/1)
-                    </label>
-                    {imageProcess.length >= 1 &&
-                    textProcess2.length >= 1 &&
-                    textProcess.length >= 10 ? (
-                      <div className="finBox" style={{ marginTop: "25px" }}>
-                        <DoneIcon
-                          fontSize="large"
-                          style={{
-                            color: "green",
-                            fontWeight: "bold",
-                            marginRight: "5px",
-                          }}
-                        />
-                        <button
-                          onClick={updateCommunity}
-                          style={{
-                            border: "1px solid rgb(51,51,51)",
-                            padding: "3px 10px",
-                            borderRadius: "5px",
-                          }}
-                        >
-                          수정
-                        </button>
-                      </div>
-                    ) : (
-                      <div style={{ marginTop: "25px" }}>
-                        과정을 완료해주세요
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
               <div className="RightBox">
                 <div className="subTitle" style={{ marginTop: "48px" }}>
                   이미지 수정
@@ -370,17 +298,23 @@ const UpdateCommunityContent = () => {
                 ></textarea>
 
                 <div className="buttons">
-                  <button
-                    className="btn1"
-                    disabled={
-                      imageProcess.length < 1 ||
-                      textProcess2.length < 1 ||
-                      textProcess.length < 10
-                    }
-                    onClick={updateCommunity}
-                  >
-                    수정
-                  </button>
+                  {communityDesc !== itemDetail?.communityDesc ||
+                  // postImages !== itemDetail.communityImg ||
+                  communityTitle !== itemDetail.communityTitle ? (
+                    <button className="btn1" onClick={updateCommunity}>
+                      수정
+                    </button>
+                  ) : (
+                    <button
+                      className="btn1"
+                      disabled
+                      style={{ backgroundColor: "rgba(175,175,175)" }}
+                      onClick={updateCommunity}
+                    >
+                      수정
+                    </button>
+                  )}
+
                   <button
                     className="btn2"
                     onClick={() => {
