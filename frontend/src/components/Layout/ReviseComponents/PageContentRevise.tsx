@@ -175,10 +175,11 @@ const MainFrame = styled.div`
 
 
 const PageContentRevise = () => {
-  const {state} = useLocation()
+  const {state}:any = useLocation()
   console.log(state)
   // 리모컨 
   const navigate = useNavigate();
+  
   const nailartName = '일단은 더미'
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
@@ -195,14 +196,14 @@ const PageContentRevise = () => {
     const designerSeq = sessionStorage.getItem('userSeq')
     const [imageProcess,setImageProcess] = useState([])
     const [infoProcess,setInfoProcess] = useState({
-      nailartType :'',
-      nailartWeather : '',
-      nailartPrice :'',
-      nailartColor :'',
-      nailartDetailColor : '',
+      nailartType :state.nailartType,
+      nailartWeather : state.nailartWeather,
+      nailartPrice :state.nailartPrice,
+      nailartColor :state.nailartColor,
+      nailartDetailColor : state.nailartDetailColor,
     })
     const [infoProcessNum,setInfoProcessNum] = useState(0)
-    const [nailartDesc,setnailartDesc] = useState('')
+    const [nailartDesc,setnailartDesc] = useState(state.nailartDesc)
     const [postImages,setPostImages] = useState<any[]>([])
     useEffect(() => {
       console.log(postImages)
@@ -240,9 +241,9 @@ const PageContentRevise = () => {
   const client = create(abc);
   const nftFunc = async () => {
   
-    const files= new FormData()
+    const files:any = new FormData()
     const multipartFiles = new FormData()
-    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq,nailartSeq:Number(state)}
+    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq,nailartSeq:Number(state.nailartSeq)}
     files.append("jsonList",JSON.stringify(nailData))
     console.log(postImages)
     console.log(nailData)
@@ -250,7 +251,15 @@ const PageContentRevise = () => {
       files.append('files',e)}
       )
 
-   
+    for (let key of files.keys()) {
+      console.log(key);
+    }
+  
+    /* value 확인하기 */
+    for (let value of files.values()) {
+        console.log(value);
+    }
+    
 
     await reviseDesign(files)
     // const response = await client.add(JSON.stringify(nailData))
@@ -295,18 +304,18 @@ const PageContentRevise = () => {
                 이미지 등록
               </div>
               <div className='fileBox'>
-                <FileUpload setImageProcess={setImageProcess} setPostImages={setPostImages}/>
+                <FileUpload setImageProcess={setImageProcess} setPostImages={setPostImages} itemDetail={state}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}}>
                 네일정보 등록
               </div>
               <div className='infoBox'>
-                <UnderLineInput setInfoProcess={setInfoProcess}/>
+                <UnderLineInput setInfoProcess={setInfoProcess} infoProcess={infoProcess}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}} >
                 소개글 등록 
               </div>
-              <textarea name="textVal" id="" onChange={onChangeText} style={{resize:"none"}} placeholder="10자 이상 입력해주세요."></textarea>
+              <textarea name="textVal" id="" onChange={onChangeText} style={{resize:"none"}} placeholder="10자 이상 입력해주세요." value={nailartDesc}></textarea>
               <div className="buttons">
                 <div className="btn1" onClick={nftFunc}>
                   등록

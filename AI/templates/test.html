@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello</title>
+</head>
+<script async src="https://docs.opencv.org/3.4/opencv.js"></script>
+<!--script async src="./opencv.js"></script-->
+<body>
+	<video id="videoInput" style="display:none"></video>
+  <canvas id="videoOutput"></canvas>
+  <button onclick=stream()>Send</button>
+</body>
+<script>
+  
+  var w = 640, h = 480;
+	var url = "ws://localhost:8000/ws"
+	var ws = new WebSocket(url);
+	ws.onopen = function(){
+		console.log("Websocket is connected.");
+	}
+	ws.onmessage = function(msg){
+		console.log(msg.data);
+	}
+
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+  var constraints = {audio: false, video: true};
+  var video = document.getElementById("videoInput");
+  video.width = w;
+  video.height = h;
+  function successCallback(stream){
+    console.log('엥들어옴')
+  	video.srcObject = stream;
+  	video.play();
+  }
+  
+  function errorCallback(error){
+   	console.log(error);
+  }
+  navigator.getUserMedia(constraints, successCallback, errorCallback);
+	var canvas = document.getElementById("videoOutput");
+  canvas.width = w;
+  canvas.height = h;
+  var ctx = canvas.getContext("2d");
+  function processImage(){
+        ctx.drawImage(video, 0, 0, w, h);
+        setTimeout(processImage, 1);
+  }
+  processImage();
+
+  function stream(){
+    setInterval(sendImage, 30);
+  }
+
+  function sendImage(){
+    var rawData = canvas.toDataURL("image/jpeg", 0.5);
+    // console.log(rawData)
+    ws.send(rawData);
+  }
+</script>
+</html>

@@ -27,24 +27,25 @@ const Container = styled.div`
 
 const Question = styled.div`
   font-size: 20px;
-
+  width:100%;
   display: flex;
   align-items: center;
   cursor: pointer;
   height: 40px;
   margin: 0 32px 0 20px;
   padding: 5px 0;
-`;
+  .btn {
+    right:30px;
+    font-size: 14px;
+    position: absolute;
 
-const Button = styled.div`
-  right: 10px;
-  font-size: 14px;
-  position: absolute;
-
-  @media screen and (max-width: 767px) {
-    display:none;
+    @media screen and (max-width: 767px) {
+      display:none;
+    }
   }
 `;
+
+
 
 const ContentsWrapper = styled.div`
   height: 0;
@@ -121,7 +122,7 @@ function Accordion(props: AccordionProps) {
           <span>Q.</span>
           {props.title}
         </div>
-        <Button>{buttonText}</Button>
+        <div className="btn">{buttonText}</div>
       </Question>
       <ContentsWrapper ref={parentRef}>
         <Contents ref={childRef}>{enter(props.contents)}</Contents>

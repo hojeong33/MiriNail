@@ -9,6 +9,8 @@ import Collapse from './Collapse'
 import { useParams } from 'react-router-dom';
 import { getReview } from '../../../store/api';
 import { useQuery } from 'react-query';
+import { tailLoading } from '../../Commons/Loading';
+import { TailSpin } from 'react-loader-spinner';
 
 
 
@@ -75,6 +77,7 @@ const Wrapper = styled.div`
         margin-left:7%;
         .test2 {
           display: none;
+
         }
       }
     }
@@ -89,10 +92,12 @@ const Wrapper = styled.div`
       border-top : 1px solid #e4e4e4;
       border-bottom : 1px solid #e4e4e4;
       display:flex;
+      // opacity : 0.5;
+      color:gray;
     }
     
     .test{
-
+      min-height : 700px;
       .reviewBox{
         margin-top:24px;
         display: flex;
@@ -195,7 +200,7 @@ const Wrapper = styled.div`
   
           }
           .reviewBoxRight {
-            border-left : 1px solid #e4e4e4;
+            // border-left : 1px solid #e4e4e4;
             width : 25%;
             height:100%;
             .userId {
@@ -224,7 +229,7 @@ const DesignReview = () => {
   })
   const {isLoading:isReviewLoading,data:reviewData} = useQuery(['reviews',param,filter],getReview)
   const [test,setTest] = useState([])
-  
+
   useEffect(() => {
     const best = reviewData?.content.filter((e:any) => e.reviewRating === 5).length
     const good = reviewData?.content.filter((e:any) => e.reviewRating === 4).length
@@ -288,7 +293,7 @@ const DesignReview = () => {
     <Wrapper>
       
       {/* 리뷰 부분 ( 작성, 프로그레스바) */}
-      <div className='review'>REVIEW (47)</div>
+      <div className='review'>REVIEW ({reviewData?.content.length})</div>
       <div className='reviewTotal'>
         <div className='reviewLeft'>
           <div className="reviewLeftUp">
@@ -302,7 +307,7 @@ const DesignReview = () => {
           </div>
           
           <div style={{textAlign:"center"}}>
-            '100'%의 유저가 이 디자인을 좋아합니다.
+            {(dummy2.best+dummy2.good)*100/reviewData?.content.length}% 의 유저가 이 디자인을 좋아합니다.
           </div>
           
           <BasicModal />
@@ -347,11 +352,14 @@ const DesignReview = () => {
 
       <div className="reviewList">
         <div className="reviewFilter">
-          <div onClick={() => handleFilter(1)}>최신순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(2)}>평점순</div><div style={{marginLeft:"25px"}} onClick={() => handleFilter(3)}>댓글순</div>
+          <div onClick={() => handleFilter(1)} style={filter === 1 ? {color:"black"} : {}}>최신순</div>
+          <div style={filter === 2 ? {marginLeft:"25px",color:"black"} : {marginLeft:"25px"}} onClick={() => handleFilter(2)}>평점순</div>
+          <div style={filter === 3 ? {marginLeft:"25px",color:"black"} : {marginLeft:"25px"}} onClick={() => handleFilter(3)}>댓글순</div>
+
         </div>
         <div className="test">
           
-          {reviewData && reviewData.content.map((e:any,idx:number) => 
+          {isReviewLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : reviewData.content.map((e:any,idx:number) => 
             <div className="reviewBox">
               <div className='reviewBoxLeft'>
                 <div>{ratingCal(e.reviewRating)}</div>
