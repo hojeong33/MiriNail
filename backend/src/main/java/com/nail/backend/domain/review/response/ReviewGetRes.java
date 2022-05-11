@@ -29,6 +29,7 @@ public class ReviewGetRes {
     private Long designerSeq;
     private String designerNickname;
     private String designerProfileImg;
+    private String shopName;
 
     private String reviewTitle;
     private String reviewDesc;
