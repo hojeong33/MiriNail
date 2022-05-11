@@ -12,7 +12,9 @@ const Wrapper = styled.div`
     justify-content: space-between;
     margin: 15px;
   }
-
+  .all {
+    cursor: pointer;
+  }
   .clear {
     zoom: 1;
     li {
@@ -76,7 +78,7 @@ const Gallery = () => {
     <Wrapper>
       <div className="description">
         <div>디자이너의 다른 작품을 만나보세요.</div>
-        <div>전체보기</div>
+        {/* <div className="all">전체보기</div> */}
       </div>
       <ul className="clear" style={{ display: "inline-block" }}>
         {data?.map((e: any, idx: any) => {

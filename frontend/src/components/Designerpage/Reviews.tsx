@@ -60,6 +60,10 @@ const TableWrapper = styled.div`
   .pagination {
     margin: 20px 0;
   }
+  .nodata {
+    margin-top: 20px;
+    border: none;
+  }
 `;
 
 const LoadingBox = styled.div`
@@ -184,15 +188,17 @@ const Reviews = () => {
         </table>
         {data.empty && <div className="nodata">등록된 후기가 없습니다</div>}
       </div>
-      <div className="pagination">
-        <Stack spacing={2}>
-          <Pagination
-            count={lastPage}
-            shape="rounded"
-            onChange={onchangePage}
-          />
-        </Stack>
-      </div>
+      {!data.empty && (
+        <div className="pagination">
+          <Stack spacing={2}>
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          </Stack>
+        </div>
+      )}
     </TableWrapper>
   );
 };
