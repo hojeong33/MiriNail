@@ -104,7 +104,7 @@ const PageContentAll = () => {
         <MainFrame>
           <div className="listGroup">
             <div className="subtitle">All Designers</div>
-            <ul className="clear">
+            <ul className="clear" style={{ display: "inline-block" }}>
               {allDesigner?.map((item: any, idx: any) => {
                 return (
                   <li className="ItemListType">

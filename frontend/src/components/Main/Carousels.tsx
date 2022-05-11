@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import bg1 from "../../assets/img/new_bg1.jpg";
 import bg2 from "../../assets/img/new_bg2.jpg";
 import bg3 from "../../assets/img/new_bg3.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   overflow: "hidden",
@@ -32,6 +33,7 @@ const items = [
 ];
 
 function Carousels() {
+  const navigate = useNavigate();
   const settings = {
     dots: true,
     infinite: true,
@@ -50,7 +52,7 @@ function Carousels() {
               <ImageContainer>
                 <Image
                   src={item.url}
-                  // style={{ width: "100%", height: "700px" }}
+                  onDoubleClick={() => navigate(`/event/${item.id}`)}
                 />
               </ImageContainer>
             </div>

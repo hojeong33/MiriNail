@@ -24,28 +24,34 @@ function Footer() {
         }}
       >
         <Stack spacing={3}>
-          <div>
+          <div style={{ marginBottom: "20px" }}>
             <div style={{ fontSize: 48, fontWeight: "bolder" }}>Miri Nail</div>
-            <div style={{ color: "#999999" }}>
+            <div style={{ color: "#999999", marginTop: "15px" }}>
               ⓒ 2022. 영남아 네일하자 All rights reserved.
             </div>
           </div>
           <div></div>
           <div>
             <div style={{ fontSize: 32, fontWeight: "bolder" }}>Contact</div>
-            <div style={{ color: "#999999" }}>mirinail@gmail.com</div>
+            <div style={{ color: "#999999", marginTop: "15px" }}>
+              mirinail@gmail.com
+            </div>
           </div>
         </Stack>
         <Stack spacing={3}>
           <div>
             <div style={{ fontSize: 32, fontWeight: "bold" }}>SSAFY 6th.</div>
-            <div style={{ color: "#999999" }}>자율프로젝트</div>
+            <div style={{ color: "#999999", marginTop: "15px" }}>
+              자율프로젝트
+            </div>
             <div style={{ color: "#999999" }}>부산 강서구 녹산산업중로 333</div>
           </div>
 
           <div></div>
           <div>
-            <div style={{ fontSize: 20, fontWeight: "bold" }}>
+            <div
+              style={{ fontSize: 20, fontWeight: "bold", marginBottom: "15px" }}
+            >
               부울경 1반 1조
             </div>
             <Stack direction="row" spacing={4}>

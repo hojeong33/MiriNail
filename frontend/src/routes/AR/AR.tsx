@@ -6,7 +6,7 @@ const AR = () => {
       <img
         src={AR_bg}
         alt=""
-        style={{ position: "absolute", width: "100%", height: "80%" }}
+        style={{ position: "relative", width: "100%", height: "80%" }}
       />
       <ArCard />
     </div>
