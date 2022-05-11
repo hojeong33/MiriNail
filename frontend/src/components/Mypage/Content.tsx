@@ -128,6 +128,16 @@ const Content = () => {
               <div className="LeftBox">
                 <div className="TypeFilter">
                   <Link
+                    to="myreservation"
+                    className={`${
+                      temp[temp.length - 1] === "myreservation"
+                        ? "selected"
+                        : ""
+                    }`}
+                  >
+                    나의 예약
+                  </Link>
+                  <Link
                     to=""
                     onClick={(e) => {
                       e.preventDefault();
@@ -151,14 +161,14 @@ const Content = () => {
                     >
                       좋아요 한 네일아트
                     </Link>
-                    <Link
+                    {/* <Link
                       to="capture"
                       className={`${
                         temp[temp.length - 1] === "capture" ? "selected" : ""
                       }`}
                     >
                       가상피팅 캡쳐
-                    </Link>
+                    </Link> */}
                     <Link
                       to="mypost"
                       className={`${
@@ -193,16 +203,6 @@ const Content = () => {
                     }`}
                   >
                     팔로우한 디자이너
-                  </Link>
-                  <Link
-                    to="myreservation"
-                    className={`${
-                      temp[temp.length - 1] === "myreservation"
-                        ? "selected"
-                        : ""
-                    }`}
-                  >
-                    나의 예약
                   </Link>
                   <Link
                     to="apply"

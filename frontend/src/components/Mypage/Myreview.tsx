@@ -163,7 +163,7 @@ const MyReview = () => {
               {data.content?.map((review: any, idx: number) => {
                 return (
                   <tr
-                    onClick={() => onClickReview(review.nailartSeq)}
+                    onClick={() => onClickReview(review.nailart.nailartSeq)}
                     key={idx}
                   >
                     <th>{review.reviewSeq}</th>
