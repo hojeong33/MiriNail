@@ -9,6 +9,7 @@ import { getDesignerNailart } from "../../store/apis/nailart";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
+import AddIcon from '@mui/icons-material/Add';
 
 const Wrapper = styled.div`
   .pagination {
@@ -16,6 +17,21 @@ const Wrapper = styled.div`
     margin: 20px 0;
     justify-content: center;
     align-items: center;
+  }
+
+  .createbutton {
+    width: 160px;
+    height: 40px;
+    border: 1px solid #d2d2d0;
+    :hover {
+      background-color: #e0e0e0;
+    }
+    :active {
+      background-color: #d2d2d0;
+    }
+    svg {
+      margin-right: 5px;
+    }
   }
 `;
 
@@ -117,6 +133,11 @@ const NFTs = () => {
 
   return (
     <Wrapper>
+      <Link to={`/nft/register`}>
+        <button className="createbutton">
+          <AddIcon />네일아트 등록
+        </button>
+      </Link>
       {isLoading ? (
         <LoadingBox className="loading">
           <TailSpin height={50} width={50} color="gray" />

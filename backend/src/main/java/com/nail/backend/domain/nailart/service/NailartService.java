@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface NailartService {
     // 네일 아트 리스트 전체 조회
-    List<NailartListGetRes> nailartList(long userSeq, String category, String color, String type, String sort, int page, int size);
+    List<NailartListGetRes> nailartList(String category, String color, String type, String sort, int page, int size);
 
     // 디자이너의 다른 작품 조회( 10개 )
     List<NailartListGetRes> anotherNailart(long designerSeq);

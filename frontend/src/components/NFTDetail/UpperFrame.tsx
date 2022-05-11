@@ -17,6 +17,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { designerId } from "../../store/atoms";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
   padding-top: 140px;
@@ -143,23 +144,26 @@ const Wrapper = styled.div`
             .designerInfo {
               margin-top: 60px;
               display: flex;
-
+              align-items: center;
+              cursor: pointer;
               .designerImg {
                 img {
                   margin-top: 5px;
-                  width: 70px;
-                  height: 70px;
+                  width: 50px;
+                  height: 50px;
                   border-radius: 100%;
                   margin-left: 10px;
                 }
               }
               .designerName {
-                margin-top: 12px;
-                margin-left: 38px;
+                /* margin-top: 12px; */
+                margin-left: 30px;
+                font-weight: 400;
+                font-size: 16px;
               }
             }
             .btns {
-              margin-top: 40px;
+              margin-top: 70px;
               position: relative;
               zoom: 1;
               width: 100%;
@@ -170,6 +174,7 @@ const Wrapper = styled.div`
                 padding: 2% 1.2%;
                 text-align: center;
                 width: 33%;
+                height: 50px;
                 border-left: 1px solid rgba(61, 60, 58, 0.4);
                 border-top: 1px solid rgba(61, 60, 58, 0.4);
                 border-bottom: 1px solid rgba(61, 60, 58, 0.4);
@@ -178,6 +183,9 @@ const Wrapper = styled.div`
                 border-right: 0px;
                 background-color: #f7f7f5;
                 color: #3d3c3a;
+                svg { 
+                  margin-right: 5px;
+                }
               }
             }
           }
@@ -219,16 +227,6 @@ const UpperFrame = () => {
   let params: any = useParams().id;
   console.log(params);
   const myId = Number(sessionStorage.getItem("userSeq"));
-  const [detailInfo, setDetailInfo] = useState({
-    // type : '프렌치네일',
-    // price : '50,000원',
-    // tags : '#봄 #태그123 #태그 456',
-    // info : '모든 피부타입dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
-    // name : 'Designer1',
-    // shop : 'Nailshop1',
-    // color : '딥 다크',
-    title: "프렌치 - 딥다크",
-  });
 
   const { isLoading: isLikeLoading, data: likeData } = useQuery("like", () =>
     nailCount(params)
@@ -352,7 +350,7 @@ const UpperFrame = () => {
                       </div>
                     ) : null}
                   </div>
-                  <div className="name">{detailInfo.title}</div>
+                  <div className="name">{nailData?.nailartType} - {nailData?.nailartDetailColor}</div>
                   <div className="price">
                     {nailData?.nailartPrice
                       .toString()
@@ -387,31 +385,23 @@ const UpperFrame = () => {
                           navigate(`/designerpage/${nailData?.designerSeq}/new`)
                         }
                       >
-                        {nailData?.designerNickname}
-                      </div>
-                      <div style={{ color: "gray" }}>
                         {nailData?.designerShopName}
                       </div>
+                      {/* <div style={{ color: "gray" }}>
+                        {nailData?.designerShopName}
+                      </div> */}
                     </div>
                   </div>
                   <div className="btns">
-                    <a style={{ backgroundColor: "red", color: "white" }}>
-                      <CalendarMonthIcon
-                        style={{ visibility: "hidden", width: "0px" }}
-                      ></CalendarMonthIcon>
+                    <Link to="/ar" style={{ backgroundColor: "red", color: "white" }}>
                       AR 피팅하기
-                    </a>
-                    <a
+                    </Link>
+                    <Link to={`/designerpage/${nailData?.designerSeq}/reservation`}
                       style={{ backgroundColor: "white" }}
-                      onClick={() =>
-                        navigate(
-                          `/designerpage/${nailData?.designerSeq}/reservation`
-                        )
-                      }
                     >
                       <CalendarMonthIcon style={{ marginBottom: "2px" }} />
                       예약하기
-                    </a>
+                    </Link>
                     <a
                       style={{
                         backgroundColor: "white",

@@ -159,7 +159,7 @@ const Navbar = () => {
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
             onClick={() => navigate(`/`)}
           >
-            LOGO
+            Miri Nail
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <CustomButton
@@ -281,7 +281,7 @@ const Navbar = () => {
                         <button
                           onClick={() => {
                             navigate(
-                              `/mypage/${sessionStorage.getItem("userSeq")}`
+                              `/mypage/${sessionStorage.getItem("userSeq")}/myreservation`
                             );
                           }}
                         >

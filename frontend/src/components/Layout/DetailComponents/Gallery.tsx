@@ -73,6 +73,7 @@ const Wrapper = styled.div`
       }
     }
   }
+}
 `;
 const Gallery = () => {
   const param = useRecoilValue(designerId);
@@ -83,7 +84,7 @@ const Gallery = () => {
     <Wrapper>
       <div className="description">
         <div>디자이너의 다른 작품을 만나보세요.</div>
-        <div>전체보기</div>
+        {/* <div className="all">전체보기</div> */}
       </div>
       <ul className="clear">
         { isLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : data.map((e:any,idx:any) => {
