@@ -10,3 +10,14 @@ export const Loading = () => {
     </>
   )
 }
+
+
+export const tailLoading = () => {
+  return (
+    <>
+    <div style={{position:"fixed",left:"50%",transform:"translate(-50%,0)"}}>
+    <TailSpin color="gray" height={80} width={80} />
+    </div>
+    </>
+  )
+}

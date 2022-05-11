@@ -231,7 +231,7 @@ const PageContent = () => {
     const [nailartDesc,setnailartDesc] = useState('')
     const [postImages,setPostImages] = useState<any[]>([])
     useEffect(() => {
-      console.log(postImages)
+      // console.log(postImages)
     },[postImages])
   
 
@@ -258,7 +258,7 @@ const PageContent = () => {
       abc += 1;
     }
     setInfoProcessNum(abc);
-    console.log(infoProcess);
+    // console.log(infoProcess);
   }, [infoProcess]);
 
   // ipfs 등록 및 nft 발급
@@ -270,8 +270,8 @@ const PageContent = () => {
     const multipartFiles = new FormData()
     const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
     files.append("jsonList",JSON.stringify(nailData))
-    console.log(postImages)
-    console.log(nailData)
+    // console.log(postImages)
+    // console.log(nailData)
     postImages.forEach(e => {
       files.append('files',e)}
       )

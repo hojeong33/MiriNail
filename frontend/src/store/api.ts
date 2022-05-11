@@ -227,11 +227,12 @@ export const postReview = async (data: any) => {
   console.log(data);
   const response = await axios.post(base_url + "review", data, {
     headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  console.log(response);
-};
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    }}
+    )
+  console.log(response)
+}
 
 // 리뷰 조회
 export const getReview = async ({ queryKey }: any) => {
@@ -252,25 +253,41 @@ export const getReview = async ({ queryKey }: any) => {
 
 // 리뷰 조회순 조회
 
+// 조회수 증가
+export const countView = async(data:any) => {
+  console.log(data)
+  console.log(base_url +`review/cnt/${data}`)
+  const response = await axios.post(base_url +`review/cnt/${data}`,)
+}
+
 // 리뷰 삭제
 export const delReview = async (param: any) => {
   const response = await axios.delete(base_url + `review/${param}`);
 };
 
 // 리뷰 댓글 작성
-export const postReviewComment = async (data: any) => {
-  console.log(data);
-  const response = await axios.post(base_url + `review/comment`, data);
-};
+export const postReviewComment = async(data:any) => {
+  console.log(data)
+  const response = await axios.post(base_url +`review/comment`,data,{
+    headers: {
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    }
+  })
+}
 
 // 리뷰 댓글 수정
-export const revReviewComment = async (data: any) => {
-  console.log(data);
-  const response = await axios.put(base_url + `review/comment`, data);
-};
+export const revReviewComment = async(data:any) => {
+  console.log(data)
+  const response = await axios.put(base_url +`review/comment`,data,{
+    headers: {
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    }
+  })
+}
 
 // 리뷰 댓글 삭제
-export const delReviewComment = async (param: any) => {
-  console.log(param);
-  const response = await axios.patch(base_url + `review/review/${param}`);
-};
+export const delReviewComment = async(param:any) => {
+  console.log(param)
+  const response = await axios.patch(base_url + `review/review/${param}`)
+}
+

@@ -1,20 +1,12 @@
-# -*- coding: utf-8 -*-
-
-# import the necessary packages
-# from object_detection.utils import label_map_util
-# from matplotlib import pyplot as plt
-# import tensorflow as tf
-# import numpy as np
-# import cv2
-# import mediapipe as mp
-# from imutils.video import WebcamVideoStream
-# import find_finger as ff
-# import math
-# import tensorflow.compat.v1 as tf
-# tf.disable_v2_behavior()
+from cgi import test
+from typing import Optional
+import base64
+import io
+from fastapi import FastAPI, WebSocket, Request
+from fastapi.responses import StreamingResponse
+# from flasktest import get_stream_video
+from testtemp3guhyun import testVideo
 from matplotlib import pyplot as plt
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import tensorflow as tf
 import numpy as np
 import cv2
@@ -24,11 +16,68 @@ import find_finger as ff
 import math
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
-tf.debugging.set_log_device_placement(True)
+import asyncio
+import cv2
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.logger import logger
+from imageio import imread
+from sockett import summ
+app = FastAPI()
 
-def testVideo():
-    
-    print('test.py에는 들어옴')
+
+def video_streaming(imgtest):
+    return testVideo(imgtest)
+
+@app.get("/")
+def read_root():
+    print('음... 이ㅐ건떠야하는데')
+    return {"Hello": "World"}
+
+
+async def streamer(gen):
+    try:
+        for i in gen:
+            yield i
+            await asyncio.sleep(0.25)
+    except asyncio.CancelledError:
+        cv2.destroyAllWindows()
+        cv2.VideoCapture(0, cv2.CAP_DSHOW).release() 
+        WebcamVideoStream(src=0).stop()
+        print('되기는 하는건가?')
+        # print(cv2.VideoCapture.isOpend())
+        print("caught cancelled error")
+
+
+@app.get("/video")
+def main():
+    # StringResponse함수를 return하고,
+    # 인자로 OpenCV에서 가져온 "바이트"이미지와 type을 명시
+    print('video url 접근')
+    return StreamingResponse(streamer(video_streaming()), media_type="multipart/x-mixed-replace; boundary=frame")
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Optional[str] = None):
+    return {"item_id": item_id, "q": q}
+
+
+
+# 웹소켓 연결을 테스트 할 수 있는 웹페이지 (http://127.0.0.1:8000/client)
+templates = Jinja2Templates(directory="templates")
+@app.get("/client")
+async def client(request: Request):
+    # /templates/client.html파일을 response함
+    # print("request : " ,request)
+    return templates.TemplateResponse("client.html", {"request":request})
+
+# 웹소켓 설정 ws://127.0.0.1:8000/ws 로 접속할 수 있음
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    print(f"client connected : {websocket.client}")
+    await websocket.accept() # client의 websocket접속 허용
+    await websocket.send_text(f"Welcome client : {websocket.client}")
+    i = 0
+
     mp_drawing = mp.solutions.drawing_utils
     mp_drawing_styles = mp.solutions.drawing_styles
     mp_hands = mp.solutions.hands
@@ -44,9 +93,8 @@ def testVideo():
     print(args)
     COLORS = np.random.uniform(0, 255, size=(args["num_classes"], 3))
     print(COLORS)
-
-    model = tf.Graph()
     print('1 : 모델 생성')
+    model = tf.Graph()
     with model.as_default():
         print("> ====== loading NAIL frozen graph into memory")
         graphDef = tf.GraphDef()
@@ -58,7 +106,7 @@ def testVideo():
         # sess = tf.Session(graph=graphDef)
         print(">  ====== NAIL Inference graph loaded.")
         # return graphDef, sess
-
+    
 
     with mp_hands.Hands(min_detection_confidence=0.8,min_tracking_confidence=0.5) as hands:
    
@@ -74,25 +122,22 @@ def testVideo():
                 classesTensor = model.get_tensor_by_name("detection_classes:0")
                 numDetections = model.get_tensor_by_name("num_detections:0")
                 drawboxes = []
-                cap = cv2.VideoCapture(0)
-                print(cap)
                 # vs = WebcamVideoStream(src=0)
                 # vs.start()
+
+
+
+
                 while True:
                     print('3 : 캠읽음')
+                    data = await websocket.receive_text()  # client 메시지 수신대기
                     
-                    ret, frame = cap.read()
-                    print(frame)
-                    if not ret:
-                        cv2.destroyAllWindows()
-                        break
-                    img = cv2.imread("sss.png")
-                    
-                    
-                
+                    data = data.split(',')[1]
 
-                    
-                    frame = cv2.flip(frame, 1)
+                    imgtest = imread(io.BytesIO(base64.b64decode(data)))
+                    # print(imgtest)
+                    img = cv2.imread("sss.png")
+                    frame = cv2.flip(imgtest, 1)
                     image = frame
                     (H, W) = image.shape[:2]
                     print("H,W:", (H, W))
@@ -104,13 +149,12 @@ def testVideo():
                     image = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)
                     image_2 = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
                     results = hands.process(image_2)
-            
+                   
                     image = np.expand_dims(image, axis=0)
                     image_2 = cv2.cvtColor(image_2, cv2.COLOR_RGB2BGR)
                     imageHeight, imageWidth, _ = image_2.shape
-                    
+                    print('여기까진 옴')
                     if results.multi_hand_landmarks:
-                        
                         for num, hand in enumerate(results.multi_hand_landmarks):
                             # print(mp_hands.HandLandmark.MIDDLE_FINGER_TIP.name)
                             # print(type(mp_hands.HandLandmark.MIDDLE_FINGER_TIP.value))
@@ -122,9 +166,11 @@ def testVideo():
                             pixelCoordinatesLandmark_2 = mp_drawing._normalized_to_pixel_coordinates(normalizedLandmark_2.x, normalizedLandmark_2.y, imageWidth, imageHeight)
                             print('12번픽셀 좌표 : ', pixelCoordinatesLandmark)
                             print('11번픽셀 좌표 : ', pixelCoordinatesLandmark_2)
+                            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                            tanTheta = ((pixelCoordinatesLandmark_2[0]-pixelCoordinatesLandmark[0]))/((pixelCoordinatesLandmark_2[1]-pixelCoordinatesLandmark[1]))
+                            theta = np.arctan(tanTheta)
                             try:
-                                tanTheta = ((pixelCoordinatesLandmark_2[0]-pixelCoordinatesLandmark[0]))/((pixelCoordinatesLandmark_2[1]-pixelCoordinatesLandmark[1]))
-                                theta = np.arctan(tanTheta)
                                 angle = theta*180/math.pi
                             except:
                                 print('수평')
@@ -192,7 +238,7 @@ def testVideo():
                                 
 
                                 # x = 가로 y = 세로 점
-                                print(startX,startY,endX,endY)
+                                # print(startX,startY,endX,endY)
                                 startX = startX -20
                                 startY = startY -20
                                 endX = endX +20
@@ -200,11 +246,11 @@ def testVideo():
                                 wi = int(abs(endY-startY))
                                 he = int(abs(endX-startX))
                                 cat_sticker = cv2.resize(img,(wi,he))
-                                print(cat_sticker.shape)
+                                # print(cat_sticker.shape)
 
                                 # 회전
                                 img_rotate = ff.rotate_image(cat_sticker,angle)
-                                print('회전된 이미지 shape : ' ,img_rotate.shape)
+                                # print('회전된 이미지 shape : ' ,img_rotate.shape)
                                 
 
 
@@ -256,83 +302,18 @@ def testVideo():
                                             cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
 
 
-
-                    # cv2.imshow("Output", image_2)
+                    
+                    # i += 1
                     ret, buffer = cv2.imencode('.jpg', image_2)
+  
                     # frame을 byte로 변경 후 특정 식??으로 변환 후에
                     # yield로 하나씩 넘겨준다.
                     image_2 = buffer.tobytes()
+                    # await websocket.send_text(f"imgData : {image_2}")
+                    # print(f"message received : {image_2} from : {websocket.client}")
+                    # print(image_2)
                     yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
                     bytearray(image_2) + b'\r\n')
 
-
-
-
-
-
-                    
-                    # ret, buffer = cv2.imencode('.jpg', image_2)
-                    # image_2 = buffer.tobytes()
-                    # yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-                    # bytearray(image_2) + b'\r\n')
-                    # src = cv2.imread("sss.png")
-                    # cv2.imshow("sss", src)
-
-                    if cv2.waitKey(1) & 0xFF == ord("q"):
-                        cv2.destroyAllWindows()
-                        break
-
-                    # vs.stop()
-
-
-
-
-
-# testVideo()
-
-
-
-# # load the overlay image. size should be smaller than video frame size
-# img = cv2.imread("sss.png")
-
-# # Get Image dimensions
-# img_height, img_width, _ = img.shape
-
-# # Start Captured
-# cap = cv2.VideoCapture(0)
-
-# # Get frame dimensions
-# frame_width  = cap.get(cv2.CAP_PROP_FRAME_WIDTH )
-# frame_height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT )
-
-# # Print dimensions
-# print('image dimensions (HxW):',img_height,"x",img_width)
-# print('frame dimensions (HxW):',int(frame_height),"x",int(frame_width))
-
-# # Decide X,Y location of overlay image inside video frame. 
-# # following should be valid:
-# #   * image dimensions must be smaller than frame dimensions
-# #   * x+img_width <= frame_width
-# #   * y+img_height <= frame_height
-# # otherwise you can resize image as part of your code if required
-
-# x = 50
-# y = 50
-
-# while(True):
-#     # Capture frame-by-frame
-#     ret, frame = cap.read()
-
-#     # add image to frame
-#     frame[ y:y+img_height , x:x+img_width ] = img
-
-#     # Display the resulting frame
-#     cv2.imshow('frame',frame)
-
-#     # Exit if ESC key is pressed
-#     if cv2.waitKey(20) & 0xFF == 27:
-#         break
-
-# # When everything done, release the capture
-# cap.release()
-# cv2.destroyAllWindows()
+                    # return StreamingResponse(, media_type="multipart/x-mixed-replace; boundary=frame")
+        

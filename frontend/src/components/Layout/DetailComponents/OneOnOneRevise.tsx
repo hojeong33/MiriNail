@@ -119,8 +119,8 @@ export default function OneOneOneRevise({data}:any) {
   
   // 인풋
   const [inputStatus,setInputStatus] = useState({
-    qnaTitle : '',
-    qnaDesc : '',
+    qnaTitle : data.qnaTitle,
+    qnaDesc : data.qnaDesc,
   
 
   })
@@ -194,13 +194,13 @@ export default function OneOneOneRevise({data}:any) {
                 문의 제목
               </div>
               <div className="rowBoxRight">
-                <input type="text" onChange={onChangeInput} name="qnaTitle"/>
+                <input type="text" onChange={onChangeInput} name="qnaTitle" value={inputStatus.qnaTitle}/>
               </div>
             </div>
             <div className="reviewWrite">
               <label htmlFor="goods_text" className="label">문의 내용</label>
               <div className="inputArea">
-                <textarea placeholder="내용을 입력해주세요" onChange={onChangeInput} name="qnaDesc" ></textarea>
+                <textarea placeholder="내용을 입력해주세요" onChange={onChangeInput} name="qnaDesc" value={inputStatus.qnaDesc} ></textarea>
               </div>
             </div>
             <div className='uploadWrap'>
