@@ -13,7 +13,7 @@ import OneOneOneRevise from './OneOnOneRevise'
 
 const Wrapper = styled.div`
   margin-top : 100px;
-  
+  // min-height :700px;
 
   .table {
     margin-top : 60px;
@@ -43,10 +43,11 @@ const Wrapper = styled.div`
   .box {
     display: flex;
     justify-content : space-between;
-    margin : 0px 5px;
+    margin : 10px 5px;
     .boxLeft .btn {
       background-color :rgb(61, 60, 58);
       color:white;
+      padding : 5px 10px 5px 10px;
       
     }
   }
@@ -475,7 +476,7 @@ const InquiryTable = () => {
           </div>
         </div>
         <div className="boxRight">
-          <div >
+          <div>
             <Paginations2 />
           </div>
         </div>
