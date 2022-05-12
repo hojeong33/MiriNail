@@ -27,7 +27,7 @@ const CommunityBox = () => {
       >
         <Item>
           <div style={{ position: "relative" }}>
-            <img src={talk} alt="" />
+            <img src={talk} alt="" style={{ marginLeft: "33%" }} />
             <Typography
               variant="h5"
               style={{
@@ -45,7 +45,7 @@ const CommunityBox = () => {
         </Item>
         <Item>
           <div style={{ position: "relative" }}>
-            <img src={talk} alt="" />
+            <img src={talk} alt="" style={{ marginLeft: "33%" }} />
             <Typography
               variant="h5"
               style={{
@@ -63,7 +63,7 @@ const CommunityBox = () => {
         </Item>
         <Item>
           <div style={{ position: "relative" }}>
-            <img src={talk} alt="" />
+            <img src={talk} alt="" style={{ marginLeft: "33%" }} />
             <Typography
               variant="h5"
               style={{
@@ -81,7 +81,7 @@ const CommunityBox = () => {
         </Item>
         <Item>
           <div style={{ position: "relative" }}>
-            <img src={talk} alt="" />
+            <img src={talk} alt="" style={{ marginLeft: "33%" }} />
             <Typography
               variant="h5"
               style={{

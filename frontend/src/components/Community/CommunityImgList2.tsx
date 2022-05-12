@@ -263,7 +263,7 @@ export default function CommunityImgList() {
         url: `http://localhost:8080/api/community`,
         params: {
           page: page,
-          size: 10,
+          size: 5,
         },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -495,64 +495,95 @@ export default function CommunityImgList() {
         display: "flex",
         width: "100rem",
         flexWrap: "wrap",
-        marginLeft: "auto",
+        marginLeft: "11%",
+        // marginLeft: "auto",
         marginRight: "auto",
       }}
     >
       {/* // <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}> */}
       {/* <img src={image69} style={{ width: "40rem", height: "20rem" }}></img> */}
-      {itemData.map((item, idx) => {
-        return (
-          <div className="main-container">
-            <div className="grid-container">
-              <div className="card--2x">
-                <div className="card__image">
-                  <img
-                    src={itemData[idx].communityImg[0].communityImgUrl}
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="card">
-                <div className="card__image">
-                  <img
-                    src={itemData[idx].communityImg[0].communityImgUrl}
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="card">
-                <div className="card__content">dfsklfjskdlfjkls</div>
-              </div>
-              <div className="card card--horizontal">
-                <div className="card__image">
-                  <img
-                    src={itemData[idx].communityImg[0].communityImgUrl}
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="card card--featured card__side-by-side--m">
-                <div className="card__image">
-                  <img
-                    src={itemData[idx].communityImg[0].communityImgUrl}
-                    alt=""
-                  />
-                  <div className="card__content padding-large--l">dsfsdfs</div>
-                </div>
-              </div>
-              <div className="card card--vertical">
-                <div className="card__image">
-                  <img
-                    src={itemData[idx].communityImg[0].communityImgUrl}
-                    alt=""
-                  />
-                </div>
+      {/* {itemData.map((item, idx) => {
+        return ( */}
+      <div className="main-container">
+        <div className="grid-container">
+          <div className="card--2x">
+            <div className="card__image">
+              <img
+                src={itemData[0].communityImg[0].communityImgUrl}
+                alt=""
+                onClick={() => {
+                  getDetail(itemData[0].communitySeq, 0);
+                }}
+              />
+              <div className="inner-content">
+                <div>{itemData[0].communityTitle}</div>
               </div>
             </div>
           </div>
-        );
-      })}
+          <div className="card">
+            <div className="card__image">
+              <img
+                src={itemData[1].communityImg[0].communityImgUrl}
+                alt=""
+                onClick={() => {
+                  getDetail(itemData[1].communitySeq, 1);
+                }}
+              />
+              <div className="inner-content">
+                <div>{itemData[1].communityTitle}</div>
+              </div>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card__content">dfsklfjskdlfjkls</div>
+          </div>
+          <div className="card card--horizontal">
+            <div className="card__image">
+              <img
+                src={itemData[2].communityImg[0].communityImgUrl}
+                alt=""
+                onClick={() => {
+                  getDetail(itemData[2].communitySeq, 2);
+                }}
+              />
+              <div className="inner-content">
+                <div>{itemData[2].communityTitle}</div>
+              </div>
+            </div>
+          </div>
+          <div className="card card--featured card__side-by-side--m">
+            <div className="card__image">
+              <img
+                src={itemData[3].communityImg[0].communityImgUrl}
+                alt=""
+                onClick={() => {
+                  getDetail(itemData[3].communitySeq, 3);
+                }}
+              />
+              <div className="inner-content">
+                <div>{itemData[3].communityTitle}</div>
+              </div>
+              <div className="card__content padding-large--l">dsfsdfs</div>
+            </div>
+          </div>
+          <div className="card card--vertical">
+            <div className="card__image">
+              <img
+                src={itemData[4].communityImg[0].communityImgUrl}
+                alt=""
+                onClick={() => {
+                  getDetail(itemData[4].communitySeq, 4);
+                }}
+              />
+              <div className="inner-content">
+                <div>{itemData[4].communityTitle}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* );
+      })} */}
       <Modal
         open={modalStatus}
         onClose={handleClose}
@@ -599,6 +630,7 @@ export default function CommunityImgList() {
                           },
                         });
                       }}
+                      style={{ marginRight: "10px" }}
                     >
                       수정
                     </button>
@@ -607,6 +639,7 @@ export default function CommunityImgList() {
                       onClick={() => {
                         deleteCommunity(itemDetail.communitySeq);
                       }}
+                      style={{ marginRight: "10px" }}
                     >
                       삭제
                     </button>
@@ -618,8 +651,7 @@ export default function CommunityImgList() {
                   <img
                     src={itemDetail?.userProfileImg}
                     alt=""
-                    width="32"
-                    height="32"
+                    style={{ width: "32px", height: "32px" }}
                   />
                   <div style={{ marginLeft: "14px", whiteSpace: "nowrap" }}>
                     {itemDetail?.userNickname}
