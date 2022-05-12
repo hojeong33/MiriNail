@@ -40,3 +40,7 @@ export const convertURLtoFile = async (url: string) => {
   const metadata = { type: `image/${ext}` };
   return new File([data], filename!, metadata);
 };
+
+export const convertImgToThumnail = (url: string) => {
+  return url.replace("bucket", "bucket-resize")
+}

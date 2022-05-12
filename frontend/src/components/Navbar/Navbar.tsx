@@ -82,7 +82,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const [isLogin, setIsLogin] = React.useState<boolean>(false);
-  const [searchValue, setSearchValue] = React.useState("")
+  const [searchValue, setSearchValue] = React.useState("");
   //회원정보
   const userNickname = sessionStorage.getItem("userNickname");
   const userProfileImg = sessionStorage.getItem("userProfileImg");
@@ -120,23 +120,22 @@ const Navbar = () => {
   // URL 이동
   const navigate = useNavigate();
 
-  const onKeyDownEnter = (e:any) => {
+  const onKeyDownEnter = (e: any) => {
     if (e.code === "Enter") {
-      console.log("엔터")
-      console.log(searchValue)
+      console.log("엔터");
+      console.log(searchValue);
       if (searchValue === "") {
-        alert("검색어를 입력해주세요")
-        return
+        alert("검색어를 입력해주세요");
+        return;
       }
-      navigate(`/search/${searchValue}`)
+      navigate(`/search/${searchValue}`);
       // otherOneTouch(e)
       // setSearchValue("")
-      
     }
-  }
+  };
 
   const otherOneTouch = React.useCallback((event: TouchEvent) => {
-  	(document.activeElement as HTMLElement).blur()
+    (document.activeElement as HTMLElement).blur();
   }, []);
 
   return (
@@ -145,7 +144,7 @@ const Navbar = () => {
       position="fixed"
       style={{
         boxShadow: "none",
-        borderBottom: "0.05rem solid black",
+        borderBottom: "1px solid rgba(61,60,58,0.5)",
       }}
       className={styles.top}
     >

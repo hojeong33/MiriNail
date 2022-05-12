@@ -79,7 +79,7 @@ const ArCard = () => {
         의해 방해가 생길 수 있고, 결과물을 제대로 표현하지 못할 가능성이
         있습니다.
       </Typography>
-      <StyledTypography
+      <Typography
         variant="h6"
         className="goAR"
         style={{
@@ -92,7 +92,21 @@ const ArCard = () => {
         }}
       >
         Try Virtual Try on Now
-      </StyledTypography>
+      </Typography>
+      {/* <StyledTypography
+        variant="h6"
+        className="goAR"
+        style={{
+          marginTop: "3rem",
+          textAlign: "center",
+          color: "red",
+          textDecoration: "underline",
+          cursor: "pointer",
+          height: "4rem",
+        }}
+      >
+        Try Virtual Try on Now
+      </StyledTypography> */}
     </div>
   );
 };
