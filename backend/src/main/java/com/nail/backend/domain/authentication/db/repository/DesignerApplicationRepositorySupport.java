@@ -101,7 +101,7 @@ public class DesignerApplicationRepositorySupport {
         designerApplicationRepository.save(designerApplication);
 
         User user = designerApplication.getUser();
-        user.setUserRole("ROLE_DESIGNER");
+        user.setUserRole("ROLE_ARTIST");
         userRepository.save(user);
 
         return true;
