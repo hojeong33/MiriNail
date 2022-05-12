@@ -19,11 +19,11 @@ const EventContent = (flag: Props) => {
         <>
           {items.map((item, idx) => {
             return (
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div style={{ display: "flex", justifyContent: "center", margin: "60px 0"}}>
                 <img
                   src={item}
                   alt=""
-                  style={{ width: "50%", height: "50%", margin: "10px 0px" }}
+                  style={{ width: "50%", height: "50%", margin: "10px 0px", cursor: "pointer" }}
                   onClick={() => navigate(`/event/${idx + 1}`)}
                 />
               </div>

@@ -5,6 +5,7 @@ import SearchDesigner from "./SearchDesigner";
 
 const Wrapper = styled.div`
   margin: 160px 120px;
+  min-height: 100vh;
   .buttons {
     display: flex;
 

@@ -6,9 +6,8 @@ function Footer() {
       style={{
         position: "absolute",
         width: "100%",
-        height: 300,
-
-        paddingTop: 50,
+        height: 380,
+        paddingTop: 70,
         paddingBottom: 50,
         backgroundColor: "#333333",
         color: "#eeeeee",

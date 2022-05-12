@@ -8,7 +8,7 @@ const Sample1 = () => {
     <>
       <Header isShow={isShow} title={title} days={days}></Header>
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+        style={{ display: "flex", justifyContent: "center", margin: "60px 0" }}
       >
         <img
           src={bg1}
