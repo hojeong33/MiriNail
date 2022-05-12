@@ -145,7 +145,7 @@ const Navbar = () => {
       position="fixed"
       style={{
         boxShadow: "none",
-        borderBottom: "0.05rem solid black",
+        borderBottom: "1px solid rgba(61,60,58,0.5)",
       }}
       className={styles.top}
     >
