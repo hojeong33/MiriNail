@@ -7,6 +7,7 @@ import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
 import com.nail.backend.domain.designer.db.entitiy.QDesignerInfo;
 import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.user.db.entity.User;
+import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,9 @@ public class DesignerApplicationRepositorySupport {
 
     @Autowired
     DesignerInfoRepository designerInfoRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     QDesignerApplication qDesignerApplication = QDesignerApplication.designerApplication;
 
@@ -98,6 +102,7 @@ public class DesignerApplicationRepositorySupport {
 
         User user = designerApplication.getUser();
         user.setUserRole("ROLE_DESIGNER");
+        userRepository.save(user);
 
         return true;
     }
