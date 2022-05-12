@@ -30,10 +30,9 @@ function Footer() {
               ⓒ 2022. 영남아 네일하자 All rights reserved.
             </div>
           </div>
-          <div></div>
           <div>
             <div style={{ fontSize: 32, fontWeight: "bolder" }}>Contact</div>
-            <div style={{ color: "#999999", marginTop: "15px" }}>
+            <div style={{ color: "#999999", marginTop: "5px" }}>
               mirinail@gmail.com
             </div>
           </div>

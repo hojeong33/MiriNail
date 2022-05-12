@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import image69 from "../../assets/img/sample/image69.png";
 import image70 from "../../assets/img/sample/image70.png";
 import image68 from "../../assets/img/sample/image68.png";
+import community1 from "../../assets/img/sample/community1.jpg";
 
 const StyledSlider = styled(Slider)`
   .slick-dots {
@@ -485,7 +486,7 @@ export default function CommunityImgList() {
     setOpen("");
     setTagName("");
   };
-  const temp = [image68, image69, image70];
+  const temp = [community1, image69, image70];
 
   useEffect(() => {}, [modalStatus]);
 
@@ -513,8 +514,8 @@ export default function CommunityImgList() {
                   >
                     <img
                       style={{
-                        width: "18rem",
-                        height: "18rem",
+                        width: "19.2rem",
+                        height: "19.2rem",
                         marginRight: "10px",
                       }}
                       src={item.communityImg[0].communityImgUrl}
@@ -531,8 +532,8 @@ export default function CommunityImgList() {
                   </CustomImageListItem>
                 </div>
                 <img
-                  src={temp[idx % 3]}
-                  style={{ width: "36.5rem", height: "18rem" }}
+                  src={community1}
+                  style={{ width: "39rem", height: "19.2rem" }}
                 ></img>
               </div>
             ) : (
@@ -546,8 +547,8 @@ export default function CommunityImgList() {
                       >
                         <img
                           style={{
-                            width: "18rem",
-                            height: "18rem",
+                            width: "19.2rem",
+                            height: "19.2rem",
                             marginRight: "10px",
                           }}
                           src={item.communityImg[0].communityImgUrl}
@@ -565,14 +566,14 @@ export default function CommunityImgList() {
                     </div>
                     <img
                       src={temp[idx % 3]}
-                      style={{ width: "55rem", height: "18rem" }}
+                      style={{ width: "59rem", height: "19.2rem" }}
                     ></img>
                   </div>
                 ) : (
                   <div key={item.communitySeq}>
                     <CustomImageListItem>
                       <img
-                        style={{ width: "18rem", height: "18rem" }}
+                        style={{ width: "19.2rem", height: "19.2rem" }}
                         src={item.communityImg[0].communityImgUrl}
                         alt={item.communityTitle}
                         loading="lazy"
@@ -619,12 +620,15 @@ export default function CommunityImgList() {
                   <img
                     src={itemDetail?.userProfileImg}
                     alt=""
-                    width="32"
-                    height="32"
-                    style={{ marginRight: "14px" }}
+                    style={{
+                      marginRight: "14px",
+                      width: "32px",
+                      height: "32px",
+                    }}
                   />
-                  {itemDetail?.userNickname}
+                  <div>{itemDetail?.userNickname}</div>
                 </div>
+
                 {itemDetail?.userNickname ===
                   sessionStorage.getItem("userNickname") && (
                   <div>
@@ -638,6 +642,7 @@ export default function CommunityImgList() {
                           },
                         });
                       }}
+                      style={{ marginRight: "10px" }}
                     >
                       수정
                     </button>
@@ -646,6 +651,7 @@ export default function CommunityImgList() {
                       onClick={() => {
                         deleteCommunity(itemDetail.communitySeq);
                       }}
+                      style={{ marginRight: "10px" }}
                     >
                       삭제
                     </button>
@@ -657,8 +663,7 @@ export default function CommunityImgList() {
                   <img
                     src={itemDetail?.userProfileImg}
                     alt=""
-                    width="32"
-                    height="32"
+                    style={{ width: "32px", height: "32px" }}
                   />
                   <div style={{ marginLeft: "14px", whiteSpace: "nowrap" }}>
                     {itemDetail?.userNickname}
