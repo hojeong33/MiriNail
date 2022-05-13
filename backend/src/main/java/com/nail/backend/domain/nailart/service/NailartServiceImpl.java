@@ -136,32 +136,9 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
-    public List<NailartListGetRes> anotherNailart(long designerSeq) {
-        List<NailartListGetRes> nailartList = new ArrayList<>();
-        List<Nailart> nailart = nailartRepository.findAllByDesignerSeq(designerSeq);
-        int count = 0;
-        for (Nailart art: nailart) {
-            if(count > 9) break;
-            NailartListGetRes tmp = new NailartListGetRes();
-            tmp.setNailartSeq(art.getNailartSeq());
-            tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
-            tmp.setDesignerSeq(art.getDesignerSeq());
-            tmp.setTokenId(art.getTokenId());
-            tmp.setNailartName(art.getNailartName());
-            tmp.setNailartDesc(art.getNailartDesc());
-            tmp.setNailartColor(art.getNailartColor());
-            tmp.setNailartDetailColor(art.getNailartDetailColor());
-            tmp.setNailartWeather(art.getNailartWeather());
-            tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
-            tmp.setNailartType(art.getNailartType());
-//            tmp.setNailartAvailable(art.get);
-            tmp.setNailartPrice(art.getNailartPrice());
-            tmp.setNailartRegedAt(art.getNailartRegedAt());
-            tmp.setNailartRating(art.getNailartRating());
-            nailartList.add(tmp);
-            count ++;
-        }
-        return nailartList;
+    public List<NailartListGetRes> otherNailart(long designerSeq, long nailartSeq) {
+
+        return nailartRepositorySupport.getOtherNailartByDesignerSeq(designerSeq, nailartSeq);
     }
 
     @Override
@@ -342,8 +319,8 @@ public class NailartServiceImpl implements NailartService {
 
     @Override
     @Transactional
-    public boolean nailartRemove(long nailartSeq) {
-        return nailartRepositorySupport.deleteNailartByNailartSeq(nailartSeq);
+    public boolean nailartAvailableUpdate(long nailartSeq) {
+        return nailartRepositorySupport.updateNailartAvailableByNailartSeq(nailartSeq);
     }
 
 
