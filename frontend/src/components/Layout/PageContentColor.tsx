@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CirclePicker, GithubPicker } from "react-color";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { nftFilter } from "../../store/atoms";
+import { nftFilter, pagenation } from "../../store/atoms";
 import NFTItems from "./NFTItems";
 import { Paginations } from "./Paginations";
 
@@ -143,6 +143,7 @@ const MainFrame = styled.div`
 const PageContentColor = () => {
   const [myFilter, setMyFilter] = useRecoilState(nftFilter);
   const [defaultCheck, setDefaultCheck] = useState(true);
+  const [totalCount,setTotalCount] = useRecoilState(pagenation)
 
   useEffect(() => {
     console.log(myFilter);
@@ -318,7 +319,7 @@ const PageContentColor = () => {
               <div className="RightBox">
                 <NFTItems />
                 <div className="pagination">
-                  <Paginations />
+                  <Paginations page={totalCount}/>
                 </div>
               </div>
             </div>

@@ -283,18 +283,18 @@ const PageContentRevise = () => {
               <div className="OrderFilter" id="remote">
                 <a>등록 과정</a>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb1" checked={imageProcess.length === 2 ? true : false}/>
-                  <label htmlFor="cb1">이미지 등록 ({imageProcess.length}/2)</label>
+                  <input type="checkbox" id="cb1" checked={imageProcess?.length === 2 ? true : false}/>
+                  <label htmlFor="cb1">이미지 등록 ({imageProcess?.length}/2)</label>
                 </div>
                 <div className="CheckBox">
                   <input type="checkbox" id="cb2" checked={infoProcessNum === 5 ? true : false}/>
                   <label htmlFor="cb2">네일정보 등록 ({infoProcessNum}/5)</label>
                 </div>
                 <div className="CheckBox">
-                  <input type="checkbox" id="cb3" checked={nailartDesc.length >= 10 ? true : false}/>
-                  <label htmlFor="cb3">소개글 등록 ({nailartDesc.length >= 10 ? 1 : 0}/1)</label>
+                  <input type="checkbox" id="cb3" checked={nailartDesc?.length >= 10 ? true : false}/>
+                  <label htmlFor="cb3">소개글 등록 ({nailartDesc?.length >= 10 ? 1 : 0}/1)</label>
                 </div>
-                { imageProcess.length ===2 && infoProcessNum ===5 && nailartDesc.length >= 10 ? <div className="finBox">
+                { imageProcess?.length ===2 && infoProcessNum ===5 && nailartDesc?.length >= 10 ? <div className="finBox">
                   <DoneIcon fontSize="large" style={{color:"green",fontWeight:"bold"}}/> <button onClick={nftFunc}>등록</button>
                 </div> : <div style={{marginTop:"25px"}}>과정을 완료해주세요</div>}
               </div>

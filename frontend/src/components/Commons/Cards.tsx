@@ -172,7 +172,7 @@ const Cards = ({
             <img src={info.designerImgUrl} className="img img-responsive" />
             <div className="profile-name">{info.designerNickName}</div>
             <div className="profile-position" style={{ color: "#c5c4c4" }}>
-              {/* {info.designer_shop_name} */}
+              {/* {info.designerShopName} */}
             </div>
             <div className="profile-overview">
               <div className="profile-overview">

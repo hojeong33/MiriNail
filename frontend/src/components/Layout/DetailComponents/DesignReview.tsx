@@ -213,6 +213,11 @@ const Wrapper = styled.div`
   }
 
   
+  .reviewStatus {
+    position : absolute;
+    top : 25%;
+    left : 45%;
+  }
 
 `
 
@@ -288,7 +293,7 @@ const DesignReview = () => {
   //   }
   // },[filter])
   
-
+  console.log(reviewData)
   return (
     <Wrapper>
       
@@ -301,13 +306,13 @@ const DesignReview = () => {
               <StarIcon />
             </div>
             <div className="score">
-              5.0
+              {reviewData?.content.length != 0 ? dummy2.best*5+dummy2.good*4+dummy2.soso*3+dummy2.bad*2+dummy2.worst*1/reviewData?.content.length :0}
             </div>
             
           </div>
           
           <div style={{textAlign:"center"}}>
-            {(dummy2.best+dummy2.good)*100/reviewData?.content.length}% 의 유저가 이 디자인을 좋아합니다.
+            { reviewData?.content.length != 0 ? Math.round((dummy2.best+dummy2.good)*100/reviewData?.content.length) : 0}% 의 유저가 이 디자인을 좋아합니다.
           </div>
           
           <BasicModal />
@@ -359,24 +364,32 @@ const DesignReview = () => {
         </div>
         <div className="test">
           
-          {isReviewLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : reviewData.content.map((e:any,idx:number) => 
-            <div className="reviewBox">
-              <div className='reviewBoxLeft'>
-                <div>{ratingCal(e.reviewRating)}</div>
-                <div style={{marginTop:"10px"}}>
-                  {e.reviewDesc}
+          {isReviewLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : 
+            ( reviewData.content.length != 0 ? 
+              reviewData.content.map((e:any,idx:number) => 
+                <div className="reviewBox">
+                  <div className='reviewBoxLeft'>
+                    <div>{ratingCal(e.reviewRating)}</div>
+                    <div style={{marginTop:"10px"}}>
+                      {e.reviewDesc}
+                    </div>
+                    <img src={e.reviewImg[0].reviewImgUrl} alt="이미지 오류" width="200" height="200" />
+                    <div className="reviewReplyBox">
+                      <Collapse replyList={e.reviewComments} reviewSeq={e.reviewSeq}/>
+                    </div>
+                  </div>
+                  <div className='reviewBoxRight'>
+                    <span className='userId'>{e.userNickname}</span><span>님의 리뷰입니다.</span>
+                  </div>
+                
                 </div>
-                <img src={e.reviewImg[0].reviewImgUrl} alt="이미지 오류" width="200" height="200" />
-                <div className="reviewReplyBox">
-                  <Collapse replyList={e.reviewComments} reviewSeq={e.reviewSeq}/>
-                </div>
-              </div>
-              <div className='reviewBoxRight'>
-                <span className='userId'>{e.userNickname}</span><span>님의 리뷰입니다.</span>
-              </div>
-             
-            </div>
-          )}  
+              )
+              : <div className="reviewStatus">등록된 리뷰가 없습니다</div>
+                  
+              
+            )
+          
+          }  
           
         </div>
       </div>

@@ -1,7 +1,9 @@
 import axios from "axios";
-import { page } from "./atoms";
+import { useRecoilState } from "recoil";
+import { page, pagenationInquiry } from "./atoms";
 const ACCESS_TOKEN = localStorage.getItem("token");
 const base_url = "http://localhost:8080/api/";
+
 
 // 디자인 관련
 
@@ -44,8 +46,8 @@ export const registDesign = async (files: any) => {
 
 // 디자인 삭제
 export const deleteDesign = async (param: any) => {
-  // console.log(Number(param))
-  const response = await axios.delete(base_url + `nailart/${param}`);
+  console.log(param)
+  const response = await axios.delete(base_url + `nailart/${Number(param)}`);
 };
 
 // 디자인 상세정보
@@ -138,8 +140,9 @@ export const inquiryList = async ({ queryKey }: any) => {
   const response = await axios.get(base_url + `qna/nailart/${queryKey[1]}`, {
     params: { page: queryKey[2], size: 10 },
   });
-  console.log(response.data.content);
-  return response.data.content;
+  console.log(response);
+  
+  return response;
 };
 
 // 문의 작성

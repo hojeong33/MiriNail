@@ -93,3 +93,15 @@ export const bestNailart = atom({
   },
 
 })
+
+export const pagenation = atom({
+  key : "pagenation",
+  default : 0,
+  // effects_UNSTABLE : [persistAtom],
+})
+
+export const pagenationInquiry = atom({
+  key : "pagenationInquiry",
+  default : 0,
+  // effects_UNSTABLE : [persistAtom],
+})

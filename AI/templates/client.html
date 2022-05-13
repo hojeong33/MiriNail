@@ -87,7 +87,8 @@
   function sendImage(){
     var rawData = canvas.toDataURL("image/jpeg", 0.5);
     // console.log(rawData)
-    ws.send(rawData);
+    setTimeout(ws.send(rawData), 1);
+    // ws.send(rawData);
   }
 
 

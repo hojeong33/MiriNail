@@ -72,8 +72,11 @@ const Wrapper = styled.div`
               .boxsRight {
                 margin-right: 20px;
                 display: flex;
+                // cursor:pointer;
                 .rev {
+                  
                   :hover {
+                    
                     background-color: #3d3c3a;
                     color: white;
                     border: 1px solid white;
@@ -335,6 +338,7 @@ const UpperFrame = () => {
                       <div className="boxsRight">
                         <div
                           className="rev"
+                          style={{cursor:"pointer"}}
                           onClick={() =>
                             navigate("/nft/Revise", { state: params })
                           }
@@ -342,7 +346,7 @@ const UpperFrame = () => {
                           수정
                         </div>
                         <div
-                          style={{ marginLeft: "10px" }}
+                          style={{ marginLeft: "10px",cursor:"pointer" }}
                           onClick={() => delDesign(params)}
                         >
                           삭제
@@ -371,7 +375,7 @@ const UpperFrame = () => {
                   <div className="designerInfo">
                     <div className="designerImg">
                       <img
-                        src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg"
+                        src={nailData?.designerImgUrl ? nailData?.designerImgUrl : "https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg"}
                         alt=""
                         onClick={() =>
                           navigate(`/designerpage/${nailData?.designerSeq}/new`)
