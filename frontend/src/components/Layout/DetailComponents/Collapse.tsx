@@ -130,7 +130,7 @@ const NestedList = ({replyList,reviewSeq}:any) => {
     setRevData('')
   }
 
-  const commentSubmit = async(e:any) => {
+  const commentSubmit = async() => {
     const submitData = {
       reviewCommentDesc : inputData,
       reviewSeq
@@ -188,15 +188,19 @@ const NestedList = ({replyList,reviewSeq}:any) => {
                         <div className='replyTopLeft'>{e.userNickname}</div>
                         <div className='replyTopRight'>
                           {e.reviewCommentRegedAt[0]}-{e.reviewCommentRegedAt[1]}-{e.reviewCommentRegedAt[2]} 
-                          <span style={{marginLeft:"2px"}} onClick={() => handleRev(e.reviewCommentSeq)}>수정</span>
+                          <span style={{marginLeft:"2px"}}  onClick={() => handleRev(e.reviewCommentSeq)}>수정</span>
                           <span style={{marginLeft:"5px"}} onClick={() => delSubmit(e.reviewCommentSeq)}>삭제</span>
                         </div>
                       </div>
                       { revStatus === e.reviewCommentSeq ? 
                       <div style={{width:"100%"}}>
-                        <input type="text" style={{width:"80%",height:"30px",fontSize:"14px",marginTop:"5px",paddingLeft:"10px",border:"1px solid #e3e3e3"}} value={revData} onChange={onChangeRevInput}/>
+                        <input type="text" style={{width:"80%",height:"30px",fontSize:"14px",marginTop:"5px",paddingLeft:"10px",border:"1px solid #e3e3e3"}} 
+                          value={revData} 
+                          onChange={onChangeRevInput} 
+                          onKeyUp={(e:any) => {if (e.keyCode ===13) {revSubmit(e.reviewCommentSeq)
+                        }}}/>
                         <div style={{width:"80%",padding:"5px 10px 0px 5px",fontSize:"14px",color:"gray",textAlign:"right"}}>
-                          <span onClick={() => revSubmit(e.reviewCommentSeq)}>등록</span><span onClick={cancelRev} style={{marginLeft:"10px"}}>취소</span>
+                          <span  onClick={() => revSubmit(e.reviewCommentSeq)}>등록</span><span onClick={cancelRev} style={{marginLeft:"10px"}}>취소</span>
                         </div>
                         
                       </div>: 
@@ -205,11 +209,12 @@ const NestedList = ({replyList,reviewSeq}:any) => {
                     
                   )
                 })}
+                 {/* onKeyUp={(e:any) => {if (e.key === 13) {console.log('???'); commentSubmit()}}} */}
                 <div className='inputBox'>
-                  <input type="text" placeholder='댓글을 작성해주세요' onClick={() => setInputOpen(true)} onChange={onChangeInput} value={inputData}/>
+                  <input type="text" placeholder='댓글을 작성해주세요' onClick={() => setInputOpen(true)} onChange={onChangeInput} value={inputData} onKeyUp={(e:any) => {if (e.keyCode ===13) {commentSubmit()}}}/>
                   {inputOpen ? 
                     <div className='buttons'>
-                      <div className='btn1' onClick={commentSubmit}>확인</div>
+                      <div className='btn1'  onClick={commentSubmit}>확인</div>
                       <div className='btn2'onClick={() => {setInputOpen(false); setInputData('')}}>취소</div>
                     </div>
                   : null}

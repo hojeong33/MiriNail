@@ -6,7 +6,8 @@ import { nftFilter, page, page2 } from "../../store/atoms";
 import { fetchDesigns } from "../../store/api";
 import { useQuery } from "react-query";
 
-const Paginations = () => {
+const Paginations = ({page}:any) => {
+  console.log(page)
   const [mypage,setMyPage] = useRecoilState(nftFilter)
   // const {isLoading, data } = useQuery(["nfts",mypage], fetchDesigns)
 
@@ -15,18 +16,21 @@ const Paginations = () => {
     await setMyPage({...mypage,page:pages})   
   };
   
+  // const wholePage = () => {
+  //   return Math.ceil(page/12)
+  // }
 
   return (
     <>
       <Stack spacing={2} className="dd">
-        <Pagination count={5} shape="rounded" onChange={onPageChange}/>
+        <Pagination count={page === 0 ? 1 : Math.ceil(page/12)} shape="rounded" onChange={onPageChange}/>
         {/* <Pagination count={5} variant="outlined" shape="rounded" /> */}
       </Stack>
     </>
   );
 };
 
-const Paginations2 = () => {
+const Paginations2 = ({page}:any) => {
   const [mypage,setMyPage] = useRecoilState(page2)
   
   const onPageChange = async(e: any, pages: number) => {
@@ -36,7 +40,7 @@ const Paginations2 = () => {
   return (
     <>
       <Stack spacing={2} className="dd">
-        <Pagination count={5} variant="outlined" shape="rounded" onChange={onPageChange}/>
+        <Pagination count={page} variant="outlined" shape="rounded" onChange={onPageChange}/>
       </Stack>
     </>
   );

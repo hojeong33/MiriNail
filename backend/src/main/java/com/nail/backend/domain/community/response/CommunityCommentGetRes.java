@@ -18,6 +18,7 @@ public class CommunityCommentGetRes {
 
     private Long communityCommentSeq;
     private boolean communityCommentIsDelete;
+    private boolean communityCommentLayerExist;
 
     private Long userSeq;
     private String userNickname;
@@ -26,6 +27,7 @@ public class CommunityCommentGetRes {
     private String communityCommentDesc;
     private Long communityGroupNum;
     private int communityCommentLayer;
+    private int communityCommentLayerCnt;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime communityCommentRegedAt;

@@ -36,7 +36,8 @@ const Wrapper = styled.div`
       line-height: 80px;
       text-align: center;
       color: #3d3c3a;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: "Playfair Display", serif;
 
       ::before {
         content: "";

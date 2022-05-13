@@ -13,7 +13,7 @@ import OneOneOneRevise from './OneOnOneRevise'
 
 const Wrapper = styled.div`
   margin-top : 100px;
-  
+  // min-height :700px;
 
   .table {
     margin-top : 60px;
@@ -43,10 +43,11 @@ const Wrapper = styled.div`
   .box {
     display: flex;
     justify-content : space-between;
-    margin : 0px 5px;
+    margin : 10px 5px;
     .boxLeft .btn {
       background-color :rgb(61, 60, 58);
       color:white;
+      padding : 5px 10px 5px 10px;
       
     }
   }
@@ -215,7 +216,7 @@ const InquiryTable = () => {
   
   const writerId = useRecoilValue(designerId)
   console.log(params)
-  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<IQnaInquiry[]>(['inquiry',params,mypage], inquiryList)
+  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<any>(['inquiry',params,mypage], inquiryList)
   const myId = Number(sessionStorage.getItem('userSeq'))
   useEffect(() => {
     setMyPage(1)
@@ -426,7 +427,7 @@ const InquiryTable = () => {
             <td colSpan={6}>ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</td>
           </tr>
         </tbody> */}
-        {InquiryData?.map((e:any) =>
+        {InquiryData?.data.content.map((e:any) =>
         <tbody key={e.qnaSeq}>
             <tr>
               <td>{e.qnaSeq}</td>
@@ -470,13 +471,11 @@ const InquiryTable = () => {
       </table>
       <div className="box">
         <div className="boxLeft">
-          <div className="btn">
-            <OneOneOneWrite />
-          </div>
+          {writerId !== myId ? <div className="btn"><OneOneOneWrite /></div> : null}
         </div>
         <div className="boxRight">
-          <div >
-            <Paginations2 />
+          <div>
+            <Paginations2 page={InquiryData ? InquiryData.data.totalPages : 1}/>
           </div>
         </div>
       </div>

@@ -2,9 +2,9 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ItemCard from "../../Cards/CaptureCard";
+import styled from "styled-components";
 import ModalTest from "../../Community/Modal";
-
+// import { convertImgToThumnail } from "../../Commons/functions";
 interface CommunityImgProp {
   communityImgSeq: number;
   communityImgUrl: string;
@@ -13,6 +13,13 @@ interface CommunityContentProps {
   communityImg: CommunityImgProp[];
   communitySeq: number;
 }
+const CustomImageListItem = styled(ImageListItem)`
+  .MuiImageListItem-img {
+    height: 160px;
+    width: 160px;
+    cursor: pointer;
+  }
+`;
 const CommunityContent = () => {
   const [contents, setContens] = useState<CommunityContentProps[]>([]);
   const [modalState, setModalState] = useState(false);
@@ -43,12 +50,12 @@ const CommunityContent = () => {
   return (
     <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
       <ImageList
-        sx={{ width: 800, height: 630, overflowY: "hidden" }}
+        sx={{ width: 820, height: 630, overflowY: "hidden" }}
         cols={5}
-        rowHeight={50}
+        rowHeight={160}
       >
         {contents.map((item, idx) => (
-          <ImageListItem key={idx}>
+          <CustomImageListItem key={idx}>
             <img
               src={item.communityImg[0].communityImgUrl}
               onClick={() => {
@@ -56,7 +63,7 @@ const CommunityContent = () => {
                 setCurCommunitySeq(item.communitySeq);
               }}
             />
-          </ImageListItem>
+          </CustomImageListItem>
         ))}
         {modalState && (
           <ModalTest

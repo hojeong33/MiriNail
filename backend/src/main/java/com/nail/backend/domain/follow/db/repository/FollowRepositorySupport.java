@@ -12,6 +12,8 @@ import com.nail.backend.domain.user.db.repository.UserRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +41,7 @@ public class FollowRepositorySupport {
 
     QDesignerInfo qDesignerInfo = QDesignerInfo.designerInfo;
 
-    public List<User> FollowerList(Long designerSeq, Pageable pageable) {
+    public Page<User> FollowerList(Long designerSeq, Pageable pageable) {
 
         List<User> userList = jpaQueryFactory.select(qUser)
                 .from(qUser)
@@ -52,11 +54,11 @@ public class FollowRepositorySupport {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return userList;
+        return new PageImpl<>(userList, pageable, userList.size());
 
     }
 
-    public List<DesignerInfo> FolloweeList(Long userSeq, Pageable pageable) {
+    public Page<DesignerInfo> FolloweeList(Long userSeq, Pageable pageable) {
 
         List<DesignerInfo> designerInfoList = jpaQueryFactory.select(qDesignerInfo)
                 .from(qDesignerInfo)
@@ -69,7 +71,7 @@ public class FollowRepositorySupport {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return designerInfoList;
+        return new PageImpl<>(designerInfoList, pageable, designerInfoList.size());
     }
 
     public Follow followRegister(Long followeeId, String userId) {

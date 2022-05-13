@@ -22,7 +22,8 @@ import Myreview from "./components/Mypage/Myreview";
 import Myask from "./components/Mypage/Myask";
 import FollowingDesigner from "./components/Mypage/FollowingDesigner";
 import MyReservation from "./components/Mypage/MyReservation";
-import Test from "./components/Commons/Test";
+// import Test from "./components/Commons/Test";
+import Test from "./components/Community/test";
 import DesignerPage from "./routes/Designerpage/Designerpage";
 import New from "./components/Designerpage/New";
 import Introduction from "./components/Designerpage/Introduction";
@@ -49,6 +50,12 @@ import ApplyList from "./components/Admin/ApplyList";
 import UpdateImg from "./components/Designerpage/UpdateProfileImg";
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateCommunity from "./routes/Community/UpdateCommunity";
+import AR from "./routes/AR/AR";
+import Search from "./routes/Search/Search";
+import Event from "./routes/EventPage/Event";
+import Sample1 from "./components/EventPage/EventDetail/Sample1";
+import Sample2 from "./components/EventPage/EventDetail/Sample2";
+import Sample3 from "./components/EventPage/EventDetail/Sample3";
 
 function App() {
   return (
@@ -99,6 +106,7 @@ function App() {
           </Route>
           <Route path="/community" element={<Community />} />
           <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/ar" element={<AR />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/nft" element={<NFTList />} />
           <Route path="/nft/:id" element={<NFTDetail />} />
@@ -110,10 +118,15 @@ function App() {
           <Route path="/community/create" element={<CreateCommunity />} />
           <Route path="/community/update" element={<UpdateCommunity />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
+          <Route path="/search/:searchvalue" element={<Search />} />
+          <Route path="/event" element={<Event />} />
+          <Route path="/event/1" element={<Sample1 />} />
+          <Route path="/event/2" element={<Sample2 />} />
+          <Route path="/event/3" element={<Sample3 />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <TopButton />
-        {/* <Footer /> */}
+        <Footer />
       </BrowserRouter>
     </>
   );

@@ -1,5 +1,7 @@
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 const BestNailTitle = () => {
+  const navigate = useNavigate();
   return (
     <div style={{ margin: "20PX" }}>
       <Typography variant="h3">BEST</Typography>
@@ -11,7 +13,9 @@ const BestNailTitle = () => {
           padding: "4px 15px",
         }}
       >
-        <Typography variant="button">VIEW MORE</Typography>
+        <Typography variant="button" onClick={() => navigate("/nft")}>
+          VIEW MORE
+        </Typography>
       </button>
     </div>
   );

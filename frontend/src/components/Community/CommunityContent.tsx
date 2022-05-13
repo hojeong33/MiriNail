@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import CommunityImgList from "./CommunityImgList";
+import CommunityImgList from "./CommunityImgList2";
 import axios from "axios";
 
 const CommunityContent = () => {
@@ -24,12 +24,13 @@ const CommunityContent = () => {
           style={{
             border: "0.1rem solid",
             marginBottom: "50px",
+            padding: "5px 0",
           }}
           onClick={() => {
             navigate("/community/create");
           }}
         >
-          <Typography variant="button">작성하기</Typography>
+          <div>작성하기</div>
         </button>
       </div>
       <CommunityImgList></CommunityImgList>

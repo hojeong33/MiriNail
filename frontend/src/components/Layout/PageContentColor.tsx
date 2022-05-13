@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CirclePicker, GithubPicker } from "react-color";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { nftFilter } from "../../store/atoms";
+import { nftFilter, pagenation } from "../../store/atoms";
 import NFTItems from "./NFTItems";
 import { Paginations } from "./Paginations";
 
@@ -41,15 +41,14 @@ const MainFrame = styled.div`
 
         .TypeFilter {
           .rows {
-            display:flex;
-            justify-content:space-between;
-            width:120px;
-            margin-top:15px;
+            display: flex;
+            justify-content: space-between;
+            width: 120px;
+            margin-top: 15px;
             div {
-              cursor : pointer
+              cursor: pointer;
             }
           }
-          
         }
 
         .OrderFilter {
@@ -69,10 +68,10 @@ const MainFrame = styled.div`
             opacity: 1;
           }
           .CheckBox {
-            display:block;
-            font-size:14px; 
-            color:#3D3C3A; 
-            margin-top :15px;
+            display: block;
+            font-size: 14px;
+            color: #3d3c3a;
+            margin-top: 15px;
             label {
               margin-left: 7px;
             }
@@ -88,16 +87,16 @@ const MainFrame = styled.div`
         border-left: 1px solid #d2d2d0;
         padding-bottom: 160px;
         text-align: center;
-        display:flex;
-        flex-direction : column;
+        display: flex;
+        flex-direction: column;
         .pagination {
-          margin : 0 auto;
+          margin: 0 auto;
         }
       }
     }
   }
   @media screen and (max-width: 1023px) {
-    width :100%;
+    width: 100%;
     .MainPadding {
       .ItemList {
         padding-left: 0px;
@@ -110,24 +109,23 @@ const MainFrame = styled.div`
           padding-top: 30px;
           text-align: left;
           .TypeFilter {
-            display : flex;
-            margin-top : 15px;
+            display: flex;
+            margin-top: 15px;
             .filterName {
-              position:absolute;
-              top:-20px;
+              position: absolute;
+              top: -20px;
             }
             .rows {
-              display:flex;
+              display: flex;
               // justifyContent:space-between;
               // width:120px;
-              marginTop:15px;
-              margin-right:15px;
+              margintop: 15px;
+              margin-right: 15px;
             }
           }
           .OrderFilter {
-            display:none;
+            display: none;
           }
-          
         }
 
         .RightBox {
@@ -143,21 +141,18 @@ const MainFrame = styled.div`
 `;
 
 const PageContentColor = () => {
-  const [myFilter,setMyFilter] = useRecoilState(nftFilter)
-
+  const [myFilter, setMyFilter] = useRecoilState(nftFilter);
+  const [defaultCheck, setDefaultCheck] = useState(true);
+  const [totalCount,setTotalCount] = useRecoilState(pagenation)
 
   useEffect(() => {
-    console.log(myFilter)
-  },[myFilter])
+    console.log(myFilter);
+  }, [myFilter]);
 
   const onCheckbox = async (e: any) => {
-    const checkboxes: any = document.getElementsByName("cb");
-    for await (const box of checkboxes) {
-      console.log(box);
-      box.checked = false;
-    }
-    e.target.checked = true;
-    setMyFilter({...myFilter,sort:e.target.value});
+    setDefaultCheck((prev) => !prev);
+
+    setMyFilter({ ...myFilter, sort: e.target.value });
   };
   return (
     <>
@@ -168,35 +163,155 @@ const PageContentColor = () => {
               <div className="LeftBox">
                 <div className="TypeFilter">
                   <div className="filterName">색상 필터</div>
-                  <div className="rows" >
-                    <div style={{backgroundColor:"red", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'red'})}></div>
-                    <div style={{backgroundColor:"orange", width:"33px",height:"30px"}} onClick={() =>setMyFilter({...myFilter,color:'orange'})}></div>
-                    <div style={{backgroundColor:"yellow", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'yellow'})}></div>
+                  <div className="rows">
+                    <div
+                      style={{
+                        backgroundColor: "red",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() => setMyFilter({ ...myFilter, color: "red" })}
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "orange",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "orange" })
+                      }
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "yellow",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "yellow" })
+                      }
+                    ></div>
                   </div>
-                  <div className="rows" >
-                    <div style={{backgroundColor:"green", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'green'})}></div>
-                    <div style={{backgroundColor:"blue", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'blue'})}></div>
-                    <div style={{backgroundColor:"navy", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'navy'})}></div>
+                  <div className="rows">
+                    <div
+                      style={{
+                        backgroundColor: "green",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "green" })
+                      }
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "blue",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "blue" })
+                      }
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "navy",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "navy" })
+                      }
+                    ></div>
                   </div>
-                  <div className="rows" >
-                    <div style={{backgroundColor:"purple", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'purple'})}></div>
-                    <div style={{backgroundColor:"skyblue", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'skyblue'})}></div>
-                    <div style={{backgroundColor:"pink", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'pink'})}></div>
+                  <div className="rows">
+                    <div
+                      style={{
+                        backgroundColor: "purple",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "purple" })
+                      }
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "skyblue",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "skyblue" })
+                      }
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "pink",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "pink" })
+                      }
+                    ></div>
                   </div>
-                  <div className="rows" >
-                    <div style={{backgroundColor:"gold", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'gold'})}></div>
-                    <div style={{backgroundColor:"silver", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'silver'})}></div>
-                    <div style={{backgroundColor:"brown", width:"33px",height:"30px"}} onClick={() => setMyFilter({...myFilter,color:'brown'})}></div>
+                  <div className="rows">
+                    <div
+                      style={{
+                        backgroundColor: "gold",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "gold" })
+                      }
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "silver",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "silver" })
+                      }
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: "brown",
+                        width: "33px",
+                        height: "30px",
+                      }}
+                      onClick={() =>
+                        setMyFilter({ ...myFilter, color: "brown" })
+                      }
+                    ></div>
                   </div>
                 </div>
                 <div className="OrderFilter">
                   <a>정렬</a>
                   <div className="CheckBox">
-                    <input type="checkbox" name="cb" id="cb1" onChange={onCheckbox} value=""/>
+                    <input
+                      type="checkbox"
+                      name="cb"
+                      id="cb1"
+                      onChange={onCheckbox}
+                      value=""
+                      checked={defaultCheck}
+                    />
                     <label htmlFor="b1">최신순</label>
                   </div>
                   <div className="CheckBox">
-                    <input type="checkbox" name="cb" id="cb2" onChange={onCheckbox} value="like"/>
+                    <input
+                      type="checkbox"
+                      name="cb"
+                      id="cb2"
+                      onChange={onCheckbox}
+                      value="like"
+                      checked={!defaultCheck}
+                    />
                     <label htmlFor="b2">인기도순</label>
                   </div>
                 </div>
@@ -204,10 +319,9 @@ const PageContentColor = () => {
               <div className="RightBox">
                 <NFTItems />
                 <div className="pagination">
-                  <Paginations />
+                  <Paginations page={totalCount}/>
                 </div>
               </div>
-              
             </div>
           </div>
         </MainFrame>

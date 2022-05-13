@@ -80,3 +80,28 @@ export const imgProp = atom({
   effects_UNSTABLE : [persistAtom],
   }
 )
+
+export const bestNailart = atom({
+  key : "bestNailart",
+  default : {
+    category : "type",
+    color : "",
+    type : "",
+    sort : "like",
+    page : 1,
+    size : 4,
+  },
+
+})
+
+export const pagenation = atom({
+  key : "pagenation",
+  default : 0,
+  // effects_UNSTABLE : [persistAtom],
+})
+
+export const pagenationInquiry = atom({
+  key : "pagenationInquiry",
+  default : 0,
+  // effects_UNSTABLE : [persistAtom],
+})

@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class FollowController {
             @ApiResponse(code = 201, message = "팔로우 조회 성공"),
             @ApiResponse(code = 404, message = "팔로우 조회 실패")
     })
-    public ResponseEntity<List<DesignerInfo>> getFollowerList(@PathVariable(value = "userSeq") Long userSeq,
+    public ResponseEntity<Page<DesignerInfo>> getFollowerList(@PathVariable(value = "userSeq") Long userSeq,
                                                               @PageableDefault(size = 10, page = 0) Pageable pageable){
 
         // 0. 토큰으로부터 내 userId를 받아온다.
@@ -42,7 +43,7 @@ public class FollowController {
 
         log.info("getFollowerList - 호출");
 
-        List<DesignerInfo> follow = followService.getFolloweeList(userSeq, pageable);
+        Page<DesignerInfo> follow = followService.getFolloweeList(userSeq, pageable);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);
@@ -58,7 +59,7 @@ public class FollowController {
             @ApiResponse(code = 201, message = "팔로우 조회 성공"),
             @ApiResponse(code = 404, message = "팔로우 조회 실패")
     })
-    public ResponseEntity<List<User>> getFolloweeList(@PathVariable(value = "userSeq") Long userSeq,
+    public ResponseEntity<Page<User>> getFolloweeList(@PathVariable(value = "userSeq") Long userSeq,
                                                       @PageableDefault(size = 10, page = 0) Pageable pageable){
 
         // 0. 토큰으로부터 내 userId를 받아온다.
@@ -66,7 +67,7 @@ public class FollowController {
 
         log.info("getFolloweeList - 호출");
 
-        List<User> follow = followService.getFollowerList(userSeq, pageable);
+        Page<User> follow = followService.getFollowerList(userSeq, pageable);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(follow);

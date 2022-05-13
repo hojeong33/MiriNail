@@ -19,6 +19,8 @@ public class NailartListGetRes {
 
     private String designerNickname;
 
+    private String designerShopName;
+
     private long tokenId;
 
     private String nailartName;
@@ -42,4 +44,8 @@ public class NailartListGetRes {
     private Timestamp nailartRegedAt;
 
     private float nailartRating;
+
+    private int totalCount;
+
+    private boolean isFavorited;
 }

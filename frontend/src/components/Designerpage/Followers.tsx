@@ -1,14 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useQuery } from "react-query";
 import { getFollowers } from "../../store/apis/follow";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
+import { convertImgToThumnail } from "../Commons/functions";
 
 const Wrapper = styled.div`
   width: 768px;
@@ -17,7 +18,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  .Box {
+    min-height: 30vh;
+  }
   .cards {
     width: 100%;
     /* border: 1px solid black; */
@@ -93,25 +96,32 @@ interface IState {
     shop: string;
     imgurl: string;
     follower: number;
-  }
+  };
 }
 
 const FollowingDesigner = () => {
-  const {userSeq} = useParams();
+  const { userSeq } = useParams();
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
-  }
+    console.log(event);
+    console.log(page);
+    setPage(page);
+  };
 
-  const { data:followersData, isLoading:followersLoading } = useQuery<any, Error>(
-    ["followers"],
+  const { data: followersData, isLoading: followersLoading } = useQuery<
+    any,
+    Error
+  >(
+    ["followers", page],
     async () => {
-      return await getFollowers(Number(userSeq));
+      return await getFollowers(Number(userSeq), page, 10);
     },
     {
       onSuccess: (res) => {
         console.log(res);
+        setLastPage(res.totalPages)
       },
       onError: (err: any) => console.log(err),
     }
@@ -124,27 +134,42 @@ const FollowingDesigner = () => {
           <TailSpin height={50} width={50} color="gray" />
         </LoadingBox>
       ) : (
-        <div className="cards">
-          {followersData?.map((follower: any, idx: any) => {
-            return (
-              <Link to={`/mypage/${follower.userSeq}`}>
-                <div className="card" key={idx}>
-                  <div className="cardleft">
-                    <img src={follower.userProfileImg} alt="" />
-                  </div>
-                  <div className="cardright">
-                    <div className="cardright-top">
-                      <div className="name">{follower.userNickname}</div>
-                      <div className="shop">{follower.userEmail}</div>
+        <div className="Box">
+          {followersData.totalElements === 0 ? (
+            <div>팔로워가 없습니다</div>
+          ) : (
+            <div className="cards">
+              {followersData.content?.map((follower: any, idx: any) => {
+                return (
+                  <Link to={`/mypage/${follower.userSeq}`}>
+                    <div className="card" key={idx}>
+                      <div className="cardleft">
+                        <img src={follower.userProfileImg ? convertImgToThumnail(follower.userProfileImg): "/assets/images/default_proflie.png"} alt="" />
+                      </div>
+                      <div className="cardright">
+                        <div className="cardright-top">
+                          <div className="name">{follower.userNickname}</div>
+                          <div className="shop">{follower.userEmail}</div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
+          <div className="pagination">
+            <Stack spacing={2}>
+              <Pagination
+                count={lastPage}
+                shape="rounded"
+                onChange={onchangePage}
+              />
+            </Stack>
+          </div>
     </Wrapper>
   );
-}
-export default FollowingDesigner
+};
+export default FollowingDesigner;
