@@ -83,6 +83,16 @@ public class NailartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // Nailart nft 등록
+    @PutMapping("/nft")
+    public ResponseEntity<BaseResponseBody> nailartNftUpdate(@RequestParam long nailartSeq, @RequestParam String nailartNft) {
+        if (nailartService.nailartNftUpdate(nailartSeq, nailartNft)) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This nailartSeq dosen't exist."));
+        }
+    }
+
     // Nailart available update
     @PutMapping("/{nailartSeq}")
     public ResponseEntity<BaseResponseBody> nailartAvailableUpdate(@PathVariable long nailartSeq){

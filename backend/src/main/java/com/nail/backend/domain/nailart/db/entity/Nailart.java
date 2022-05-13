@@ -33,6 +33,9 @@ public class Nailart {
     @Column(name = "token_id")
     private long tokenId;
 
+    @Column(name = "nailart_nft")
+    private String nailartNft;
+
     @Column(name = "nailart_name")
     private String nailartName;
 
