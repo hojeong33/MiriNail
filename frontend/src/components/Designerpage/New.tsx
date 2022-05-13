@@ -108,7 +108,7 @@ function New() {
         });
       })}
       {lastState ? (
-        <div className="nonews">불러올 새소식이 없습니다.</div>
+        null
       ) : (
         <button className="addFeedBtn" onClick={() => query.fetchNextPage()}>
           더 보기

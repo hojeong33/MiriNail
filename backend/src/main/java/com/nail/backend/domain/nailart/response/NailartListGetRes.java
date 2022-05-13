@@ -19,6 +19,8 @@ public class NailartListGetRes {
 
     private String designerNickname;
 
+    private String designerShopName;
+
     private long tokenId;
 
     private String nailartName;

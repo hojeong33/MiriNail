@@ -36,6 +36,9 @@ const Wrapper = styled.div`
     border: 1px solid #e0e0e0;
     .infocontents {
       margin: 20px;
+      .tagcontent {
+        text-align: left;
+      }
     }
     .infocontent {
       margin-top: 10px;
@@ -45,7 +48,7 @@ const Wrapper = styled.div`
         text-align: left;
         font-size: 20px;
         font-weight: 500;
-        width: 100px;
+        width: 120px;
       }
     }
   }
@@ -67,6 +70,7 @@ const Wrapper = styled.div`
       white-space: pre-wrap;
       margin: 20px;
       font-size: 18px;
+      text-align: left;
     }
   }
 `;
@@ -99,7 +103,7 @@ function Introduction() {
       <div className="infobox">
         <div className="infocontents">
           <div className="infocontent">
-            <div className="tag">샵 이름</div>
+            <div className="tag">디자이너 명</div>
             <div className="tagcontent">
               {designer.designerInfo.designerShopName}
             </div>

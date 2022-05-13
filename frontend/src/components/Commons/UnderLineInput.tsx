@@ -325,7 +325,7 @@ const Input = (props: any) => {
               />
             </div>
             <div className="colorBoxRight">
-              <div style={{marginBottom:"20px"}}>선택 색상({color.toUpperCase()})</div>
+              <div style={{marginBottom:"20px"}}>선택 색상({color?.toUpperCase()})</div>
               <div className="currentColor" style={{backgroundColor:`${color}`}}></div>
 
             </div>

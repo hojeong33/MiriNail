@@ -50,9 +50,11 @@ public class AuthenticationController {
         // 디자이너 정보는 artistRegisterPostReq에, 사업자 등록증은 productFile, 포트폴리오는 portfolioFile에 담아온다.
         // 등록 정보를 DesignerApplication 테이블에 저장한다.
         // 저장 결과 성공적이면 201, 중간에 다른 정보들이 없으면 404
-
         log.info("artistRegister - 호출");
+        System.out.println(artistRegisterPostReq.getDesignerAddress() + " " +artistRegisterPostReq.getDesignerTel() + " " + artistRegisterPostReq.getDesignerShopName());
+        System.out.println(registrationFile+ " " + principal);
         DesignerApplication designerApplication = authenticationService.artistRegister(artistRegisterPostReq,registrationFile,principal.getName());
+        System.out.println(designerApplication);
         if(!designerApplication.equals(null)) {
             return ResponseEntity.status(201).body(BaseResponseBody.of(201, "등록 성공"));
         }

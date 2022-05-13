@@ -10,6 +10,7 @@ import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -136,39 +137,13 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
-    public List<NailartListGetRes> anotherNailart(long designerSeq) {
-        List<NailartListGetRes> nailartList = new ArrayList<>();
-        List<Nailart> nailart = nailartRepository.findAllByDesignerSeq(designerSeq);
-        int count = 0;
-        for (Nailart art: nailart) {
-            if(count > 9) break;
-            NailartListGetRes tmp = new NailartListGetRes();
-            tmp.setNailartSeq(art.getNailartSeq());
-            tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
-            tmp.setDesignerSeq(art.getDesignerSeq());
-            tmp.setTokenId(art.getTokenId());
-            tmp.setNailartName(art.getNailartName());
-            tmp.setNailartDesc(art.getNailartDesc());
-            tmp.setNailartColor(art.getNailartColor());
-            tmp.setNailartDetailColor(art.getNailartDetailColor());
-            tmp.setNailartWeather(art.getNailartWeather());
-            tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
-            tmp.setNailartType(art.getNailartType());
-//            tmp.setNailartAvailable(art.get);
-            tmp.setNailartPrice(art.getNailartPrice());
-            tmp.setNailartRegedAt(art.getNailartRegedAt());
-            tmp.setNailartRating(art.getNailartRating());
-            nailartList.add(tmp);
-            count ++;
-        }
-        return nailartList;
+    public List<NailartListGetRes> otherNailart(long designerSeq, long nailartSeq) {
+        return nailartRepositorySupport.getOtherNailartByDesignerSeq(designerSeq, nailartSeq);
     }
 
     @Override
-    public Page<Nailart> getdesignerNailartList(long designerSeq, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
-        Page<Nailart> art = nailartRepository.findByDesignerSeq(designerSeq, pageRequest);
-        return art;
+    public DesignerNailartListRes getdesignerNailartList(long designerSeq, int page, int size) {
+        return nailartRepositorySupport.getdesignerNailartList(designerSeq, page, size);
     }
 
     @Override
@@ -342,8 +317,8 @@ public class NailartServiceImpl implements NailartService {
 
     @Override
     @Transactional
-    public boolean nailartRemove(long nailartSeq) {
-        return nailartRepositorySupport.deleteNailartByNailartSeq(nailartSeq);
+    public boolean nailartAvailableUpdate(long nailartSeq) {
+        return nailartRepositorySupport.updateNailartAvailableByNailartSeq(nailartSeq);
     }
 
 

@@ -9,6 +9,7 @@ import { getFollowers } from "../../store/apis/follow";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
+import { convertImgToThumnail } from "../Commons/functions";
 
 const Wrapper = styled.div`
   width: 768px;
@@ -143,7 +144,7 @@ const FollowingDesigner = () => {
                   <Link to={`/mypage/${follower.userSeq}`}>
                     <div className="card" key={idx}>
                       <div className="cardleft">
-                        <img src={follower.userProfileImg} alt="" />
+                        <img src={follower.userProfileImg ? convertImgToThumnail(follower.userProfileImg): "/assets/images/default_proflie.png"} alt="" />
                       </div>
                       <div className="cardright">
                         <div className="cardright-top">
