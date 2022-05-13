@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import NFTItems from "../Layout/NFTItems";
 // import Paginations from '../Layout/Paginations'
@@ -118,6 +118,7 @@ const Content = () => {
   const [hisTog, setHisTog] = useState<boolean>(false);
   const location = useLocation();
   const temp = location.pathname.split("/");
+  const { userSeq } = useParams();
   console.log(temp[temp.length - 1]);
   return (
     <>
@@ -204,26 +205,18 @@ const Content = () => {
                   >
                     팔로우한 디자이너
                   </Link>
-                  <Link
-                    to="apply"
-                    className={`${
-                      temp[temp.length - 1] === "apply" ? "selected" : ""
-                    }`}
-                  >
-                    디자이너 신청
-                  </Link>
+                  {userSeq === sessionStorage.getItem("userSeq") &&
+                    sessionStorage.getItem("userRole") === "ROLE_USER" && (
+                      <Link
+                        to="apply"
+                        className={`${
+                          temp[temp.length - 1] === "apply" ? "selected" : ""
+                        }`}
+                      >
+                        디자이너 신청
+                      </Link>
+                    )}
                 </div>
-                {/* <div className="OrderFilter">
-                  <a>정렬</a>
-                  <div className="CheckBox">
-                    <input type="checkbox" id="cb1" />
-                    <label htmlFor="cb1">최신순</label>
-                  </div>
-                  <div className="CheckBox">
-                    <input type="checkbox" id="cb2" />
-                    <label htmlFor="cb2">인기도순</label>
-                  </div>
-                </div> */}
               </div>
               <div className="RightBox">
                 <Outlet />
