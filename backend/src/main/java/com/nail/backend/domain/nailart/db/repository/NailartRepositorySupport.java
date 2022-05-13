@@ -123,6 +123,22 @@ public class NailartRepositorySupport {
         });
         return result;
     }
+    public List<Nailart> getdesignerNailartList(long designerSeq, int page, int size){
+        List<Nailart> result = new ArrayList<>();
+        List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .orderBy(qNailart.nailartSeq.desc())
+                .where(qNailart.nailartAvailable.eq(false))
+                .limit(size)
+                .offset((page-1)*size)
+                .fetch();
+        nailartSeq.forEach( num -> {
+            Nailart tmp = nailartRepository.findByNailartSeq(num);
+            result.add(tmp);
+        });
+
+        return result;
+    }
 
    // 색상 x, 타입 x, 최신 순
     public List<NailartListGetRes> getListbyLatest(int page, int size){

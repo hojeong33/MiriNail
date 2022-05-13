@@ -137,15 +137,12 @@ public class NailartServiceImpl implements NailartService {
 
     @Override
     public List<NailartListGetRes> otherNailart(long designerSeq, long nailartSeq) {
-
         return nailartRepositorySupport.getOtherNailartByDesignerSeq(designerSeq, nailartSeq);
     }
 
     @Override
-    public Page<Nailart> getdesignerNailartList(long designerSeq, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
-        Page<Nailart> art = nailartRepository.findByDesignerSeq(designerSeq, pageRequest);
-        return art;
+    public List<Nailart> getdesignerNailartList(long designerSeq, int page, int size) {
+        return nailartRepositorySupport.getdesignerNailartList(designerSeq, page, size);
     }
 
     @Override

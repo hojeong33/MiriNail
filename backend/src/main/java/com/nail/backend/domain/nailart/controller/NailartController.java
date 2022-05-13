@@ -60,7 +60,7 @@ public class NailartController {
     }
 
     @GetMapping("/designer")
-    public Page<Nailart> nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
+    public List<Nailart> nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
         return nailartService.getdesignerNailartList(designerSeq, page, size);
     }
 

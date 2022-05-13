@@ -20,7 +20,7 @@ public interface NailartService {
     List<NailartListGetRes> otherNailart(long designerSeq, long nailartSeq);
 
     // 디자이너의 작품 조회
-    Page<Nailart> getdesignerNailartList(long designerSeq, int page, int size);
+    List<Nailart> getdesignerNailartList(long designerSeq, int page, int size);
 
     // 네일 아트 상세 조회
     NailartDetailGetRes nailartDetail(long nailartSeq);
