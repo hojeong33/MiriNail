@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "react-query";
 import { getBookByCalendar, postBook } from "../../store/apis/book";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDesignerNailart } from "../../store/apis/nailart";
+import { convertImgToThumnail } from "../Commons/functions";
 
 const Wrapper = styled.div`
   display: flex;
@@ -563,7 +564,7 @@ const CreateReservation = () => {
                     <RadioButtonUncheckedIcon />
                   )}
                   <div className="thumbnailurl">
-                    <img src={item.nailartThumbnailUrl} alt="" />
+                    <img src={convertImgToThumnail(item.nailartThumbnailUrl)} alt="" />
                   </div>
                   <div className="nextimg">
                     <div className="nailname">
@@ -593,7 +594,7 @@ const CreateReservation = () => {
                     <RadioButtonUncheckedIcon />
                   )}
                   <div className="thumbnailurl">
-                    <img src={item.nailartThumbnailUrl} alt="" />
+                    <img src={convertImgToThumnail(item.nailartThumbnailUrl)} alt="" />
                   </div>
                   <div className="nextimg">
                     <div className="nailname">
@@ -622,7 +623,7 @@ const CreateReservation = () => {
                     <RadioButtonUncheckedIcon />
                   )}
                   <div className="thumbnailurl">
-                    <img src={item.nailartThumbnailUrl} alt="" />
+                    <img src={convertImgToThumnail(item.nailartThumbnailUrl)} alt="" />
                   </div>
                   <div className="nextimg">
                     <div className="nailname">
