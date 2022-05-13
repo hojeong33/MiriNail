@@ -9,6 +9,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 const StyledSlider = styled(Slider)`
+  .slick-next {
+    right: 1%;
+  }
+  .slick-prev {
+    left: 1%;
+  }
   .slick-dots {
     bottom: 10px;
   }
@@ -724,6 +730,9 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                 <input
                   type="text"
                   value={inputVal}
+                  autoFocus={true}
+                  spellCheck={false}
+                  placeholder="댓글을 입력하세요"
                   onChange={(e) => {
                     onChangeText(e.target.value);
                   }}
