@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 
 @Slf4j
@@ -57,10 +57,11 @@ public class DesignerContorller {
     public List<DesignerNewsListGetRes> designerNewsListByDesignerSeq (@RequestParam long designerSeq, @RequestParam int page, @RequestParam int size){
         return designerNewsService.designerNewsList(designerSeq, page, size);
     }
-
+//JsonProcessingException
     @ApiOperation(value = "디자이너 뉴스 작성")
     @PostMapping(value = "/news", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<BaseResponseBody> designerNewsRegister(@RequestParam("jsonList") String jsonList, @RequestPart("files") List<MultipartFile> files) throws JsonProcessingException{
+    public ResponseEntity<BaseResponseBody> designerNewsRegister(@RequestParam("jsonList") String jsonList, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws Exception{
+        System.out.println("test");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         DesignerNews designerNews = objectMapper.readValue(jsonList, new TypeReference<DesignerNews>() {});
         designerNewsService.designerNewsRegister(designerNews, files);

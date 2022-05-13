@@ -93,7 +93,7 @@ const CreateFeed = () => {
   const createFeed = useMutation<any, Error>(
     "createFeed",
     async () => {
-      const files = new FormData()
+      const files:any = new FormData()
       const data = {
         designerSeq: userSeq,
         designerNewsTitle: title,
@@ -103,6 +103,9 @@ const CreateFeed = () => {
       postImages.forEach((e) => {
         files.append("files", e);
       });
+      if (postImages.length === 0) {
+        files.append("files", "null");
+      }
       return await postNewFeed(files);
     },
     {
