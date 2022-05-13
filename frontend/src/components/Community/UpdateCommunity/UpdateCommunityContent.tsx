@@ -276,23 +276,25 @@ const UpdateCommunityContent = () => {
                   />
                 </div>
                 <div className="subTitle" style={{ marginTop: "80px" }}>
-                  글제목 수정
+                  글 제목 수정
                 </div>
                 <input
                   type="text"
                   onChange={onChangeText2}
-                  style={{ width: "100%" }}
+                  spellCheck={false}
+                  style={{ width: "100%", padding: "8px" }}
                   defaultValue={itemDetail?.communityTitle}
                 ></input>
 
                 <div className="subTitle" style={{ marginTop: "80px" }}>
-                  글내용 수정
+                  글 내용 수정
                 </div>
                 <textarea
                   name="textVal"
                   id=""
                   onChange={onChangeText}
-                  style={{ resize: "none" }}
+                  spellCheck={false}
+                  style={{ resize: "none", padding: "8px" }}
                   placeholder="10자 이상 입력해주세요."
                   defaultValue={itemDetail?.communityDesc}
                 ></textarea>

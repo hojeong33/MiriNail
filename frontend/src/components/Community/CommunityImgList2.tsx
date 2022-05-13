@@ -15,6 +15,12 @@ import image70 from "../../assets/img/sample/image70.png";
 import image68 from "../../assets/img/sample/image68.png";
 
 const StyledSlider = styled(Slider)`
+  .slick-next {
+    right: 1%;
+  }
+  .slick-prev {
+    left: 1%;
+  }
   .slick-dots {
     bottom: 10px;
   }
@@ -168,8 +174,7 @@ export default function CommunityImgList() {
     communityImg: CommunityImgProp[];
     communityTitle: string;
     communitySeq: number;
-    rows: number;
-    cols: number;
+    communityDesc: string;
   }
   interface CommunityDetailProp {
     communitySeq: number;
@@ -263,7 +268,7 @@ export default function CommunityImgList() {
         url: `http://localhost:8080/api/community`,
         params: {
           page: page,
-          size: 5,
+          size: 10,
         },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -384,12 +389,11 @@ export default function CommunityImgList() {
           setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
-          console.log(res.data.communityRegedAt, "게시글 상세 데이터");
+          console.log(res.data, "게시글 상세 데이터");
           let temp = TimeCounting(res.data.communityRegedAt, option);
           setCommunityTime(temp);
           sessionStorage.setItem("communitySeq", communitySeq.toString());
           getNowTime();
-          console.log(time, "시간");
         })
         .catch((err) => {
           console.log(err);
@@ -455,7 +459,12 @@ export default function CommunityImgList() {
     if (inputVal) {
       return (
         <div
-          style={{ color: "#0095f6", width: "100px", marginLeft: "5px" }}
+          style={{
+            color: "#0095f6",
+            width: "100px",
+            marginLeft: "5px",
+            cursor: "pointer",
+          }}
           onClick={createComment}
         >
           게시
@@ -493,97 +502,150 @@ export default function CommunityImgList() {
     <div
       style={{
         display: "flex",
-        width: "100rem",
+        justifyContent: "center",
         flexWrap: "wrap",
-        marginLeft: "11%",
-        // marginLeft: "auto",
-        marginRight: "auto",
       }}
     >
       {/* // <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}> */}
       {/* <img src={image69} style={{ width: "40rem", height: "20rem" }}></img> */}
-      {/* {itemData.map((item, idx) => {
-        return ( */}
       <div className="main-container">
         <div className="grid-container">
-          <div className="card--2x">
-            <div className="card__image">
-              <img
-                src={itemData[0].communityImg[0].communityImgUrl}
-                alt=""
-                onClick={() => {
-                  getDetail(itemData[0].communitySeq, 0);
-                }}
-              />
-              <div className="inner-content">
-                <div>{itemData[0].communityTitle}</div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card__image">
-              <img
-                src={itemData[1].communityImg[0].communityImgUrl}
-                alt=""
-                onClick={() => {
-                  getDetail(itemData[1].communitySeq, 1);
-                }}
-              />
-              <div className="inner-content">
-                <div>{itemData[1].communityTitle}</div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card__content">dfsklfjskdlfjkls</div>
-          </div>
-          <div className="card card--horizontal">
-            <div className="card__image">
-              <img
-                src={itemData[2].communityImg[0].communityImgUrl}
-                alt=""
-                onClick={() => {
-                  getDetail(itemData[2].communitySeq, 2);
-                }}
-              />
-              <div className="inner-content">
-                <div>{itemData[2].communityTitle}</div>
-              </div>
-            </div>
-          </div>
-          <div className="card card--featured card__side-by-side--m">
-            <div className="card__image">
-              <img
-                src={itemData[3].communityImg[0].communityImgUrl}
-                alt=""
-                onClick={() => {
-                  getDetail(itemData[3].communitySeq, 3);
-                }}
-              />
-              <div className="inner-content">
-                <div>{itemData[3].communityTitle}</div>
-              </div>
-              <div className="card__content padding-large--l">dsfsdfs</div>
-            </div>
-          </div>
-          <div className="card card--vertical">
-            <div className="card__image">
-              <img
-                src={itemData[4].communityImg[0].communityImgUrl}
-                alt=""
-                onClick={() => {
-                  getDetail(itemData[4].communitySeq, 4);
-                }}
-              />
-              <div className="inner-content">
-                <div>{itemData[4].communityTitle}</div>
-              </div>
-            </div>
-          </div>
+          {itemData.map((item, idx) => {
+            return (
+              <>
+                {idx % 5 == 0 && (
+                  <div
+                    className="card card--2x"
+                    onClick={() => {
+                      getDetail(item.communitySeq, idx);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="card__image">
+                      <img
+                        src={itemData[idx].communityImg[0].communityImgUrl}
+                        alt=""
+                      />
+                      <div className="inner-content">
+                        <div style={{ padding: "10px" }}>
+                          {item.communityTitle}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {idx % 5 == 1 && (
+                  <div
+                    className="card"
+                    onClick={() => {
+                      getDetail(item.communitySeq, idx);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="card__image">
+                      <img
+                        src={itemData[idx].communityImg[0].communityImgUrl}
+                        alt=""
+                      />
+                      <div
+                        className="inner-content"
+                        style={{ fontSize: "20px" }}
+                      >
+                        <div style={{ padding: "10px" }}>
+                          {item.communityTitle}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {idx % 5 == 2 && (
+                  <>
+                    <div className="card">
+                      <div className="card__content">
+                        <p>
+                          <em>
+                            Travel is fatal to prejudice, bigotry, and
+                            narrow-mindedness.
+                          </em>
+                        </p>
+                        <p>— Mark Twain</p>
+                      </div>
+                    </div>
+                    <div
+                      className="card card--horizontal"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        getDetail(item.communitySeq, idx);
+                      }}
+                    >
+                      <div className="card__image">
+                        <img
+                          src={itemData[idx].communityImg[0].communityImgUrl}
+                          alt=""
+                        />
+                        <div className="inner-content">
+                          <div style={{ padding: "10px" }}>
+                            {item.communityTitle}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {idx % 5 == 4 && (
+                  <div
+                    className="card card--featured card__side-by-side--m"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      getDetail(item.communitySeq, idx);
+                    }}
+                  >
+                    <div className="card__image">
+                      <img
+                        src={itemData[idx].communityImg[0].communityImgUrl}
+                        alt=""
+                      />
+                      <div className="inner-content">
+                        <div style={{ padding: "10px" }}>
+                          {item.communityTitle}
+                        </div>
+                      </div>
+                      <div
+                        className="card__content padding-large--l"
+                        style={{ maxWidth: "300px" }}
+                      >
+                        여기 뭐 넣을 까..?
+                        {/* {item.communityDesc} */}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {idx % 5 == 3 && (
+                  <div
+                    className="card card--vertical"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      getDetail(item.communitySeq, idx);
+                    }}
+                  >
+                    <div className="card__image">
+                      <img
+                        src={itemData[idx].communityImg[0].communityImgUrl}
+                        alt=""
+                      />
+                      <div className="inner-content">
+                        <div style={{ padding: "10px" }}>
+                          {item.communityTitle}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            );
+          })}
         </div>
       </div>
-      {/* );
-      })} */}
       <Modal
         open={modalStatus}
         onClose={handleClose}
@@ -639,7 +701,7 @@ export default function CommunityImgList() {
                       onClick={() => {
                         deleteCommunity(itemDetail.communitySeq);
                       }}
-                      style={{ marginRight: "10px" }}
+                      style={{ marginRight: "10px", color: "red" }}
                     >
                       삭제
                     </button>
@@ -719,6 +781,7 @@ export default function CommunityImgList() {
                                 {e.userNickname ===
                                   sessionStorage.getItem("userNickname") && (
                                   <button
+                                    style={{ color: "red" }}
                                     onClick={() => {
                                       deleteComment(e.communityCommentSeq);
                                     }}
@@ -767,7 +830,7 @@ export default function CommunityImgList() {
                                       toggle(e.communityCommentSeq);
                                     }}
                                   >
-                                    댓글 닫기
+                                    답글 숨기기
                                   </span>
                                 ) : (
                                   <span
@@ -777,7 +840,7 @@ export default function CommunityImgList() {
                                       toggle(e.communityCommentSeq);
                                     }}
                                   >
-                                    댓글 보기
+                                    답글 보기
                                   </span>
                                 )}
                               </div>
@@ -838,6 +901,7 @@ export default function CommunityImgList() {
                                                     "userNickname"
                                                   ) && (
                                                   <button
+                                                    style={{ color: "red" }}
                                                     onClick={() => {
                                                       deleteComment(
                                                         ele.communityCommentSeq
@@ -901,6 +965,8 @@ export default function CommunityImgList() {
                   <input
                     type="text"
                     value={inputVal}
+                    spellCheck={false}
+                    autoFocus={true}
                     onChange={(e) => {
                       onChangeText(e.target.value);
                     }}
