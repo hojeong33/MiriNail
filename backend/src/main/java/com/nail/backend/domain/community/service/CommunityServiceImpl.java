@@ -278,6 +278,10 @@ public class CommunityServiceImpl implements CommunityService{
 
         for (CommunityComment comments :communityComments) {
 
+            // 답글
+            List<CommunityComment> communityCommentLayer = communityCommentRepository.findAllByCommunityGroupNumAndCommunityCommentLayer
+                    (comments.getCommunityCommentSeq(),3);
+
             CommunityCommentGetRes comment = CommunityCommentGetRes.builder()
                     .communityCommentSeq(comments.getCommunityCommentSeq())
                     .communityCommentIsDelete(comments.isCommunityCommentIsDelete())
@@ -288,6 +292,8 @@ public class CommunityServiceImpl implements CommunityService{
                     .communityGroupNum(comments.getCommunityGroupNum())
                     .communityCommentLayer(comments.getCommunityCommentLayer())
                     .communityCommentRegedAt(comments.getCommunityCommentRegedAt())
+                    .communityCommentLayerExist(!communityCommentLayer.isEmpty())
+                    .communityCommentLayerCnt(communityCommentLayer.size())
                     .build();
 
             resCommentList.add(comment);

@@ -159,7 +159,7 @@ public class CommunityController {
     })
 
     @GetMapping("/comment/{communitySeq}")
-    public ResponseEntity<Page<CommunityCommentGetRes>> getCommunityComment(@PageableDefault(page = 0, size = 10, sort = "communityCommentSeq",  direction = Sort.Direction.DESC) Pageable pageable,
+    public ResponseEntity<Page<CommunityCommentGetRes>> getCommunityComment(@PageableDefault(page = 0, size = 10) Pageable pageable,
                                                                      @PathVariable("communitySeq") Long communitySeq) {
 
         log.info("getCommunityComment - 호출");
@@ -177,7 +177,7 @@ public class CommunityController {
     })
 
     @GetMapping("/comment/layer/{communityCommentSeq}")
-    public ResponseEntity<Page<CommunityCommentGetRes>> getCommunityCommentLayer(@PageableDefault(page = 0, size = 10, sort = "communityCommentSeq",  direction = Sort.Direction.DESC) Pageable pageable,
+    public ResponseEntity<Page<CommunityCommentGetRes>> getCommunityCommentLayer(@PageableDefault(page = 0, size = 10) Pageable pageable,
                                                                             @PathVariable("communityCommentSeq") Long communityCommentSeq) {
 
         log.info("getCommunityCommentLayer - 호출");
