@@ -10,6 +10,7 @@ import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -141,7 +142,7 @@ public class NailartServiceImpl implements NailartService {
     }
 
     @Override
-    public List<Nailart> getdesignerNailartList(long designerSeq, int page, int size) {
+    public DesignerNailartListRes getdesignerNailartList(long designerSeq, int page, int size) {
         return nailartRepositorySupport.getdesignerNailartList(designerSeq, page, size);
     }
 

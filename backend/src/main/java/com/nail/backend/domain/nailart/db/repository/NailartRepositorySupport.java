@@ -6,6 +6,7 @@ import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.favorite.db.repository.FavoriteRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.favorite.db.entity.QFavorite;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -123,8 +124,9 @@ public class NailartRepositorySupport {
         });
         return result;
     }
-    public List<Nailart> getdesignerNailartList(long designerSeq, int page, int size){
-        List<Nailart> result = new ArrayList<>();
+    public  DesignerNailartListRes getdesignerNailartList(long designerSeq, int page, int size){
+        DesignerNailartListRes result = new DesignerNailartListRes();
+        List<Nailart> list = new ArrayList<>();
         List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
                 .orderBy(qNailart.nailartSeq.desc())
@@ -132,10 +134,17 @@ public class NailartRepositorySupport {
                 .limit(size)
                 .offset((page-1)*size)
                 .fetch();
+        List<Long> totalCount = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .orderBy(qNailart.nailartSeq.desc())
+                .where(qNailart.nailartAvailable.eq(false))
+                .fetch();
         nailartSeq.forEach( num -> {
             Nailart tmp = nailartRepository.findByNailartSeq(num);
-            result.add(tmp);
+            list.add(tmp);
         });
+        result.setNailart(list);
+        result.setTotalElements(totalCount.size());
 
         return result;
     }

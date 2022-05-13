@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.nailart.service.NailartService;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -60,7 +61,7 @@ public class NailartController {
     }
 
     @GetMapping("/designer")
-    public List<Nailart> nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
+    public DesignerNailartListRes nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
         return nailartService.getdesignerNailartList(designerSeq, page, size);
     }
 
