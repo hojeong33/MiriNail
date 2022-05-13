@@ -371,7 +371,7 @@ const UpperFrame = () => {
                   <div className="designerInfo">
                     <div className="designerImg">
                       <img
-                        src="http://spnimage.edaily.co.kr/images/photo/files/NP/S/2022/02/PS22020200015.jpg"
+                        src={nailData?.designerImgUrl ? nailData?.designerImgUrl : "https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg"}
                         alt=""
                         onClick={() =>
                           navigate(`/designerpage/${nailData?.designerSeq}/new`)

@@ -471,9 +471,7 @@ const InquiryTable = () => {
       </table>
       <div className="box">
         <div className="boxLeft">
-          <div className="btn">
-            <OneOneOneWrite />
-          </div>
+          {writerId !== myId ? <div className="btn"><OneOneOneWrite /></div> : null}
         </div>
         <div className="boxRight">
           <div>

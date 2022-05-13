@@ -284,7 +284,7 @@ const PageContent = () => {
     // console.log(ipfsHash)
     // publishToken(ipfsHash)
 
-    navigate('/nft')
+    navigate(-1)
   }
 
 

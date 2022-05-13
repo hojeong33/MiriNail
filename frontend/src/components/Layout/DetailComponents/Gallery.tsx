@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 
 
 .clear {
-  min-height : 500px;
+  min-height : 700px;
   zoom : 1;
   li {
 
@@ -79,6 +79,25 @@ const Gallery = () => {
   const param = useRecoilValue(designerId);
 
   const { isLoading, data } = useQuery("otherDesign", () => otherDesign(param));
+  
+  const test = () => {
+    if (data === []) {
+      return ('아무것도 음슴')
+    }
+    return (
+      data.map((e:any,idx:any) => {
+        return (
+          <li className="ItemListType">
+            <a href="" className="ItemBox">
+              <div className="imx">
+                <img src={e.nailartThumbnailUrl} alt="" />
+              </div>
+            </a>
+          </li>
+        );
+      })
+    )
+  }
 
   return (
     <Wrapper>
@@ -87,19 +106,27 @@ const Gallery = () => {
         {/* <div className="all">전체보기</div> */}
       </div>
       <ul className="clear">
-        { isLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : data.map((e:any,idx:any) => {
-          return (
-            <li className="ItemListType">
-              <a href="" className="ItemBox">
-                <div className="imx">
-                  <img src={e.nailartThumbnailUrl} alt="" />
-                </div>
-              </a>
-            </li>
-          );
-        })}
+        { 
+          isLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : 
         
-        
+          (
+            data.length != 0 ? 
+            data.map((e:any,idx:any) => {
+              return (
+                <li className="ItemListType">
+                  <a href="" className="ItemBox">
+                    <div className="imx">
+                      <img src={e.nailartThumbnailUrl} alt="" />
+                    </div>
+                  </a>
+                </li>
+              );
+            })
+            : <div className="reviewStatus">등록된 리뷰가 없습니다</div>
+               
+          )
+        }
+                
       </ul>
     </Wrapper>
   );

@@ -44,8 +44,8 @@ export const registDesign = async (files: any) => {
 
 // 디자인 삭제
 export const deleteDesign = async (param: any) => {
-  // console.log(Number(param))
-  const response = await axios.delete(base_url + `nailart/${param}`);
+  console.log(param)
+  const response = await axios.delete(base_url + `nailart/${Number(param)}`);
 };
 
 // 디자인 상세정보

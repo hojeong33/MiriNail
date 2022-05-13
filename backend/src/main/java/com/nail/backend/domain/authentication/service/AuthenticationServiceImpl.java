@@ -49,17 +49,17 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             MultipartFile registrationFile, String userId) throws IOException {
 
         // 사업자 등록증 파일 처리
-
+        System.out.println("check");
         // 실제 파일 이름을 받아서 랜덤한 이름으로 변경해준다.
         String fileName = awsS3Service.createFileName(registrationFile.getOriginalFilename());
 
         // 파일 객체 생성
         // System.getProperty => 시스템 환경에 관한 정보를 얻을 수 있다. (user.dir = 현재 작업 디렉토리를 의미함)
         File file = new File(System.getProperty("user.dir") + fileName);
-
+        System.out.println("check2");
         // 파일 저장
         registrationFile.transferTo(file);
-
+        System.out.println("check3");
         // S3 파일 업로드
         awsS3Service.uploadOnS3(fileName, file);
         // 주소 할당
