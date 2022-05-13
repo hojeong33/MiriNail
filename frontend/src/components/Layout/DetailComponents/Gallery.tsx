@@ -85,7 +85,7 @@ const Gallery = () => {
       return ('아무것도 음슴')
     }
     return (
-      data.map((e:any,idx:any) => {
+      data?.map((e:any,idx:any) => {
         return (
           <li className="ItemListType">
             <a href="" className="ItemBox">
@@ -110,8 +110,8 @@ const Gallery = () => {
           isLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : 
         
           (
-            data.length != 0 ? 
-            data.map((e:any,idx:any) => {
+            data?.length != 0 ? 
+            data?.map((e:any,idx:any) => {
               return (
                 <li className="ItemListType">
                   <a href="" className="ItemBox">

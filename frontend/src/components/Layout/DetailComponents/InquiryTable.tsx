@@ -216,7 +216,7 @@ const InquiryTable = () => {
   
   const writerId = useRecoilValue(designerId)
   console.log(params)
-  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<IQnaInquiry[]>(['inquiry',params,mypage], inquiryList)
+  const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<any>(['inquiry',params,mypage], inquiryList)
   const myId = Number(sessionStorage.getItem('userSeq'))
   useEffect(() => {
     setMyPage(1)
@@ -427,7 +427,7 @@ const InquiryTable = () => {
             <td colSpan={6}>ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</td>
           </tr>
         </tbody> */}
-        {InquiryData?.map((e:any) =>
+        {InquiryData?.data.content.map((e:any) =>
         <tbody key={e.qnaSeq}>
             <tr>
               <td>{e.qnaSeq}</td>
@@ -475,7 +475,7 @@ const InquiryTable = () => {
         </div>
         <div className="boxRight">
           <div>
-            <Paginations2 />
+            <Paginations2 page={InquiryData ? InquiryData.data.totalPages : 1}/>
           </div>
         </div>
       </div>

@@ -72,8 +72,11 @@ const Wrapper = styled.div`
               .boxsRight {
                 margin-right: 20px;
                 display: flex;
+                // cursor:pointer;
                 .rev {
+                  
                   :hover {
+                    
                     background-color: #3d3c3a;
                     color: white;
                     border: 1px solid white;
@@ -335,6 +338,7 @@ const UpperFrame = () => {
                       <div className="boxsRight">
                         <div
                           className="rev"
+                          style={{cursor:"pointer"}}
                           onClick={() =>
                             navigate("/nft/Revise", { state: params })
                           }
@@ -342,7 +346,7 @@ const UpperFrame = () => {
                           수정
                         </div>
                         <div
-                          style={{ marginLeft: "10px" }}
+                          style={{ marginLeft: "10px",cursor:"pointer" }}
                           onClick={() => delDesign(params)}
                         >
                           삭제
