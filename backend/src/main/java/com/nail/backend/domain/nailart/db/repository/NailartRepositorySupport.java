@@ -2,6 +2,7 @@ package com.nail.backend.domain.nailart.db.repository;
 
 
 import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
+import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.favorite.db.repository.FavoriteRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
@@ -40,6 +41,9 @@ public class NailartRepositorySupport {
 
     @Autowired
     BookRepositorySupport bookRepositorySupport;
+
+    @Autowired
+    DesignerInfoRepository designerInfoRepository;
 
     @Autowired
     FavoriteRepositorySupport favoriteRepositorySupport;
@@ -102,6 +106,7 @@ public class NailartRepositorySupport {
             Nailart art = nailartRepository.findByNailartSeq(num);
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -139,6 +144,7 @@ public class NailartRepositorySupport {
             Nailart art = nailartRepository.findByNailartSeq(num);
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -184,6 +190,7 @@ public class NailartRepositorySupport {
             Nailart art = nailartRepository.findByNailartSeq(num.get(qNailart.nailartSeq));
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -225,6 +232,7 @@ public class NailartRepositorySupport {
             Nailart art = nailartRepository.findByNailartSeq(num);
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -270,6 +278,7 @@ public class NailartRepositorySupport {
             Nailart art = nailartRepository.findByNailartSeq(num.get(qNailart.nailartSeq));
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -310,6 +319,7 @@ public class NailartRepositorySupport {
             Nailart art = nailartRepository.findByNailartSeq(num);
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -355,6 +365,7 @@ public class NailartRepositorySupport {
             Nailart art = nailartRepository.findByNailartSeq(num.get(qNailart.nailartSeq));
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
