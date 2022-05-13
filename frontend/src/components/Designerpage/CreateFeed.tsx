@@ -8,7 +8,7 @@ import FeedCarousels from './FeedCarousels';
 import ImageUploadBox from './FileUpload3';
 import { useMutation } from 'react-query';
 import { postNewFeed } from '../../store/apis/designer';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const Container = styled.div`
@@ -78,6 +78,7 @@ const CreateFeed = () => {
   const [content, setContent] = useState<string>("");
   const [postImages,setPostImages] = useState<any[]>([])
   const [imageProcess,setImageProcess] = useState([])
+  const navigate = useNavigate();
   const { userSeq } = useParams();
 
 
@@ -100,16 +101,21 @@ const CreateFeed = () => {
         designerNewsDesc: content,
       };
       files.append("jsonList",JSON.stringify(data))
+      
       postImages.forEach((e) => {
         files.append("files", e);
       });
+
       if (postImages.length === 0) {
-        files.append("files", "null");
+        files.append("files", null);
       }
       return await postNewFeed(files);
     },
     {
-      onSuccess: (res) => console.log(res),
+      onSuccess: (res) => {
+        console.log(res)
+        navigate(`/designerpage/${userSeq}/new`)
+      },
       onError: (err: any) => console.log(err)
     }
   )

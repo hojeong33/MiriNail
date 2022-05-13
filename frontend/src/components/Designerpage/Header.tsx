@@ -15,7 +15,7 @@ import { deleteFollow, postFollow } from "../../store/apis/follow";
 import { useMutation, useQuery } from "react-query";
 import { getDesignerinfo } from "../../store/apis/designer";
 import { TailSpin } from "react-loader-spinner";
-
+import { convertImgToThumnail } from "../Commons/functions"
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -146,13 +146,14 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     isLoading,
     refetch: designerRefetch,
   } = useQuery<any, Error>(
-    ["getDesigner"],
+    ["getDesigner", userSeq],
     async () => {
       return await getDesignerinfo(Number(userSeq));
     },
     {
       onSuccess: (res) => {
         console.log(res);
+        findIsFollow(res)
       },
       onError: (err: any) => console.log(err),
     }
@@ -167,6 +168,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
       onSuccess: (res) => {
         console.log(res);
         designerRefetch();
+
       },
       onError: (err: any) => console.log(err),
     }
@@ -186,11 +188,11 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     }
   );
 
-  const findIsFollow = () => {
+
+  const findIsFollow = (res:any) => {
     const me = Number(sessionStorage.getItem("userSeq"));
-    if (!designer.follower) return false;
     setIsFollow(
-      designer.follower.some(function (ele: any, idx: any) {
+      res.follower?.some(function (ele: any, idx: any) {
         return ele.userSeq === me;
       })
     );
@@ -205,8 +207,8 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   };
 
   useEffect(() => {
-    findIsFollow();
-  }, [designer]);
+    // findIsFollow();
+  }, [userSeq]);
   return (
     <>
       {isLoading ? (
@@ -220,7 +222,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
               <img
                 src={
                   data.designerInfo.designerProfileImgUrl
-                    ? data.designerInfo.designerProfileImgUrl
+                    ? convertImgToThumnail(data.designerInfo.designerProfileImgUrl)
                     : "/assets/images/default_profile.png"
                 }
                 alt=""
