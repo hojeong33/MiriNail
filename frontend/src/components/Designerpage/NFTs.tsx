@@ -106,7 +106,7 @@ interface INailart {
 
 const NFTs = () => {
   // const [nailarts, setNailarts] = useState<INailart["item"][]>([]);
-  const [lastPage, setLastPage] = useState();
+  const [lastPage, setLastPage] = useState(0);
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
 
@@ -124,7 +124,8 @@ const NFTs = () => {
     {
       onSuccess: (res) => {
         console.log(res);
-        setLastPage(res.totalPages);
+        // setLastPage(res.totalPages);
+        setLastPage(Math.ceil(res.totalElements / 12))
         // setNailarts(res.content);
       },
       onError: (err: any) => console.log(err),
@@ -148,7 +149,7 @@ const NFTs = () => {
         </LoadingBox>
       ) : (
         <ItemCards>
-          {data.content?.map((item: any, idx: any) => {
+          {data.nailart?.map((item: any, idx: any) => {
             return (
               <ItemCard key={idx}>
                 <div className="cardwrapper">

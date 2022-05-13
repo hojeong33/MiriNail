@@ -338,13 +338,13 @@ const CreateReservation = () => {
         const gel = []
         const french = []
         const linestone = []
-        for (let i = 0; i < res.numberOfElements; i++) {
-          if (res.content[i].nailartType === "젤") {
-            gel.push(res.content[i])
-          } else if (res.content[i].nailartType === "프렌치") {
-            french.push(res.content[i])
-          } else if (res.content[i].nailartType === "라인스톤") {
-            linestone.push(res.content[i])
+        for (let i = 0; i < res.totalElements; i++) {
+          if (res.nailart[i].nailartType === "젤") {
+            gel.push(res.nailart[i])
+          } else if (res.nailart[i].nailartType === "프렌치") {
+            french.push(res.nailart[i])
+          } else if (res.nailart[i].nailartType === "라인스톤") {
+            linestone.push(res.nailart[i])
           }
         }
         setType1(gel)
@@ -564,7 +564,7 @@ const CreateReservation = () => {
                     <RadioButtonUncheckedIcon />
                   )}
                   <div className="thumbnailurl">
-                    <img src={convertImgToThumnail(item.nailartThumbnailUrl)} alt="" />
+                    <img src={item.nailartThumbnailUrl} alt="" />
                   </div>
                   <div className="nextimg">
                     <div className="nailname">
