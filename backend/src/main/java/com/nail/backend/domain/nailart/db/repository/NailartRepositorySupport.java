@@ -137,7 +137,7 @@ public class NailartRepositorySupport {
         List<Long> totalCount = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
                 .orderBy(qNailart.nailartSeq.desc())
-                .where(qNailart.nailartAvailable.eq(false))
+                .where(qNailart.nailartAvailable.eq(false).and(qNailart.designerSeq.eq(designerSeq)))
                 .fetch();
         nailartSeq.forEach( num -> {
             Nailart tmp = nailartRepository.findByNailartSeq(num);
