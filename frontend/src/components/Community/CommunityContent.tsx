@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import CommunityImgList from "./CommunityImgList";
+import CommunityImgList from "./CommunityImgList2";
 import axios from "axios";
 
 const CommunityContent = () => {
@@ -24,7 +24,7 @@ const CommunityContent = () => {
           style={{
             border: "0.1rem solid",
             marginBottom: "50px",
-            padding: "5px 0"
+            padding: "5px 0",
           }}
           onClick={() => {
             navigate("/community/create");
