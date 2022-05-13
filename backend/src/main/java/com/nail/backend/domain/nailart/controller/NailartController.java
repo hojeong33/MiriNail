@@ -53,14 +53,14 @@ public class NailartController {
         return nailartService.nailartDetail(nailartSeq);
     }
 
-    // Nailart designerSeq로 최대 10개 조회
-    @GetMapping("/designer/{designerSeq}")
-    public List<NailartListGetRes> anotherNailart(@PathVariable("designerSeq") long designerSeq){
-        return nailartService.anotherNailart(designerSeq);
+    // Nailart designerSeq로 최대 10개 조회(현재 작품 제외)
+    @GetMapping("/designer/{designerSeq}/{nailartSeq}")
+    public List<NailartListGetRes> anotherNailart(@PathVariable("designerSeq") long designerSeq, @PathVariable("nailartSeq") long nailartSeq){
+        return nailartService.otherNailart(designerSeq, nailartSeq);
     }
 
     @GetMapping("/designer")
-    public Page<Nailart> nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
+    public List<Nailart> nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
         return nailartService.getdesignerNailartList(designerSeq, page, size);
     }
 
@@ -82,11 +82,11 @@ public class NailartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // Nailart 삭제
-    @DeleteMapping("/{nailartSeq}")
-    public ResponseEntity<BaseResponseBody> nailartRemove(@PathVariable long nailartSeq){
+    // Nailart available update
+    @PutMapping("/{nailartSeq}")
+    public ResponseEntity<BaseResponseBody> nailartAvailableUpdate(@PathVariable long nailartSeq){
         System.out.println("check");
-        if (nailartService.nailartRemove(nailartSeq)){
+        if (nailartService.nailartAvailableUpdate(nailartSeq)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
         } else {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This nailartSeq dosen't exist."));

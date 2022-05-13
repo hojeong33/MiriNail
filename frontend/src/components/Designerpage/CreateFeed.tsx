@@ -109,9 +109,6 @@ const CreateFeed = () => {
       if (postImages.length === 0) {
         files.append("files", null);
       }
-      for (let key of files.keys()) {
-        console.log(key, ":", files.get(key));
-      }
       return await postNewFeed(files);
     },
     {
