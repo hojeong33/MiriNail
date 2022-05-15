@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
+import com.nail.backend.domain.nailart.request.NailartNftUpdatePutReq;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.nailart.service.NailartService;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -60,7 +62,7 @@ public class NailartController {
     }
 
     @GetMapping("/designer")
-    public Page<Nailart> nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
+    public DesignerNailartListRes nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
         return nailartService.getdesignerNailartList(designerSeq, page, size);
     }
 
@@ -80,6 +82,16 @@ public class NailartController {
         NailartUpdatePutReq nailartUpdatePutReq = objectMapper.readValue(jsonList, new TypeReference<NailartUpdatePutReq>() {});
         nailartService.nailartUpdate(nailartUpdatePutReq, files);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // Nailart nft 등록
+    @PutMapping("/nft")
+    public ResponseEntity<BaseResponseBody> nailartNftUpdate(@RequestBody NailartNftUpdatePutReq nailartNftUpdatePutReq) {
+        if (nailartService.nailartNftUpdate(nailartNftUpdatePutReq.getNailartSeq(), nailartNftUpdatePutReq.getNailartNft())) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This nailartSeq dosen't exist."));
+        }
     }
 
     // Nailart available update

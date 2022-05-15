@@ -46,4 +46,6 @@ public class NailartDetailGetRes {
     private float nailartRating;
 
     private String nailartImgUrl;
+
+    private String nailartNft;
 }

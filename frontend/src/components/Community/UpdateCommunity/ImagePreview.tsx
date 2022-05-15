@@ -1,3 +1,4 @@
+import ClearIcon from "@mui/icons-material/Clear";
 const ImagePreview = ({ image, deleteFunc, test, pImage }: any) => {
   return (
     <div className="ImagePreview" draggable>
@@ -9,7 +10,15 @@ const ImagePreview = ({ image, deleteFunc, test, pImage }: any) => {
           </>
         )
       })} */}
-      <div className="icon_container" onClick={deleteFunc}></div>
+      <div
+        className="icon_container"
+        style={{ cursor: "pointer" }}
+        onClick={deleteFunc}
+      >
+        <ClearIcon
+          style={{ padding: "2px", marginBottom: "3px", marginLeft: "0.5px" }}
+        ></ClearIcon>
+      </div>
     </div>
   );
 };

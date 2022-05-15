@@ -2,6 +2,7 @@ package com.nail.backend.domain.nailart.service;
 
 import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
@@ -20,7 +21,7 @@ public interface NailartService {
     List<NailartListGetRes> otherNailart(long designerSeq, long nailartSeq);
 
     // 디자이너의 작품 조회
-    Page<Nailart> getdesignerNailartList(long designerSeq, int page, int size);
+    DesignerNailartListRes getdesignerNailartList(long designerSeq, int page, int size);
 
     // 네일 아트 상세 조회
     NailartDetailGetRes nailartDetail(long nailartSeq);
@@ -33,6 +34,9 @@ public interface NailartService {
 
     // 네일 아트 삭제
     boolean nailartAvailableUpdate(long nailartSeq);
+
+    // 네일 아트 nft 등록
+    boolean nailartNftUpdate(long nailartSeq, String nailartNft);
 
 
     // 이삭 ---------------------------------------------------------------

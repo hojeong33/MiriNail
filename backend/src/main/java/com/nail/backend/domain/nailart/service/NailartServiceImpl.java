@@ -10,6 +10,7 @@ import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.favorite.db.entity.Favorite;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.designer.db.repository.DesignerRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -137,15 +138,12 @@ public class NailartServiceImpl implements NailartService {
 
     @Override
     public List<NailartListGetRes> otherNailart(long designerSeq, long nailartSeq) {
-
         return nailartRepositorySupport.getOtherNailartByDesignerSeq(designerSeq, nailartSeq);
     }
 
     @Override
-    public Page<Nailart> getdesignerNailartList(long designerSeq, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("nailartSeq").descending());
-        Page<Nailart> art = nailartRepository.findByDesignerSeq(designerSeq, pageRequest);
-        return art;
+    public DesignerNailartListRes getdesignerNailartList(long designerSeq, int page, int size) {
+        return nailartRepositorySupport.getdesignerNailartList(designerSeq, page, size);
     }
 
     @Override
@@ -173,6 +171,7 @@ public class NailartServiceImpl implements NailartService {
         nailartDetailGetRes.setNailartRegedAt(nailart.getNailartRegedAt());
         nailartDetailGetRes.setNailartRating(nailart.getNailartRating());
         nailartDetailGetRes.setNailartImgUrl(nailartImgRepository.findByNailartSeq(nailartSeq).getNailartImgUrl());
+        nailartDetailGetRes.setNailartNft(nailart.getNailartNft());
 
         return nailartDetailGetRes;
     }
@@ -323,7 +322,10 @@ public class NailartServiceImpl implements NailartService {
         return nailartRepositorySupport.updateNailartAvailableByNailartSeq(nailartSeq);
     }
 
-
+    @Override
+    public boolean nailartNftUpdate(long nailartSeq, String nailartNft) {
+        return nailartRepositorySupport.updateNailartNft(nailartSeq, nailartNft);
+    }
 
 
     // sac ------------------------------------------------------------------------------

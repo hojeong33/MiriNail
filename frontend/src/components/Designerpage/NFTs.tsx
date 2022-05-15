@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useQuery } from "react-query";
@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import AddIcon from '@mui/icons-material/Add';
+import { convertImgToThumnail } from "../Commons/functions";
 
 const Wrapper = styled.div`
   .pagination {
@@ -20,6 +21,10 @@ const Wrapper = styled.div`
   }
 
   .createbutton {
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
     width: 160px;
     height: 40px;
     border: 1px solid #d2d2d0;
@@ -38,16 +43,11 @@ const Wrapper = styled.div`
 const ItemCards = styled.div`
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: center; */
   margin: 20px 0 0 40px;
-  /* &:last-child {
-    margin-right: auto;
-  } */
 `;
 
 const ItemCard = styled.div`
   height: 300px;
-  /* border: 1px solid black; */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -106,7 +106,7 @@ interface INailart {
 
 const NFTs = () => {
   // const [nailarts, setNailarts] = useState<INailart["item"][]>([]);
-  const [lastPage, setLastPage] = useState();
+  const [lastPage, setLastPage] = useState(0);
   const [page, setPage] = useState(1);
   const { userSeq } = useParams();
 
@@ -116,7 +116,7 @@ const NFTs = () => {
     setPage(page);
   };
 
-  const { data, isLoading } = useQuery<any, Error>(
+  const { data, isLoading, refetch } = useQuery<any, Error>(
     ["getDesignerNailart", page],
     async () => {
       return await getDesignerNailart(Number(userSeq), page, 12);
@@ -124,12 +124,17 @@ const NFTs = () => {
     {
       onSuccess: (res) => {
         console.log(res);
-        setLastPage(res.totalPages);
+        // setLastPage(res.totalPages);
+        setLastPage(Math.ceil(res.totalElements / 12))
         // setNailarts(res.content);
       },
       onError: (err: any) => console.log(err),
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [])
 
   return (
     <Wrapper>
@@ -144,7 +149,7 @@ const NFTs = () => {
         </LoadingBox>
       ) : (
         <ItemCards>
-          {data.content?.map((item: any, idx: any) => {
+          {data.nailart?.map((item: any, idx: any) => {
             return (
               <ItemCard key={idx}>
                 <div className="cardwrapper">

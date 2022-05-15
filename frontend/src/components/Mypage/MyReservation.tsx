@@ -7,7 +7,7 @@ import moment from 'moment'
 import { useQuery } from "react-query";
 import { deleteCancelReservation, getUserReservation } from "../../store/apis/book";
 import { useNavigate, useParams } from "react-router-dom";
-import { convertDate } from "../Commons/functions";
+import { convertDate, convertImgToThumnail } from "../Commons/functions";
 import { TailSpin } from "react-loader-spinner"
 
 const LoadingBox = styled.div`
@@ -34,7 +34,7 @@ const Wrapper = styled.div`
     margin-bottom: 60px;
   }
   .subtitle {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 500;
     margin-bottom: 20px;
   }
@@ -59,7 +59,7 @@ const Wrapper = styled.div`
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       cursor: pointer;
       :hover {
-        background-color: #f8f8fa;
+        /* background-color: #f8f8fa; */
       }
       .cardleft {
         border-right: 1px solid #e6e6e6;
@@ -108,6 +108,13 @@ const Wrapper = styled.div`
           }
         }
         .btnbox {
+          button {
+            :hover {
+              border: none;
+              background-color: #f85757;
+              color: white;
+            }
+          }
         }
         .confirm {
           border: 1px solid #333;
@@ -250,7 +257,7 @@ const MyReservation = () => {
                   key={idx}
                 >
                   <div className="cardleft">
-                    <img src={book.designerInfo.designerInfoImgUrl} alt="" />
+                    <img src={book.designerInfo.designerProfileImgUrl? convertImgToThumnail(book.designerInfo.designerProfileImgUrl): "assets/images/default_profile.png"} alt="" />
                   </div>
                   <div className="cardright">
                     <div className="cardright-top">
@@ -298,7 +305,7 @@ const MyReservation = () => {
           현재까지 총 <span>{data.visitCount ? data.visitCount : "0"}</span>회 예약하셨습니다.
         </div>
         <div className="designertextbox">
-          디자이너
+          디자이너 히스토리
           <div className="line"></div>
         </div>
         <table>
