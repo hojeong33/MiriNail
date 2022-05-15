@@ -12,10 +12,13 @@ const CommunityTitle = () => {
           border: "0.1rem solid",
           padding: "8px 30px",
           marginTop: "20px",
+          cursor: "pointer",
         }}
         onClick={() => navigate(`/community`)}
       >
-        <Typography variant="button">VIEW MORE</Typography>
+        <Typography variant="button" style={{ cursor: "pointer" }}>
+          VIEW MORE
+        </Typography>
       </button>
     </div>
   );
