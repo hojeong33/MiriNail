@@ -13,16 +13,26 @@ import com.nail.backend.domain.designer.response.DesignerNewsListGetRes;
 import com.nail.backend.domain.designer.service.DesignerInfoService;
 import com.nail.backend.domain.designer.service.DesignerNewsService;
 import com.nail.backend.domain.designer.service.DesignerService;
+import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/designer")
 public class DesignerContorller {
@@ -47,10 +57,11 @@ public class DesignerContorller {
     public List<DesignerNewsListGetRes> designerNewsListByDesignerSeq (@RequestParam long designerSeq, @RequestParam int page, @RequestParam int size){
         return designerNewsService.designerNewsList(designerSeq, page, size);
     }
-
+//JsonProcessingException
     @ApiOperation(value = "디자이너 뉴스 작성")
     @PostMapping(value = "/news", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<BaseResponseBody> designerNewsRegister(@RequestParam("jsonList") String jsonList, @RequestPart("files") List<MultipartFile> files) throws JsonProcessingException{
+    public ResponseEntity<BaseResponseBody> designerNewsRegister(@RequestParam("jsonList") String jsonList, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws Exception{
+        System.out.println("test");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         DesignerNews designerNews = objectMapper.readValue(jsonList, new TypeReference<DesignerNews>() {});
         designerNewsService.designerNewsRegister(designerNews, files);
@@ -108,4 +119,20 @@ public class DesignerContorller {
         return designerService.getDesignerAllList(page, size);
     }
 
+    // sac 작성 ------------------------------------------------------------------------------------------------
+    // 네일 샵 검색
+    @ApiOperation(value = "네일 샵 검색조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Page<DesignerInfo>> getShopListByShopName(@PageableDefault Pageable pageable,
+                                                                               @ApiParam(value = "네일 샵 이름") @PathVariable String name) {
+
+        log.info("getShopListByShopName - 호출");
+        Page<DesignerInfo> shopList = designerService.getShopListByShopName(pageable,name);
+
+        return ResponseEntity.status(200).body(shopList);
+    }
 }

@@ -16,6 +16,10 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  .nodata {
+    border: none;
+    padding: 10px 0;
+  }
   .count {
     text-align: start;
     padding: 10px;
@@ -139,8 +143,8 @@ const MyReview = () => {
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="15%" />
-              <col width="15%" />
+              <col width="16%" />
+              <col width="14%" />
               <col width="40%" />
               <col width="10%" />
               <col width="15%" />
@@ -159,11 +163,11 @@ const MyReview = () => {
               {data.content?.map((review: any, idx: number) => {
                 return (
                   <tr
-                    onClick={() => onClickReview(review.nailartSeq)}
+                    onClick={() => onClickReview(review.nailart.nailartSeq)}
                     key={idx}
                   >
                     <th>{review.reviewSeq}</th>
-                    <th className="title">{review.designerNickname}</th>
+                    <th className="title">{review.shopName}</th>
                     <th>
                       {review.nailart.nailartType} -{" "}
                       {review.nailart.nailartDetailColor}
@@ -187,6 +191,7 @@ const MyReview = () => {
               })}
             </tbody>
           </table>
+          {data.empty && <div className="nodata">작성한 후기가 없습니다</div>}
         </div>
       )}
       <div className="pagination">

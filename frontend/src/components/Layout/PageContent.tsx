@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import styled from "styled-components";
-import { nftFilter } from "../../store/atoms";
+import { nftFilter, pagenation } from "../../store/atoms";
 import NFTItems from "./NFTItems";
 import { Paginations } from "./Paginations";
 
@@ -18,8 +18,6 @@ const Wrapper = styled.div`
   // height: 100vh;
 `;
 const MainFrame = styled.div`
-  
-
   width: 1300px;
   // height: 100%;
   margin: 0 auto;
@@ -41,17 +39,21 @@ const MainFrame = styled.div`
         padding-top: 75px;
 
         .TypeFilter {
-          div { 
-            display:block; 
-            color:#3D3C3A; 
-            opacity:0.5; 
-            transition:all 0.3s; 
-            font-size:14px; 
-            margin-bottom:20px;
-            cursor : pointer;
+          div {
+            display: block;
+            color: #3d3c3a;
+            opacity: 0.5;
+            transition: all 0.3s;
+            font-size: 14px;
+            margin-bottom: 20px;
+            cursor: pointer;
           }
-          div:active{ opacity:1;}
-          div:hover{ opacity:1;}
+          div:active {
+            opacity: 1;
+          }
+          div:hover {
+            opacity: 1;
+          }
         }
 
         .OrderFilter {
@@ -71,10 +73,10 @@ const MainFrame = styled.div`
             opacity: 1;
           }
           .CheckBox {
-            display:block;
-            font-size:14px; 
-            color:#3D3C3A; 
-            margin-top :15px;
+            display: block;
+            font-size: 14px;
+            color: #3d3c3a;
+            margin-top: 15px;
             label {
               margin-left: 7px;
             }
@@ -87,21 +89,21 @@ const MainFrame = styled.div`
         padding-top: 75px;
         width: 100%;
         border-left: 1px solid #d2d2d0;
-        padding-left:40px;
+        padding-left: 40px;
         padding-bottom: 160px;
         text-align: center;
-        display:flex;
-        flex-direction : column;
+        display: flex;
+        flex-direction: column;
         .pagination {
-          margin : 0 auto;
-          margin-top:50px;
+          margin: 0 auto;
+          margin-top: 50px;
         }
       }
     }
   }
 
   @media screen and (max-width: 920px) {
-    width :100%;
+    width: 100%;
     .MainPadding {
       .ItemList {
         padding-left: 0px;
@@ -114,21 +116,20 @@ const MainFrame = styled.div`
           padding-top: 30px;
           text-align: left;
           .TypeFilter {
-            display:flex;
-            justify-content:center;
+            display: flex;
+            justify-content: center;
             a {
-              margin : 0 10px 0 10px;
+              margin: 0 10px 0 10px;
             }
           }
           .OrderFilter {
-            display:none;
+            display: none;
           }
-          
         }
 
         .RightBox {
           padding-top: 30px;
-          padding-left:0px;
+          padding-left: 0px;
           width: 100%;
           border-left: 0px solid #d2d2d0;
           padding-bottom: 100px;
@@ -137,29 +138,23 @@ const MainFrame = styled.div`
       }
     }
   }
-  
 `;
 
 const PageContent = () => {
-  const [status,setStatus] = useState(0)
-  const [myFilter,setMyFilter] = useRecoilState(nftFilter)
-  const [sortFilter,setSortFilter] = useState('')
-  const reset = useResetRecoilState(nftFilter)
+  const [status, setStatus] = useState(0);
+  const [myFilter, setMyFilter] = useRecoilState(nftFilter);
+  const [sortFilter, setSortFilter] = useState("");
+  const reset = useResetRecoilState(nftFilter);
+  const [defaultCheck, setDefaultCheck] = useState(true);
+  const [totalCount,setTotalCount] = useRecoilState(pagenation)
   useEffect(() => {
-    console.log(myFilter)
-  },[myFilter])
+    console.log(myFilter);
+  }, [myFilter]);
 
   const onCheckbox = async (e: any) => {
-    const checkboxes: any = document.getElementsByName("cb");
-    for await (const box of checkboxes) {
-      console.log(box);
-      box.checked = false;
-    }
-    e.target.checked = true;
-    setMyFilter({...myFilter,sort:e.target.value});
+    setDefaultCheck((prev) => !prev);
+    setMyFilter({ ...myFilter, sort: e.target.value });
   };
-
- 
 
   return (
     <>
@@ -169,19 +164,65 @@ const PageContent = () => {
             <div className="ItemList">
               <div className="LeftBox">
                 <div className="TypeFilter">
-                  <div style={status === 0 ? {opacity:"1"} : {}} onClick={() => {reset(); setStatus(0)}}>전체</div>
-                  <div style={status === 1 ? {opacity:"1"} : {}} onClick={() => {setMyFilter({...myFilter,type:'젤'}); setStatus(1)}} >GEL NAIL</div>
-                  <div style={status === 2 ? {opacity:"1"} : {}} onClick={() => {setMyFilter({...myFilter,type:'프렌치'}); setStatus(2)}}>FRENCH NAIL</div>
-                  <div style={status === 3 ? {opacity:"1"} : {}} onClick={() => {setMyFilter({...myFilter,type:'라인스톤'}); setStatus(3)}}>LINESTONE NAIL</div>
+                  <div
+                    style={status === 0 ? { opacity: "1" } : {}}
+                    onClick={() => {
+                      reset();
+                      setStatus(0);
+                    }}
+                  >
+                    전체
+                  </div>
+                  <div
+                    style={status === 1 ? { opacity: "1" } : {}}
+                    onClick={() => {
+                      setMyFilter({ ...myFilter, type: "젤" });
+                      setStatus(1);
+                    }}
+                  >
+                    GEL NAIL
+                  </div>
+                  <div
+                    style={status === 2 ? { opacity: "1" } : {}}
+                    onClick={() => {
+                      setMyFilter({ ...myFilter, type: "프렌치" });
+                      setStatus(2);
+                    }}
+                  >
+                    FRENCH NAIL
+                  </div>
+                  <div
+                    style={status === 3 ? { opacity: "1" } : {}}
+                    onClick={() => {
+                      setMyFilter({ ...myFilter, type: "라인스톤" });
+                      setStatus(3);
+                    }}
+                  >
+                    LINESTONE NAIL
+                  </div>
                 </div>
                 <div className="OrderFilter">
                   <a>정렬</a>
                   <div className="CheckBox">
-                    <input type="checkbox" name="cb" id="cb1" onChange={onCheckbox} value=""/>
+                    <input
+                      type="checkbox"
+                      name="cb"
+                      id="cb1"
+                      onChange={onCheckbox}
+                      value="last"
+                      checked={defaultCheck}
+                    />
                     <label htmlFor="cb1">최신순</label>
                   </div>
                   <div className="CheckBox">
-                    <input type="checkbox" name="cb" id="cb2" onChange={onCheckbox} value="like"/>
+                    <input
+                      type="checkbox"
+                      name="cb"
+                      id="cb2"
+                      onChange={onCheckbox}
+                      checked={!defaultCheck}
+                      value="like"
+                    />
                     <label htmlFor="cb2">인기도순</label>
                   </div>
                 </div>
@@ -189,10 +230,9 @@ const PageContent = () => {
               <div className="RightBox">
                 <NFTItems />
                 <div className="pagination">
-                  <Paginations />
+                  <Paginations page={totalCount}/>
                 </div>
               </div>
-              
             </div>
           </div>
         </MainFrame>

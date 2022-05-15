@@ -105,24 +105,24 @@ public class DesignerNewsServiceImpl implements DesignerNewsService{
         DesignerNews news = new DesignerNews();
         designerNews.setDesignerNewsRegedAt(Timestamp.valueOf(LocalDateTime.now()));
         news = designerNewsRepository.save(designerNews);
-
-        for (MultipartFile file: files) {
-            DesignerNewsImg newsImg = new DesignerNewsImg();
-            String fileName = createFileName(file.getOriginalFilename());
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
-            try(InputStream inputStream = file.getInputStream()) {
-                amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
-                        .withCannedAcl(CannedAccessControlList.PublicRead));
-            } catch(IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+        if(files != null){
+            for (MultipartFile file: files) {
+                DesignerNewsImg newsImg = new DesignerNewsImg();
+                String fileName = createFileName(file.getOriginalFilename());
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(file.getSize());
+                objectMetadata.setContentType(file.getContentType());
+                try(InputStream inputStream = file.getInputStream()) {
+                    amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+                } catch(IOException e) {
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+                }
+                newsImg.setDesignerNewsSeq(news.getDesignerNewsSeq());
+                newsImg.setDesignerNewsImgUrl(amazonS3.getUrl(bucket, fileName).toString());
+                designerNewsImgRepository.save(newsImg);
             }
-            newsImg.setDesignerNewsSeq(news.getDesignerNewsSeq());
-            newsImg.setDesignerNewsImgUrl(amazonS3.getUrl(bucket, fileName).toString());
-            designerNewsImgRepository.save(newsImg);
         }
-
         return news;
     }
 }

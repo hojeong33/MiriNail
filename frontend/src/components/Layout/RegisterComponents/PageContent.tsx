@@ -155,6 +155,7 @@ const MainFrame = styled.div`
             padding: 10px 40px 10px 40px;
             margin: 10px 5px 10px 10px;
             border-radius: 5px;
+            cursor : pointer;
           }
           .btn2 {
             border: 1px solid rgb(51, 51, 51);
@@ -162,6 +163,7 @@ const MainFrame = styled.div`
             padding: 10px 40px 10px 40px;
             margin: 10px 20px 10px 30px;
             border-radius: 5px;
+            cursor : pointer;
           }
         }
       }
@@ -205,7 +207,7 @@ const MainFrame = styled.div`
 const PageContent = () => {
   // 리모컨 
   const navigate = useNavigate();
-  const nailartName = '일단은 더미'
+  const nailartName = ''
   window.addEventListener("scroll", () => {
     let scrollTop = document.documentElement.scrollTop;
     let clientHeight = document.documentElement.clientHeight;
@@ -231,7 +233,7 @@ const PageContent = () => {
     const [nailartDesc,setnailartDesc] = useState('')
     const [postImages,setPostImages] = useState<any[]>([])
     useEffect(() => {
-      console.log(postImages)
+      // console.log(postImages)
     },[postImages])
   
 
@@ -258,33 +260,48 @@ const PageContent = () => {
       abc += 1;
     }
     setInfoProcessNum(abc);
-    console.log(infoProcess);
+    // console.log(infoProcess);
   }, [infoProcess]);
 
   // ipfs 등록 및 nft 발급
-  const abc:any = "http://127.0.0.1:5002";
-  const client = create(abc);
-  const nftFunc = async () => {
   
+  // const client = create(new URL('http://127.0.0.1:5002'))
+
+  const nftFunc = async () => {
+    
+    
     const files= new FormData()
     const multipartFiles = new FormData()
     const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
+    var ipfsAPI = require('ipfs-api')
+    const ipfs = ipfsAPI("ipfs.infura.io", "5001", { protocol: "https" })
+    let testBuffer = Buffer.from(JSON.stringify(nailData));
+    // ipfs.files.add(testBuffer, (err:any,file:any)=>{
+    //   if(err) {
+    //       console.log(err);
+    //   }   
+      
+    // })
+    
     files.append("jsonList",JSON.stringify(nailData))
-    console.log(postImages)
-    console.log(nailData)
+    // console.log(postImages)
+    // console.log(nailData)
     postImages.forEach(e => {
-      files.append('files',e)}
-      )
+      files.append('files',e)
+    })
 
-   
+    
 
+    // const abc:any = "http://127.0.0.1:5002";
+    // const client = create(abc)
     await registDesign(files)
-    // const response = await client.add(JSON.stringify(nailData))
+    
     // const ipfsHash = response.path
     // console.log(ipfsHash)
     // publishToken(ipfsHash)
+    
 
-    navigate('/nft')
+    setTimeout(() => navigate(-1), 2000)
   }
 
 
@@ -337,7 +354,7 @@ const PageContent = () => {
                 <div className="btn1" onClick={nftFunc}>
                   등록
                 </div>
-                <div className="btn2">
+                <div className="btn2" onClick={() => navigate(-1)}>
                   취소
                 </div>
               </div>

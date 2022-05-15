@@ -66,7 +66,6 @@ public class FavoriteRepositorySupport {
                 .from(qFavorite)
                 .where(qFavorite.nailart.nailartSeq.eq(nailartSeq))
                 .fetchFirst();
-
         return favoriteCount;
     }
 

@@ -236,7 +236,7 @@ const CreateCommunityContent = () => {
                       checked={textProcess2.length >= 1 ? true : false}
                     />
                     <label htmlFor="cb2">
-                      글제목 작성 ({textProcess2.length >= 1 ? 1 : 0}/1)
+                      글 제목 작성 ({textProcess2.length >= 1 ? 1 : 0}/1)
                     </label>
                   </div>
                   <div className="CheckBox">
@@ -246,7 +246,7 @@ const CreateCommunityContent = () => {
                       checked={textProcess.length >= 10 ? true : false}
                     />
                     <label htmlFor="cb3">
-                      글내용 작성 ({textProcess.length >= 10 ? 1 : 0}/1)
+                      글 내용 작성 ({textProcess.length >= 10 ? 1 : 0}/1)
                     </label>
                     {imageProcess.length >= 1 &&
                     textProcess2.length >= 1 &&
@@ -290,37 +290,45 @@ const CreateCommunityContent = () => {
                   />
                 </div>
                 <div className="subTitle" style={{ marginTop: "80px" }}>
-                  글제목 작성
+                  글 제목 작성
                 </div>
                 <input
                   type="text"
                   onChange={onChangeText2}
-                  style={{ width: "100%" }}
+                  spellCheck={false}
+                  style={{ width: "100%", padding: "8px" }}
                 ></input>
 
                 <div className="subTitle" style={{ marginTop: "80px" }}>
-                  글내용 작성
+                  글 내용 작성
                 </div>
                 <textarea
                   name="textVal"
                   id=""
                   onChange={onChangeText}
-                  style={{ resize: "none" }}
+                  style={{ resize: "none", padding: "8px" }}
+                  spellCheck={false}
                   placeholder="10자 이상 입력해주세요."
                 ></textarea>
 
                 <div className="buttons">
-                  <button
-                    className="btn1"
-                    disabled={
-                      imageProcess.length < 1 ||
-                      textProcess2.length < 1 ||
-                      textProcess.length < 10
-                    }
-                    onClick={createCommunity}
-                  >
-                    작성
-                  </button>
+                  {imageProcess.length > 0 &&
+                  textProcess2.length > 0 &&
+                  textProcess.length > 9 ? (
+                    <button className="btn1" onClick={createCommunity}>
+                      작성
+                    </button>
+                  ) : (
+                    <button
+                      className="btn1"
+                      disabled
+                      style={{ backgroundColor: "rgba(175,175,175)" }}
+                      onClick={createCommunity}
+                    >
+                      작성
+                    </button>
+                  )}
+
                   <button
                     className="btn2"
                     onClick={() => {

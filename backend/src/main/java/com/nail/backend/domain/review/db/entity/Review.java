@@ -57,9 +57,11 @@ public class Review {
     private float reviewRating;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "review_seq", insertable = false, updatable = false)
     private List<ReviewImg> reviewImg;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "review_comment_seq", insertable = false, updatable = false)
     private List<ReviewComment> reviewComment;
 
 }

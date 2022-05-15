@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DesignerInfoRepository extends JpaRepository<DesignerInfo, User> {
     DesignerInfo findByDesignerSeq(Long designerSeq);
+
 }

@@ -13,6 +13,8 @@
 # import tensorflow.compat.v1 as tf
 # tf.disable_v2_behavior()
 from matplotlib import pyplot as plt
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import tensorflow as tf
 import numpy as np
 import cv2
@@ -22,6 +24,7 @@ import find_finger as ff
 import math
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
+tf.debugging.set_log_device_placement(True)
 
 def testVideo():
     
@@ -72,12 +75,14 @@ def testVideo():
                 numDetections = model.get_tensor_by_name("num_detections:0")
                 drawboxes = []
                 cap = cv2.VideoCapture(0)
+                print(cap)
                 # vs = WebcamVideoStream(src=0)
                 # vs.start()
                 while True:
                     print('3 : 캠읽음')
                     
                     ret, frame = cap.read()
+                    print(frame)
                     if not ret:
                         cv2.destroyAllWindows()
                         break
@@ -117,10 +122,9 @@ def testVideo():
                             pixelCoordinatesLandmark_2 = mp_drawing._normalized_to_pixel_coordinates(normalizedLandmark_2.x, normalizedLandmark_2.y, imageWidth, imageHeight)
                             print('12번픽셀 좌표 : ', pixelCoordinatesLandmark)
                             print('11번픽셀 좌표 : ', pixelCoordinatesLandmark_2)
-
-                            tanTheta = ((pixelCoordinatesLandmark_2[0]-pixelCoordinatesLandmark[0]))/((pixelCoordinatesLandmark_2[1]-pixelCoordinatesLandmark[1]))
-                            theta = np.arctan(tanTheta)
                             try:
+                                tanTheta = ((pixelCoordinatesLandmark_2[0]-pixelCoordinatesLandmark[0]))/((pixelCoordinatesLandmark_2[1]-pixelCoordinatesLandmark[1]))
+                                theta = np.arctan(tanTheta)
                                 angle = theta*180/math.pi
                             except:
                                 print('수평')

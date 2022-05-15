@@ -1,12 +1,14 @@
 package com.nail.backend.domain.nailart.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Data
+@Builder //sac추가
 @NoArgsConstructor
 @AllArgsConstructor
 public class NailartListGetRes {
@@ -16,6 +18,8 @@ public class NailartListGetRes {
     private long designerSeq;
 
     private String designerNickname;
+
+    private String designerShopName;
 
     private long tokenId;
 
@@ -40,4 +44,8 @@ public class NailartListGetRes {
     private Timestamp nailartRegedAt;
 
     private float nailartRating;
+
+    private int totalCount;
+
+    private boolean isFavorited;
 }

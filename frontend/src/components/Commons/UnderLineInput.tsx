@@ -76,9 +76,13 @@ const Wrapper = styled.div`
     .inputBox .inputBoxLeft .inputs {
       margin-left:20px;
       margin-top:40px;
-      div .underline {
-        margin-left:0px !important;
-        margin-top:5px;
+      div {
+        display:block;
+        .underline {
+          
+          margin-left:0px !important;
+          margin-top:5px;
+        }
       }
     }
 
@@ -127,9 +131,10 @@ const Wrapper = styled.div`
 // }
 
 const Input = (props: any) => {
-  console.log(props);
-
+  // console.log(props);
+  
   // 색깔 선택
+  const [revData,setRevData] = useState('')
   const [color,setColor] = useState('')
   const handleChangeComplete = (col:any,event:any) => {
     
@@ -165,8 +170,9 @@ const Input = (props: any) => {
     })
   }
   useEffect(() => {
-    console.log(color)
+    // console.log(color)
   }, [color])
+  
   
   
 
@@ -231,8 +237,23 @@ const Input = (props: any) => {
   }, [inputStatus])
 
   useEffect(() => {
-    console.log(inputStatus);
+    // console.log(inputStatus);
   }, [inputStatus]);
+
+  useEffect(() => {
+    if (props.infoProcess) {
+      // console.log('prop 들어감')
+      // console.log(props.infoProcess)
+      setInputStatus({
+        nailartType : props.infoProcess.nailartType,
+        nailartWeather : props.infoProcess.nailartWeather,
+        nailartPrice : props.infoProcess.nailartPrice,
+        nailartColor : props.infoProcess.nailartColor,
+        nailartDetailColor : props.infoProcess.nailartDetailColor,
+      })
+      setColor(props.infoProcess.nailartColor)
+    }
+  },[])
 
   return (
     <>
@@ -240,10 +261,10 @@ const Input = (props: any) => {
         <div className="inputBox">
           <div className="inputBoxLeft">
             <select name="nailartType" id="lang" onChange={onChangeInput}>
-              <option value="">타입 선택</option>
-              <option value="젤">GEL NAIL</option>
-              <option value="프렌치">FRENCH NAIL</option>
-              <option value="라인스톤">LINESTONE NANIL</option>
+              <option value="" >타입 선택</option>
+              <option value="젤" selected={inputStatus.nailartType ==='젤' ? true : false }>GEL NAIL</option>
+              <option value="프렌치" selected={inputStatus.nailartType ==='프렌치' ? true : false }>FRENCH NAIL</option>
+              <option value="라인스톤" selected={inputStatus.nailartType ==='라인스톤' ? true : false }>LINESTONE NANIL</option>
             </select>
             <select
               name="nailartWeather"
@@ -251,11 +272,11 @@ const Input = (props: any) => {
               style={{ marginLeft: "20px" }}
               onChange={onChangeInput}
             >
-              <option value="">계절 선택</option>
-              <option value="봄">봄</option>
-              <option value="여름">여름</option>
-              <option value="가을">가을</option>
-              <option value="겨울">겨울</option>
+              <option value="" >계절 선택</option>
+              <option value="봄" selected={inputStatus.nailartWeather ==='봄' ? true : false }>봄</option>
+              <option value="여름" selected={inputStatus.nailartWeather ==='여름' ? true : false }>여름</option>
+              <option value="가을" selected={inputStatus.nailartWeather ==='가을' ? true : false }>가을</option>
+              <option value="겨울" selected={inputStatus.nailartWeather ==='겨울' ? true : false }>겨울</option>
             </select>
             <div className="inputs">
               <div>
@@ -265,6 +286,7 @@ const Input = (props: any) => {
                   type="text"
                   placeholder="가격"
                   onChange={onChangeInput}
+                  value={inputStatus.nailartPrice}
                 />
               </div>
               <div>
@@ -275,6 +297,7 @@ const Input = (props: any) => {
                   placeholder="세부 색상"
                   style={{ marginLeft: "20px" }}
                   onChange={onChangeInput}
+                  value={inputStatus.nailartDetailColor}
                 />
               </div>
             </div>
@@ -302,7 +325,7 @@ const Input = (props: any) => {
               />
             </div>
             <div className="colorBoxRight">
-              <div style={{marginBottom:"20px"}}>선택 색상({color.toUpperCase()})</div>
+              <div style={{marginBottom:"20px"}}>선택 색상({color?.toUpperCase()})</div>
               <div className="currentColor" style={{backgroundColor:`${color}`}}></div>
 
             </div>

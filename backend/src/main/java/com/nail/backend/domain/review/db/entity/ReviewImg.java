@@ -21,6 +21,7 @@ public class ReviewImg {
     private Long reviewImgSeq;
 
     @ApiModelProperty(value = "리뷰 글 Seq")
+    @Column(name = "review_seq")
     private Long reviewSeq;
 
     @ApiModelProperty(value = "리뷰 img url")

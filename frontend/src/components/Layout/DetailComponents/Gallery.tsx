@@ -1,21 +1,26 @@
-import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import styled from 'styled-components'
-import { otherDesign } from '../../../store/api'
-import { designerId } from '../../../store/atoms'
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { otherDesign } from "../../../store/api";
+import { designerId } from "../../../store/atoms";
+
+import { TailSpin } from 'react-loader-spinner'
+
+
 
 
 const Wrapper = styled.div`
-.description {
-  display: flex;
-  justify-content : space-between;
-  margin :15px;
-}
+  .description {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px;
+  }
 
 
 .clear {
+  min-height : 700px;
   zoom : 1;
   li {
 
@@ -60,48 +65,71 @@ const Wrapper = styled.div`
       }
     }
   }
-}
 
-@media screen and (max-width: 767px) {
-  .clear {
-    li {
-      width:33%;
+  @media screen and (max-width: 767px) {
+    .clear {
+      li {
+        width: 33%;
+      }
     }
   }
 }
-`
+`;
 const Gallery = () => {
-  
-  const param = useRecoilValue(designerId)
+  const param = useRecoilValue(designerId);
 
-  const {isLoading,data} = useQuery('otherDesign',() => otherDesign(param))
+  const { isLoading, data } = useQuery("otherDesign", () => otherDesign(param));
   
+  const test = () => {
+    if (data === []) {
+      return ('아무것도 음슴')
+    }
+    return (
+      data?.map((e:any,idx:any) => {
+        return (
+          <li className="ItemListType">
+            <a href="" className="ItemBox">
+              <div className="imx">
+                <img src={e.nailartThumbnailUrl} alt="" />
+              </div>
+            </a>
+          </li>
+        );
+      })
+    )
+  }
+
   return (
     <Wrapper>
-      <div className='description'>
-        <div>
-          디자이너의 다른 작품을 만나보세요.
-        </div>
-        <div>
-          전체보기
-        </div>
+      <div className="description">
+        <div>디자이너의 다른 작품을 만나보세요.</div>
+        {/* <div className="all">전체보기</div> */}
       </div>
       <ul className="clear">
-        {data?.map((e:any,idx:any) => {
-          return (
-            <li className="ItemListType">
-              <a href="" className="ItemBox">
-                <div className="imx">
-                  <img src={e.nailartThumbnailUrl} alt="" />
-                </div>
-              </a>
-            </li>
-          )
-        })}
+        { 
+          isLoading ? <div style={{position:"absolute",left:"50%",top:"50%"}}><TailSpin color="gray" height={50} width={50} /></div> : 
         
+          (
+            data?.length != 0 ? 
+            data?.map((e:any,idx:any) => {
+              return (
+                <li className="ItemListType">
+                  <a href="" className="ItemBox">
+                    <div className="imx">
+                      <img src={e.nailartThumbnailUrl} alt="" />
+                    </div>
+                  </a>
+                </li>
+              );
+            })
+            : <div className="reviewStatus">등록된 리뷰가 없습니다</div>
+               
+          )
+        }
+                
       </ul>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Gallery
+export default Gallery;

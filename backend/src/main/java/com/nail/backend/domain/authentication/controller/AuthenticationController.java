@@ -50,9 +50,11 @@ public class AuthenticationController {
         // 디자이너 정보는 artistRegisterPostReq에, 사업자 등록증은 productFile, 포트폴리오는 portfolioFile에 담아온다.
         // 등록 정보를 DesignerApplication 테이블에 저장한다.
         // 저장 결과 성공적이면 201, 중간에 다른 정보들이 없으면 404
-
         log.info("artistRegister - 호출");
+        System.out.println(artistRegisterPostReq.getDesignerAddress() + " " +artistRegisterPostReq.getDesignerTel() + " " + artistRegisterPostReq.getDesignerShopName());
+        System.out.println(registrationFile+ " " + principal);
         DesignerApplication designerApplication = authenticationService.artistRegister(artistRegisterPostReq,registrationFile,principal.getName());
+        System.out.println(designerApplication);
         if(!designerApplication.equals(null)) {
             return ResponseEntity.status(201).body(BaseResponseBody.of(201, "등록 성공"));
         }
@@ -106,28 +108,7 @@ public class AuthenticationController {
 
         if(applications == null) {
             log.error("getDesignerApplicationDetail - User doesn't exist.");
-            return ResponseEntity.status(404).body(null);
-        }
-        return ResponseEntity.status(201).body(applications);
-    }
-
-    /**
-     인증신청 진행상황 조회
-     */
-    @GetMapping("/{designerSeq}")
-    @ApiOperation(value = "인증 등록 상세 정보 조회", notes = "<strong>인증 등록 상세 정보</strong>를 넘겨준다.")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "성공", response = DesignerApplication.class),
-            @ApiResponse(code = 404, message = "유저 없음.")
-    })
-    public ResponseEntity<DesignerApplication>getDesignerApplicationStatus(@PathVariable("designerSeq") Long designerSeq) {
-
-         log.info("getDesignerApplicationStatus - 호출");
-        DesignerApplication applications = authenticationService.getDesignerApplicationStatus(designerSeq);
-
-        if(applications == null) {
-            log.error("getDesignerApplicationStatus - User doesn't exist.");
-            return ResponseEntity.status(404).body(null);
+            return ResponseEntity.status(201).body(applications);
         }
         return ResponseEntity.status(201).body(applications);
     }

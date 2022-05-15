@@ -2,8 +2,11 @@ package com.nail.backend.domain.nailart.db.repository;
 
 
 import com.nail.backend.domain.book.db.repository.BookRepositorySupport;
+import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.favorite.db.entity.Favorite;
+import com.nail.backend.domain.favorite.db.repository.FavoriteRepositorySupport;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.favorite.db.entity.QFavorite;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
@@ -40,12 +43,16 @@ public class NailartRepositorySupport {
     @Autowired
     BookRepositorySupport bookRepositorySupport;
 
+    @Autowired
+    DesignerInfoRepository designerInfoRepository;
+
+    @Autowired
+    FavoriteRepositorySupport favoriteRepositorySupport;
+
     QNailart qNailart = QNailart.nailart;
 
     QFavorite qFavorite = QFavorite.favorite;
 
-
-    
     //네일 아트 수정
     @Transactional
     public Long updateNailartByNailartSeq(NailartUpdatePutReq nailartUpdatePutReq) {
@@ -63,33 +70,44 @@ public class NailartRepositorySupport {
                 .execute();
         return execute;
     }
-    // 네일 아트 삭제
+    // 네일 아트 availabe update
     @Transactional
-    public boolean deleteNailartByNailartSeq(long nailartSeq){
-        if(nailartRepository.findByNailartSeq(nailartSeq) != null){
-            if(bookRepositorySupport.findByNailartSeq(nailartSeq) != null)
-                bookRepositorySupport.deleteByNailartSeq(nailartSeq);
-            nailartRepository.deleteByNailartSeq(nailartSeq);
-            nailartImgRepository.deleteAllByNailartSeq(nailartSeq);
+    public boolean updateNailartAvailableByNailartSeq(long nailartSeq){
+        System.out.println("check2");
+        List<Boolean> available = jpaQueryFactory.select( qNailart.nailartAvailable )
+                .from(qNailart)
+                .where(qNailart.nailartSeq.eq(nailartSeq))
+                .fetch();
+        if(available.get(0)){
+            long update = jpaQueryFactory.update(qNailart)
+                    .set(qNailart.nailartAvailable, false)
+                    .where(qNailart.nailartSeq.eq(nailartSeq))
+                    .execute();
             return true;
-        }else
-        return false;
+        }else if(available.get(0) == false){
+            long update = jpaQueryFactory.update(qNailart)
+                    .set(qNailart.nailartAvailable, true)
+                    .where(qNailart.nailartSeq.eq(nailartSeq))
+                    .execute();
+            return true;
+        }else {
+            return false;
+        }
     }
-
-   // 색상 x, 타입 x, 최신 순
-    public List<NailartListGetRes> getListbyLatest(int page, int size){
+    public List<NailartListGetRes> getOtherNailartByDesignerSeq(long designerSeq, long nailartSeq){
         List<NailartListGetRes> result = new ArrayList<>();
-        List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
+        List<Long> nailartNum = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
                 .orderBy(qNailart.nailartSeq.desc())
-                .limit(size)
-                .offset((page-1)*size)
+                .where(qNailart.designerSeq.eq(designerSeq).and(qNailart.nailartSeq.ne(nailartSeq)))
+                .limit(10)
                 .fetch();
-        nailartSeq.forEach( num -> {
+        nailartNum.forEach( num -> {
             NailartListGetRes tmp = new NailartListGetRes();
             Nailart art = nailartRepository.findByNailartSeq(num);
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -99,10 +117,72 @@ public class NailartRepositorySupport {
             tmp.setNailartWeather(art.getNailartWeather());
             tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
             tmp.setNailartType(art.getNailartType());
-//            tmp.setNailartAvailable(art.get);
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
+            result.add(tmp);
+        });
+        return result;
+    }
+    public  DesignerNailartListRes getdesignerNailartList(long designerSeq, int page, int size){
+        DesignerNailartListRes result = new DesignerNailartListRes();
+        List<Nailart> list = new ArrayList<>();
+        List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .orderBy(qNailart.nailartSeq.desc())
+                .where(qNailart.nailartAvailable.eq(false).and(qNailart.designerSeq.eq(designerSeq)))
+                .limit(size)
+                .offset((page-1)*size)
+                .fetch();
+        List<Long> totalCount = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .orderBy(qNailart.nailartSeq.desc())
+                .where(qNailart.nailartAvailable.eq(false).and(qNailart.designerSeq.eq(designerSeq)))
+                .fetch();
+        nailartSeq.forEach( num -> {
+            Nailart tmp = nailartRepository.findByNailartSeq(num);
+            list.add(tmp);
+        });
+        result.setNailart(list);
+        result.setTotalElements(totalCount.size());
+
+        return result;
+    }
+
+   // 색상 x, 타입 x, 최신 순
+    public List<NailartListGetRes> getListbyLatest(int page, int size){
+        List<NailartListGetRes> result = new ArrayList<>();
+        List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .orderBy(qNailart.nailartSeq.desc())
+                .where(qNailart.nailartAvailable.eq(false))
+                .limit(size)
+                .offset((page-1)*size)
+                .fetch();
+        List<Long> totalCount = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .where(qNailart.nailartAvailable.eq(false))
+                .orderBy(qNailart.nailartSeq.desc())
+                .fetch();
+        nailartSeq.forEach( num -> {
+            NailartListGetRes tmp = new NailartListGetRes();
+            Nailart art = nailartRepository.findByNailartSeq(num);
+            tmp.setNailartSeq(art.getNailartSeq());
+            tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
+            tmp.setDesignerSeq(art.getDesignerSeq());
+            tmp.setTokenId(art.getTokenId());
+            tmp.setNailartName(art.getNailartName());
+            tmp.setNailartDesc(art.getNailartDesc());
+            tmp.setNailartColor(art.getNailartColor());
+            tmp.setNailartDetailColor(art.getNailartDetailColor());
+            tmp.setNailartWeather(art.getNailartWeather());
+            tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
+            tmp.setNailartType(art.getNailartType());
+            tmp.setNailartPrice(art.getNailartPrice());
+            tmp.setNailartRegedAt(art.getNailartRegedAt());
+            tmp.setNailartRating(art.getNailartRating());
+            tmp.setTotalCount(totalCount.size());
             result.add(tmp);
         });
         return result;
@@ -118,14 +198,24 @@ public class NailartRepositorySupport {
                     .on(qNailart.eq(qFavorite.nailart))
                 .groupBy(qNailart.nailartSeq)
                 .orderBy(qFavorite.nailart.count().desc())
+                .where(qNailart.nailartAvailable.eq(false))
                 .limit(size)
                 .offset((page-1)*size)
+                .fetch();
+        List<Tuple> totalCount = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
+                .from(qNailart)
+                .leftJoin(qFavorite)
+                .on(qNailart.eq(qFavorite.nailart))
+                .groupBy(qNailart.nailartSeq)
+                .orderBy(qFavorite.nailart.count().desc())
+                .where(qNailart.nailartAvailable.eq(false))
                 .fetch();
         list.forEach( num -> {
             NailartListGetRes tmp = new NailartListGetRes();
             Nailart art = nailartRepository.findByNailartSeq(num.get(qNailart.nailartSeq));
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -139,6 +229,7 @@ public class NailartRepositorySupport {
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
+            tmp.setTotalCount(totalCount.size());
             result.add(tmp);
         });
 
@@ -152,14 +243,21 @@ public class NailartRepositorySupport {
                 .from(qNailart)
                 .where(qNailart.nailartColor.eq(color))
                 .orderBy(qNailart.nailartSeq.desc())
+                .where(qNailart.nailartAvailable.eq(false))
                 .limit(size)
                 .offset((page-1)*size)
+                .fetch();
+        List<Long> totalCount = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .where(qNailart.nailartColor.eq(color).and(qNailart.nailartAvailable.eq(false)))
+                .orderBy(qNailart.nailartSeq.desc())
                 .fetch();
         nailartSeq.forEach( num -> {
             NailartListGetRes tmp = new NailartListGetRes();
             Nailart art = nailartRepository.findByNailartSeq(num);
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -173,6 +271,7 @@ public class NailartRepositorySupport {
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
+            tmp.setTotalCount(totalCount.size());
             result.add(tmp);
         });
         return result;
@@ -185,17 +284,26 @@ public class NailartRepositorySupport {
                 .from(qNailart)
                 .leftJoin(qFavorite)
                 .on(qNailart.eq(qFavorite.nailart))
-                .where(qNailart.nailartColor.eq(color))
+                .where(qNailart.nailartColor.eq(color).and(qNailart.nailartAvailable.eq(false)))
                 .groupBy(qNailart.nailartSeq)
                 .orderBy(qFavorite.nailart.count().desc())
                 .limit(size)
                 .offset((page-1)*size)
+                .fetch();
+        List<Tuple> totalCount = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
+                .from(qNailart)
+                .leftJoin(qFavorite)
+                .on(qNailart.eq(qFavorite.nailart))
+                .where(qNailart.nailartColor.eq(color).and(qNailart.nailartAvailable.eq(false)))
+                .groupBy(qNailart.nailartSeq)
+                .orderBy(qFavorite.nailart.count().desc())
                 .fetch();
         list.forEach( num -> {
             NailartListGetRes tmp = new NailartListGetRes();
             Nailart art = nailartRepository.findByNailartSeq(num.get(qNailart.nailartSeq));
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -209,6 +317,7 @@ public class NailartRepositorySupport {
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
+            tmp.setTotalCount(totalCount.size());
             result.add(tmp);
         });
 
@@ -220,16 +329,22 @@ public class NailartRepositorySupport {
         List<NailartListGetRes> result = new ArrayList<>();
         List<Long> nailartSeq = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
-                .where(qNailart.nailartType.eq(type))
+                .where(qNailart.nailartType.eq(type).and(qNailart.nailartAvailable.eq(false)))
                 .orderBy(qNailart.nailartSeq.desc())
                 .limit(size)
                 .offset((page-1)*size)
+                .fetch();
+        List<Long> totalCount = jpaQueryFactory.select(qNailart.nailartSeq)
+                .from(qNailart)
+                .where(qNailart.nailartType.eq(type).and(qNailart.nailartAvailable.eq(false)))
+                .orderBy(qNailart.nailartSeq.desc())
                 .fetch();
         nailartSeq.forEach( num -> {
             NailartListGetRes tmp = new NailartListGetRes();
             Nailart art = nailartRepository.findByNailartSeq(num);
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -243,6 +358,7 @@ public class NailartRepositorySupport {
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
+            tmp.setTotalCount(totalCount.size());
             result.add(tmp);
         });
         return result;
@@ -255,17 +371,26 @@ public class NailartRepositorySupport {
                 .from(qNailart)
                 .leftJoin(qFavorite)
                 .on(qNailart.eq(qFavorite.nailart))
-                .where(qNailart.nailartType.eq(type))
+                .where(qNailart.nailartType.eq(type).and(qNailart.nailartAvailable.eq(false)))
                 .groupBy(qNailart.nailartSeq)
                 .orderBy(qFavorite.nailart.count().desc())
                 .limit(size)
                 .offset((page-1)*size)
+                .fetch();
+        List<Tuple> totalCount = jpaQueryFactory.select(qNailart.nailartSeq, qFavorite.nailart.count())
+                .from(qNailart)
+                .leftJoin(qFavorite)
+                .on(qNailart.eq(qFavorite.nailart))
+                .where(qNailart.nailartType.eq(type).and(qNailart.nailartAvailable.eq(false)))
+                .groupBy(qNailart.nailartSeq)
+                .orderBy(qFavorite.nailart.count().desc())
                 .fetch();
         list.forEach( num -> {
             NailartListGetRes tmp = new NailartListGetRes();
             Nailart art = nailartRepository.findByNailartSeq(num.get(qNailart.nailartSeq));
             tmp.setNailartSeq(art.getNailartSeq());
             tmp.setDesignerNickname(userRepository.findByUserSeq(art.getDesignerSeq()).getUserNickname());
+            tmp.setDesignerShopName(designerInfoRepository.findByDesignerSeq(art.getDesignerSeq()).getDesignerShopName());
             tmp.setDesignerSeq(art.getDesignerSeq());
             tmp.setTokenId(art.getTokenId());
             tmp.setNailartName(art.getNailartName());
@@ -275,10 +400,10 @@ public class NailartRepositorySupport {
             tmp.setNailartWeather(art.getNailartWeather());
             tmp.setNailartThumbnailUrl(art.getNailartThumbnailUrl());
             tmp.setNailartType(art.getNailartType());
-//            tmp.setNailartAvailable(art.get);
             tmp.setNailartPrice(art.getNailartPrice());
             tmp.setNailartRegedAt(art.getNailartRegedAt());
             tmp.setNailartRating(art.getNailartRating());
+            tmp.setTotalCount(totalCount.size());
             result.add(tmp);
         });
 

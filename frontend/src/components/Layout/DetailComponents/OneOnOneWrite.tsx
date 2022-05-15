@@ -110,13 +110,14 @@ const Content = styled.div`
   
 `;
 
-export default function OneOneOneWrite(modalStatus: any) {
+export default function OneOnOneWrite(modalStatus: any) {
   let params:string|undefined = useParams().id;
-  const userSeq: any = sessionStorage.getItem("userSeq");
+  
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const userSeq: any = sessionStorage.getItem("userSeq");
   const [designerSeq, setDesignerSeq] = useRecoilState(designerId);
   // const {isLoading:isInquiryLoading , data:inquiryData} = useQuery('inquiryList',() => inquiryList(params.id?.slice(1,params.id.length)))
 
@@ -206,7 +207,29 @@ export default function OneOneOneWrite(modalStatus: any) {
     formdata.append("qnaTitle", inputStatus.qnaTitle);
     formdata.append("userSeq", userSeq);
 
+    console.log(formdata.get('qnaFile'))
+    if (!inputStatus.qnaTitle) {
+      alert('제목을 입력해주세요.')
+      return
+    }
+    
+    else if (!inputStatus.qnaDesc) {
+      alert('내용을 선택해주세요.')
+      return
+    }
+    else if (!files) {
+      alert('첨부파일을 선택해주세요.')
+      return
+    } 
+    
+  
     await postInquiryFunc.mutate(formdata);
+    setInputStatus({
+      qnaTitle: "",
+      qnaDesc: "",
+      qnaPublic: "",
+    })
+    setFiles('')
     setOpen(false);
     //  스트링으로 보내야 함.
 

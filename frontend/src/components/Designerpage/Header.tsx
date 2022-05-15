@@ -12,8 +12,10 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { designerAtom } from "../../store/atoms";
 import { deleteFollow, postFollow } from "../../store/apis/follow";
-import { useMutation } from "react-query";
-
+import { useMutation, useQuery } from "react-query";
+import { getDesignerinfo } from "../../store/apis/designer";
+import { TailSpin } from "react-loader-spinner";
+import { convertImgToThumnail } from "../Commons/functions"
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -114,6 +116,15 @@ const Wrapper = styled.div`
   }
 `;
 
+const LoadingBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin: 0 auto;
+  width: 768px;
+`;
+
 interface IProps {
   designer?: IDesigner;
   refetch: any;
@@ -123,19 +134,30 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isFollow, setIsFollow] = useState<boolean>(false);
   const designer = useRecoilValue(designerAtom);
-  const [selected, setSelected] = useState(0)
-  const [selectedByDesigner, setSelectedByDesigner] = useState(0)
+  const [selected, setSelected] = useState(0);
+  const [selectedByDesigner, setSelectedByDesigner] = useState(0);
   const { userSeq } = useParams();
   const location = useLocation();
-  const temp = location.pathname.split("/")
+  const temp = location.pathname.split("/");
   // console.log(temp[temp.length - 1])
-  const handleModalOpen = () => {
-    setIsOpen(true);
-  };
 
-  const handleModalClose = () => {
-    setIsOpen(false);
-  };
+  const {
+    data,
+    isLoading,
+    refetch: designerRefetch,
+  } = useQuery<any, Error>(
+    ["getDesigner", userSeq],
+    async () => {
+      return await getDesignerinfo(Number(userSeq));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res);
+        findIsFollow(res)
+      },
+      onError: (err: any) => console.log(err),
+    }
+  );
 
   const follow = useMutation<any, Error>(
     ["follow"],
@@ -145,7 +167,8 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     {
       onSuccess: (res) => {
         console.log(res);
-        refetch();
+        designerRefetch();
+
       },
       onError: (err: any) => console.log(err),
     }
@@ -159,16 +182,17 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     {
       onSuccess: (res) => {
         console.log(res);
-        refetch();
+        designerRefetch();
       },
       onError: (err: any) => console.log(err),
     }
   );
 
-  const findIsFollow = () => {
+
+  const findIsFollow = (res:any) => {
     const me = Number(sessionStorage.getItem("userSeq"));
     setIsFollow(
-      designer.follower.some(function (ele: any, idx: any) {
+      res.follower?.some(function (ele: any, idx: any) {
         return ele.userSeq === me;
       })
     );
@@ -183,93 +207,108 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   };
 
   useEffect(() => {
-    findIsFollow();
-  }, [designer]);
+    // findIsFollow();
+  }, [userSeq]);
   return (
     <>
-      <Wrapper>
-        <div className="row">
-          <div className="pageHeader">
-            <img src={designer.designerInfo.designerProfileImgUrl ? designer.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
-            <div className="designername">
-              {designer.designerInfo.designerShopName}
+      {isLoading ? (
+        <LoadingBox className="loading">
+          <TailSpin height={50} width={50} color="gray" />
+        </LoadingBox>
+      ) : (
+        <Wrapper>
+          <div className="row">
+            <div className="pageHeader">
+              <img
+                src={
+                  data.designerInfo.designerProfileImgUrl
+                    ? convertImgToThumnail(data.designerInfo.designerProfileImgUrl)
+                    : "/assets/images/default_profile.png"
+                }
+                alt=""
+              />
+              <div className="designername">
+                {data.designerInfo.designerShopName}
+              </div>
+              <div className="buttons">
+                <Link to="createask">
+                  <button
+                    className={`${
+                      temp[temp.length - 1] === "createask" ? "selected" : ""
+                    }`}
+                  >
+                    <CreateIcon />
+                    1:1 문의
+                  </button>
+                </Link>
+                <Link to="reservation">
+                  <button
+                    className={`${
+                      temp[temp.length - 1] === "reservation" ? "selected" : ""
+                    }`}
+                  >
+                    <CalendarMonthIcon />
+                    예약하기
+                  </button>
+                </Link>
+                {isFollow ? (
+                  <button onClick={onClickUnFollow}>
+                    <FavoriteIcon color="error" />
+                    언팔로우
+                  </button>
+                ) : (
+                  <button onClick={onClickFollow}>
+                    <FavoriteBorderIcon color="error" />
+                    팔로우
+                  </button>
+                )}
+              </div>
+              <div className="buttons">
+                <Link to="updateimg">
+                  <button
+                    className={`${
+                      temp[temp.length - 1] === "updateimg" ? "selected" : ""
+                    }`}
+                  >
+                    <AccountBoxIcon />
+                    사진변경
+                  </button>
+                </Link>
+                <Link to="reservationcheck">
+                  <button
+                    className={`${
+                      temp[temp.length - 1] === "reservationcheck"
+                        ? "selected"
+                        : ""
+                    }`}
+                  >
+                    <CalendarMonthIcon />
+                    예약확인
+                  </button>
+                </Link>
+                <Link to="followers">
+                  <button
+                    className={`${
+                      temp[temp.length - 1] === "followers" ? "selected" : ""
+                    }`}
+                  >
+                    <PeopleIcon />
+                    팔로워들
+                  </button>
+                </Link>
+              </div>
             </div>
-            <div className="buttons">
-              <Link to="createask">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "createask" ? "selected" : ""
-                  }`}
-                >
-                  <CreateIcon />
-                  1:1 문의
-                </button>
-              </Link>
-              <Link to="reservation">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "reservation" ? "selected" : ""
-                  }`}
-                >
-                  <CalendarMonthIcon />
-                  예약하기
-                </button>
-              </Link>
-              {isFollow ? (
-                <button onClick={onClickUnFollow}>
-                  <FavoriteIcon color="error" />
-                  언팔로우
-                </button>
-              ) : (
-                <button onClick={onClickFollow}>
-                  <FavoriteBorderIcon color="error" />
-                  팔로우
-                </button>
-              )}
-            </div>
-            <div className="buttons">
-              <Link to="updateimg">
-                <button className={`${
-                    temp[temp.length - 1] === "updateimg" ? "selected" : ""
-                  }`}>
-                  <AccountBoxIcon />
-                  사진변경
-                </button>
-              </Link>
-              <Link to="reservationcheck">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "reservationcheck"
-                      ? "selected"
-                      : ""
-                  }`}
-                >
-                  <CalendarMonthIcon />
-                  예약확인
-                </button>
-              </Link>
-              <Link to="followers">
-                <button
-                  className={`${
-                    temp[temp.length - 1] === "followers" ? "selected" : ""
-                  }`}
-                >
-                  <PeopleIcon />
-                  팔로워들
-                </button>
-              </Link>
+            <div className="pageHeaderNavigation">
+              <div className="NavElement">
+                <span>DESIGNER</span>
+                <ChevronRightIcon />
+                <span>디자이너페이지</span>
+              </div>
             </div>
           </div>
-          <div className="pageHeaderNavigation">
-            <div className="NavElement">
-              <span>DESIGNER</span>
-              <ChevronRightIcon />
-              <span>디자이너페이지</span>
-            </div>
-          </div>
-        </div>
-        <div></div>
-      </Wrapper>
+          <div></div>
+        </Wrapper>
+      )}
     </>
   );
 };

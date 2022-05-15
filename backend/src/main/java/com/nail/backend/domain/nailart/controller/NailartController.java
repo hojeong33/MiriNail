@@ -7,14 +7,23 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
+import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
 import com.nail.backend.domain.nailart.service.NailartService;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.request.NailartRegisterPostReq;
 import com.nail.backend.domain.nailart.response.NailartDetailGetRes;
+import com.nail.backend.domain.review.response.ReviewGetRes;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +54,14 @@ public class NailartController {
         return nailartService.nailartDetail(nailartSeq);
     }
 
-    // Nailart designerSeq로 최대 10개 조회
-    @GetMapping("/designer/{designerSeq}")
-    public List<NailartListGetRes> anotherNailart(@PathVariable("designerSeq") long designerSeq){
-        return nailartService.anotherNailart(designerSeq);
+    // Nailart designerSeq로 최대 10개 조회(현재 작품 제외)
+    @GetMapping("/designer/{designerSeq}/{nailartSeq}")
+    public List<NailartListGetRes> anotherNailart(@PathVariable("designerSeq") long designerSeq, @PathVariable("nailartSeq") long nailartSeq){
+        return nailartService.otherNailart(designerSeq, nailartSeq);
     }
 
     @GetMapping("/designer")
-    public Page<Nailart> nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
+    public DesignerNailartListRes nailartListByDesignerSeq(@RequestParam long designerSeq , @RequestParam int page, @RequestParam int size){
         return nailartService.getdesignerNailartList(designerSeq, page, size);
     }
 
@@ -74,11 +83,11 @@ public class NailartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // Nailart 삭제
-    @DeleteMapping("/{nailartSeq}")
-    public ResponseEntity<BaseResponseBody> nailartRemove(@PathVariable long nailartSeq){
+    // Nailart available update
+    @PutMapping("/{nailartSeq}")
+    public ResponseEntity<BaseResponseBody> nailartAvailableUpdate(@PathVariable long nailartSeq){
         System.out.println("check");
-        if (nailartService.nailartRemove(nailartSeq)){
+        if (nailartService.nailartAvailableUpdate(nailartSeq)){
             return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
         } else {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This nailartSeq dosen't exist."));
@@ -86,5 +95,21 @@ public class NailartController {
     }
 
 
+    // 이삭 작성 ------------------------------------------------------------------------------------------------
+    // 네일아트 검색
+    @ApiOperation(value = "네일아트 검색조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Page<NailartListGetRes>> getNailartListByNailartName(@PageableDefault(page = 0, size = 10, sort = "nailartSeq", direction = Sort.Direction.DESC) Pageable pageable,
+                                                                        @ApiParam(value = "네일 아트 이름") @PathVariable String name) {
+
+        log.info("getNailartListByNailartName - 호출");
+        Page<NailartListGetRes> nailartList = nailartService.getNailartListByNailartName(pageable,name);
+
+        return ResponseEntity.status(200).body(nailartList);
+    }
 
 }

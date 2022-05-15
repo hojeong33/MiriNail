@@ -82,9 +82,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const [isLogin, setIsLogin] = React.useState<boolean>(false);
+  const [searchValue, setSearchValue] = React.useState("");
   //회원정보
   const userNickname = sessionStorage.getItem("userNickname");
   const userProfileImg = sessionStorage.getItem("userProfileImg");
+  const userRole = sessionStorage.getItem("userRole");
   useEffect(() => {
     const myNavbar = document.getElementById("myNavbar");
     console.log("myNavbar", myNavbar);
@@ -118,13 +120,31 @@ const Navbar = () => {
   // URL 이동
   const navigate = useNavigate();
 
+  const onKeyDownEnter = (e: any) => {
+    if (e.code === "Enter") {
+      console.log("엔터");
+      console.log(searchValue);
+      if (searchValue === "") {
+        alert("검색어를 입력해주세요");
+        return;
+      }
+      navigate(`/search/${searchValue}`);
+      // otherOneTouch(e)
+      // setSearchValue("")
+    }
+  };
+
+  const otherOneTouch = React.useCallback((event: TouchEvent) => {
+    (document.activeElement as HTMLElement).blur();
+  }, []);
+
   return (
     <AppBar
       id="myNavbar"
       position="fixed"
       style={{
         boxShadow: "none",
-        borderBottom: "0.05rem solid black",
+        borderBottom: "1px solid rgba(61,60,58,0.5)",
       }}
       className={styles.top}
     >
@@ -138,7 +158,7 @@ const Navbar = () => {
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
             onClick={() => navigate(`/`)}
           >
-            LOGO
+            Miri Nail
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <CustomButton
@@ -212,6 +232,10 @@ const Navbar = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => onKeyDownEnter(e)}
+              spellCheck="false"
             />
           </Search>
 
@@ -252,15 +276,39 @@ const Navbar = () => {
                     }}
                   >
                     <li>
-                      <button
-                        onClick={() => {
-                          navigate(
-                            `/mypage/${sessionStorage.getItem("userSeq")}`
-                          );
-                        }}
-                      >
-                        Mypage
-                      </button>
+                      {userRole === "ROLE_USER" && (
+                        <button
+                          onClick={() => {
+                            navigate(
+                              `/mypage/${sessionStorage.getItem("userSeq")}/myreservation`
+                            );
+                          }}
+                        >
+                          MyPage
+                        </button>
+                      )}
+                      {userRole === "ROLE_ARTIST" && (
+                        <button
+                          onClick={() => {
+                            navigate(
+                              `/designerpage/${sessionStorage.getItem(
+                                "userSeq"
+                              )}/new`
+                            );
+                          }}
+                        >
+                          DesignerPage
+                        </button>
+                      )}
+                      {userRole === "ROLE_ADMIN" && (
+                        <button
+                          onClick={() => {
+                            navigate(`/admin/applylist`);
+                          }}
+                        >
+                          Admin
+                        </button>
+                      )}
                     </li>
                     <li>
                       <button onClick={logout}>Logout</button>

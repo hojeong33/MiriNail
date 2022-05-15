@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import PhoneIcon from '@mui/icons-material/Phone';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import PhoneIcon from "@mui/icons-material/Phone";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useMutation, useQuery } from "react-query";
 import { getFollowees, postFollow } from "../../store/apis/follow";
 import { useNavigate, useParams } from "react-router-dom";
-import { TailSpin } from "react-loader-spinner"
+import { TailSpin } from "react-loader-spinner";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -17,7 +17,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  min-height: 100vh;
+  
   .cards {
     width: 90%;
     /* border: 1px solid black; */
@@ -25,6 +26,7 @@ const Wrapper = styled.div`
     flex-wrap: wrap;
     /* justify-content: center; */
     margin: 20px 0 0 40px;
+    min-height: 30vh;
   }
   .card {
     position: relative;
@@ -87,7 +89,7 @@ const Wrapper = styled.div`
           bottom: 10px;
           right: 10px;
           :hover {
-            transform:scale(1.1); 
+            transform: scale(1.1);
           }
         }
         .designericon {
@@ -117,30 +119,39 @@ interface IState {
     shop: string;
     imgurl: string;
     follower: number;
-  }
+  };
 }
 
 const FollowingDesigner = () => {
   const navigate = useNavigate();
+  const [lastPage, setLastPage] = useState();
+  const [page, setPage] = useState(1);
   const { userSeq } = useParams();
 
+  const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    console.log(event);
+    console.log(page);
+    setPage(page);
+  };
+
   const { data, isLoading } = useQuery<any, Error>(
-    ["getFollowee" ],
+    ["getFollowee", page],
     async () => {
-      return await getFollowees(Number(userSeq));
+      return await getFollowees(Number(userSeq), page, 10);
     },
     {
       onSuccess: (res) => {
-        console.log(res);
-        // setNailarts(res.content);
+        console.log(res, "designerdata");
+        // console.log(data, "!!!!!!!");
+        setLastPage(res.totalPages)
       },
       onError: (err: any) => console.log(err),
     }
   );
 
-  const onClickDesigner = (designerSeq:number) => {
-    navigate(`/designerpage/${designerSeq}/new`)
-  }
+  const onClickDesigner = (designerSeq: number) => {
+    navigate(`/designerpage/${designerSeq}/new`);
+  };
 
   return (
     <Wrapper>
@@ -149,55 +160,77 @@ const FollowingDesigner = () => {
           <TailSpin height={50} width={50} color="gray" />
         </div>
       ) : (
-        <div className="cards">
-          {data?.map((designer: any, idx: number) => {
-            return (
-              <div
-                className="card"
-                key={idx}
-                onClick={() => {
-                  onClickDesigner(designer.designerSeq);
-                }}
-              >
-                <div className="cardleft">
-                  <img src={designer.designerProfileImgUrl ? designer.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
-                </div>
-                <div className="cardright">
-                  <div className="cardright-top">
-                    <div className="name">{designer.designerShopName}</div>
-                    <div className="shop">{designer.designerAddress}</div>
-                  </div>
-                  <div className="cardright-bottom">
-                    <div>
-                      <AccessTimeIcon className="designericon" />
-                      {designer.designerShopOpen
-                        ? designer.designerShopOpen
-                        : ""}{" "}
-                      -{" "}
-                      {designer.designerShopClose
-                        ? designer.designerShopClose
-                        : ""}
-                    </div>
-                    <div>
-                      <PhoneIcon className="designericon" />
-                      {designer.user.userTel ? designer.user.userTel : "-"}
-                    </div>
-                    {/* <FavoriteIcon
-                    className="follow"
-                    onClick={(e: React.MouseEvent) => {
-                      e.stopPropagation();
-                      console.log("dds");
+        <>
+          {data.totalElements === 0 ? (
+            <div>팔로우한 디자이너가 없습니다</div>
+          ) : (
+            <div className="cards">
+              {data.content?.map((designer: any, idx: number) => {
+                return (
+                  <div
+                    className="card"
+                    key={idx}
+                    onClick={() => {
+                      onClickDesigner(designer.designerSeq);
                     }}
-                    color="error"
-                  /> */}
+                  >
+                    <div className="cardleft">
+                      <img
+                        src={
+                          designer.designerProfileImgUrl
+                            ? designer.designerProfileImgUrl
+                            : "/assets/images/default_profile.png"
+                        }
+                        alt=""
+                      />
+                    </div>
+                    <div className="cardright">
+                      <div className="cardright-top">
+                        <div className="name">{designer.designerShopName}</div>
+                        <div className="shop">{designer.designerAddress}</div>
+                      </div>
+                      <div className="cardright-bottom">
+                        <div>
+                          <AccessTimeIcon className="designericon" />
+                          {designer.designerShopOpen
+                            ? designer.designerShopOpen
+                            : ""}{" "}
+                          -{" "}
+                          {designer.designerShopClose
+                            ? designer.designerShopClose
+                            : ""}
+                        </div>
+                        <div>
+                          <PhoneIcon className="designericon" />
+                          {designer.user.userTel ? designer.user.userTel : "-"}
+                        </div>
+                        {/* <FavoriteIcon
+                      className="follow"
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        console.log("dds");
+                      }}
+                      color="error"
+                    /> */}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          )}
+          <div className="pagination">
+            <Stack spacing={2}>
+              <Pagination
+                count={lastPage}
+                shape="rounded"
+                onChange={onchangePage}
+              />
+            </Stack>
+          </div>
+        </>
       )}
     </Wrapper>
   );
-}
-export default FollowingDesigner
+};
+export default FollowingDesigner;

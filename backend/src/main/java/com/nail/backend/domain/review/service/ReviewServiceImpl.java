@@ -3,6 +3,8 @@ package com.nail.backend.domain.review.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.nail.backend.domain.authentication.service.AwsS3Service;
+import com.nail.backend.domain.designer.db.entitiy.DesignerInfo;
+import com.nail.backend.domain.designer.db.repository.DesignerInfoRepository;
 import com.nail.backend.domain.nailart.db.entity.Nailart;
 import com.nail.backend.domain.nailart.db.repository.NailartRepository;
 import com.nail.backend.domain.nailart.db.repository.NailartRepositorySupport;
@@ -72,6 +74,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    DesignerInfoRepository designerInfoRepository;
+
     //    CREATE_________________________________________
     public Review reviewRegister(List<MultipartFile> reviewFiles,
                                     ReviewRegisterPostReq reviewRegisterPostReq,
@@ -367,6 +373,7 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
             // 이미지
             List<ReviewImg> reviewImgList = reviewImgRepository.findAllByReviewSeq(rv.getReviewSeq());
 
+            DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(rv.getDesigner().getUserSeq());
             // 리뷰 전체 리턴 리스트 만들기
             ReviewGetRes reviewGetRes = ReviewGetRes.builder()
                     .reviewSeq(rv.getReviewSeq())
@@ -375,8 +382,8 @@ public Page<ReviewGetRes> getReviewListByNailartSeq(Pageable pageable,Long naila
                     .userNickname(rv.getUser().getUserNickname())
                     .userProfileImg(rv.getUser().getUserProfileImg())
                     .designerSeq(rv.getDesigner().getUserSeq())
-                    .designerNickname(rv.getDesigner().getUserNickname())
                     .designerProfileImg(rv.getDesigner().getUserProfileImg())
+                    .shopName(designerInfo.getDesignerShopName())
                     .reviewTitle(rv.getReviewTitle())
                     .reviewDesc(rv.getReviewDesc())
                     .reviewCnt(rv.getReviewCnt())

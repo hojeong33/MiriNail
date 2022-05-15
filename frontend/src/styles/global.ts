@@ -1,13 +1,11 @@
-import { createGlobalStyle } from 'styled-components';
-
-
+import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Open Sans', 'Noto Sans KR' ,sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: white;
+    background-color: #fff;
     width: 100%;
     height: 100%;
     background-size: cover;   

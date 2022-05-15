@@ -2,6 +2,7 @@ import UpperFrame from '../../components/NFTDetail/UpperFrame'
 import styled from 'styled-components'
 import LowerFrame from '../../components/NFTDetail/LowerFrame'
 
+
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -30,7 +31,7 @@ const Wrapper = styled.div`
 `
 
 const NFTDetail = () => {
-
+  
   return (
     <Wrapper>
       <UpperFrame />
