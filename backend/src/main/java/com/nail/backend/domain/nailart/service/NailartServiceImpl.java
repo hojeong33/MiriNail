@@ -227,6 +227,7 @@ public class NailartServiceImpl implements NailartService {
                 nailart.setNailartThumbnailUrl(amazonS3.getUrl(bucket, fileName).toString());
                 System.out.println(nailart);
                 nailartSaved = nailartRepository.save(nailart);
+                nailart.setNailartSeq(nailartSaved.getNailartSeq());
             } else {
                 // 이미지 업로드
                 String fileName = createFileName(file.getOriginalFilename());

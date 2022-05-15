@@ -68,11 +68,11 @@ public class NailartController {
 
     // Nailart 등록
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<Void> nailartRegister(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
+    public long nailartRegister(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         NailartRegisterPostReq nailartRegisterPostReq = objectMapper.readValue(jsonList, new TypeReference<NailartRegisterPostReq>() {});
-        nailartService.nailartRegister(nailartRegisterPostReq, files);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Nailart nailart = nailartService.nailartRegister(nailartRegisterPostReq, files);
+        return nailart.getNailartSeq();
     }
 
     // Nailart 수정
