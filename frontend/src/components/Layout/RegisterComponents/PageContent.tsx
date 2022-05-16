@@ -305,10 +305,10 @@ const PageContent = () => {
     
     // const ipfsHash = response.path
     // console.log(ipfsHash)
-    // publishToken(ipfsHash)
+    publishToken(returnValue.data)
     
 
-    // setTimeout(() => navigate(-1), 2000)
+    setTimeout(() => navigate(-1), 2000)
   }
 
 

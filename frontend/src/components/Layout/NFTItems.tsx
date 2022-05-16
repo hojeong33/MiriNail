@@ -123,7 +123,7 @@ const NFTItems = (props:any) => {
                  <div className="imx">
                    <img src={e.nailartThumbnailUrl} alt="엥?" />
                    <div className="itemName">{e.nailartType} - {e.nailartDetailColor}</div>
-                   <div className="itemTags">#{e.nailartWeather} #{e.nailartColor} #{e.designerNickname}</div>
+                   <div className="itemTags">#{e.nailartWeather} #{e.nailartColor} #{e.designerShopName}</div>
                    <div className="itemPrice">{e.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원</div>
                
                    {/* <div className="hashTag">#{e.nailartWeather} #{e.designerInfo.user.userNickname}</div> */}
