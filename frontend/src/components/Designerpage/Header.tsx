@@ -222,7 +222,9 @@ const Header: React.FC<IProps> = ({ refetch }) => {
               <img
                 src={
                   data.designerInfo.designerProfileImgUrl
-                    ? convertImgToThumnail(data.designerInfo.designerProfileImgUrl)
+                    ? convertImgToThumnail(
+                        data.designerInfo.designerProfileImgUrl
+                      )
                     : "/assets/images/default_profile.png"
                 }
                 alt=""
@@ -230,73 +232,78 @@ const Header: React.FC<IProps> = ({ refetch }) => {
               <div className="designername">
                 {data.designerInfo.designerShopName}
               </div>
-              <div className="buttons">
-                <Link to="createask">
-                  <button
-                    className={`${
-                      temp[temp.length - 1] === "createask" ? "selected" : ""
-                    }`}
-                  >
-                    <CreateIcon />
-                    1:1 문의
-                  </button>
-                </Link>
-                <Link to="reservation">
-                  <button
-                    className={`${
-                      temp[temp.length - 1] === "reservation" ? "selected" : ""
-                    }`}
-                  >
-                    <CalendarMonthIcon />
-                    예약하기
-                  </button>
-                </Link>
-                {isFollow ? (
-                  <button onClick={onClickUnFollow}>
-                    <FavoriteIcon color="error" />
-                    언팔로우
-                  </button>
-                ) : (
-                  <button onClick={onClickFollow}>
-                    <FavoriteBorderIcon color="error" />
-                    팔로우
-                  </button>
-                )}
-              </div>
-              <div className="buttons">
-                <Link to="updateimg">
-                  <button
-                    className={`${
-                      temp[temp.length - 1] === "updateimg" ? "selected" : ""
-                    }`}
-                  >
-                    <AccountBoxIcon />
-                    사진변경
-                  </button>
-                </Link>
-                <Link to="reservationcheck">
-                  <button
-                    className={`${
-                      temp[temp.length - 1] === "reservationcheck"
-                        ? "selected"
-                        : ""
-                    }`}
-                  >
-                    <CalendarMonthIcon />
-                    예약확인
-                  </button>
-                </Link>
-                <Link to="followers">
-                  <button
-                    className={`${
-                      temp[temp.length - 1] === "followers" ? "selected" : ""
-                    }`}
-                  >
-                    <PeopleIcon />
-                    팔로워들
-                  </button>
-                </Link>
-              </div>
+              {sessionStorage.getItem("userSeq") === userSeq ? (
+                <div className="buttons">
+                  <Link to="updateimg">
+                    <button
+                      className={`${
+                        temp[temp.length - 1] === "updateimg" ? "selected" : ""
+                      }`}
+                    >
+                      <AccountBoxIcon />
+                      사진변경
+                    </button>
+                  </Link>
+                  <Link to="reservationcheck">
+                    <button
+                      className={`${
+                        temp[temp.length - 1] === "reservationcheck"
+                          ? "selected"
+                          : ""
+                      }`}
+                    >
+                      <CalendarMonthIcon />
+                      예약확인
+                    </button>
+                  </Link>
+                  <Link to="followers">
+                    <button
+                      className={`${
+                        temp[temp.length - 1] === "followers" ? "selected" : ""
+                      }`}
+                    >
+                      <PeopleIcon />
+                      팔로워들
+                    </button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="buttons">
+                  <Link to="createask">
+                    <button
+                      className={`${
+                        temp[temp.length - 1] === "createask" ? "selected" : ""
+                      }`}
+                    >
+                      <CreateIcon />
+                      1:1 문의
+                    </button>
+                  </Link>
+                  <Link to="reservation">
+                    <button
+                      className={`${
+                        temp[temp.length - 1] === "reservation"
+                          ? "selected"
+                          : ""
+                      }`}
+                    >
+                      <CalendarMonthIcon />
+                      예약하기
+                    </button>
+                  </Link>
+                  {isFollow ? (
+                    <button onClick={onClickUnFollow}>
+                      <FavoriteIcon color="error" />
+                      언팔로우
+                    </button>
+                  ) : (
+                    <button onClick={onClickFollow}>
+                      <FavoriteBorderIcon color="error" />
+                      팔로우
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
             <div className="pageHeaderNavigation">
               <div className="NavElement">

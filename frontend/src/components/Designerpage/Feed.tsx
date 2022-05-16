@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useMutation } from "react-query";
 import { deleteFeed } from "../../store/apis/designer";
+import { useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -94,6 +95,7 @@ interface IState {
 
 const Feed: React.FC<IState> = ({ feed, refetch }) => {
   // console.log(feed.designerNewsImgUrl);
+  const { userSeq } = useParams();
   const settings = {
     dots: true,
     infinite: true,
@@ -122,9 +124,10 @@ const Feed: React.FC<IState> = ({ feed, refetch }) => {
         <div className="title">{feed.designerNewsTitle}</div>
         <div className="date">{moment(feed.designerNewsRegedAt).format("YYYY-MM-DD")}</div>
       </div>
+      {sessionStorage.getItem("userSeq") === userSeq &&
       <div className="buttons">
         <button className="deleteBtn" onClick={() => onClickDelete(feed.designerNewsSeq)}>삭제</button>
-      </div>
+      </div>}
       {feed.designerNewsImgUrl.length !== 0 && (
         <StyledSlider {...settings}>
           {feed.designerNewsImgUrl.map((pic, idx) => {
