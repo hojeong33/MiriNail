@@ -257,7 +257,7 @@ const MyReservation = () => {
                   key={idx}
                 >
                   <div className="cardleft">
-                    <img src={book.designerInfo.designerProfileImgUrl? convertImgToThumnail(book.designerInfo.designerProfileImgUrl): "assets/images/default_profile.png"} alt="" />
+                    <img src={book.designerInfo.designerProfileImgUrl? book.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
                   </div>
                   <div className="cardright">
                     <div className="cardright-top">
@@ -287,7 +287,7 @@ const MyReservation = () => {
                       <div className="btnbox">
                         {parseInt(
                           moment(convertDate(book.bookDatetime)).fromNow(true)
-                        ) >= 2 ? <button onClick={(e) => {
+                        ) >= 2 ? sessionStorage.getItem("userSeq") === userSeq && <button onClick={(e) => {
                           e.stopPropagation();
                           onClickCancel(book.bookSeq);
                         }}>예약취소</button> : <button className="confirm">예약확정</button>}

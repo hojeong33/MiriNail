@@ -276,7 +276,7 @@ const Navbar = () => {
                     }}
                   >
                     <li>
-                      {userRole === "ROLE_USER" && (
+                      
                         <button
                           onClick={() => {
                             navigate(
@@ -286,7 +286,7 @@ const Navbar = () => {
                         >
                           MyPage
                         </button>
-                      )}
+                      
                       {userRole === "ROLE_ARTIST" && (
                         <button
                           onClick={() => {
