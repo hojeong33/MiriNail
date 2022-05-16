@@ -20,7 +20,7 @@ const Logo = sc.button`
   font-weight: 300;
   font-size: 32px;
   color: black;
-  margin: 3px 10px 0;
+  margin: 5px 10px 0;
 
 `
 
@@ -164,7 +164,7 @@ const Navbar = () => {
           <Logo
             onClick={() => navigate(`/`)}
           >
-            Miri Nail
+            MIRINAIL
           </Logo>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <CustomButton
