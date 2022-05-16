@@ -13,6 +13,17 @@ import { styled, alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "./Navbar.module.css";
+import sc from "styled-components";
+
+const Logo = sc.button`
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: 32px;
+  color: black;
+  margin: 5px 10px 0;
+
+`
+
 const MenuBtn = styled("div")`
   :hover .menu {
     opacity: 1;
@@ -150,16 +161,11 @@ const Navbar = () => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            color="black"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+          <Logo
             onClick={() => navigate(`/`)}
           >
-            Miri Nail
-          </Typography>
+            MIRINAIL
+          </Logo>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <CustomButton
               disableRipple
