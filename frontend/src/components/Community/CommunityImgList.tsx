@@ -283,7 +283,7 @@ export default function CommunityImgList() {
   const deleteCommunity = async (communitySeq: number) => {
     await axios({
       method: "delete",
-      url: `http://localhost:8080/api/community/${communitySeq}`,
+      url: `http://k6e101.p.ssafy.io/api/community/${communitySeq}`,
       headers: {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
@@ -303,7 +303,7 @@ export default function CommunityImgList() {
   const deleteComment = async (communityCommentSeq: number) => {
     axios({
       method: "patch",
-      url: `http://localhost:8080/api/community/comment/${communityCommentSeq}`,
+      url: `http://k6e101.p.ssafy.io/api/community/comment/${communityCommentSeq}`,
       headers: {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },

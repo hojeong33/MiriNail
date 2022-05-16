@@ -30,7 +30,7 @@ const BestReview = () => {
     const fetchData = async () => {
       await axios({
         method: "get",
-        url: `http://localhost:8080/api/review/cnt`,
+        url: `http://k6e101.p.ssafy.io/api/review/cnt`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },

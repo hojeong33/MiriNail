@@ -219,7 +219,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const deleteCommunity = async (communitySeq: number) => {
     await axios({
       method: "delete",
-      url: `http://localhost:8080/api/community/${communitySeq}`,
+      url: `http://k6e101.p.ssafy.io/api/community/${communitySeq}`,
       headers: {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
@@ -239,7 +239,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
   const deleteComment = async (communityCommentSeq: number) => {
     axios({
       method: "patch",
-      url: `http://localhost:8080/api/community/comment/${communityCommentSeq}`,
+      url: `http://k6e101.p.ssafy.io/api/community/comment/${communityCommentSeq}`,
       headers: {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
@@ -262,7 +262,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
-        url: `http://localhost:8080/api/community/comment/${communitySeq}`,
+        url: `http://k6e101.p.ssafy.io/api/community/comment/${communitySeq}`,
         params: {
           page: 0,
           size: 10,
@@ -286,7 +286,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
-        url: `http://localhost:8080/api/community/comment/layer/${communityCommentSeq}`,
+        url: `http://k6e101.p.ssafy.io/api/community/comment/layer/${communityCommentSeq}`,
         params: {
           page: 0,
           size: 10,
@@ -310,7 +310,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
-        url: `http://localhost:8080/api/community/${communitySeq}`,
+        url: `http://k6e101.p.ssafy.io/api/community/${communitySeq}`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
@@ -367,7 +367,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
     if (commentPostData !== undefined) {
       await axios({
         method: "post",
-        url: `http://localhost:8080/api/community/comment`,
+        url: `http://k6e101.p.ssafy.io/api/community/comment`,
         data: commentPostData,
         headers: {
           "Content-type": "application/json",

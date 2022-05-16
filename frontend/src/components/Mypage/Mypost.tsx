@@ -290,7 +290,7 @@ const Mypost = () => {
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
-        url: `http://localhost:8080/api/community/comment/${communitySeq}`,
+        url: `http://k6e101.p.ssafy.io/api/community/comment/${communitySeq}`,
         params: {
           page: 0,
           size: 1,
@@ -314,7 +314,7 @@ const Mypost = () => {
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
-        url: `http://localhost:8080/api/community/${communitySeq}`,
+        url: `http://k6e101.p.ssafy.io/api/community/${communitySeq}`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
@@ -336,7 +336,7 @@ const Mypost = () => {
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
-        url: `http://localhost:8080/api/community/comment/layer/${communityCommentSeq}`,
+        url: `http://k6e101.p.ssafy.io/api/community/comment/layer/${communityCommentSeq}`,
         params: {
           page: 0,
           size: 1,
@@ -387,7 +387,7 @@ const Mypost = () => {
     if (ACCESS_TOKEN) {
       axios({
         method: "post",
-        url: `http://localhost:8080/api/community/comment`,
+        url: `http://k6e101.p.ssafy.io/api/community/comment`,
         data: {
           communityCommentDesc: inputVal,
           communityCommentLayer: communityCommentLayer,
