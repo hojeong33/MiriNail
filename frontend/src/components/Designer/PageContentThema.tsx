@@ -43,7 +43,7 @@ export interface IHotDesigner {
   designerSeq : number;
   designerNickName : string;
   designerImgUrl : string;
-  // designer_shop_name : string;
+  designerShopName : string;
   followerNum : number;
   nailartCount : number; 
 }
@@ -52,7 +52,7 @@ export interface ILatestDesigner {
   designerSeq : number;
   designerNickName : string;
   designerImgUrl : string;
-  // designer_shop_name : string;
+  designerShopName : string;
   followerNum : number;
   nailartCount : number; 
 }
@@ -61,7 +61,7 @@ export interface IHighRateDesigner {
   designerSeq : number;
   designerNickName : string;
   designerImgUrl : string;
-  // designer_shop_name : string;
+  designerShopName : string;
   followerNum : number;
   nailartCount : number; 
 }

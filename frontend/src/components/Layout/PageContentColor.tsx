@@ -49,6 +49,7 @@ const MainFrame = styled.div`
               cursor: pointer;
             }
           }
+          
         }
 
         .OrderFilter {
@@ -169,6 +170,7 @@ const PageContentColor = () => {
                         backgroundColor: "red",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'red' ? '3px solid black' : ''}`
                       }}
                       onClick={() => setMyFilter({ ...myFilter, color: "red" })}
                     ></div>
@@ -177,6 +179,7 @@ const PageContentColor = () => {
                         backgroundColor: "orange",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'orange' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "orange" })
@@ -187,6 +190,7 @@ const PageContentColor = () => {
                         backgroundColor: "yellow",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'yellow' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "yellow" })
@@ -199,6 +203,7 @@ const PageContentColor = () => {
                         backgroundColor: "green",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'green' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "green" })
@@ -209,6 +214,7 @@ const PageContentColor = () => {
                         backgroundColor: "blue",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'blue' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "blue" })
@@ -219,6 +225,7 @@ const PageContentColor = () => {
                         backgroundColor: "navy",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'navy' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "navy" })
@@ -231,6 +238,7 @@ const PageContentColor = () => {
                         backgroundColor: "purple",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'purple' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "purple" })
@@ -241,6 +249,7 @@ const PageContentColor = () => {
                         backgroundColor: "skyblue",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'skyblue' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "skyblue" })
@@ -251,6 +260,7 @@ const PageContentColor = () => {
                         backgroundColor: "pink",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'pink' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "pink" })
@@ -263,6 +273,7 @@ const PageContentColor = () => {
                         backgroundColor: "gold",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'gold' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "gold" })
@@ -273,6 +284,7 @@ const PageContentColor = () => {
                         backgroundColor: "silver",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'silver' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "silver" })
@@ -283,6 +295,7 @@ const PageContentColor = () => {
                         backgroundColor: "brown",
                         width: "33px",
                         height: "30px",
+                        border : `${myFilter.color === 'brown' ? '3px solid black' : ''}`
                       }}
                       onClick={() =>
                         setMyFilter({ ...myFilter, color: "brown" })

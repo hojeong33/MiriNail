@@ -35,6 +35,9 @@ public interface NailartService {
     // 네일 아트 삭제
     boolean nailartAvailableUpdate(long nailartSeq);
 
+    // 네일 아트 nft 등록
+    boolean nailartNftUpdate(long nailartSeq, String nailartNft);
+
 
     // 이삭 ---------------------------------------------------------------
     // 네일 아트 검색

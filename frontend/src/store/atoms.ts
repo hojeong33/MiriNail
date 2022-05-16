@@ -74,6 +74,19 @@ export const nftFilter = atom({
 
 })
 
+export const bestFilter = atom({
+  key : "bestFilter",
+  default : {
+    category : "type",
+    color : "",
+    type : "",
+    sort : "like",
+    page : 1,
+    size : 4,
+  },
+
+})
+
 export const imgProp = atom({
   key : "imgProp",
   default : {},

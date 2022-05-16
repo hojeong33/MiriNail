@@ -81,13 +81,13 @@
   processImage();
 
   function stream(){
-    setInterval(sendImage, 30);
+    setInterval(sendImage, 200);
   }
 
   function sendImage(){
-    var rawData = canvas.toDataURL("image/jpeg", 0.5);
+    var rawData = canvas.toDataURL("image/jpeg", 1.0);
     // console.log(rawData)
-    setTimeout(ws.send(rawData), 1);
+    ws.send(rawData)
     // ws.send(rawData);
   }
 
