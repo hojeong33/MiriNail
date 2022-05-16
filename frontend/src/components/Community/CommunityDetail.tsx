@@ -63,7 +63,7 @@ const Content = styled.div`
         width:100%;
         height : 150px;
         border: 1px solid gray;
-        resize="none";
+        resize:"none";
       }
       
       
@@ -89,7 +89,7 @@ const Content = styled.div`
       // }
     // }
   }
-
+  }
   
 `
 
