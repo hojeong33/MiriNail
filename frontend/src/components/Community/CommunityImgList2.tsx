@@ -185,6 +185,8 @@ export default function CommunityImgList() {
     communityDesc: string;
     communityImg: CommunityImgProp[];
     communityRededAt: string;
+    communityCommentLayerCnt: number;
+    communityCommentLayerExist: boolean;
   }
   interface CommentDataProp {
     communityCommentSeq: number;
@@ -822,26 +824,37 @@ export default function CommunityImgList() {
                                     height: "13px",
                                   }}
                                 ></div>
-                                {open == e.communityCommentSeq ? (
-                                  <span
-                                    style={{ marginLeft: "15px" }}
-                                    onClick={() => {
-                                      getReplyComments(e.communityCommentSeq);
-                                      toggle(e.communityCommentSeq);
-                                    }}
-                                  >
-                                    답글 숨기기
-                                  </span>
+                                {e.communityCommentLayerCnt > 0 ? (
+                                  <>
+                                    {open == e.communityCommentSeq ? (
+                                      <span
+                                        style={{ marginLeft: "15px" }}
+                                        onClick={() => {
+                                          getReplyComments(
+                                            e.communityCommentSeq
+                                          );
+                                          toggle(e.communityCommentSeq);
+                                        }}
+                                      >
+                                        답글 숨기기
+                                      </span>
+                                    ) : (
+                                      <span
+                                        style={{ marginLeft: "15px" }}
+                                        onClick={() => {
+                                          getReplyComments(
+                                            e.communityCommentSeq
+                                          );
+                                          toggle(e.communityCommentSeq);
+                                        }}
+                                      >
+                                        답글 보기 ({e.communityCommentLayerCnt}
+                                        개)
+                                      </span>
+                                    )}
+                                  </>
                                 ) : (
-                                  <span
-                                    style={{ marginLeft: "15px" }}
-                                    onClick={() => {
-                                      getReplyComments(e.communityCommentSeq);
-                                      toggle(e.communityCommentSeq);
-                                    }}
-                                  >
-                                    답글 보기
-                                  </span>
+                                  <></>
                                 )}
                               </div>
                               {open === e.communityCommentSeq ? (
@@ -947,7 +960,9 @@ export default function CommunityImgList() {
                     <div
                       style={{
                         color: "rgb(11 122 227)",
+                        textAlign: "left",
                         width: "150px",
+                        whiteSpace: "nowrap",
                       }}
                     >
                       {tagName}
@@ -967,6 +982,7 @@ export default function CommunityImgList() {
                     value={inputVal}
                     spellCheck={false}
                     autoFocus={true}
+                    placeholder="댓글을 입력하세요"
                     onChange={(e) => {
                       onChangeText(e.target.value);
                     }}
