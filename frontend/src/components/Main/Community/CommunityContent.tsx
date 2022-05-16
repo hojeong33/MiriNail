@@ -30,7 +30,7 @@ const CommunityContent = () => {
     const fetchData = async () => {
       await axios({
         method: "get",
-        url: `http://k6e101.p.ssafy.io/api/community/cnt`,
+        url: `https://k6e101.p.ssafy.io/api/community/cnt`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },

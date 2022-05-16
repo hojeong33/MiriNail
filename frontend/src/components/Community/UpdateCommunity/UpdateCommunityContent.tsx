@@ -174,7 +174,7 @@ const UpdateCommunityContent = () => {
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
-        url: `http://k6e101.p.ssafy.io/api/community/${communitySeq}`,
+        url: `https://k6e101.p.ssafy.io/api/community/${communitySeq}`,
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
@@ -210,7 +210,7 @@ const UpdateCommunityContent = () => {
       console.log(value);
     }
     axios
-      .post("http://k6e101.p.ssafy.io/api/community/update", formdata, {
+      .post("https://k6e101.p.ssafy.io/api/community/update", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${ACCESS_TOKEN}`,
