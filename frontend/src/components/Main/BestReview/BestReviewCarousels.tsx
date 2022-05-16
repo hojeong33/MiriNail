@@ -34,7 +34,7 @@ export interface Props {
   items: BestReviewProps[];
 }
 const StyledSlider = styled(Slider)`
-  bottom: 100px;
+  bottom: 15vh;
   right: 150px;
   .slick-prev {
     display: none !important;
@@ -49,9 +49,6 @@ const StyledSlider = styled(Slider)`
     img {
       filter: brightness(100%);
     }
-  }
-  .slick-cloned {
-    display: none;
   }
 `;
 const StyledSlider2 = styled(Slider)`
