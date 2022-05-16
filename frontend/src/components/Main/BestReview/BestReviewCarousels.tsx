@@ -34,7 +34,7 @@ export interface Props {
   items: BestReviewProps[];
 }
 const StyledSlider = styled(Slider)`
-  bottom: 100px;
+  bottom: 15vh;
   right: 150px;
   .slick-prev {
     display: none !important;
@@ -87,7 +87,7 @@ function BestReviewCarousels({ items }: Props) {
 
   const mainSettings = {
     dots: true,
-    fade: true,
+    // fade: true,
     infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -116,17 +116,23 @@ function BestReviewCarousels({ items }: Props) {
             {items.map((item, idx) => {
               return (
                 <div key={idx}>
-                  <Typography variant="h4" style={{ marginBottom: "20px" }}>
+                  <Typography
+                    variant="h4"
+                    style={{ marginBottom: "20px", padding: "5px" }}
+                  >
                     {item.nailart.nailartType} -{" "}
                     {item.nailart.nailartDetailColor}
                   </Typography>
 
-                  <Typography variant="h5" style={{ marginBottom: "10px" }}>
+                  <Typography
+                    variant="h5"
+                    style={{ marginBottom: "10px", padding: "10px" }}
+                  >
                     #{item.nailart.nailartWeather} #{item.nailart.nailartColor}{" "}
                     #{item.designerNickname}
                   </Typography>
 
-                  <Typography variant="h5">
+                  <Typography variant="h5" style={{ padding: "10px" }}>
                     {item.nailart.nailartPrice
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -138,7 +144,7 @@ function BestReviewCarousels({ items }: Props) {
                       color: "white",
                       border: "1px solid white",
                       borderRadius: "12px",
-                      padding: "10px 20px",
+                      padding: "10px 30px",
                       marginTop: "30px",
                     }}
                     onClick={() => {
@@ -160,14 +166,10 @@ function BestReviewCarousels({ items }: Props) {
               {items.map((item, idx) => {
                 return (
                   <div key={idx}>
-                    {/* <h1>{idx}</h1> */}
                     <img
                       src={item.nailart.nailartThumbnailUrl}
                       style={{ width: "32vh", height: "32vh" }}
                       alt=""
-                      // onClick={() => {
-                      //   navigate(`nft/${item.nailart.nailartSeq}`);
-                      // }}
                     />
                   </div>
                 );
@@ -181,27 +183,39 @@ function BestReviewCarousels({ items }: Props) {
             {items.map((item, idx) => {
               return (
                 <div key={idx}>
-                  <Typography variant="h4">
+                  <Typography
+                    variant="h4"
+                    style={{ marginBottom: "20px", padding: "5px" }}
+                  >
                     {item.nailart.nailartType} -{" "}
                     {item.nailart.nailartDetailColor}
                   </Typography>
-                  <Typography variant="h5">
+
+                  <Typography
+                    variant="h5"
+                    style={{ marginBottom: "10px", padding: "10px" }}
+                  >
                     #{item.nailart.nailartWeather} #{item.nailart.nailartColor}{" "}
                     #{item.designerNickname}
                   </Typography>
-                  <Typography variant="h5">
+
+                  <Typography variant="h5" style={{ padding: "10px" }}>
                     {item.nailart.nailartPrice
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     원
                   </Typography>
+
                   <button
                     style={{
                       color: "white",
                       border: "1px solid white",
                       borderRadius: "12px",
-                      padding: "10px 20px",
+                      padding: "10px 30px",
                       marginTop: "30px",
+                    }}
+                    onClick={() => {
+                      navigate(`nft/${item.nailart.nailartSeq}`);
                     }}
                   >
                     자세히 보러가기
@@ -215,7 +229,6 @@ function BestReviewCarousels({ items }: Props) {
               {items.map((item, idx) => {
                 return (
                   <div key={idx}>
-                    {/* <h1>{idx}</h1> */}
                     <img
                       src={item.nailart.nailartThumbnailUrl}
                       style={{ width: "32vh", height: "32vh" }}
