@@ -8,6 +8,7 @@ import publishToken from '../../BlockChain/PublishNFT'
 import DoneIcon from '@mui/icons-material/Done';
 import {pushIpfs, registDesign} from '../../../store/api'
 import { useNavigate } from 'react-router-dom'
+import moment from 'moment'
 
 const Wrapper = styled.div`
   * {
@@ -271,13 +272,13 @@ const PageContent = () => {
 
   const nftFunc = async () => {
     
-    
+    const date = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
     const files= new FormData()
     const multipartFiles = new FormData()
     const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
     var ipfsAPI = require('ipfs-api')
     const ipfs = ipfsAPI("ipfs.infura.io", "5001", { protocol: "https" })
-    let testBuffer = Buffer.from(JSON.stringify({...nailData,designerName}));
+    let testBuffer = Buffer.from(JSON.stringify({...nailData, designerName, date}));
     
     
     

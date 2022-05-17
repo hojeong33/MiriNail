@@ -398,7 +398,7 @@ const UpperFrame = () => {
                           className="rev"
                           style={{cursor:"pointer"}}
                           onClick={() =>
-                            navigate("/nft/Revise", { state: params })
+                            navigate("/nft/revise", { state: {data :nailData} })
                           }
                         >
                           수정

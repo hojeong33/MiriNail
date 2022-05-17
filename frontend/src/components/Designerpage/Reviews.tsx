@@ -161,7 +161,7 @@ const Reviews = () => {
           <tbody>
             {data.content?.map((review: any, idx: number) => {
               return (
-                <tr onClick={() => onClickReview(review.nailartSeq)} key={idx}>
+                <tr onClick={() => onClickReview(review.nailart.nailartSeq)} key={idx}>
                   <th>{review.reviewSeq}</th>
                   <th className="title">{review.userNickname}</th>
                   <th>

@@ -196,14 +196,14 @@ const PageContentRevise = () => {
     const designerSeq = sessionStorage.getItem('userSeq')
     const [imageProcess,setImageProcess] = useState([])
     const [infoProcess,setInfoProcess] = useState({
-      nailartType :state.nailartType,
-      nailartWeather : state.nailartWeather,
-      nailartPrice :state.nailartPrice,
-      nailartColor :state.nailartColor,
-      nailartDetailColor : state.nailartDetailColor,
+      nailartType :state.data.nailartType,
+      nailartWeather : state.data.nailartWeather,
+      nailartPrice :state.data.nailartPrice,
+      nailartColor :state.data.nailartColor,
+      nailartDetailColor : state.data.nailartDetailColor,
     })
     const [infoProcessNum,setInfoProcessNum] = useState(0)
-    const [nailartDesc,setnailartDesc] = useState(state.nailartDesc)
+    const [nailartDesc,setnailartDesc] = useState(state.data.nailartDesc)
     const [postImages,setPostImages] = useState<any[]>([])
     useEffect(() => {
       console.log(postImages)
@@ -243,7 +243,7 @@ const PageContentRevise = () => {
   
     const files:any = new FormData()
     const multipartFiles = new FormData()
-    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq,nailartSeq:Number(state.nailartSeq)}
+    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq,nailartSeq:Number(state.data.nailartSeq)}
     files.append("jsonList",JSON.stringify(nailData))
     console.log(postImages)
     console.log(nailData)
@@ -304,7 +304,7 @@ const PageContentRevise = () => {
                 이미지 등록
               </div>
               <div className='fileBox'>
-                <FileUpload setImageProcess={setImageProcess} setPostImages={setPostImages} itemDetail={state}/>
+                <FileUpload setImageProcess={setImageProcess} setPostImages={setPostImages} itemDetail={state.data}/>
               </div>
               <div className='subTitle' style={{marginTop:"120px"}}>
                 네일정보 등록
