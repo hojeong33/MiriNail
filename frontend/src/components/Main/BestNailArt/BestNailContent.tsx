@@ -4,24 +4,18 @@ import { useEffect } from "react";
 import { fetchDesigns } from "../../../store/api";
 import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
-import { nftFilter } from "../../../store/atoms";
+import { bestFilter, nftFilter } from "../../../store/atoms";
 import { useNavigate } from "react-router-dom";
 
 const BestNailContent = () => {
   const navigate = useNavigate();
   // 베스트 리뷰 데이터
-  const [myFilter, setMyFilter] = useRecoilState(nftFilter);
+  const [myFilter, setMyFilter] = useRecoilState(bestFilter);
   const { isLoading: bestReviewLoading, data: bestReviewData } = useQuery(
     ["bestReview", myFilter],
     fetchDesigns
   );
-  useEffect(() => {
-    setMyFilter({
-      ...myFilter,
-      sort: "like",
-      size: 4,
-    });
-  }, []);
+  
 
   //베스트 네일 데이터 가져오기
   return (

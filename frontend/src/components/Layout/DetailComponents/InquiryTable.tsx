@@ -217,6 +217,7 @@ const InquiryTable = () => {
   const writerId = useRecoilValue(designerId)
   console.log(params)
   const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<any>(['inquiry',params,mypage], inquiryList)
+  console.log(InquiryData)
   const myId = Number(sessionStorage.getItem('userSeq'))
   useEffect(() => {
     setMyPage(1)
@@ -427,7 +428,7 @@ const InquiryTable = () => {
             <td colSpan={6}>ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</td>
           </tr>
         </tbody> */}
-        {InquiryData?.data.content.map((e:any) =>
+        { InquiryData?.data ? InquiryData?.data?.content.map((e:any) =>
         <tbody key={e.qnaSeq}>
             <tr>
               <td>{e.qnaSeq}</td>
@@ -457,16 +458,12 @@ const InquiryTable = () => {
                   <img src={e.qnaImgUrl} alt="" width="150" height="150"/>
                   <div style={{marginTop:"15px"}}>{e.qnaDesc}</div>
                 </div>
-                {/* <div className='replyInfo'>
-                  <div className='replyCharger'>담당자</div>
-                  <div className='replyContent'>안녕하세요. 아니 사실 안녕하지 않아</div>
-                  <div className='replyDate'>2022.04.14</div>
-                </div> */}
+                
                 {AnswerFrame(e)}
               </td>
             </tr>
         </tbody>
-        )}
+        ) : null }
         
       </table>
       <div className="box">

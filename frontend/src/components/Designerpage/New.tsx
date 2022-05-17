@@ -97,11 +97,12 @@ function New() {
     </LoadingBox>
   ) : (
     <Wrapper>
+      {sessionStorage.getItem("userSeq") === userSeq &&
       <Link to={`/designerpage/${userSeq}/createfeed`}>
         <button className="createbutton">
           <AddIcon />새 소식 작성
         </button>
-      </Link>
+      </Link>}
       {query.data?.pages.map((feed: any, idx: number) => {
         return feed.result.map((feed: any, idx: any) => {
           return <Feed feed={feed} key={idx} refetch={query.refetch} />;

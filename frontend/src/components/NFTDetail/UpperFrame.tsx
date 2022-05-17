@@ -164,6 +164,56 @@ const Wrapper = styled.div`
                 font-weight: 400;
                 font-size: 16px;
               }
+
+              .ipfsInfo {
+                margin-top:22px;
+                position:absolute;
+                right:15px;
+                [data-tooltip-text]:hover {
+                  position: relative;
+                }
+                
+                [data-tooltip-text]:hover:after {
+                  background-color: #000000;
+                  background-color: rgba(0, 0, 0, 0.8);
+                
+                  -webkit-box-shadow: 0px 0px 3px 1px rgba(50, 50, 50, 0.4);
+                  -moz-box-shadow: 0px 0px 3px 1px rgba(50, 50, 50, 0.4);
+                  box-shadow: 0px 0px 3px 1px rgba(50, 50, 50, 0.4);
+                
+                  -webkit-border-radius: 5px;
+                  -moz-border-radius: 5px;
+                  border-radius: 5px;
+                
+                  color: #FFFFFF;
+                  font-size: 12px;
+                  content: attr(data-tooltip-text);
+                
+                  margin-bottom: 10px;
+                  top: 130%;
+                  right: 0;    
+                  padding: 7px 12px;
+                  position: absolute;
+                  width: auto;
+                  min-width: 50px;
+                  max-width: 200px;
+                  word-wrap: break-word;
+                
+                  z-index: 9999;
+                }
+
+                span {
+                  font-size:12px;
+                  font-color: #3d3c3a;
+                  font-weight:bold;
+                  padding : 3px 5px 3px 5px;
+                  background-color : #e3e3e3;
+                  border : 1px solid #e3e3e3;
+                  border-radius : 5px;
+                  // margin-top:5px;
+                }
+
+              }
             }
             .btns {
               margin-top: 70px;
@@ -310,6 +360,14 @@ const UpperFrame = () => {
   // const share = () => {
 
   // }
+
+  const copy = (link:any) => {
+    const el = 'https://ipfs.io/ipfs/' + link
+    // el.select()
+    // document.execCommand("copy")
+ 
+    navigator.clipboard.writeText(`${el}`).then(() => {alert('해쉬를 클립보드에 복사했습니다.')})
+  }
   return (
     <>
       <Wrapper>
@@ -395,7 +453,12 @@ const UpperFrame = () => {
                         {nailData?.designerShopName}
                       </div> */}
                     </div>
+                    <div className="ipfsInfo" >
+                      <span data-tooltip-text={nailData?.nailartNft} onClick={() => copy(nailData?.nailartNft)}>IPFS HASH</span>
+                      <br/><br/>
+                    </div>
                   </div>
+           
                   <div className="btns">
                     <Link to="/ar" style={{ backgroundColor: "red", color: "white" }}>
                       AR 피팅하기

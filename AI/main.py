@@ -21,6 +21,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.logger import logger
 from imageio import imread
 from sockett import summ
+import os
+
+
 
 app = FastAPI()
 
@@ -134,7 +137,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     data = data.split(',')[1]
 
                     imgtest = imread(io.BytesIO(base64.b64decode(data)))
-                    # print(imgtest)
+                    print(imgtest)
                     img = cv2.imread("sss.png")
                     frame = cv2.flip(imgtest, 1)
                     image = frame
