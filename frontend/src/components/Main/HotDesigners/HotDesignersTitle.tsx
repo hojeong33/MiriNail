@@ -1,10 +1,15 @@
-import { Typography } from "@mui/material";
-
 const HotDesignerTitle = () => {
   return (
-    <Typography variant="h3" style={{ textAlign: "center", margin: "10px" }}>
+    <div
+      style={{
+        fontSize: "3rem",
+        fontWeight: "500",
+        textAlign: "center",
+        margin: "10px",
+      }}
+    >
       HOT DESIGNERS
-    </Typography>
+    </div>
   );
 };
 export default HotDesignerTitle;

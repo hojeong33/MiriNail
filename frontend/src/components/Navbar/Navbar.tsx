@@ -3,7 +3,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -28,21 +27,20 @@ const Btn1 = sc.button`
   :hover {
     font-weight: 500;
   }
-`
+`;
 const Btn2 = sc.button`
   width: 140px;
   :hover {
     font-weight: 500;
   }
-`
+`;
 
 const Btn3 = sc.button`
   width: 75px;
   :hover {
     font-weight: 500;
   }
-`
-
+`;
 
 const MenuBtn = styled("div")`
   display: flex;
@@ -81,7 +79,7 @@ const MenuBtn2 = styled("div")`
 const CustomButton = styled(Button)({
   "&:hover": {
     backgroundColor: "rgba( 0, 0, 0, 0 )",
-    color: "black"
+    color: "black",
   },
 });
 const CustomIconButton = styled(IconButton)({
@@ -201,13 +199,9 @@ const Navbar = () => {
         <Toolbar disableGutters>
           <Logo onClick={() => navigate(`/`)}>MIRINAIL</Logo>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Btn1 onClick={() => navigate(`/ar`)}>
-              AR
-            </Btn1>
+            <Btn1 onClick={() => navigate(`/ar`)}>AR</Btn1>
             <MenuBtn>
-              <Btn1 onClick={() => navigate(`/nft`)}>
-              ART
-              </Btn1>
+              <Btn1 onClick={() => navigate(`/nft`)}>ART</Btn1>
               <ul
                 className="menu"
                 style={{
@@ -239,12 +233,8 @@ const Navbar = () => {
                 </li>
               </ul>
             </MenuBtn>
-            <Btn2 onClick={() => navigate(`/community`)}>
-            COMMUNITY
-            </Btn2>
-            <Btn3 onClick={() => navigate(`/event`)}>
-            EVENT
-            </Btn3>
+            <Btn2 onClick={() => navigate(`/community`)}>COMMUNITY</Btn2>
+            <Btn3 onClick={() => navigate(`/event`)}>EVENT</Btn3>
           </Box>
           <Search>
             <SearchIconWrapper>
@@ -265,7 +255,7 @@ const Navbar = () => {
               <CustomButton
                 disableRipple
                 href="http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{ my: 1, color: "black", display: "block" }}
               >
                 Kakao Login
               </CustomButton>
@@ -284,17 +274,17 @@ const Navbar = () => {
                     }}
                   >
                     <Avatar alt="Remy Sharp" src={userProfileImg} />
-                    <Typography
-                      textAlign="center"
+                    <div
                       style={{
+                        textAlign: "center",
                         color: "black",
                         marginLeft: "5px",
-                        fontWeight: "500",
+                        fontWeight: "400",
                         fontSize: "17px",
                       }}
                     >
                       {userNickname}
-                    </Typography>
+                    </div>
                   </CustomIconButton>
                   <ul
                     className="menu2"

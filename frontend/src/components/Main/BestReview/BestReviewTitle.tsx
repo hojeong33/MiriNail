@@ -1,14 +1,16 @@
-import { Typography } from "@mui/material";
-
 const BestReviewTitle = () => {
   return (
-    <Typography
-      variant="h3"
-      color="white"
-      style={{ marginLeft: "100px", paddingTop: "20px" }}
+    <div
+      style={{
+        color: "#fff",
+        fontSize: "3rem",
+        fontWeight: "500",
+        marginLeft: "100px",
+        paddingTop: "20px",
+      }}
     >
       Best Review
-    </Typography>
+    </div>
   );
 };
 export default BestReviewTitle;

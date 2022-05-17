@@ -476,6 +476,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                   </button>
 
                   <button
+                    style={{ color: "red" }}
                     onClick={() => {
                       deleteCommunity(itemDetail.communitySeq);
                     }}
@@ -553,6 +554,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                               {e.userNickname ===
                                 sessionStorage.getItem("userNickname") && (
                                 <button
+                                  style={{ color: "red" }}
                                   onClick={() => {
                                     deleteComment(e.communityCommentSeq);
                                   }}
@@ -676,6 +678,7 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                                   "userNickname"
                                                 ) && (
                                                 <button
+                                                  style={{ color: "red" }}
                                                   onClick={() => {
                                                     deleteComment(
                                                       ele.communityCommentSeq
