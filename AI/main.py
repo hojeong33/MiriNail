@@ -31,7 +31,7 @@ app = FastAPI()
 def video_streaming():
     return testVideo()
 
-@app.get("/")
+@app.get("/nail")
 def read_root():
     # print('음... 이ㅐ건떠야하는데')
     return {"Hello": "World"}
@@ -51,14 +51,14 @@ async def streamer(gen):
         # print("caught cancelled error")
 
 
-@app.get("/video")
+@app.get("/nail/video")
 def main():
     # StringResponse함수를 return하고,
     # 인자로 OpenCV에서 가져온 "바이트"이미지와 type을 명시
     # print('video url 접근')
     return StreamingResponse(streamer(video_streaming()), media_type="multipart/x-mixed-replace; boundary=frame")
 
-@app.get("/items/{item_id}")
+@app.get("/nail/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
 
@@ -67,14 +67,14 @@ def read_item(item_id: int, q: Optional[str] = None):
 # 웹소켓 연결을 테스트 할 수 있는 웹페이지 (http://127.0.0.1:8000/client)
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/client")
+@app.get("/nail/client")
 async def client(request: Request):
     # /templates/client.html파일을 response함
     print("request : " ,request)
     return templates.TemplateResponse("client.html", {"request":request})
 
 # 웹소켓 설정 ws://127.0.0.1:8000/ws 로 접속할 수 있음
-@app.websocket("/ws")
+@app.websocket("/nail/ws")
 async def websocket_endpoint(websocket: WebSocket):
     # print(f"client connected : {websocket.client}")
     await websocket.accept() # client의 websocket접속 허용
