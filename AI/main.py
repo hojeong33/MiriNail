@@ -27,7 +27,7 @@ from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 
 app = FastAPI()
-app.add_middleware(HTTPSRedirectMiddleware)
+#app.add_middleware(HTTPSRedirectMiddleware)
 
 def video_streaming():
     return testVideo()
