@@ -146,6 +146,17 @@ const CreateCommunityContent = () => {
   const ACCESS_TOKEN = localStorage.getItem("token");
   const navigate = useNavigate();
   const createCommunity = async () => {
+    if (!imageProcess.length) {
+      alert("이미지를 등록해주세요.");
+      return;
+    } else if (!textProcess2.length) {
+      alert("제목을 입력해주세요.");
+      return;
+    } else if (textProcess.length < 10) {
+      alert("내용을 10자 이상 입력해주세요.");
+      return;
+    }
+
     console.log(communityDesc);
     console.log(communityTitle);
     const formdata: any = new FormData();
@@ -321,8 +332,10 @@ const CreateCommunityContent = () => {
                   ) : (
                     <button
                       className="btn1"
-                      disabled
-                      style={{ backgroundColor: "rgba(175,175,175)" }}
+                      style={{
+                        backgroundColor: "rgba(175,175,175)",
+                        cursor: "default",
+                      }}
                       onClick={createCommunity}
                     >
                       작성

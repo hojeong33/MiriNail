@@ -14,6 +14,7 @@ const StyledSlider = styled(Slider)`
   }
   .slick-prev {
     left: 1%;
+    z-index: 9;
   }
   .slick-dots {
     bottom: 10px;

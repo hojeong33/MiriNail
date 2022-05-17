@@ -20,6 +20,7 @@ const StyledSlider = styled(Slider)`
   }
   .slick-prev {
     left: 1%;
+    z-index: 9;
   }
   .slick-dots {
     bottom: 10px;
@@ -304,6 +305,7 @@ export default function CommunityImgList() {
       })
         .then((res) => {
           setItemData((curItemData) => [...curItemData, ...res.data.content]); // state에 추가
+          console.log(res.data.content, "데이터 가져옴", page, "page");
         })
         .catch((err) => {
           console.log(err);

@@ -297,19 +297,17 @@ const Navbar = () => {
                     }}
                   >
                     <li>
-                      {userRole === "ROLE_USER" && (
-                        <button
-                          onClick={() => {
-                            navigate(
-                              `/mypage/${sessionStorage.getItem(
-                                "userSeq"
-                              )}/myreservation`
-                            );
-                          }}
-                        >
-                          MyPage
-                        </button>
-                      )}
+                      <button
+                        onClick={() => {
+                          navigate(
+                            `/mypage/${sessionStorage.getItem(
+                              "userSeq"
+                            )}/myreservation`
+                          );
+                        }}
+                      >
+                        MyPage
+                      </button>
 
                       {userRole === "ROLE_ARTIST" && (
                         <button
