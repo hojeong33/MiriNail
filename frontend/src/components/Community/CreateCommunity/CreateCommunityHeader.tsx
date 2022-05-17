@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { borderBottom } from "@mui/system";
 const Wrapper = styled.div`
   * {
     margin: 0px;
@@ -18,9 +19,21 @@ const Wrapper = styled.div`
       max-width: 1300px;
       margin: 0 auto;
       height :100%;
+      .line {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30px;
+        border-bottom: 3px solid #3d3c3a;
+        margin-top: -30px;
+        margin-left: -15px;
+      }
     }
 
     .pageHeaderTitle {
+      div {
+        font-family: "Playfair Display", serif;
+      }
       position: absolute;
       top: 50%;
       left: 50%;
@@ -32,8 +45,7 @@ const Wrapper = styled.div`
       line-height: 80px;
       text-align: center;
       color: #3d3c3a;
-      font-weight: 500;
-      
+      font-weight: 600;
     }
 
     .pageHeaderLinks {
@@ -94,7 +106,10 @@ function CreateCommunityHeader() {
     <>
       <Wrapper>
         <div className="row">
-          <div className="pageHeaderTitle">COMMUNITY</div>
+          <div className="pageHeaderTitle">
+            <div className="line"></div>
+            <div>COMMUNITY</div>
+          </div>
           <div className="pageHeaderLinks"></div>
           <div className="pageHeaderNavigation">
             <div className="NavElement">

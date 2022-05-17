@@ -11,7 +11,12 @@ const CommunityTitle = () => {
   return (
     <div style={{ marginTop: "10%", textAlign: "center" }}>
       <Divider />
-      <Typography variant="h3" style={{fontFamily:"Playfair Display, serif", fontWeight:"600"}}>COMMUNITY</Typography>
+      <Typography
+        variant="h3"
+        style={{ fontFamily: "Playfair Display, serif", fontWeight: "600" }}
+      >
+        COMMUNITY
+      </Typography>
       <div>다른 사용자와 소통해보세요</div>
     </div>
   );

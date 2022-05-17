@@ -1,4 +1,4 @@
-import AR_bg from "../../assets/img/AR_bg2.png";
+import AR_bg from "../../assets/img/new_ar_bg.jpg";
 import ArCard from "../../components/AR/ArCard";
 const AR = () => {
   return (

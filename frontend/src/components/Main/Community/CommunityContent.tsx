@@ -50,7 +50,7 @@ const CommunityContent = () => {
   return (
     <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
       <ImageList
-        sx={{ width: 820, height: 630, overflowY: "hidden" }}
+        sx={{ width: 820, height: 652, overflowY: "hidden" }}
         cols={5}
         rowHeight={160}
       >

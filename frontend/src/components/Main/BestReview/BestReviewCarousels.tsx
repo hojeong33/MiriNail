@@ -2,10 +2,17 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { styled } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import sc from "styled-components";
 
+const Btn = sc.button`
+color: white;
+  :hover {
+    background-color: #fff;
+    color: #333;
+  }
+`;
 const Container = styled("div")({
   marginLeft: "600px",
   width: "70%",
@@ -34,7 +41,7 @@ export interface Props {
   items: BestReviewProps[];
 }
 const StyledSlider = styled(Slider)`
-  bottom: 15vh;
+  bottom: 20vh;
   right: 150px;
   .slick-prev {
     display: none !important;
@@ -63,7 +70,7 @@ const StyledSlider2 = styled(Slider)`
   }
   .slick-dots {
     right: 10px;
-    bottom: -10vh;
+    bottom: -5vh;
     li button:before {
       color: white;
     }
@@ -116,32 +123,45 @@ function BestReviewCarousels({ items }: Props) {
             {items.map((item, idx) => {
               return (
                 <div key={idx}>
-                  <Typography
-                    variant="h4"
-                    style={{ marginBottom: "20px", padding: "5px" }}
+                  <div
+                    style={{
+                      fontSize: "2.15rem",
+                      fontWeight: "400",
+                      marginBottom: "20px",
+                      padding: "5px",
+                    }}
                   >
                     {item.nailart.nailartType} -{" "}
                     {item.nailart.nailartDetailColor}
-                  </Typography>
+                  </div>
 
-                  <Typography
-                    variant="h5"
-                    style={{ marginBottom: "10px", padding: "10px" }}
+                  <div
+                    style={{
+                      fontSize: "1.5rem",
+                      fontWeight: "400",
+                      marginBottom: "10px",
+                      padding: "10px",
+                    }}
                   >
                     #{item.nailart.nailartWeather} #{item.nailart.nailartColor}{" "}
                     #{item.designerNickname}
-                  </Typography>
+                  </div>
 
-                  <Typography variant="h5" style={{ padding: "10px" }}>
+                  <div
+                    style={{
+                      fontSize: "1.5rem",
+                      fontWeight: "400",
+                      padding: "10px",
+                    }}
+                  >
                     {item.nailart.nailartPrice
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     원
-                  </Typography>
+                  </div>
 
-                  <button
+                  <Btn
                     style={{
-                      color: "white",
                       border: "1px solid white",
                       borderRadius: "12px",
                       padding: "10px 30px",
@@ -152,7 +172,7 @@ function BestReviewCarousels({ items }: Props) {
                     }}
                   >
                     자세히 보러가기
-                  </button>
+                  </Btn>
                 </div>
               );
             })}
@@ -183,32 +203,45 @@ function BestReviewCarousels({ items }: Props) {
             {items.map((item, idx) => {
               return (
                 <div key={idx}>
-                  <Typography
-                    variant="h4"
-                    style={{ marginBottom: "20px", padding: "5px" }}
+                  <div
+                    style={{
+                      fontSize: "2.15rem",
+                      fontWeight: "400",
+                      marginBottom: "20px",
+                      padding: "5px",
+                    }}
                   >
                     {item.nailart.nailartType} -{" "}
                     {item.nailart.nailartDetailColor}
-                  </Typography>
+                  </div>
 
-                  <Typography
-                    variant="h5"
-                    style={{ marginBottom: "10px", padding: "10px" }}
+                  <div
+                    style={{
+                      fontSize: "1.5rem",
+                      fontWeight: "400",
+                      marginBottom: "10px",
+                      padding: "10px",
+                    }}
                   >
                     #{item.nailart.nailartWeather} #{item.nailart.nailartColor}{" "}
                     #{item.designerNickname}
-                  </Typography>
+                  </div>
 
-                  <Typography variant="h5" style={{ padding: "10px" }}>
+                  <div
+                    style={{
+                      fontSize: "1.5rem",
+                      fontWeight: "400",
+                      padding: "10px",
+                    }}
+                  >
                     {item.nailart.nailartPrice
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     원
-                  </Typography>
+                  </div>
 
-                  <button
+                  <Btn
                     style={{
-                      color: "white",
                       border: "1px solid white",
                       borderRadius: "12px",
                       padding: "10px 30px",
@@ -219,7 +252,7 @@ function BestReviewCarousels({ items }: Props) {
                     }}
                   >
                     자세히 보러가기
-                  </button>
+                  </Btn>
                 </div>
               );
             })}

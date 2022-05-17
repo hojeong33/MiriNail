@@ -20,6 +20,7 @@ const StyledSlider = styled(Slider)`
   }
   .slick-prev {
     left: 1%;
+    z-index: 9;
   }
   .slick-dots {
     bottom: 10px;
@@ -203,6 +204,32 @@ export default function CommunityImgList() {
     communitySeq: number;
     communityCommentSeq: number | null;
   }
+  interface CardTextProp {
+    content: string;
+    writer?: string;
+  }
+  const textItem: CardTextProp[] = [
+    {
+      content: "오늘의 네일을 내일로 미루지 마라.",
+      writer: "— 장영남",
+    },
+    {
+      content: "네일은 늘 두근거리고 설레고 날 기쁘게 해요 ",
+      writer: "— 영남 장",
+    },
+    {
+      content: "Travel is fatal to prejudice, bigotry, and narrow-mindedness.",
+      writer: "— Mark Twain3",
+    },
+    {
+      content: "Travel is fatal to prejudice, bigotry, and narrow-mindedness.",
+      writer: "— Mark Twain4",
+    },
+    {
+      content: "Travel is fatal to prejudice, bigotry, and narrow-mindedness.",
+      writer: "— Mark Twain5",
+    },
+  ];
 
   const [itemData, setItemData] = useState<CommunityItemProp[]>([]);
   const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
@@ -278,6 +305,7 @@ export default function CommunityImgList() {
       })
         .then((res) => {
           setItemData((curItemData) => [...curItemData, ...res.data.content]); // state에 추가
+          console.log(res.data.content, "데이터 가져옴", page, "page");
         })
         .catch((err) => {
           console.log(err);
@@ -508,8 +536,6 @@ export default function CommunityImgList() {
         flexWrap: "wrap",
       }}
     >
-      {/* // <ImageList sx={{ height: "100%" }} variant="quilted" cols={5}> */}
-      {/* <img src={image69} style={{ width: "40rem", height: "20rem" }}></img> */}
       <div className="main-container">
         <div className="grid-container">
           {itemData.map((item, idx) => {
@@ -565,12 +591,9 @@ export default function CommunityImgList() {
                     <div className="card">
                       <div className="card__content">
                         <p>
-                          <em>
-                            Travel is fatal to prejudice, bigotry, and
-                            narrow-mindedness.
-                          </em>
+                          <em>{textItem[Math.floor(idx / 5)]?.content}</em>
                         </p>
-                        <p>— Mark Twain</p>
+                        <p>{textItem[Math.floor(idx / 5)]?.writer}</p>
                       </div>
                     </div>
                     <div
