@@ -94,6 +94,16 @@ public class NailartRepositorySupport {
             return false;
         }
     }
+
+    @Transactional
+    public boolean updateNailartNft(long nailartSeq, String nailartNft){
+        long check = jpaQueryFactory.update(qNailart)
+                .set(qNailart.nailartNft, nailartNft)
+                .where(qNailart.nailartSeq.eq(nailartSeq))
+                .execute();
+        return true;
+    }
+
     public List<NailartListGetRes> getOtherNailartByDesignerSeq(long designerSeq, long nailartSeq){
         List<NailartListGetRes> result = new ArrayList<>();
         List<Long> nailartNum = jpaQueryFactory.select(qNailart.nailartSeq)

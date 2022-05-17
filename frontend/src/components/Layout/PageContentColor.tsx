@@ -49,6 +49,7 @@ const MainFrame = styled.div`
               cursor: pointer;
             }
           }
+          
         }
 
         .OrderFilter {
@@ -95,6 +96,16 @@ const MainFrame = styled.div`
       }
     }
   }
+
+ 
+  .testt {
+    background-color: navy;
+    width: 33px;
+    height: 30px;
+    border : navy;    
+  }
+
+
   @media screen and (max-width: 1023px) {
     width: 100%;
     .MainPadding {
@@ -140,6 +151,17 @@ const MainFrame = styled.div`
   }
 `;
 
+const Test3 = styled.div<any>`
+  background-color: ${(props) => props.bgColor};
+  width: 33px;
+  height: 30px;
+  border : ${(props) => props.selectedColor === props.bgColor ? '5px solid black' : ''};   
+  border-image: linear-gradient(to right, #fbfcb9be, #ffcdf3aa, #65d3ffaa);
+  border-image-slice: 1; 
+ 
+
+`
+
 const PageContentColor = () => {
   const [myFilter, setMyFilter] = useRecoilState(nftFilter);
   const [defaultCheck, setDefaultCheck] = useState(true);
@@ -164,130 +186,94 @@ const PageContentColor = () => {
                 <div className="TypeFilter">
                   <div className="filterName">색상 필터</div>
                   <div className="rows">
-                    <div
-                      style={{
-                        backgroundColor: "red",
-                        width: "33px",
-                        height: "30px",
-                      }}
-                      onClick={() => setMyFilter({ ...myFilter, color: "red" })}
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "orange",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    <Test3
+                      bgColor={'red'}
+                      selectedColor = {myFilter.color}
+                      onClick={() => setMyFilter({ ...myFilter, color: "red",page:1 })}
+                    ></Test3>
+                    <Test3
+                      bgColor={'orange'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "orange" })
+                        setMyFilter({ ...myFilter, color: "orange",page:1 },)
                       }
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "yellow",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    ></Test3>
+                    <Test3
+                      bgColor={'yellow'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "yellow" })
+                        setMyFilter({ ...myFilter, color: "yellow",page:1 })
                       }
-                    ></div>
+                    ></Test3>
                   </div>
                   <div className="rows">
-                    <div
-                      style={{
-                        backgroundColor: "green",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    <Test3
+                      bgColor={'green'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "green" })
+                        setMyFilter({ ...myFilter, color: "green",page:1 })
                       }
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "blue",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    ></Test3>
+                    <Test3
+                      bgColor={'blue'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "blue" })
+                        setMyFilter({ ...myFilter, color: "blue",page:1 })
                       }
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "navy",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    ></Test3>
+                    <Test3
+                      bgColor={'navy'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "navy" })
+                        setMyFilter({ ...myFilter, color: "navy",page:1 })
                       }
-                    ></div>
+                    ></Test3>
                   </div>
                   <div className="rows">
-                    <div
-                      style={{
-                        backgroundColor: "purple",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    <Test3
+                      bgColor={'purple'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "purple" })
+                        setMyFilter({ ...myFilter, color: "purple",page:1 })
                       }
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "skyblue",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    ></Test3>
+                    <Test3
+                      bgColor={'skyblue'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "skyblue" })
+                        setMyFilter({ ...myFilter, color: "skyblue",page:1 })
                       }
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "pink",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    ></Test3>
+                    <Test3
+                      bgColor={'pink'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "pink" })
+                        setMyFilter({ ...myFilter, color: "pink",page:1 })
                       }
-                    ></div>
+                    ></Test3>
                   </div>
                   <div className="rows">
-                    <div
-                      style={{
-                        backgroundColor: "gold",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    <Test3
+                      bgColor={'gold'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "gold" })
+                        setMyFilter({ ...myFilter, color: "gold",page:1 })
                       }
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "silver",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    ></Test3>
+                    <Test3
+                      bgColor={'silver'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "silver" })
+                        setMyFilter({ ...myFilter, color: "silver",page:1 })
                       }
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: "brown",
-                        width: "33px",
-                        height: "30px",
-                      }}
+                    ></Test3>
+                    <Test3
+                      bgColor={'brown'}
+                      selectedColor = {myFilter.color}
                       onClick={() =>
-                        setMyFilter({ ...myFilter, color: "brown" })
+                        setMyFilter({ ...myFilter, color: "brown",page:1 })
                       }
-                    ></div>
+                    ></Test3>
                   </div>
                 </div>
                 <div className="OrderFilter">

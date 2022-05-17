@@ -26,28 +26,27 @@ export const registDesign = async (files: any) => {
   for (let value of files.values()) {
     console.log(value);
   }
-  axios
-    .post(base_url + "nailart", files, {
+  const response = axios.post(base_url + "nailart", files, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
-    .then((response) => {
-      // 응답 처리
-      console.log(response);
-    })
-    .catch((error) => {
-      // 예외 처리
-      console.log(error);
-    });
-
+    return response
+    
   // console.log(response)
 };
+
+// ipfs 주소 등록
+export const pushIpfs = async(data:any) => {
+  const response = axios.put(base_url + 'nailart/nft',data)
+  
+  return response
+}
 
 // 디자인 삭제
 export const deleteDesign = async (param: any) => {
   console.log(param)
-  const response = await axios.delete(base_url + `nailart/${Number(param)}`);
+  const response = await axios.put(base_url + `nailart/${Number(param)}`);
 };
 
 // 디자인 상세정보
@@ -58,8 +57,8 @@ export const designDetail = async (param: any) => {
 };
 
 // 다른 디자이너 작품 조회
-export const otherDesign = async (param: any) => {
-  const response = await axios.get(base_url + `nailart/designer/${param}`);
+export const otherDesign = async (param: any, nailSeq:any) => {
+  const response = await axios.get(base_url + `nailart/designer/${param}/${nailSeq}`);
   console.log(response);
   return response.data;
 };

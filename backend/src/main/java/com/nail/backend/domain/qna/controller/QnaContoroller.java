@@ -54,21 +54,12 @@ public class QnaContoroller {
     }
     @Transactional
     @ApiOperation(value = "디자이너 개인 문의 글 작성")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "등록 성공"),
-            @ApiResponse(code = 404, message = "등록 실패")
-    })
     @PostMapping("/designer")
-    public ResponseEntity<BaseResponseBody> qnaToDesignerRegister(@RequestBody QnaRegisterPostReq qnaRegisterPostReq) {
+    public Qna qnaToDesignerRegister(@RequestBody QnaRegisterPostReq qnaRegisterPostReq) {
 
         log.info("qnaToDesignerRegister - 호출");
         Qna res = qnaService.qnaToDesignerRegister(qnaRegisterPostReq);
-        if(!res.equals(null)){
-            return ResponseEntity.status(201).body(BaseResponseBody.of(201,"등록 성공"));
-        }
-        else {
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"등록실패"));
-        }
+        return res;
     }
 
     @Transactional

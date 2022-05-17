@@ -65,6 +65,8 @@ const Wrapper = styled.div`
     }
   }
 
+  
+
   @media screen and (max-width: 1023px) {
     .clear{
       margin-top : 50px;
@@ -85,10 +87,12 @@ const NFTItems = (props:any) => {
 
   const [myFilter,setMyFilter] = useRecoilState(nftFilter)
   console.log(myFilter)
+  
   const [mypage,setMyPage] = useRecoilState(page)
   const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",myFilter], fetchDesigns)
   const [totalCount,setTotalCount] = useRecoilState(pagenation)
   const navigate = useNavigate();
+  console.log(nftData)
   useEffect(() => {
     setMyPage(1)
   },[])
@@ -113,7 +117,7 @@ const NFTItems = (props:any) => {
           );
         })} */}
       <ul className="clear">
-        {nftLoading && mypage === 1 ? <Loading /> : nftData?.map((e:any, idx:number) => {
+        {nftLoading && mypage === 1 ? <Loading /> : (nftData?.length != 0 ? nftData?.map((e:any, idx:number) => {
           return (
             <div onClick={() => navigate(`/nft/${e.nailartSeq}`)}>
               
@@ -123,7 +127,7 @@ const NFTItems = (props:any) => {
                  <div className="imx">
                    <img src={e.nailartThumbnailUrl} alt="엥?" />
                    <div className="itemName">{e.nailartType} - {e.nailartDetailColor}</div>
-                   <div className="itemTags">#{e.nailartWeather} #{e.nailartColor} #{e.designerNickname}</div>
+                   <div className="itemTags">#{e.nailartWeather} #{e.nailartColor} #{e.designerShopName}</div>
                    <div className="itemPrice">{e.nailartPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원</div>
                
                    {/* <div className="hashTag">#{e.nailartWeather} #{e.designerInfo.user.userNickname}</div> */}
@@ -132,7 +136,9 @@ const NFTItems = (props:any) => {
              </li>
             </div>
           )
-        })}
+        }) : <div style={{marginTop:"200px"}}>검색된 결과가 없습니다.</div>
+        )
+        }
       </ul>
   
       </Wrapper>

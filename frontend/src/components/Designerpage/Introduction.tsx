@@ -94,12 +94,13 @@ function Introduction() {
   
   return (
     <Wrapper>
+      {sessionStorage.getItem("userSeq") === userSeq &&
       <Link to={`/designerpage/${userSeq}/updateintroduction`}>
         <button className="updatebutton">
           <CreateIcon />
           소개 수정
         </button>
-      </Link>
+      </Link>}
       <div className="infobox">
         <div className="infocontents">
           <div className="infocontent">

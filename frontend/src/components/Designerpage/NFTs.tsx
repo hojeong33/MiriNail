@@ -138,11 +138,12 @@ const NFTs = () => {
 
   return (
     <Wrapper>
+      {sessionStorage.getItem("userSeq") === userSeq &&
       <Link to={`/nft/register`}>
         <button className="createbutton">
           <AddIcon />네일아트 등록
         </button>
-      </Link>
+      </Link>}
       {isLoading ? (
         <LoadingBox className="loading">
           <TailSpin height={50} width={50} color="gray" />

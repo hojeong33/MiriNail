@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.nail.backend.common.model.response.BaseResponseBody;
+import com.nail.backend.domain.nailart.request.NailartNftUpdatePutReq;
 import com.nail.backend.domain.nailart.request.NailartUpdatePutReq;
 import com.nail.backend.domain.nailart.response.DesignerNailartListRes;
 import com.nail.backend.domain.nailart.response.NailartListGetRes;
@@ -67,11 +68,11 @@ public class NailartController {
 
     // Nailart 등록
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<Void> nailartRegister(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
+    public long nailartRegister(@RequestPart("files")List<MultipartFile> files, @RequestParam("jsonList") String jsonList) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         NailartRegisterPostReq nailartRegisterPostReq = objectMapper.readValue(jsonList, new TypeReference<NailartRegisterPostReq>() {});
-        nailartService.nailartRegister(nailartRegisterPostReq, files);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Nailart nailart = nailartService.nailartRegister(nailartRegisterPostReq, files);
+        return nailart.getNailartSeq();
     }
 
     // Nailart 수정
@@ -81,6 +82,16 @@ public class NailartController {
         NailartUpdatePutReq nailartUpdatePutReq = objectMapper.readValue(jsonList, new TypeReference<NailartUpdatePutReq>() {});
         nailartService.nailartUpdate(nailartUpdatePutReq, files);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // Nailart nft 등록
+    @PutMapping("/nft")
+    public ResponseEntity<BaseResponseBody> nailartNftUpdate(@RequestBody NailartNftUpdatePutReq nailartNftUpdatePutReq) {
+        if (nailartService.nailartNftUpdate(nailartNftUpdatePutReq.getNailartSeq(), nailartNftUpdatePutReq.getNailartNft())) {
+            return ResponseEntity.status(201).body(BaseResponseBody.of(200, "Success"));
+        } else {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "This nailartSeq dosen't exist."));
+        }
     }
 
     // Nailart available update

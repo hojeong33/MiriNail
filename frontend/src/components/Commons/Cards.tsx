@@ -70,6 +70,7 @@ const Wrapper = styled.div`
     font-size: 20px;
     font-weight: bold;
     color: #fff;
+    height:60px;  
     padding: 5px 20px 25px 20px;
     background: linear-gradient(
       140deg,
@@ -169,10 +170,10 @@ const Cards = ({
           onClick={() => navigate(`/${url}/${info.designerSeq}/new`)}
         >
           <div className="profile-card-6">
-            <img src={info.designerImgUrl} className="img img-responsive" />
-            <div className="profile-name">{info.designerNickName}</div>
+            <img src={info.designerImgUrl ? info.designerImgUrl : 'https://source.unsplash.com/75S9fpDJVdo/300x510'} className="img img-responsive" />
+            <div className="profile-name">{info.designerShopName}</div>
             <div className="profile-position" style={{ color: "#c5c4c4" }}>
-              {/* {info.designerShopName} */}
+              {info.designerNickName}
             </div>
             <div className="profile-overview">
               <div className="profile-overview">

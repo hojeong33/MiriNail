@@ -6,8 +6,9 @@ import { create } from 'ipfs-http-client'
 import axios from 'axios'
 import publishToken from '../../BlockChain/PublishNFT'
 import DoneIcon from '@mui/icons-material/Done';
-import {registDesign} from '../../../store/api'
+import {pushIpfs, registDesign} from '../../../store/api'
 import { useNavigate } from 'react-router-dom'
+import moment from 'moment'
 
 const Wrapper = styled.div`
   * {
@@ -221,6 +222,7 @@ const PageContent = () => {
     }
   })
     const designerSeq = sessionStorage.getItem('userSeq')
+    const designerName = sessionStorage.getItem('userNickname')
     const [imageProcess,setImageProcess] = useState([])
     const [infoProcess,setInfoProcess] = useState({
       nailartType :'',
@@ -232,6 +234,7 @@ const PageContent = () => {
     const [infoProcessNum,setInfoProcessNum] = useState(0)
     const [nailartDesc,setnailartDesc] = useState('')
     const [postImages,setPostImages] = useState<any[]>([])
+    const [ipfsPath,setIpfsPath] = useState('')
     useEffect(() => {
       // console.log(postImages)
     },[postImages])
@@ -269,19 +272,15 @@ const PageContent = () => {
 
   const nftFunc = async () => {
     
-    
+    const date = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
     const files= new FormData()
     const multipartFiles = new FormData()
     const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
     var ipfsAPI = require('ipfs-api')
     const ipfs = ipfsAPI("ipfs.infura.io", "5001", { protocol: "https" })
-    let testBuffer = Buffer.from(JSON.stringify(nailData));
-    // ipfs.files.add(testBuffer, (err:any,file:any)=>{
-    //   if(err) {
-    //       console.log(err);
-    //   }   
-      
-    // })
+    let testBuffer = Buffer.from(JSON.stringify({...nailData, designerName, date}));
+    
+    
     
     files.append("jsonList",JSON.stringify(nailData))
     // console.log(postImages)
@@ -290,15 +289,24 @@ const PageContent = () => {
       files.append('files',e)
     })
 
-    
+    ipfs.files.add(testBuffer, (err:any,file:any)=>{
+      if(err) {
+          console.log(err);
+      }   
+      const temp = file[0].hash
+      setIpfsPath(temp)
+    })
 
     // const abc:any = "http://127.0.0.1:5002";
     // const client = create(abc)
-    await registDesign(files)
+    const returnValue = await registDesign(files)
+    console.log(returnValue)
+    const putIpfs = await pushIpfs({nailartSeq : Number(returnValue.data), nailartNft : ipfsPath})
+
     
     // const ipfsHash = response.path
     // console.log(ipfsHash)
-    // publishToken(ipfsHash)
+    publishToken(returnValue.data)
     
 
     setTimeout(() => navigate(-1), 2000)

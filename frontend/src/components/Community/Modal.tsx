@@ -156,6 +156,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
     communityDesc: string;
     communityImg: CommunityImgProp[];
     communityRededAt: string;
+    communityCommentLayerCnt: number;
+    communityCommentLayerExist: boolean;
   }
   interface CommentDataProp {
     communityCommentSeq: number;
@@ -588,26 +590,33 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                                   height: "13px",
                                 }}
                               ></div>
-                              {open == e.communityCommentSeq ? (
-                                <span
-                                  style={{ marginLeft: "15px" }}
-                                  onClick={() => {
-                                    getReplyComments(e.communityCommentSeq);
-                                    toggle(e.communityCommentSeq);
-                                  }}
-                                >
-                                  댓글 닫기
-                                </span>
+                              {e.communityCommentLayerCnt > 0 ? (
+                                <>
+                                  {open == e.communityCommentSeq ? (
+                                    <span
+                                      style={{ marginLeft: "15px" }}
+                                      onClick={() => {
+                                        getReplyComments(e.communityCommentSeq);
+                                        toggle(e.communityCommentSeq);
+                                      }}
+                                    >
+                                      답글 숨기기
+                                    </span>
+                                  ) : (
+                                    <span
+                                      style={{ marginLeft: "15px" }}
+                                      onClick={() => {
+                                        getReplyComments(e.communityCommentSeq);
+                                        toggle(e.communityCommentSeq);
+                                      }}
+                                    >
+                                      답글 보기({e.communityCommentLayerCnt}
+                                      개)
+                                    </span>
+                                  )}
+                                </>
                               ) : (
-                                <span
-                                  style={{ marginLeft: "15px" }}
-                                  onClick={() => {
-                                    getReplyComments(e.communityCommentSeq);
-                                    toggle(e.communityCommentSeq);
-                                  }}
-                                >
-                                  댓글 보기
-                                </span>
+                                <></>
                               )}
                             </div>
                             {open === e.communityCommentSeq ? (
@@ -712,7 +721,8 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
                   <div
                     style={{
                       color: "rgb(11 122 227)",
-                      width: "150px",
+                      textAlign: "left",
+                      width: "100%",
                     }}
                   >
                     {tagName}

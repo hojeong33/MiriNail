@@ -13,26 +13,75 @@ import { styled, alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "./Navbar.module.css";
-const MenuBtn = styled("div")`
-  :hover .menu {
-    opacity: 1;
+import sc from "styled-components";
+
+const Logo = sc.button`
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: 32px;
+  color: black;
+  margin: 5px 10px 0;
+`;
+
+const Btn1 = sc.button`
+  width: 60px;
+  :hover {
+    font-weight: 500;
   }
+`
+const Btn2 = sc.button`
+  width: 140px;
+  :hover {
+    font-weight: 500;
+  }
+`
+
+const Btn3 = sc.button`
+  width: 75px;
+  :hover {
+    font-weight: 500;
+  }
+`
+
+
+const MenuBtn = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 65px;
+  .menu li :hover {
+    font-weight: 500;
+  }
+
   .menu {
-    opacity: 0;
+    display: none;
+  }
+  .menu li {
+    display: block;
+  }
+  :hover .menu {
+    display: block;
   }
 `;
 const MenuBtn2 = styled("div")`
   :hover .menu2 {
-    opacity: 1;
+    display: block;
   }
   .menu2 {
-    opacity: 0;
+    display: none;
+  }
+  .menu2 li {
+    display: block;
+  }
+
+  .menu2 li :hover {
+    font-weight: 500;
   }
 `;
 const CustomButton = styled(Button)({
   "&:hover": {
     backgroundColor: "rgba( 0, 0, 0, 0 )",
-    color: "black",
+    color: "black"
   },
 });
 const CustomIconButton = styled(IconButton)({
@@ -150,41 +199,21 @@ const Navbar = () => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            color="black"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-            onClick={() => navigate(`/`)}
-          >
-            Miri Nail
-          </Typography>
+          <Logo onClick={() => navigate(`/`)}>MIRINAIL</Logo>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/ar`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
+            <Btn1 onClick={() => navigate(`/ar`)}>
               AR
-            </CustomButton>
+            </Btn1>
             <MenuBtn>
-              <CustomButton
-                disableRipple
-                sx={{
-                  my: 2,
-                  color: "black",
-                  display: "block",
-                }}
-              >
-                ART
-              </CustomButton>
+              <Btn1 onClick={() => navigate(`/nft`)}>
+              ART
+              </Btn1>
               <ul
                 className="menu"
                 style={{
                   position: "absolute",
-                  top: "70px",
-                  left: "130px",
+                  top: "65px",
+                  left: "210px",
                   color: "black",
                   backgroundColor: "rgba(0, 0, 0, 5%)",
                   padding: "10px",
@@ -210,20 +239,12 @@ const Navbar = () => {
                 </li>
               </ul>
             </MenuBtn>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/community`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              COMMUNITY
-            </CustomButton>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/event`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              EVENT
-            </CustomButton>
+            <Btn2 onClick={() => navigate(`/community`)}>
+            COMMUNITY
+            </Btn2>
+            <Btn3 onClick={() => navigate(`/event`)}>
+            EVENT
+            </Btn3>
           </Box>
           <Search>
             <SearchIconWrapper>
@@ -251,7 +272,17 @@ const Navbar = () => {
             ) : (
               <>
                 <MenuBtn2>
-                  <CustomIconButton disableRipple sx={{ p: 0 }}>
+                  <CustomIconButton
+                    disableRipple
+                    sx={{ p: 0, minHeight: "64px" }}
+                    onClick={() => {
+                      navigate(
+                        `/mypage/${sessionStorage.getItem(
+                          "userSeq"
+                        )}/myreservation`
+                      );
+                    }}
+                  >
                     <Avatar alt="Remy Sharp" src={userProfileImg} />
                     <Typography
                       textAlign="center"
@@ -269,7 +300,7 @@ const Navbar = () => {
                     className="menu2"
                     style={{
                       position: "absolute",
-                      top: "70px",
+                      top: "65px",
                       color: "black",
                       backgroundColor: "rgba(0, 0, 0, 5%)",
                       padding: "10px",
@@ -280,13 +311,16 @@ const Navbar = () => {
                         <button
                           onClick={() => {
                             navigate(
-                              `/mypage/${sessionStorage.getItem("userSeq")}/myreservation`
+                              `/mypage/${sessionStorage.getItem(
+                                "userSeq"
+                              )}/myreservation`
                             );
                           }}
                         >
                           MyPage
                         </button>
                       )}
+
                       {userRole === "ROLE_ARTIST" && (
                         <button
                           onClick={() => {

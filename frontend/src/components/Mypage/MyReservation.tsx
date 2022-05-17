@@ -108,7 +108,7 @@ const Wrapper = styled.div`
           }
         }
         .btnbox {
-          button {
+          .cancel {
             :hover {
               border: none;
               background-color: #f85757;
@@ -117,12 +117,13 @@ const Wrapper = styled.div`
           }
         }
         .confirm {
-          border: 1px solid #333;
+          border: 1px solid #61c560;
           padding: 3px 8px;
           position: absolute;
-          margin-left: 160px;
-          color: #333;
-          cursor: default;
+          margin-left: 165px;
+          margin-top: 15px;
+          color: #61c560;
+          /* cursor: default; */
         }
         button {
           border: 1px solid #ff3939;
@@ -257,7 +258,7 @@ const MyReservation = () => {
                   key={idx}
                 >
                   <div className="cardleft">
-                    <img src={book.designerInfo.designerProfileImgUrl? convertImgToThumnail(book.designerInfo.designerProfileImgUrl): "assets/images/default_profile.png"} alt="" />
+                    <img src={book.designerInfo.designerProfileImgUrl? book.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
                   </div>
                   <div className="cardright">
                     <div className="cardright-top">
@@ -287,7 +288,7 @@ const MyReservation = () => {
                       <div className="btnbox">
                         {parseInt(
                           moment(convertDate(book.bookDatetime)).fromNow(true)
-                        ) >= 2 ? <button onClick={(e) => {
+                        ) >= 2 ? sessionStorage.getItem("userSeq") === userSeq && <button className="cancel" onClick={(e) => {
                           e.stopPropagation();
                           onClickCancel(book.bookSeq);
                         }}>예약취소</button> : <button className="confirm">예약확정</button>}
