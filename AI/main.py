@@ -75,7 +75,7 @@ async def client(request: Request):
     return templates.TemplateResponse("client.html", {"request":request})
 
 # 웹소켓 설정 ws://127.0.0.1:8000/ws 로 접속할 수 있음
-@app.websocket("/nail/wss")
+@app.websocket("/websocket")
 async def websocket_endpoint(websocket: WebSocket):
     # print(f"client connected : {websocket.client}")
     await websocket.accept() # client의 websocket접속 허용
