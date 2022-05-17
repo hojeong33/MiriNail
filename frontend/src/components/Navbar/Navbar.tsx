@@ -21,15 +21,23 @@ const Logo = sc.button`
   font-size: 32px;
   color: black;
   margin: 5px 10px 0;
-<<<<<<< HEAD
-`
-=======
-
 `;
->>>>>>> 2aa06218d64ea9c4faa7a536c2acf4609a83def5
 
-const Btn = sc.button`
-  width: 40px;
+const Btn1 = sc.button`
+  width: 60px;
+  :hover {
+    font-weight: 500;
+  }
+`
+const Btn2 = sc.button`
+  width: 140px;
+  :hover {
+    font-weight: 500;
+  }
+`
+
+const Btn3 = sc.button`
+  width: 75px;
   :hover {
     font-weight: 500;
   }
@@ -37,6 +45,14 @@ const Btn = sc.button`
 
 
 const MenuBtn = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 65px;
+  .menu li :hover {
+    font-weight: 500;
+  }
+
   .menu {
     display: none;
   }
@@ -56,6 +72,10 @@ const MenuBtn2 = styled("div")`
   }
   .menu2 li {
     display: block;
+  }
+
+  .menu2 li :hover {
+    font-weight: 500;
   }
 `;
 const CustomButton = styled(Button)({
@@ -181,35 +201,19 @@ const Navbar = () => {
         <Toolbar disableGutters>
           <Logo onClick={() => navigate(`/`)}>MIRINAIL</Logo>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {/* <CustomButton
-              disableRipple
-              onClick={() => navigate(`/ar`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
+            <Btn1 onClick={() => navigate(`/ar`)}>
               AR
-            </CustomButton> */}
-            <Btn onClick={() => navigate(`/ar`)}>
-              AR
-            </Btn>
+            </Btn1>
             <MenuBtn>
-              <CustomButton
-                className="dropbtn"
-                disableRipple
-                sx={{
-                  my: 2,
-                  color: "black",
-                  display: "block",
-                }}
-                onClick={() => navigate(`/nft`)}
-              >
-                ART
-              </CustomButton>
+              <Btn1 onClick={() => navigate(`/nft`)}>
+              ART
+              </Btn1>
               <ul
                 className="menu"
                 style={{
                   position: "absolute",
                   top: "65px",
-                  left: "220px",
+                  left: "210px",
                   color: "black",
                   backgroundColor: "rgba(0, 0, 0, 5%)",
                   padding: "10px",
@@ -235,20 +239,12 @@ const Navbar = () => {
                 </li>
               </ul>
             </MenuBtn>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/community`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              COMMUNITY
-            </CustomButton>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/event`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              EVENT
-            </CustomButton>
+            <Btn2 onClick={() => navigate(`/community`)}>
+            COMMUNITY
+            </Btn2>
+            <Btn3 onClick={() => navigate(`/event`)}>
+            EVENT
+            </Btn3>
           </Box>
           <Search>
             <SearchIconWrapper>
