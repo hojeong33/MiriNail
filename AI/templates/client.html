@@ -4,6 +4,7 @@
 	<title>Hello</title>
 </head>
 <script async src="https://docs.opencv.org/3.4/opencv.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.0/sockjs.min.js" integrity="sha512-ksHM9XpigYGeRdXZfI4GddPsUjmLj6zd1MCNXL4fsfDwp1G+u6hC73uwDjlpjdX4tbEtj/N1AWkLo6WjDwQkyA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!--script async src="./opencv.js"></script-->
 <body>
 	<video id="videoInput" style="display:none"></video>
@@ -18,6 +19,12 @@
 <script>
   
   var w = 640, h = 480;
+  sock = new SockJS("https://k6e101.p.ssafy.io/websocket")
+  sock.onopen = function() {
+     console.log('open');
+     sock.send('test');
+ };
+
 	var url = "https://k6e101.p.ssafy.io/websocket"
 	var ws = new WebSocket(url);
   let testt = document.getElementById("testt");
