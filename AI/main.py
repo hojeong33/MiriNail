@@ -22,11 +22,12 @@ from fastapi.logger import logger
 from imageio import imread
 from sockett import summ
 import os
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 
 
 app = FastAPI()
-
+app.add_middleware(HTTPSRedirectMiddleware)
 
 def video_streaming():
     return testVideo()
@@ -74,7 +75,7 @@ async def client(request: Request):
     return templates.TemplateResponse("client.html", {"request":request})
 
 # 웹소켓 설정 ws://127.0.0.1:8000/ws 로 접속할 수 있음
-@app.websocket("/nail/ws")
+@app.websocket("/nail/wss")
 async def websocket_endpoint(websocket: WebSocket):
     # print(f"client connected : {websocket.client}")
     await websocket.accept() # client의 websocket접속 허용
