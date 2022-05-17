@@ -19,13 +19,13 @@
 <script>
   
   var w = 640, h = 480;
-  sock = new SockJS("https://k6e101.p.ssafy.io/websocket")
-  sock.onopen = function() {
-     console.log('open');
-     sock.send('test');
- };
+//   sock = new SockJS("https://k6e101.p.ssafy.io/websocket")
+//   sock.onopen = function() {
+//      console.log('open');
+//      sock.send('test');
+//  };
 
-	var url = "https://k6e101.p.ssafy.io/websocket"
+	var url = "wss://k6e101.p.ssafy.io/websocket"
 	var ws = new WebSocket(url);
   let testt = document.getElementById("testt");
   testt.width = w;
