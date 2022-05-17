@@ -70,7 +70,7 @@ const Wrapper = styled.div`
     font-size: 20px;
     font-weight: bold;
     color: #fff;
-    height:60px;
+    height:60px;  
     padding: 5px 20px 25px 20px;
     background: linear-gradient(
       140deg,

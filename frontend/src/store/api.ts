@@ -57,8 +57,8 @@ export const designDetail = async (param: any) => {
 };
 
 // 다른 디자이너 작품 조회
-export const otherDesign = async (param: any) => {
-  const response = await axios.get(base_url + `nailart/designer/${param}`);
+export const otherDesign = async (param: any, nailSeq:any) => {
+  const response = await axios.get(base_url + `nailart/designer/${param}/${nailSeq}`);
   console.log(response);
   return response.data;
 };

@@ -169,10 +169,10 @@ function PageHeader({setType}:any) {
           SHOPPING
         </div>
         <div className="pageHeaderLinks">
-          <span style={status === 0 ? {opacity:"1",borderBottom:"1px solid #3d3c3a"} : {opacity:"0.5"}} onClick={() => {handleType(true,0)}}>
+          <span style={status === 0 ? {opacity:"1",borderBottom:"1px solid #3d3c3a",cursor:'pointer'} : {opacity:"0.5",cursor:'pointer'}} onClick={() => {handleType(true,0)}}>
             타입별
           </span>
-          <span style={status === 1 ? {opacity:"1",borderBottom:"1px solid #3d3c3a"} : {opacity:"0.5"}} onClick={() => {handleType(false,1); setColorFilter({
+          <span style={status === 1 ? {opacity:"1",borderBottom:"1px solid #3d3c3a",cursor:'pointer'} : {opacity:"0.5",cursor:'pointer'}} onClick={() => {handleType(false,1); setColorFilter({
             category : "color",
             color : "",
             type : "",

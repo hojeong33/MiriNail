@@ -77,27 +77,11 @@ const Wrapper = styled.div`
 `;
 const Gallery = () => {
   const param = useRecoilValue(designerId);
-
-  const { isLoading, data } = useQuery("otherDesign", () => otherDesign(param));
+  const nailSeq = useParams().id
   
-  const test = () => {
-    if (data === []) {
-      return ('아무것도 음슴')
-    }
-    return (
-      data?.map((e:any,idx:any) => {
-        return (
-          <li className="ItemListType">
-            <a href="" className="ItemBox">
-              <div className="imx">
-                <img src={e.nailartThumbnailUrl} alt="" />
-              </div>
-            </a>
-          </li>
-        );
-      })
-    )
-  }
+  const { isLoading, data } = useQuery("otherDesign", () => otherDesign(param,nailSeq));
+  
+  
 
   return (
     <Wrapper>
@@ -122,7 +106,7 @@ const Gallery = () => {
                 </li>
               );
             })
-            : <div className="reviewStatus">등록된 리뷰가 없습니다</div>
+            : <div className="reviewStatus">등록된 작품이 없습니다</div>
                
           )
         }

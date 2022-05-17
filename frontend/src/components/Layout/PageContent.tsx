@@ -176,7 +176,7 @@ const PageContent = () => {
                   <div
                     style={status === 1 ? { opacity: "1" } : {}}
                     onClick={() => {
-                      setMyFilter({ ...myFilter, type: "젤" });
+                      setMyFilter({ ...myFilter, type: "젤", page:1 });
                       setStatus(1);
                     }}
                   >
@@ -185,7 +185,7 @@ const PageContent = () => {
                   <div
                     style={status === 2 ? { opacity: "1" } : {}}
                     onClick={() => {
-                      setMyFilter({ ...myFilter, type: "프렌치" });
+                      setMyFilter({ ...myFilter, type: "프렌치", page:1 });
                       setStatus(2);
                     }}
                   >
@@ -194,7 +194,7 @@ const PageContent = () => {
                   <div
                     style={status === 3 ? { opacity: "1" } : {}}
                     onClick={() => {
-                      setMyFilter({ ...myFilter, type: "라인스톤" });
+                      setMyFilter({ ...myFilter, type: "라인스톤", page:1 });
                       setStatus(3);
                     }}
                   >
