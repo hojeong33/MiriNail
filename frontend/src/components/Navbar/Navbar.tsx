@@ -21,8 +21,15 @@ const Logo = sc.button`
   font-size: 32px;
   color: black;
   margin: 5px 10px 0;
-
 `
+
+const Btn = sc.button`
+  width: 40px;
+  :hover {
+    font-weight: 500;
+  }
+`
+
 
 const MenuBtn = styled("div")`
   :hover .menu {
@@ -43,7 +50,7 @@ const MenuBtn2 = styled("div")`
 const CustomButton = styled(Button)({
   "&:hover": {
     backgroundColor: "rgba( 0, 0, 0, 0 )",
-    color: "black",
+    color: "black"
   },
 });
 const CustomIconButton = styled(IconButton)({
@@ -167,13 +174,16 @@ const Navbar = () => {
             MIRINAIL
           </Logo>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <CustomButton
+            {/* <CustomButton
               disableRipple
               onClick={() => navigate(`/ar`)}
               sx={{ my: 2, color: "black", display: "block" }}
             >
               AR
-            </CustomButton>
+            </CustomButton> */}
+            <Btn onClick={() => navigate(`/ar`)}>
+              AR
+            </Btn>
             <MenuBtn>
               <CustomButton
                 disableRipple
