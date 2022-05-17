@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getUserCommunity } from "../../store/apis/community";
 import { TailSpin } from "react-loader-spinner";
@@ -11,6 +11,27 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import Slider from "react-slick";
+import TimeCounting from "time-counting";
+
+const StyledSlider = styled(Slider)`
+  .slick-dots {
+    bottom: 10px;
+  }
+  height: 100%;
+  .slick-list {
+    height: 100%;
+  }
+  .slick-track {
+    height: 100%;
+    div {
+      height: 100%;
+    }
+  }
+  img {
+    height: 100%;
+  }
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -171,19 +192,17 @@ const LoadingBox = styled.div`
   width: 768px;
 `;
 
-interface IState {
-  post: {
-    no: number;
-    title: string;
-    date: string;
-  };
-}
-
 interface CommunityImgProp {
   communityImgSeq: number;
   communityImgUrl: string;
 }
-
+interface CommunityItemProp {
+  communityImg: CommunityImgProp[];
+  communityTitle: string;
+  communitySeq: number;
+  rows: number;
+  cols: number;
+}
 interface CommunityDetailProp {
   communitySeq: number;
   userNickname: string;
@@ -192,86 +211,87 @@ interface CommunityDetailProp {
   communityTitle: string;
   communityDesc: string;
   communityImg: CommunityImgProp[];
-  communityRededAt: Array<object>;
+  communityRededAt: string;
 }
-
 interface CommentDataProp {
   communityCommentSeq: number;
   userSeq: number;
   userNickname: string;
   userProfileImg: string;
   communityCommentDesc: string;
+  communityCommentRegedAt: string;
+  communityCommentIsDelete: boolean;
+}
+interface CommentPostDataProp {
+  communityCommentDesc: string;
+  communityCommentLayer: number;
+  communitySeq: number;
+  communityCommentSeq: number | null;
 }
 
 const Mypost = () => {
-  const [posts, setPosts] = useState<IState["post"][]>([
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-    {
-      no: 10,
-      title: "네일자랑글",
-      date: "2022.03.28",
-    },
-  ]);
   const [lastPage, setLastPage] = useState();
   const [page, setPage] = useState(1);
-  const [commentData, setCommentData] = useState<CommentDataProp[]>([]);
-  const navigate = useNavigate();
-  const ACCESS_TOKEN = localStorage.getItem("token");
+  const [itemData, setItemData] = useState<CommunityItemProp[]>([]);
   const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
-  const [currentCommunitySeq, setCurrentCommunitySeq] = useState<number>(0);
-  const [communityCommentLayer, setCommunityCommentLayer] = useState<number>(1);
-  const [currentCommentSeq, setCurrentCommentSeq] = useState<number>(0);
+  const [commentData, setCommentData] = useState<CommentDataProp[]>([]);
   const [replyData, setreplyData] = useState<CommentDataProp[]>([]);
+  const ACCESS_TOKEN = localStorage.getItem("token");
+  const [communityCommentLayer, setCommunityCommentLayer] = useState<number>(1);
+  const [currentCommunitySeq, setCurrentCommunitySeq] = useState<number>(0);
+  const [currentCommentSeq, setCurrentCommentSeq] = useState<number>(0);
+  const [commentPostData, setCommentPostData] = useState<CommentPostDataProp>();
+  const [currentCommunityIdx, setCurrentCommunityIdx] = useState<number>(0);
+  const [test, setTest] = useState(1);
+  const [time, setTime] = useState<string>("");
+  const [communityTime, setCommunityTime] = useState<string>("");
+  const [tagName, setTagName] = useState("");
+  const navigate = useNavigate();
+
+
   // 모달
   const [modalStatus, setModalStatus] = useState(false);
   const handleOpen = () => setModalStatus(true);
-  const handleClose = () => setModalStatus(false);
+  const handleClose = () => {
+    setModalStatus(false);
 
-  const { data, isLoading } = useQuery<any, Error>(
+    setOpen("");
+    setTagName("");
+  };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  //현재 시간 가져오기
+  const getNowTime = () => {
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    var day = ("0" + today.getDate()).slice(-2);
+    var hours = ("0" + today.getHours()).slice(-2);
+    var minutes = ("0" + today.getMinutes()).slice(-2);
+    var seconds = ("0" + today.getSeconds()).slice(-2);
+
+    var dateString = year + "-" + month + "-" + day;
+    var timeString = hours + ":" + minutes + ":" + seconds;
+    setTime(dateString + " " + timeString);
+  };
+
+  //시간차 계산하기
+  const option = {
+    lang: undefined,
+    objectTime: time,
+    calculate: {
+      justNow: 60,
+    },
+  };
+
+  const { data, isLoading, refetch } = useQuery<any, Error>(
     ["post", page],
     async () => {
       return await getUserCommunity(page, 10);
@@ -286,6 +306,49 @@ const Mypost = () => {
     }
   );
 
+  //커뮤니티 게시글 삭제하기
+  const deleteCommunity = async (communitySeq: number) => {
+    await axios({
+      method: "delete",
+      url: `http://localhost:8080/api/community/${communitySeq}`,
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    })
+      .then((res) => {
+        setModalStatus((prev: any) => !prev);
+        var array = [...itemData];
+        array.splice(currentCommunityIdx, 1);
+        setItemData(array);
+        refetch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  //댓글 삭제하기
+  const deleteComment = async (communityCommentSeq: number) => {
+    axios({
+      method: "patch",
+      url: `http://localhost:8080/api/community/comment/${communityCommentSeq}`,
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    })
+      .then((res) => {
+        {
+          communityCommentLayer === 3
+            ? getReplyComments(communityCommentSeq)
+            : getComments(currentCommunitySeq);
+        }
+        setOpen("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
+  //댓글 가져오기
   const getComments = async (communitySeq: number) => {
     if (ACCESS_TOKEN) {
       axios({
@@ -293,7 +356,7 @@ const Mypost = () => {
         url: `http://localhost:8080/api/community/comment/${communitySeq}`,
         params: {
           page: 0,
-          size: 1,
+          size: 10,
         },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -310,7 +373,8 @@ const Mypost = () => {
   };
 
   //게시글 상세 정보 받아오기
-  const getDetail = async (communitySeq: number) => {
+  const getDetail = async (communitySeq: number, idx: number) => {
+    setCurrentCommunityIdx(idx);
     if (ACCESS_TOKEN) {
       axios({
         method: "get",
@@ -320,11 +384,16 @@ const Mypost = () => {
         },
       })
         .then((res) => {
-          console.log("디테일 데이터", res);
           setItemDetail(res.data);
           setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
+          console.log(res.data.communityRegedAt, "게시글 상세 데이터");
+          let temp = TimeCounting(res.data.communityRegedAt, option);
+          setCommunityTime(temp);
+          sessionStorage.setItem("communitySeq", communitySeq.toString());
+          getNowTime();
+          console.log(time, "시간");
         })
         .catch((err) => {
           console.log(err);
@@ -332,6 +401,7 @@ const Mypost = () => {
     }
   };
 
+  //대댓글 가져오기
   const getReplyComments = async (communityCommentSeq: number) => {
     if (ACCESS_TOKEN) {
       axios({
@@ -339,7 +409,7 @@ const Mypost = () => {
         url: `http://localhost:8080/api/community/comment/layer/${communityCommentSeq}`,
         params: {
           page: 0,
-          size: 1,
+          size: 10,
         },
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -359,47 +429,61 @@ const Mypost = () => {
     console.log(page);
     setPage(page);
   };
+
   const Button = () => {
     if (inputVal) {
       return (
-        <div style={{ color: "#0095f6" }} onClick={createComment}>
+        <div
+          style={{ color: "#0095f6", width: "100px", marginLeft: "5px" }}
+          onClick={createComment}
+        >
           게시
         </div>
       );
     } else {
-      return <div>게시</div>;
+      return <div style={{ width: "100px", marginLeft: "5px" }}>게시</div>;
     }
   };
 
-  //댓글 작성
+  //댓글 입력
+  const onChangeText = (content: string) => {
+    setInputVal(content);
+    if (communityCommentLayer === 3) {
+      setCommentPostData({
+        communityCommentDesc: content,
+        communityCommentLayer: communityCommentLayer,
+        communitySeq: currentCommunitySeq,
+        communityCommentSeq: currentCommentSeq,
+      });
+    } else {
+      setCommentPostData({
+        communityCommentDesc: content,
+        communityCommentLayer: communityCommentLayer,
+        communitySeq: currentCommunitySeq,
+        communityCommentSeq: currentCommentSeq,
+      });
+    }
+
+    console.log(commentPostData, "댓글데이터");
+  };
+
+  //댓글 작성하기
   const createComment = async () => {
-    const data: object = {
-      communityCommentDesc: inputVal,
-      communityCommentLayer: communityCommentLayer,
-      communitySeq: currentCommunitySeq,
-    };
-    // if(communityCommentLayer===3){
-    //   data[]
-    // }
-    console.log(inputVal);
-    console.log(communityCommentLayer);
-    console.log(currentCommunitySeq);
-    if (ACCESS_TOKEN) {
-      axios({
+    if (commentPostData !== undefined) {
+      await axios({
         method: "post",
         url: `http://localhost:8080/api/community/comment`,
-        data: {
-          communityCommentDesc: inputVal,
-          communityCommentLayer: communityCommentLayer,
-          communitySeq: currentCommunitySeq,
-        },
+        data: commentPostData,
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       })
         .then((res) => {
-          console.log(res);
+          getComments(currentCommunitySeq);
+          setInputVal("");
+          setOpen("");
+          setTagName("");
         })
         .catch((err) => {
           console.log(err);
@@ -410,7 +494,8 @@ const Mypost = () => {
   // 답글 달기
   const [inputVal, setInputVal] = useState("");
   const tagUser = (userName: string, communityCommentSeq: number) => {
-    setInputVal("@" + userName + " ");
+    setTagName("@" + userName + " ");
+    // setInputVal("@" + userName + " ");
     setCommunityCommentLayer(3);
     setCurrentCommentSeq(communityCommentSeq);
   };
@@ -452,7 +537,7 @@ const Mypost = () => {
           <tbody>
             {data.content?.map((post: any, idx: any) => {
               return (
-                <tr key={idx} onClick={() => getDetail(post.communitySeq)}>
+                <tr key={idx} onClick={() => getDetail(post.communitySeq, idx)}>
                   <th>{post.communitySeq}</th>
                   <th>{post.userNickname}</th>
                   <th className="title">{post.communityTitle}</th>
@@ -468,55 +553,95 @@ const Mypost = () => {
         </table>
       </div>
       <div className="pagination">
-        <Modal
-          open={modalStatus}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={modalStyle}>
-            <Wrapper>
-              <div className="leftDetailBox">
-                <img src={itemDetail?.communityImg[0].communityImgUrl}></img>
-                {/* {itemDetail.communityImg.map((img, idx) => {
-                <img src={img.communityImgUrl} alt="" />;
-              })} */}
-              </div>
+      <Modal
+        open={modalStatus}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Wrapper>
+            <div className="leftDetailBox" style={{ overflow: "hidden" }}>
+              <StyledSlider {...settings}>
+                {itemDetail?.communityImg.map((item, idx) => {
+                  return <img src={item.communityImgUrl} alt="" />;
+                })}
+              </StyledSlider>
+            </div>
+            <div
+              className="rightDetailBox"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
               <div
-                className="rightDetailBox"
-                style={{ display: "flex", flexDirection: "column" }}
+                className="rightDetailBoxTop"
+                style={{ justifyContent: "space-between" }}
               >
-                <div className="rightDetailBoxTop">
+                <div>
                   <img
                     src={itemDetail?.userProfileImg}
                     alt=""
-                    width="32"
-                    height="32"
+                    style={{
+                      marginRight: "14px",
+                      width: "32px",
+                      height: "32px",
+                    }}
                   />
-                  <div style={{ marginLeft: "14px" }}>
+                  <div>{itemDetail?.userNickname}</div>
+                </div>
+
+                {itemDetail?.userNickname ===
+                  sessionStorage.getItem("userNickname") && (
+                  <div>
+                    <button
+                      onClick={() => {
+                        navigate("/community/update", {
+                          state: {
+                            desc: itemDetail?.communityDesc,
+                            title: itemDetail.communityTitle,
+                            img: itemDetail?.communityImg,
+                          },
+                        });
+                      }}
+                      style={{ marginRight: "10px" }}
+                    >
+                      수정
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        deleteCommunity(itemDetail.communitySeq);
+                      }}
+                      style={{ marginRight: "10px" }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="rightDetailBoxMiddle">
+                <div className="postWriter" style={{ display: "flex" }}>
+                  <img
+                    src={itemDetail?.userProfileImg}
+                    alt=""
+                    style={{ width: "32px", height: "32px" }}
+                  />
+                  <div style={{ marginLeft: "14px", whiteSpace: "nowrap" }}>
                     {itemDetail?.userNickname}
                   </div>
-                </div>
-                <div className="rightDetailBoxMiddle">
-                  <div className="postWriter" style={{ display: "flex" }}>
-                    <img
-                      src={itemDetail?.userProfileImg}
-                      alt=""
-                      width="32"
-                      height="32"
-                    />
-                    <div style={{ marginLeft: "14px" }}>
-                      {itemDetail?.userNickname}
-                    </div>
-                    <div style={{ marginLeft: "14px" }}>
-                      <div>{itemDetail?.communityDesc}</div>
-                      <div style={{ marginTop: "10px" }}>6시간</div>
-                    </div>
+                  <div style={{ marginLeft: "14px" }}>
+                    <div>{itemDetail?.communityDesc}</div>
+                    {itemDetail ? (
+                      <div style={{ marginTop: "10px" }}>{communityTime}</div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
-                  <div className="replys">
-                    {commentData.map((e: any, idx) => {
-                      return (
-                        <div className="replyFrame" key={idx}>
+                </div>
+                <div className="replys">
+                  {commentData.map((e: any, idx) => {
+                    return (
+                      <div className="replyFrame" key={idx}>
+                        {e.communityCommentIsDelete ? (
                           <div className="replysInfo">
                             <div style={{ borderRadius: "70%" }}>
                               <img
@@ -526,15 +651,61 @@ const Mypost = () => {
                                 height="32"
                               />
                             </div>
-                            <span style={{ marginLeft: "14px" }}>
+                            <span
+                              style={{
+                                marginLeft: "14px",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
                               {e.userNickname}
                             </span>
+
                             <div>
                               <div style={{ marginLeft: "14px" }}>
                                 {e.communityCommentDesc}
                               </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="replysInfo">
+                            <div style={{ borderRadius: "70%" }}>
+                              <img
+                                src={e.userProfileImg}
+                                alt=""
+                                width="32"
+                                height="32"
+                              />
+                            </div>
+                            <span
+                              style={{
+                                marginLeft: "14px",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {e.userNickname}
+                            </span>
+
+                            <div>
+                              <div style={{ marginLeft: "14px" }}>
+                                {e.communityCommentDesc}
+                                {e.userNickname ===
+                                  sessionStorage.getItem("userNickname") && (
+                                  <button
+                                    onClick={() => {
+                                      deleteComment(e.communityCommentSeq);
+                                    }}
+                                  >
+                                    삭제
+                                  </button>
+                                )}
+                              </div>
                               <div style={{ margin: "10px 0 0 14px" }}>
-                                <span>6시간</span>
+                                <span>
+                                  {TimeCounting(
+                                    e.communityCommentRegedAt,
+                                    option
+                                  )}
+                                </span>
                                 <span
                                   style={{ marginLeft: "15px" }}
                                   onClick={() =>
@@ -560,17 +731,29 @@ const Mypost = () => {
                                     height: "13px",
                                   }}
                                 ></div>
-                                <span
-                                  style={{ marginLeft: "15px" }}
-                                  onClick={() => {
-                                    getReplyComments(e.communityCommentSeq);
-                                    toggle(e.userNickname);
-                                  }}
-                                >
-                                  답글 보기
-                                </span>
+                                {open == e.communityCommentSeq ? (
+                                  <span
+                                    style={{ marginLeft: "15px" }}
+                                    onClick={() => {
+                                      getReplyComments(e.communityCommentSeq);
+                                      toggle(e.communityCommentSeq);
+                                    }}
+                                  >
+                                    댓글 닫기
+                                  </span>
+                                ) : (
+                                  <span
+                                    style={{ marginLeft: "15px" }}
+                                    onClick={() => {
+                                      getReplyComments(e.communityCommentSeq);
+                                      toggle(e.communityCommentSeq);
+                                    }}
+                                  >
+                                    댓글 보기
+                                  </span>
+                                )}
                               </div>
-                              {open === e.userNickname ? (
+                              {open === e.communityCommentSeq ? (
                                 <div style={{ margin: "12px 0 12px 14px" }}>
                                   <div>
                                     {replyData.map((ele: any) => {
@@ -595,17 +778,49 @@ const Mypost = () => {
                                           </div>
                                           <div
                                             style={{
-                                              marginLeft: "14px",
+                                              margin: "0px 10px",
+                                              whiteSpace: "nowrap",
                                             }}
                                           >
                                             {ele.userNickname}
                                           </div>
+                                          {!ele.communityCommentIsDelete && (
+                                            <div
+                                              style={{
+                                                color: "rgb(11 122 227)",
+                                                whiteSpace: "nowrap",
+                                              }}
+                                            >
+                                              @{e.userNickname}
+                                            </div>
+                                          )}
                                           <div
                                             style={{
-                                              marginLeft: "14px",
+                                              marginLeft: "7px",
                                             }}
                                           >
                                             {ele.communityCommentDesc}
+                                            {ele.communityCommentIsDelete ? (
+                                              <></>
+                                            ) : (
+                                              <>
+                                                {" "}
+                                                {ele.userNickname ===
+                                                  sessionStorage.getItem(
+                                                    "userNickname"
+                                                  ) && (
+                                                  <button
+                                                    onClick={() => {
+                                                      deleteComment(
+                                                        ele.communityCommentSeq
+                                                      );
+                                                    }}
+                                                  >
+                                                    삭제
+                                                  </button>
+                                                )}
+                                              </>
+                                            )}
                                           </div>
                                         </div>
                                       );
@@ -615,37 +830,63 @@ const Mypost = () => {
                               ) : null}
                             </div>
                           </div>
-                          <div></div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                        )}
 
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    bottom: "0px",
-                    borderTop: "1px solid #e3e3e3",
-                    height: "50px",
-                    paddingRight: "16px",
-                    paddingLeft: "16px",
-                  }}
-                >
-                  <div className="inputBox">
-                    <input
-                      type="text"
-                      value={inputVal}
-                      onChange={(e) => setInputVal(e.target.value)}
-                    />
-                    <Button />
-                  </div>
+                        <div></div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            </Wrapper>
-          </Box>
-        </Modal>
+
+              <div
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  bottom: "0px",
+                  borderTop: "1px solid #e3e3e3",
+                  height: "50px",
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
+              >
+                <div className="inputBox">
+                  {tagName && (
+                    <div
+                      style={{
+                        color: "rgb(11 122 227)",
+                        width: "150px",
+                      }}
+                    >
+                      {tagName}
+                      <button
+                        onClick={() => {
+                          setTagName("");
+                          setCommunityCommentLayer(1);
+                        }}
+                      >
+                        x
+                      </button>
+                    </div>
+                  )}
+
+                  <input
+                    type="text"
+                    value={inputVal}
+                    onChange={(e) => {
+                      onChangeText(e.target.value);
+                    }}
+                    onKeyPress={(e) => {
+                      if (e.code === "Enter") createComment();
+                    }}
+                  />
+                  <Button />
+                </div>
+              </div>
+            </div>
+          </Wrapper>
+        </Box>
+      </Modal>
         <Stack spacing={2}>
           <Pagination
             count={lastPage}
