@@ -101,7 +101,7 @@ async def client(request: Request):
 
 
 # 웹소켓 설정 ws://127.0.0.1:8000/ws 로 접속할 수 있음
-@app.websocket("/nail/ws")
+@app.websocket("/websocket")
 async def websocket_endpoint(websocket: WebSocket):
     # print(f"client connected : {websocket.client}")
     response = requests.get(f'http://localhost:8080/api/nailart/detail/{test}')
