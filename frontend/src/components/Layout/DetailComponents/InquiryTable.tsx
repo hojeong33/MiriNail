@@ -443,7 +443,7 @@ const InquiryTable = () => {
             <tr>
               <td id={e.qnaSeq.toString()} colSpan={6} style={{display:'none', }} className="reply">
                 <div style={{display:"flex"}}>
-                  <div className="questionName">프렌치 - 딥 다크(해당 상품 이름)</div>
+                  <div className="questionName"> 제목 : {e.qnaTitle}</div>
                   { e.userSeq === myId ? <div className="questionRev">
                     <OneOneOneRevise data={e}/><span onClick={() => deleteSubmit(e.qnaSeq)}>삭제</span>
                   </div>

@@ -26,6 +26,7 @@ const Container = styled.div`
 `;
 
 const Question = styled.div`
+  padding: 5px 10px !important;
   font-size: 20px;
   width:100%;
   display: flex;
@@ -33,7 +34,7 @@ const Question = styled.div`
   cursor: pointer;
   height: 40px;
   margin: 0 32px 0 20px;
-  padding: 5px 0;
+  
   .btn {
     right:30px;
     font-size: 14px;
@@ -56,7 +57,8 @@ const ContentsWrapper = styled.div`
 `;
 
 const Contents = styled.div`
-  padding: 12px;
+  padding: 12px 12px !important;
+  // padding: 12px;
   p {
     margin: 0;
     font-weight: 500;
@@ -118,7 +120,7 @@ function Accordion(props: AccordionProps) {
   return (
     <Container>
       <Question onClick={handleButtonClick}>
-        <div>
+        <div style={{padding:"5px 0 !important"}}>
           <span>Q.</span>
           {props.title}
         </div>

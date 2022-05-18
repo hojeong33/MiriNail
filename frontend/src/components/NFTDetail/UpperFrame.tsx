@@ -354,8 +354,8 @@ const UpperFrame = () => {
 
   useEffect(() => {
    
-    // 주소 바꿔주기
-    axios.post('https://3.36.108.157/post',{
+    // 주소
+    axios.post('https://k6e101.p.ssafy.io/post',{
       strings : params
     })
     .then(res => console.log(res))
@@ -453,7 +453,7 @@ const UpperFrame = () => {
                   </div>
            
                   <div className="btns">
-                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('https://3.36.108.157:8000/nail/client')}>
+                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('https://k6e101.p.ssafy.io/nail/client')}>
                       AR 피팅하기
                     </a>
                     <Link to={`/designerpage/${nailData?.designerSeq}/reservation`}
