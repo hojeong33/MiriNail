@@ -181,6 +181,7 @@ $box-size: $spacing-xxlarge;
   .card {
     &__side-by-side--m {
       flex-flow: row nowrap;
+     
       img {
         min-height: 100%;
      
