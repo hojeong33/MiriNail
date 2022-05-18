@@ -234,7 +234,7 @@ const PageContent = () => {
     const [infoProcessNum,setInfoProcessNum] = useState(0)
     const [nailartDesc,setnailartDesc] = useState('')
     const [postImages,setPostImages] = useState<any[]>([])
-    const [ipfsPath,setIpfsPath] = useState('')
+    const [ipfsPath,setIpfsPath] = useState(null)
     useEffect(() => {
       // console.log(postImages)
     },[postImages])
@@ -288,29 +288,54 @@ const PageContent = () => {
     postImages.forEach(e => {
       files.append('files',e)
     })
+    const getIPFS = (data:any) => {
 
-    ipfs.files.add(testBuffer, (err:any,file:any)=>{
-      if(err) {
-          console.log(err);
-      }   
-      const temp = file[0].hash
-      setIpfsPath(temp)
-    })
+      return new Promise(function(resolve,reject){
+        ipfs.files.add(data, (err:any,file:any)=>{
+          if(err) {
+              console.log(err);
+          }   
+          const temp = file[0].hash
+          // setIpfsPath(temp)
+          console.log(temp)
+          resolve(temp)
+        })
+    
+        // resolve(''); // resolve("second") 처럼 값을 return 시킬 수 있다.
+      });
+      
+    }
+    
 
     // const abc:any = "http://127.0.0.1:5002";
     // const client = create(abc)
-    const returnValue = await registDesign(files)
-    console.log(returnValue)
-    const putIpfs = await pushIpfs({nailartSeq : Number(returnValue.data), nailartNft : ipfsPath})
+   
+   
+    // if (ipfsPath != null) {
+   
+    const returnValue = registDesign(files).then(async(res) => {
+      console.log(res)
+      const ipfs = await getIPFS(testBuffer)
+      console.log(ipfs)
+      await pushIpfs({nailartSeq : Number(res.data), nailartNft : ipfs}).then(response => {
+        console.log(response)
+      })
 
+    })
+  
+      
+      // console.log(putIpfs)
+      publishToken(ipfs)
+      setTimeout(() => navigate(-1), 2000)
+    // }
+
+  
     
     // const ipfsHash = response.path
     // console.log(ipfsHash)
-    publishToken(returnValue.data)
     
-
-    setTimeout(() => navigate(-1), 2000)
   }
+
 
 
   return (

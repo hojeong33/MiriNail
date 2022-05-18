@@ -38,6 +38,7 @@ export const registDesign = async (files: any) => {
 
 // ipfs 주소 등록
 export const pushIpfs = async(data:any) => {
+  console.log(data)
   const response = axios.put(base_url + 'nailart/nft',data)
   
   return response
