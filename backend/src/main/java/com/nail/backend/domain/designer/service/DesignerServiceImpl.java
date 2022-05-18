@@ -58,7 +58,7 @@ public class DesignerServiceImpl implements DesignerService{
             User user = userRepository.findByUserSeq(num.getFollowFollowee());
             DesignerInfo designerInfo = designerRepository.findByDesignerSeq(user.getUserSeq());
             tmp.setDesignerShopName(designerInfo.getDesignerShopName());
-            tmp.setDesignerImgUrl(user.getUserProfileImg());
+            tmp.setDesignerImgUrl(designerInfo.getDesignerProfileImgUrl());
             tmp.setDesignerNickName(user.getUserNickname());
             List<Nailart> nailart = nailartRepository.findAllByDesignerSeq(user.getUserSeq());
             tmp.setNailartCount(nailart.size());
