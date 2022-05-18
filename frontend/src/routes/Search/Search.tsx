@@ -4,8 +4,9 @@ import SearchNailart from "./SearchNailart";
 import SearchDesigner from "./SearchDesigner";
 
 const Wrapper = styled.div`
-  margin: 160px 120px;
+  margin: 160px auto;
   min-height: 100vh;
+  width: 1200px;
   .buttons {
     display: flex;
 

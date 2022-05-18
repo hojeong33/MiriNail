@@ -275,7 +275,7 @@ const PageContent = () => {
     const date = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
     const files= new FormData()
     const multipartFiles = new FormData()
-    const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq}
+    const nailData:any = {...infoProcess,nailartDesc,designerSeq}
     var ipfsAPI = require('ipfs-api')
     const ipfs = ipfsAPI("ipfs.infura.io", "5001", { protocol: "https" })
     let testBuffer = Buffer.from(JSON.stringify({...nailData, designerName, date}));

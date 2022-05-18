@@ -80,7 +80,7 @@ const Content = styled.div`
         width:100%;
         height : 150px;
         border: 1px solid gray;
-        resize="none";
+        resize:"none";
       }
       
       
@@ -106,7 +106,7 @@ const Content = styled.div`
       // }
     // }
   }
-
+  }
   
 `;
 
@@ -290,7 +290,7 @@ export default function OneOnOneWrite(modalStatus: any) {
               <div className="rowBox">
                 <div className="rowBoxLeft">문의 제목</div>
                 <div className="rowBoxRight">
-                  <input type="text" onChange={onChangeInput} name="qnaTitle" />
+                  <input type="text" onChange={onChangeInput} name="qnaTitle" spellCheck="false" />
                 </div>
               </div>
               <div className="reviewWrite">
@@ -302,6 +302,7 @@ export default function OneOnOneWrite(modalStatus: any) {
                     placeholder="내용을 입력해주세요"
                     onChange={onChangeInput}
                     name="qnaDesc"
+                    spellCheck="false"
                   ></textarea>
                 </div>
               </div>

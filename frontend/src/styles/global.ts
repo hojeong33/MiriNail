@@ -38,7 +38,9 @@ const GlobalStyle = createGlobalStyle`
   textarea:focus {outline:none;}
 
   textarea {
-    padding:10px;
+    padding: 10px !important;
+    resize: none;
   }
+
 `;
 export default GlobalStyle;
