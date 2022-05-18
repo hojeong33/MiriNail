@@ -160,7 +160,10 @@ async def websocket_endpoint(websocket: WebSocket):
                 drawboxes = []
                 # vs = WebcamVideoStream(src=0)
                 # vs.start()
-
+            
+                image_nparray = np.asarray(bytearray(requests.get(nailImage).content), dtype=np.uint8)
+                imageDecode = cv2.imdecode(image_nparray, cv2.IMREAD_COLOR)
+                print(imageDecode)
 
                 
                 while True:
@@ -171,7 +174,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
                     imgtest = imread(io.BytesIO(base64.b64decode(data)))
                     print(imgtest)
-                    img = cv2.imread("sss.png")
+                    img = imageDecode
                     frame = cv2.flip(imgtest, 1)
                     image = frame
                     (H, W) = image.shape[:2]
