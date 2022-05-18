@@ -453,7 +453,7 @@ const UpperFrame = () => {
                   </div>
            
                   <div className="btns">
-                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('https://3.36.108.157/nail/client')}>
+                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('https://3.36.108.157:8000/nail/client')}>
                       AR 피팅하기
                     </a>
                     <Link to={`/designerpage/${nailData?.designerSeq}/reservation`}
