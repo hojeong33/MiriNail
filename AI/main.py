@@ -104,7 +104,7 @@ async def client(request: Request):
 @app.websocket("/websocket")
 async def websocket_endpoint(websocket: WebSocket):
     # print(f"client connected : {websocket.client}")
-    response = requests.get(f'http://localhost:8080/api/nailart/detail/{test}')
+    response = requests.get(f'https://k6e101.p.ssafy.io/api/nailart/detail/{test}')
     # print(response.content)
     print(test)
     nailImage = response.json()['nailartImgUrl']
