@@ -177,6 +177,10 @@ export default function CommunityImgList() {
     communitySeq: number;
     communityDesc: string;
   }
+  interface CommunityDataProp {
+    last: boolean;
+    totalPages: number;
+  }
   interface CommunityDetailProp {
     communitySeq: number;
     userNickname: string;
@@ -210,28 +214,32 @@ export default function CommunityImgList() {
   }
   const textItem: CardTextProp[] = [
     {
-      content: "오늘의 네일을 내일로 미루지 마라.",
-      writer: "— 장영남",
+      content:
+        "Your outer beauty will capture the eyes, your inner beauty will capture the heart.",
+      writer: "— Steven Aitchison",
     },
     {
-      content: "네일은 늘 두근거리고 설레고 날 기쁘게 해요 ",
-      writer: "— 영남 장",
+      content:
+        "Whenever you are creating beauty around you, you are restoring your own soul.",
+      writer: "— Alice Walker",
     },
     {
-      content: "Travel is fatal to prejudice, bigotry, and narrow-mindedness.",
-      writer: "— Mark Twain3",
+      content: "Beauty begins the moment you decide to be yourself.",
+      writer: "— Coco Chanel",
     },
     {
-      content: "Travel is fatal to prejudice, bigotry, and narrow-mindedness.",
-      writer: "— Mark Twain4",
+      content: "True beauty in an individual is reflected in their soul.",
+      writer: "— Audrey Hepburn",
     },
     {
-      content: "Travel is fatal to prejudice, bigotry, and narrow-mindedness.",
-      writer: "— Mark Twain5",
+      content:
+        "Beauty is about enhancing what you have. Let yourself shine through.",
+      writer: "— Janelle Monae",
     },
   ];
 
   const [itemData, setItemData] = useState<CommunityItemProp[]>([]);
+  const [communityData, setCommunityData] = useState<CommunityDataProp>();
   const [itemDetail, setItemDetail] = useState<CommunityDetailProp>();
   const [commentData, setCommentData] = useState<CommentDataProp[]>([]);
   const [replyData, setreplyData] = useState<CommentDataProp[]>([]);
@@ -245,6 +253,7 @@ export default function CommunityImgList() {
   const [test, setTest] = useState(1);
   const [time, setTime] = useState<string>("");
   const [communityTime, setCommunityTime] = useState<string>("");
+  const [totalPages, setTotalPages] = useState<number>(999);
 
   const [tagName, setTagName] = useState("");
   const navigate = useNavigate();
@@ -291,7 +300,15 @@ export default function CommunityImgList() {
   //커뮤니티 게시글 가져오기
 
   const fetchData = async (page: number) => {
-    if (ACCESS_TOKEN) {
+    if (page > totalPages) {
+      console.log("그만~``");
+      return;
+    }
+    if (communityData?.last) {
+      console.log("그만~``");
+      return;
+    }
+    if (true) {
       axios({
         method: "get",
         url: `https://k6e101.p.ssafy.io/api/community`,
@@ -299,13 +316,22 @@ export default function CommunityImgList() {
           page: page,
           size: 10,
         },
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${ACCESS_TOKEN}`,
+        // },
       })
         .then((res) => {
           setItemData((curItemData) => [...curItemData, ...res.data.content]); // state에 추가
-          console.log(res.data.content, "데이터 가져옴", page, "page");
+          console.log(
+            res.data,
+            "데이터 가져옴",
+            page,
+            "page",
+            totalPages,
+            "totalpages"
+          );
+          setCommunityData(res.data);
+          setTotalPages(res.data.totalPages);
         })
         .catch((err) => {
           console.log(err);
@@ -524,7 +550,6 @@ export default function CommunityImgList() {
     setOpen("");
     setTagName("");
   };
-  const temp = [image68, image69, image70];
 
   useEffect(() => {}, [modalStatus]);
 
@@ -545,7 +570,14 @@ export default function CommunityImgList() {
                   <div
                     className="card card--2x"
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -566,7 +598,14 @@ export default function CommunityImgList() {
                   <div
                     className="card"
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -600,7 +639,14 @@ export default function CommunityImgList() {
                       className="card card--horizontal"
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        getDetail(item.communitySeq, idx);
+                        if (sessionStorage.getItem("userSeq")) {
+                          getDetail(item.communitySeq, idx);
+                        } else {
+                          alert("로그인이 필요합니다.");
+                          window.location.replace(
+                            "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                          );
+                        }
                       }}
                     >
                       <div className="card__image">
@@ -622,7 +668,14 @@ export default function CommunityImgList() {
                     className="card card--featured card__side-by-side--m"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                   >
                     <div className="card__image">
@@ -630,7 +683,7 @@ export default function CommunityImgList() {
                         src={itemData[idx].communityImg[0].communityImgUrl}
                         alt=""
                       />
-                      <div className="inner-content">
+                      <div className="inner-content" style={{ left: "35%" }}>
                         <div style={{ padding: "10px" }}>
                           {item.communityTitle}
                         </div>
@@ -639,8 +692,9 @@ export default function CommunityImgList() {
                         className="card__content padding-large--l"
                         style={{ maxWidth: "300px" }}
                       >
-                        여기 뭐 넣을 까..?
-                        {/* {item.communityDesc} */}
+                        {/* 여기 뭐 넣을 까..? */}
+                        {item.communityDesc}
+                        <div className="card__button">More...</div>
                       </div>
                     </div>
                   </div>
@@ -650,7 +704,14 @@ export default function CommunityImgList() {
                     className="card card--vertical"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                   >
                     <div className="card__image">

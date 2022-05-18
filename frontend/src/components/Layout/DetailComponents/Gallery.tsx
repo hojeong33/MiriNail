@@ -77,9 +77,9 @@ const Wrapper = styled.div`
 `;
 const Gallery = () => {
   const param = useRecoilValue(designerId);
-  const nailSeq = useParams().id
+  const { id } = useParams()
   
-  const { isLoading, data } = useQuery("otherDesign", () => otherDesign(param,nailSeq));
+  const { isLoading, data } = useQuery(["otherDesign", id, param] , () => otherDesign(param,id));
   
   
 
@@ -97,7 +97,7 @@ const Gallery = () => {
             data?.length != 0 ? 
             data?.map((e:any,idx:any) => {
               return (
-                <li className="ItemListType">
+                <li className="ItemListType" key={idx}>
                   <a href="" className="ItemBox">
                     <div className="imx">
                       <img src={e.nailartThumbnailUrl} alt="" />

@@ -72,7 +72,7 @@ const Content = styled.div`
         width:100%;
         height : 150px;
         border: 1px solid gray;
-        resize="none";
+        resize:"none";
       }
       
       
@@ -98,8 +98,7 @@ const Content = styled.div`
       // }
     // }
   }
-
-  
+  }
 `
 
 export default function BasicModal(modalStatus:any) {
@@ -242,7 +241,7 @@ export default function BasicModal(modalStatus:any) {
             <div className="reviewWrite">
               <label htmlFor="goods_text" className="label">디자인에 대한 평가를 20자 이상 작성해 주세요</label>
               <div className="inputArea">
-                <textarea id="goods_text" name="reviewDesc" placeholder="내용을 입력해주세요" onChange={onChangeInput}></textarea>
+                <textarea id="goods_text" name="reviewDesc" placeholder="내용을 입력해주세요" onChange={onChangeInput} spellCheck="false"></textarea>
               </div>
             </div>
             <div className='uploadWrap'>
