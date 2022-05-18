@@ -18,6 +18,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { designerId } from "../../store/atoms";
 import { Link } from "react-router-dom";
+import { parseMutationFilterArgs } from "react-query/types/core/utils";
 
 const Wrapper = styled.div`
   padding-top: 140px;
@@ -275,6 +276,7 @@ const Wrapper = styled.div`
 `;
 
 const UpperFrame = () => {
+  
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   let params: any = useParams().id;
@@ -342,25 +344,6 @@ const UpperFrame = () => {
     navigate("/nft");
   };
 
-  // 공유하기
-  // const url = window.location.href
-  // useEffect(() => {
-  //   initKakao()
-  // },[])
-
-  // const initKakao = () => {
-  //   if (window.Kakao) {
-  //     const kakao = window.Kakao;
-  //     if (!kakao.isInitialized()) {
-  //       kakao.init('154d6a3a53758783d545452dd09435a6');
-  //     }
-  //   }
-  // }
-
-  // const share = () => {
-
-  // }
-
   const copy = (link:any) => {
     const el = 'https://ipfs.io/ipfs/' + link
     // el.select()
@@ -368,6 +351,15 @@ const UpperFrame = () => {
  
     navigator.clipboard.writeText(`${el}`).then(() => {alert('해쉬를 클립보드에 복사했습니다.')})
   }
+
+  useEffect(() => {
+   
+    axios.post('https://k6e101.p.ssafy.io/post',{
+      strings : params
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  },[])
   return (
     <>
       <Wrapper>
@@ -398,7 +390,7 @@ const UpperFrame = () => {
                           className="rev"
                           style={{cursor:"pointer"}}
                           onClick={() =>
-                            navigate("/nft/Revise", { state: params })
+                            navigate("/nft/revise", { state: {data :nailData} })
                           }
                         >
                           수정
@@ -460,7 +452,7 @@ const UpperFrame = () => {
                   </div>
            
                   <div className="btns">
-                    <Link to="/ar" style={{ backgroundColor: "red", color: "white" }}>
+                    <Link to="/ar" style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('http://127.0.0.1:8000/client')}>
                       AR 피팅하기
                     </Link>
                     <Link to={`/designerpage/${nailData?.designerSeq}/reservation`}

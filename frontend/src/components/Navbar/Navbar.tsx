@@ -3,7 +3,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -21,23 +20,60 @@ const Logo = sc.button`
   font-size: 32px;
   color: black;
   margin: 5px 10px 0;
+`;
 
-`
+const Btn1 = sc.button`
+  width: 60px;
+  :hover {
+    font-weight: 500;
+  }
+`;
+const Btn2 = sc.button`
+  width: 140px;
+  :hover {
+    font-weight: 500;
+  }
+`;
+
+const Btn3 = sc.button`
+  width: 75px;
+  :hover {
+    font-weight: 500;
+  }
+`;
 
 const MenuBtn = styled("div")`
-  :hover .menu {
-    opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 65px;
+  .menu li :hover {
+    font-weight: 500;
   }
+
   .menu {
-    opacity: 0;
+    display: none;
+  }
+  .menu li {
+    display: block;
+  }
+  :hover .menu {
+    display: block;
   }
 `;
 const MenuBtn2 = styled("div")`
   :hover .menu2 {
-    opacity: 1;
+    display: block;
   }
   .menu2 {
-    opacity: 0;
+    display: none;
+  }
+  .menu2 li {
+    display: block;
+  }
+
+  .menu2 li :hover {
+    font-weight: 500;
   }
 `;
 const CustomButton = styled(Button)({
@@ -161,36 +197,17 @@ const Navbar = () => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Logo
-            onClick={() => navigate(`/`)}
-          >
-            MIRINAIL
-          </Logo>
+          <Logo onClick={() => navigate(`/`)}>MIRINAIL</Logo>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/ar`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              AR
-            </CustomButton>
+            <Btn1 onClick={() => navigate(`/ar`)}>AR</Btn1>
             <MenuBtn>
-              <CustomButton
-                disableRipple
-                sx={{
-                  my: 2,
-                  color: "black",
-                  display: "block",
-                }}
-              >
-                ART
-              </CustomButton>
+              <Btn1 onClick={() => navigate(`/nft`)}>ART</Btn1>
               <ul
                 className="menu"
                 style={{
                   position: "absolute",
-                  top: "70px",
-                  left: "130px",
+                  top: "65px",
+                  left: "210px",
                   color: "black",
                   backgroundColor: "rgba(0, 0, 0, 5%)",
                   padding: "10px",
@@ -216,20 +233,8 @@ const Navbar = () => {
                 </li>
               </ul>
             </MenuBtn>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/community`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              COMMUNITY
-            </CustomButton>
-            <CustomButton
-              disableRipple
-              onClick={() => navigate(`/event`)}
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              EVENT
-            </CustomButton>
+            <Btn2 onClick={() => navigate(`/community`)}>COMMUNITY</Btn2>
+            <Btn3 onClick={() => navigate(`/event`)}>EVENT</Btn3>
           </Box>
           <Search>
             <SearchIconWrapper>
@@ -257,42 +262,53 @@ const Navbar = () => {
             ) : (
               <>
                 <MenuBtn2>
-                  <CustomIconButton disableRipple sx={{ p: 0 }}>
+                  <CustomIconButton
+                    disableRipple
+                    sx={{ p: 0, minHeight: "64px" }}
+                    onClick={() => {
+                      navigate(
+                        `/mypage/${sessionStorage.getItem(
+                          "userSeq"
+                        )}/myreservation`
+                      );
+                    }}
+                  >
                     <Avatar alt="Remy Sharp" src={userProfileImg} />
-                    <Typography
-                      textAlign="center"
+                    <div
                       style={{
+                        textAlign: "center",
                         color: "black",
                         marginLeft: "5px",
-                        fontWeight: "500",
+                        fontWeight: "400",
                         fontSize: "17px",
                       }}
                     >
                       {userNickname}
-                    </Typography>
+                    </div>
                   </CustomIconButton>
                   <ul
                     className="menu2"
                     style={{
                       position: "absolute",
-                      top: "70px",
+                      top: "65px",
                       color: "black",
                       backgroundColor: "rgba(0, 0, 0, 5%)",
                       padding: "10px",
                     }}
                   >
                     <li>
-                      
-                        <button
-                          onClick={() => {
-                            navigate(
-                              `/mypage/${sessionStorage.getItem("userSeq")}/myreservation`
-                            );
-                          }}
-                        >
-                          MyPage
-                        </button>
-                      
+                      <button
+                        onClick={() => {
+                          navigate(
+                            `/mypage/${sessionStorage.getItem(
+                              "userSeq"
+                            )}/myreservation`
+                          );
+                        }}
+                      >
+                        MyPage
+                      </button>
+
                       {userRole === "ROLE_ARTIST" && (
                         <button
                           onClick={() => {

@@ -138,7 +138,7 @@ const CreateAsk = () => {
     {
       onSuccess: (res) => {
         console.log(res);
-        navigate(`/designerpage/${userSeq}/asklist`)
+        navigate(`/designerpage/${userSeq}/askdetail/${res.qnaSeq}`)
       },
       onError: (err: any) => console.log(err),
     }
@@ -147,27 +147,6 @@ const CreateAsk = () => {
   const onClickSubmit = async (e:React.FormEvent) => {
     e.preventDefault();
     createAsk.mutate();
-    // const formData = new FormData()
-    // formData.append("qnaDesc", "수정한내용")
-    // formData.append("qnaDesignerSeq", "3")
-    // formData.append("qnaTitle", "수정한 제목")
-    // try {
-    //   const data = {
-
-    //   }
-    //   const config = {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //       processData: false,
-    //       contentType: false,
-    //     },
-    //   };
-    //   const response = await axios.post("http://localhost:8080/api/qna", formData, config)
-    //   console.log(response)
-
-    // } catch (error) {
-    //   console.log(error)
-    // }
   }
 
   return (

@@ -38,6 +38,7 @@ export const registDesign = async (files: any) => {
 
 // ipfs 주소 등록
 export const pushIpfs = async(data:any) => {
+  console.log(data)
   const response = axios.put(base_url + 'nailart/nft',data)
   
   return response
@@ -57,8 +58,8 @@ export const designDetail = async (param: any) => {
 };
 
 // 다른 디자이너 작품 조회
-export const otherDesign = async (param: any) => {
-  const response = await axios.get(base_url + `nailart/designer/${param}`);
+export const otherDesign = async (param: any, nailSeq:any) => {
+  const response = await axios.get(base_url + `nailart/designer/${param}/${nailSeq}`);
   console.log(response);
   return response.data;
 };

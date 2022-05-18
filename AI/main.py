@@ -4,6 +4,8 @@ import base64
 import io
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
+import requests
 # from flasktest import get_stream_video
 from testtemp3guhyun import testVideo
 from matplotlib import pyplot as plt
@@ -22,11 +24,24 @@ from fastapi.logger import logger
 from imageio import imread
 from sockett import summ
 import os
-
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+origins = [
+    "*"
+]
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+test = '1'
 
 def video_streaming():
     return testVideo()
@@ -35,6 +50,15 @@ def video_streaming():
 def read_root():
     # print('음... 이ㅐ건떠야하는데')
     return {"Hello": "World"}
+
+class Item(BaseModel):
+    strings : str
+
+@app.post('/post')
+async def first_post(item : Item):
+    global test
+    test = item.strings
+    return item
 
 
 async def streamer(gen):
@@ -71,12 +95,21 @@ templates = Jinja2Templates(directory="templates")
 async def client(request: Request):
     # /templates/client.html파일을 response함
     print("request : " ,request)
+    
     return templates.TemplateResponse("client.html", {"request":request})
+
+
 
 # 웹소켓 설정 ws://127.0.0.1:8000/ws 로 접속할 수 있음
 @app.websocket("/nail/ws")
 async def websocket_endpoint(websocket: WebSocket):
     # print(f"client connected : {websocket.client}")
+    response = requests.get(f'http://localhost:8080/api/nailart/detail/{test}')
+    # print(response.content)
+    print(test)
+    nailImage = response.json()['nailartImgUrl']
+    print(nailImage)
+    # print(response.text)
     await websocket.accept() # client의 websocket접속 허용
     await websocket.send_text(f"Welcome client : {websocket.client}")
     i = 0
@@ -138,7 +171,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
                     imgtest = imread(io.BytesIO(base64.b64decode(data)))
                     print(imgtest)
-                    img = cv2.imread("sss.png")
+                    img = cv2.imread(nailImage)
                     frame = cv2.flip(imgtest, 1)
                     image = frame
                     (H, W) = image.shape[:2]

@@ -3,6 +3,8 @@ import ImagePreview from './ImagePreview';
 import './File.scss';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
+
+
 const ImageUploadBox = (props:any ) => {
   console.log(props)
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
@@ -30,10 +32,13 @@ const ImageUploadBox = (props:any ) => {
     const handleFiles = (files:any) => {
       
       for (const file of files) {
+        console.log(file)
         if (!file.type.startsWith("image/")) continue;
         const reader = new FileReader();
         reader.onloadend = (e:any) => {
           const result:any = e.target.result ;
+          console.log(result)
+          console.log(file)
           
           if (result) {
             setUploadedImages((state:any) => [...state, result].slice(0, 2));
@@ -76,6 +81,7 @@ const ImageUploadBox = (props:any ) => {
   
   useEffect(() => {
     const imageJSXs:any = uploadedImages.map((image, index) => {
+
       const isDeleteImage = (element:any) => {
         return element === image;
       };
@@ -93,8 +99,9 @@ const ImageUploadBox = (props:any ) => {
   // 1. props가 들어올 경우 handler 함수실행 
   useEffect(() => {
     const handler = async() => {
-      if (props) {
+      
         let ls:any = []
+        console.log(props)
         console.log(props.itemDetail.nailartImgUrl)
         console.log(props.itemDetail.nailartThumbnailUrl)
 
@@ -105,13 +112,16 @@ const ImageUploadBox = (props:any ) => {
         ls.push(response_1)
         ls.push(response_2)
         
-
+        console.log(ls)
         // 4. convertedTest 에 변환된 파일 넣기
         setConvertedTest(ls)
-      }
+        ls = []
+      
     }
-    handler()
-  },[props.itemDetail])
+    if (props) {
+      handler()
+    }
+  },[])
 
   
   // 5. convertedTest 들어오면 실행(파일을 추가하는거랑 똑같은 로직으로 돌아감) fin
@@ -125,10 +135,13 @@ const ImageUploadBox = (props:any ) => {
       const reader = new FileReader();
       reader.onloadend = (e: any) => {
         const result: any = e.target.result;
+        console.log(e)
+        console.log(result)
+        console.log(file)
         if (result) {
-          setUploadedImages((state: any) => [...state, result].slice(0, 5));
-          setTestImages((state: any) => [...state, file].slice(0, 5));
-        }
+          setUploadedImages((state: any) => [...state, result].slice(0, 2));
+          setTestImages((state: any) => [...state, file].slice(0, 2));
+        };
       };
       reader.readAsDataURL(file);
     }
@@ -137,9 +150,14 @@ const ImageUploadBox = (props:any ) => {
   // 3. 파일로 변환
   const convertURLtoFile = async (url: string) => {
     console.log(url)
-    const response = await fetch(url);
+    const response = await fetch(url,
+    //   {mode: 'no-cors',headers: {
+    //   'Access-Control-Allow-Origin':'*'
+    // }}
+    );
     console.log(response)
     const data = await response.blob();
+    console.log(data)
     const ext = url?.split(".").pop(); // url 구조에 맞게 수정할 것
     const filename = url?.split("/").pop(); // url 구조에 맞게 수정할 것
     const metadata = { type: `image/${ext}` };

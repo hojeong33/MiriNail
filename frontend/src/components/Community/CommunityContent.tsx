@@ -1,8 +1,13 @@
-import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import CommunityImgList from "./CommunityImgList2";
-import axios from "axios";
+import styled from "styled-components";
 
+const Btn = styled.button`
+  :hover {
+    background-color: #333;
+    color: #fff;
+  }
+`;
 const CommunityContent = () => {
   const navigate = useNavigate();
   return (
@@ -20,7 +25,7 @@ const CommunityContent = () => {
           justifyContent: "end",
         }}
       >
-        <button
+        <Btn
           style={{
             border: "0.1rem solid",
             marginBottom: "50px",
@@ -30,8 +35,8 @@ const CommunityContent = () => {
             navigate("/community/create");
           }}
         >
-          <div>작성하기</div>
-        </button>
+          작성하기
+        </Btn>
       </div>
       <CommunityImgList></CommunityImgList>
     </div>

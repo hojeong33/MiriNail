@@ -1,6 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 
 const  ImagePreview = ({ image, deleteFunc,test }:any) =>  {
+  console.log(image,test)
   return (
     <div className="ImagePreview" draggable>
       {test === 0 ? "썸네일 사진" : "AR인식용 사진" }
