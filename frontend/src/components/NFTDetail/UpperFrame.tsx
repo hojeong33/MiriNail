@@ -354,7 +354,7 @@ const UpperFrame = () => {
 
   useEffect(() => {
    
-    axios.post('http://127.0.0.1:8000/post',{
+    axios.post('https://k6e101.p.ssafy.io/post',{
       strings : params
     })
     .then(res => console.log(res))
