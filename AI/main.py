@@ -177,14 +177,14 @@ async def websocket_endpoint(websocket: WebSocket):
                 
                     
                     frame = cv2.flip(imgtest, 1)
-                    image = frame
-                    (H, W) = image.shape[:2]
+                    # image = frame
+                    (H, W) = frame.shape[:2]
                     # print("H,W:", (H, W))
                    
-                    output = image.copy()
+                    output = frame.copy()
                 
                     # output[0:450, 0:450] = img
-                    img_ff, bin_mask, res = ff.find_hand_old(image.copy())
+                    img_ff, bin_mask, res = ff.find_hand_old(output)
                     image = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)
                     image_2 = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
                     results = hands.process(image_2)
@@ -279,10 +279,10 @@ async def websocket_endpoint(websocket: WebSocket):
 
                                 # x = 가로 y = 세로 점
                                 # print(startX,startY,endX,endY)
-                                startX = startX -20
-                                startY = startY -20
-                                endX = endX +20
-                                endY = endY +20
+                                startX = startX -17
+                                startY = startY -17
+                                endX = endX +17
+                                endY = endY +17
                                 wi = int(abs(endY-startY))
                                 he = int(abs(endX-startX))
                                 try: 
@@ -318,30 +318,30 @@ async def websocket_endpoint(websocket: WebSocket):
                                 
                             # show the image_2 image
                             # print(boxnum)
-                            if box_mid == (0, 0):
-                                drawboxes.clear()
-                                cv2.putText(image_2, 'Nothing', (20, 50),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
-                            elif boxnum == 1:
-                                drawboxes.append(box_mid)
-                                if len(drawboxes) == 1:
-                                    pp = drawboxes[0]
-                                    cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
-                                    # cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
-                                if len(drawboxes) > 1:
-                                    num_p = len(drawboxes)
-                                    for i in range(1, num_p):
-                                        pt1 = drawboxes[i - 1]
-                                        pt2 = drawboxes[i]
-                                        # cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
-                                        cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
+                            # if box_mid == (0, 0):
+                            #     drawboxes.clear()
+                            #     cv2.putText(image_2, 'Nothing', (20, 50),
+                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            # elif boxnum == 1:
+                            #     drawboxes.append(box_mid)
+                            #     if len(drawboxes) == 1:
+                            #         pp = drawboxes[0]
+                            #         cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
+                            #         # cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
+                            #     if len(drawboxes) > 1:
+                            #         num_p = len(drawboxes)
+                            #         for i in range(1, num_p):
+                            #             pt1 = drawboxes[i - 1]
+                            #             pt2 = drawboxes[i]
+                            #             # cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
+                            #             cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
                                         
-                                cv2.putText(image_2, 'Point', (20, 50),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
-                            else:
-                                drawboxes.clear()
-                                cv2.putText(image_2, 'Nothing', (20, 50),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            #     cv2.putText(image_2, 'Point', (20, 50),
+                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            # else:
+                            #     drawboxes.clear()
+                            #     cv2.putText(image_2, 'Nothing', (20, 50),
+                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
 
 
                     
