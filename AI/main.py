@@ -318,30 +318,30 @@ async def websocket_endpoint(websocket: WebSocket):
                                 
                             # show the image_2 image
                             # print(boxnum)
-                            # if box_mid == (0, 0):
-                            #     drawboxes.clear()
-                            #     cv2.putText(image_2, 'Nothing', (20, 50),
-                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
-                            # elif boxnum == 1:
-                            #     drawboxes.append(box_mid)
-                            #     if len(drawboxes) == 1:
-                            #         pp = drawboxes[0]
-                            #         cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
-                            #         # cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
-                            #     if len(drawboxes) > 1:
-                            #         num_p = len(drawboxes)
-                            #         for i in range(1, num_p):
-                            #             pt1 = drawboxes[i - 1]
-                            #             pt2 = drawboxes[i]
-                            #             # cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
-                            #             cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
+                            if box_mid == (0, 0):
+                                drawboxes.clear()
+                                cv2.putText(image_2, 'Nothing', (20, 50),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            elif boxnum == 1:
+                                drawboxes.append(box_mid)
+                                if len(drawboxes) == 1:
+                                    pp = drawboxes[0]
+                                    cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
+                                    # cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
+                                if len(drawboxes) > 1:
+                                    num_p = len(drawboxes)
+                                    for i in range(1, num_p):
+                                        pt1 = drawboxes[i - 1]
+                                        pt2 = drawboxes[i]
+                                        # cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
+                                        cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
                                         
-                            #     cv2.putText(image_2, 'Point', (20, 50),
-                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
-                            # else:
-                            #     drawboxes.clear()
-                            #     cv2.putText(image_2, 'Nothing', (20, 50),
-                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                                cv2.putText(image_2, 'Point', (20, 50),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            else:
+                                drawboxes.clear()
+                                cv2.putText(image_2, 'Nothing', (20, 50),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
 
 
                     
