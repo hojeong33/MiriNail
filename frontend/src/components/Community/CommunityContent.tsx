@@ -32,7 +32,14 @@ const CommunityContent = () => {
             padding: "5px 0",
           }}
           onClick={() => {
-            navigate("/community/create");
+            if (sessionStorage.getItem("userSeq")) {
+              navigate("/community/create");
+            } else {
+              alert("로그인이 필요합니다.");
+              window.location.replace(
+                "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+              );
+            }
           }}
         >
           작성하기

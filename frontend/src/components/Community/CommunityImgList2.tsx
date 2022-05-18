@@ -308,7 +308,7 @@ export default function CommunityImgList() {
       console.log("그만~``");
       return;
     }
-    if (ACCESS_TOKEN) {
+    if (true) {
       axios({
         method: "get",
         url: `http://localhost:8080/api/community`,
@@ -316,9 +316,9 @@ export default function CommunityImgList() {
           page: page,
           size: 10,
         },
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${ACCESS_TOKEN}`,
+        // },
       })
         .then((res) => {
           setItemData((curItemData) => [...curItemData, ...res.data.content]); // state에 추가
@@ -570,7 +570,14 @@ export default function CommunityImgList() {
                   <div
                     className="card card--2x"
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -591,7 +598,14 @@ export default function CommunityImgList() {
                   <div
                     className="card"
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -625,7 +639,14 @@ export default function CommunityImgList() {
                       className="card card--horizontal"
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        getDetail(item.communitySeq, idx);
+                        if (sessionStorage.getItem("userSeq")) {
+                          getDetail(item.communitySeq, idx);
+                        } else {
+                          alert("로그인이 필요합니다.");
+                          window.location.replace(
+                            "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                          );
+                        }
                       }}
                     >
                       <div className="card__image">
@@ -647,7 +668,14 @@ export default function CommunityImgList() {
                     className="card card--featured card__side-by-side--m"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                   >
                     <div className="card__image">
@@ -676,7 +704,14 @@ export default function CommunityImgList() {
                     className="card card--vertical"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      getDetail(item.communitySeq, idx);
+                      if (sessionStorage.getItem("userSeq")) {
+                        getDetail(item.communitySeq, idx);
+                      } else {
+                        alert("로그인이 필요합니다.");
+                        window.location.replace(
+                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                        );
+                      }
                     }}
                   >
                     <div className="card__image">
