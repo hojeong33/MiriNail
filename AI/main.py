@@ -190,7 +190,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     results = hands.process(image_2)
                    
                     image = np.expand_dims(image, axis=0)
-                    image_2 = cv2.cvtColor(image_2, cv2.COLOR_RGB2BGR)
+                    # image_2 = cv2.cvtColor(image_2, cv2.COLOR_RGB2BGR)
                     imageHeight, imageWidth, _ = image_2.shape
                     # print('여기까진 옴')
                     if results.multi_hand_landmarks:
