@@ -76,6 +76,7 @@ const ArCard = () => {
           cursor: "pointer",
           height: "4rem",
         }}
+        onClick={() => window.open('http://127.0.0.1:8000/client')}
       >
         Try Virtual Try on Now
       </div>
