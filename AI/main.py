@@ -280,13 +280,15 @@ async def websocket_endpoint(websocket: WebSocket):
                                 endY = endY +20
                                 wi = int(abs(endY-startY))
                                 he = int(abs(endX-startX))
-                                cat_sticker = cv2.resize(img,(wi,he))
-                                # print(cat_sticker.shape)
+                                try: 
+                                    cat_sticker = cv2.resize(img,(wi,he))
+                                    # print(cat_sticker.shape)
 
-                                # 회전
-                                img_rotate = ff.rotate_image(cat_sticker,angle)
-                                # print('회전된 이미지 shape : ' ,img_rotate.shape)
-                                
+                                    # 회전
+                                    img_rotate = ff.rotate_image(cat_sticker,angle)
+                                    # print('회전된 이미지 shape : ' ,img_rotate.shape)
+                                except:
+                                    print('에러')
 
 
                                 xx = X_mid -wi // 2
