@@ -192,6 +192,14 @@ const UpdateCommunityContent = () => {
     }
   };
   const updateCommunity = async () => {
+    if (
+      communityDesc == itemDetail?.communityDesc &&
+      // postImages !== itemDetail.communityImg ||
+      communityTitle == itemDetail?.communityTitle
+    ) {
+      alert("수정된 데이터가 없습니다.");
+      return;
+    }
     console.log(communityDesc, "내용");
     console.log(communityTitle, "제목");
     const formdata: any = new FormData();
@@ -309,8 +317,10 @@ const UpdateCommunityContent = () => {
                   ) : (
                     <button
                       className="btn1"
-                      disabled
-                      style={{ backgroundColor: "rgba(175,175,175)" }}
+                      style={{
+                        backgroundColor: "rgba(175,175,175)",
+                        cursor: "default",
+                      }}
                       onClick={updateCommunity}
                     >
                       수정

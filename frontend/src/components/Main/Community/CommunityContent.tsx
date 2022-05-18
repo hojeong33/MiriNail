@@ -59,8 +59,15 @@ const CommunityContent = () => {
             <img
               src={item.communityImg[0].communityImgUrl}
               onClick={() => {
-                setModalState((prev: any) => !prev);
-                setCurCommunitySeq(item.communitySeq);
+                if (sessionStorage.getItem("userSeq")) {
+                  setModalState((prev: any) => !prev);
+                  setCurCommunitySeq(item.communitySeq);
+                } else {
+                  alert("로그인이 필요합니다.");
+                  window.location.replace(
+                    "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                  );
+                }
               }}
             />
           </CustomImageListItem>
