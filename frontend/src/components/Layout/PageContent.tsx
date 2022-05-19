@@ -118,7 +118,8 @@ const MainFrame = styled.div`
           .TypeFilter {
             display: flex;
             justify-content: center;
-            a {
+
+            div {
               margin: 0 10px 0 10px;
             }
           }

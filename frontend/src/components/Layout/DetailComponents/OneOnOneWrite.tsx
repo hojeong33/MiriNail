@@ -23,7 +23,9 @@ const modalStyle = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  zIndex:'9999'
+  zIndex:'9999',
+  height : '90vh',
+  overflowY : 'auto'
 };
 
 const Content = styled.div`
@@ -118,12 +120,12 @@ export default function OneOnOneWrite(modalStatus: any) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => 
     {
-      if (!myId) {
-        alert('로그인이 필요합니다.')
-        window.location.replace("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
-      } else { 
+    //   if (!myId) {
+        // alert('로그인이 필요합니다.')
+        // window.location.replace("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+      // } else { 
         setOpen(true)
-      }
+      // }
     }
   const handleClose = () => setOpen(false);
   const userSeq: any = sessionStorage.getItem("userSeq");
@@ -257,6 +259,7 @@ export default function OneOnOneWrite(modalStatus: any) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{zIndex:'9999'}}
       >
         <Box sx={modalStyle}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
