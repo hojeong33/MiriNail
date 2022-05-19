@@ -55,6 +55,11 @@ const Wrapper = styled.div`
       font-size: 18px;
       margin-bottom: 5px;
     }
+    img {
+      margin-top: 20px;
+      width: 250px;
+      height: 250px;
+    }
   }
   .buttons {
     width: 100%;
@@ -195,7 +200,8 @@ const AskDetail = () => {
         </table>
         <div className="box">
           <div className="boxheader">문의내용</div>
-          {data?.qnaDesc}
+          <div>{data?.qnaDesc}</div>
+          {data?.qnaImgUrl && <img src={data?.qnaImgUrl} alt="" />}
         </div>
         {data?.qnaIsAnswered && (
           <div className="box">
