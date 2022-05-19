@@ -66,7 +66,7 @@ public class DesignerRepositorySupport {
             User user = userRepository.findByUserSeq(num);
             DesignerInfo designerInfo = designerRepository.findByDesignerSeq(num);
             tmp.setDesignerSeq(user.getUserSeq());
-            tmp.setDesignerImgUrl(user.getUserProfileImg());
+            tmp.setDesignerImgUrl(designerInfo.getDesignerProfileImgUrl());
             tmp.setDesignerShopName(designerInfo.getDesignerShopName());
             tmp.setDesignerNickName(user.getUserNickname());
             tmp.setNailartCount(nailartRepository.countByDesignerSeq(num));
@@ -91,7 +91,7 @@ public class DesignerRepositorySupport {
             User user = userRepository.findByUserSeq(num.get(qNailart.designerSeq));
             DesignerInfo designerInfo = designerRepository.findByDesignerSeq(user.getUserSeq());
             tmp.setDesignerSeq(user.getUserSeq());
-            tmp.setDesignerImgUrl(user.getUserProfileImg());
+            tmp.setDesignerImgUrl(designerInfo.getDesignerProfileImgUrl());
             tmp.setDesignerShopName(designerInfo.getDesignerShopName());
             tmp.setDesignerNickName(user.getUserNickname());
             tmp.setNailartCount(nailartRepository.countByDesignerSeq(user.getUserSeq()));
@@ -115,7 +115,7 @@ public class DesignerRepositorySupport {
             User user = userRepository.findByUserSeq(num);
             DesignerInfo designerInfo = designerRepository.findByDesignerSeq(num);
             tmp.setDesignerSeq(user.getUserSeq());
-            tmp.setDesignerImgUrl(user.getUserProfileImg());
+            tmp.setDesignerImgUrl(designerInfo.getDesignerProfileImgUrl());
             tmp.setDesignerShopName(designerInfo.getDesignerShopName());
             tmp.setDesignerNickName(user.getUserNickname());
             tmp.setNailartCount(nailartRepository.countByDesignerSeq(num));

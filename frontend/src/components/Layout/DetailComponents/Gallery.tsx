@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { otherDesign } from "../../../store/api";
@@ -73,12 +73,18 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  .reviewStatus {
+    position : absolute;
+    top : 25%;
+    left : 45%;
+  }
 }
 `;
 const Gallery = () => {
   const param = useRecoilValue(designerId);
   const { id } = useParams()
-  
+  const navigate = useNavigate()
   const { isLoading, data } = useQuery(["otherDesign", id, param] , () => otherDesign(param,id));
   
   
@@ -98,7 +104,7 @@ const Gallery = () => {
             data?.map((e:any,idx:any) => {
               return (
                 <li className="ItemListType" key={idx}>
-                  <a href="" className="ItemBox">
+                  <a href={`/nft/${e.nailartSeq}`} className="ItemBox">
                     <div className="imx">
                       <img src={e.nailartThumbnailUrl} alt="" />
                     </div>
