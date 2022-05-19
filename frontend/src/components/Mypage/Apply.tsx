@@ -238,6 +238,7 @@ const Apply = () => {
       formData.append("designerShopName", shopName);
       formData.append("designerTel", phoneNumber);
       formData.append("registrationFile", file);
+      formData.append("userSeq", String(userSeq));
       return await postApply(formData);
     },
     {
