@@ -44,6 +44,7 @@ const modalStyle = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
+  zIndex: '9999',
   // p: 4,
 };
 

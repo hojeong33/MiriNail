@@ -329,6 +329,11 @@ const UpperFrame = () => {
   });
 
   const likeHandler = async () => {
+    if (!myId) {
+      alert('로그인이 필요합니다')
+      window.location.replace("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+      return
+    }
     console.log("핸들러실행");
     if (isLikeData) {
       console.log("싫어요 실행");

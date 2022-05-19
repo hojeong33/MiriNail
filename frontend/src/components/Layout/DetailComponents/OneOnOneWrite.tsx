@@ -23,6 +23,7 @@ const modalStyle = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  zIndex:'9999'
 };
 
 const Content = styled.div`
@@ -112,10 +113,18 @@ const Content = styled.div`
 
 export default function OneOnOneWrite(modalStatus: any) {
   let params:string|undefined = useParams().id;
-  
+  const myId = Number(sessionStorage.getItem("userSeq"))
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => 
+    {
+      if (!myId) {
+        alert('로그인이 필요합니다.')
+        window.location.replace("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+      } else { 
+        setOpen(true)
+      }
+    }
   const handleClose = () => setOpen(false);
   const userSeq: any = sessionStorage.getItem("userSeq");
   const [designerSeq, setDesignerSeq] = useRecoilState(designerId);

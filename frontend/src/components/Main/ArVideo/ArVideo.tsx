@@ -36,9 +36,9 @@ const VideoPlayer = () => {
 
   return (
     <>
-      <div style={{position:'absolute',width:'100vw',backgroundColor:'white',zIndex:'9998',height:'55px'}}> </div>
-      <div style={{position:'absolute',width:'130px',backgroundColor:'white',zIndex:'9998',height:'100vh'}}> </div>
-      <div style={{position:'absolute',width:'130px',backgroundColor:'white',zIndex:'9998',height:'100vh',right:'0px'}}> </div>
+      <div style={{position:'absolute',width:'100vw',backgroundColor:'white',zIndex:'9997',height:'55px'}}> </div>
+      <div style={{position:'absolute',width:'130px',backgroundColor:'white',zIndex:'9997',height:'100vh'}}> </div>
+      <div style={{position:'absolute',width:'130px',backgroundColor:'white',zIndex:'9997',height:'100vh',right:'0px'}}> </div>
       
       <ReactPlayer
         url={playList[playIndex].url}
