@@ -292,7 +292,7 @@ export default function CommunityImgList() {
     let scrollTop = document.documentElement.scrollTop;
     let scrollHeight = document.documentElement.scrollHeight;
     let clientHeight = document.documentElement.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight - 5) {
+    if (scrollTop + clientHeight >= scrollHeight - 1) {
       setTest((e) => e + 1);
     }
   };
@@ -396,7 +396,7 @@ export default function CommunityImgList() {
         },
       })
         .then((res) => {
-          console.log("댓글 데이터", res);
+          // console.log("댓글 데이터", res);
           setCommentData(res.data.content);
         })
         .catch((err) => {
@@ -420,7 +420,7 @@ export default function CommunityImgList() {
         },
       })
         .then((res) => {
-          console.log("대댓글 데이터", res);
+          // console.log("대댓글 데이터", res);
           setreplyData(res.data.content);
         })
         .catch((err) => {
@@ -445,7 +445,7 @@ export default function CommunityImgList() {
           setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
-          console.log(res.data, "게시글 상세 데이터");
+          // console.log(res.data, "게시글 상세 데이터");
           let temp = TimeCounting(res.data.communityRegedAt, option);
           setCommunityTime(temp);
           sessionStorage.setItem("communitySeq", communitySeq.toString());
@@ -484,7 +484,7 @@ export default function CommunityImgList() {
       });
     }
 
-    console.log(commentPostData, "댓글데이터");
+    // console.log(commentPostData, "댓글데이터");
   };
 
   //댓글 작성하기

@@ -154,7 +154,7 @@ public class NailartServiceImpl implements NailartService {
         Nailart nailart = nailartRepository.findByNailartSeq(nailartSeq);
         DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(nailart.getDesignerSeq());
         nailartDetailGetRes.setNailartSeq(nailart.getNailartSeq());
-        nailartDetailGetRes.setDesignerImgUrl(userRepository.findByUserSeq(nailart.getDesignerSeq()).getUserProfileImg());
+        nailartDetailGetRes.setDesignerImgUrl(designerInfo.getDesignerProfileImgUrl());
         nailartDetailGetRes
                 .setDesignerNickname(userRepository.findByUserSeq(nailart.getDesignerSeq()).getUserNickname());
         nailartDetailGetRes.setDesignerSeq(nailart.getDesignerSeq());

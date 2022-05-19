@@ -10,6 +10,8 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     background-size: cover;   
     color: #333;
+    overflow-x:hidden;
+    
 }
   a {
     text-decoration: none;
