@@ -20,7 +20,7 @@ const HotDesignersContent = () => {
     <div style={{ display: "flex", justifyContent: "center" }}>
       {designerData &&
         designerData.slice(0, 4).map((item: any, idx: string) => (
-          <div key={idx} style={{ margin: "10px 20px" }}>
+          <div key={idx} style={{ margin: "10px 20px", minWidth: "220px" }}>
             <Cards info={item} url="designerpage" />
           </div>
         ))}
