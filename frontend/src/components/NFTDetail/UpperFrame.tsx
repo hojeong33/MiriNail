@@ -355,7 +355,7 @@ const UpperFrame = () => {
   useEffect(() => {
    
     // 주소
-    axios.post('https://k6e101.p.ssafy.io/client',{
+    axios.post('https://k6e101.p.ssafy.io/post',{
       strings : params
     })
     .then(res => console.log(res))
