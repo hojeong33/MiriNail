@@ -21,4 +21,7 @@ public class ArtistRegisterPostReq {
     // 디자이너 전화번호
     @ApiModelProperty(value = "디자이너 전화번호")
     String designerTel;
+
+    @ApiModelProperty(value = "유저 Seq")
+    Long userSeq;
 }
