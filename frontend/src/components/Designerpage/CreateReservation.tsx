@@ -144,6 +144,11 @@ const FormWrapper = styled.div`
             color: #a7a7a7;
             cursor: default;
           }
+          .past {
+            cursor: default;
+            background-color: #e9e9e9;
+            color: #a7a7a7;
+          }
         }
         .timetile {
           display: flex;
@@ -426,10 +431,11 @@ const CreateReservation = () => {
   const canSelect = (day:any, time:any) => {
     console.log(moment().format("DD"))
     const nowTime = moment().hour()
-    const compTime = moment(time).format("HH")
+    const compTime = time.slice(0, 2)
+    console.log(compTime)
     const today = moment().format("DD")
-    if (today === day && Number(nowTime) <= Number(compTime)) {
-      return "past"
+    if (today === day && Number(nowTime) >= Number(compTime)) {
+      return "booked"
     } else {
       return ""
     }
@@ -491,7 +497,11 @@ const CreateReservation = () => {
                         time === selectedTime ? "selected" : ""
                       } ${convertTimeAM(time)} ${canSelect(moment(value).format("DD"), time)}`}
                       key={idx}
-                      onClick={() => setSelectedTime(time)}
+                      onClick={() => {
+                        if (convertTimeAM(time) !== "booked" && canSelect(moment(value).format("DD"), time) !== "booked" ) {
+                          onclickTimeTile(time);
+                        }
+                      }}
                     >
                       {time}
                     </div>
@@ -513,7 +523,7 @@ const CreateReservation = () => {
                       } ${convertTimePM(time)} ${canSelect(moment(value).format("DD"), time)}`}
                       key={idx}
                       onClick={() => {
-                        if (convertTimePM(time) !== "booked") {
+                        if (convertTimePM(time) !== "booked" && canSelect(moment(value).format("DD"), time) !== "booked" ) {
                           onclickTimeTile(time);
                         }
                       }}

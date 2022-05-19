@@ -546,7 +546,7 @@ const Mypost = () => {
                   <th>{post.userNickname}</th>
                   <th className="title">{post.communityTitle}</th>
                   <th>
-                    {moment(convertDate(post.communityRegedAt)).format(
+                    {moment(post.communityRegedAt).format(
                       "YYYY-MM-DD HH:mm"
                     )}
                   </th>
