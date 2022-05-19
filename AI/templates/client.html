@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Hello</title>
+	<title>AR 가상 피팅 서비스</title>
+  <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet"> 
 </head>
 <script async src="https://docs.opencv.org/3.4/opencv.js"></script>
+
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.0/sockjs.min.js" integrity="sha512-ksHM9XpigYGeRdXZfI4GddPsUjmLj6zd1MCNXL4fsfDwp1G+u6hC73uwDjlpjdX4tbEtj/N1AWkLo6WjDwQkyA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-<link rel="stylesheet" href="./style.css">
 <!--script async src="./opencv.js"></script-->
 <body>
-	<!-- <video id="videoInput" style="display:none"></video> -->
-  <canvas id="videoOutput"></canvas>
-  <button onclick=stream()>Send</button>
-  <canvas id="testt" width="300" height="200" style="border: 1px solid red"></canvas>
+	<video id="videoInput" style="display:none;" ></video>
+  <canvas id="videoOutput" style="display:none"></canvas>
+  <div class="buttonPlace" id="text">
+    <div class="btn" >Virtual Try On</div>
+    <div class="on_now_tag" onclick=stream()></div>
+  </div>
+  <canvas id="testt" width="640" height="480" style=""></canvas>
   <div id="status">
     Connection failed. Somebody may be using the socket.
   </div>
-  <video id=""video></video>
+  <!-- <video id=""video></video> -->
 </body>
+
+
 <script>
   
   var w = 640, h = 480;
@@ -26,7 +32,7 @@
 //      sock.send('test');
 //  };
 
-	var url = "wss://k6e101.p.ssafy.io/websocket"
+	var url = "ws://localhost:8000/websocket"
 	var ws = new WebSocket(url);
   let testt = document.getElementById("testt");
   testt.width = w;
@@ -89,6 +95,10 @@
   processImage();
 
   function stream(){
+    var x = document.getElementById("text");
+    console.log(x)
+    x.style.display = 'none'
+
     setInterval(sendImage, 100);
   }
 
@@ -100,7 +110,7 @@
   }
 
 
-
+ 
 
 
   

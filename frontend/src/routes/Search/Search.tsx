@@ -25,22 +25,22 @@ const Wrapper = styled.div`
 `
 
 const Search = () => {
-  const [searchType, setSearchType] = useState(0)
+  const [searchType, setSearchType] = useState(1)
 
   return (
     <Wrapper>
       <div className="buttons">
         <button
-          className={`${searchType === 0 ? "selected" : ""}`}
-          onClick={() => setSearchType(0)}
-        >
-          네일아트
-        </button>
-        <button
           className={`${searchType === 1 ? "selected" : ""}`}
           onClick={() => setSearchType(1)}
         >
           디자이너
+        </button>
+        <button
+          className={`${searchType === 0 ? "selected" : ""}`}
+          onClick={() => setSearchType(0)}
+        >
+          네일아트
         </button>
       </div>
       {searchType === 0 && <SearchNailart />}

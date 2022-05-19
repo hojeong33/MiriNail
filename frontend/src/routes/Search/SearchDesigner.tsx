@@ -210,7 +210,7 @@ const SearchDesigner = () => {
                         </div>
                         <div>
                           <PhoneIcon className="designericon" />
-                          {designer.user.userTel ? designer.user.userTel : "-"}
+                          {designer.designerTel ? designer.designerTel : "-"}
                         </div>
                         {/* <FavoriteIcon
                       className="follow"

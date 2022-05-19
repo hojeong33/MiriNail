@@ -74,7 +74,7 @@ function New() {
     }
   };
 
-  const query = useInfiniteQuery("[newFeed]", fetchNewFeed, {
+  const query = useInfiniteQuery(["newFeed", userSeq], fetchNewFeed, {
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage.isLast) return lastPage.nextPage;
       return null;
@@ -108,6 +108,7 @@ function New() {
           return <Feed feed={feed} key={idx} refetch={query.refetch} />;
         });
       })}
+      {query.data?.pages[query.data.pages.length - 1].result.length === 0 && <div>불러올 새소식이 없습니다.</div>}
       {lastState ? (
         null
       ) : (

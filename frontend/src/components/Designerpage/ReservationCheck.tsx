@@ -12,6 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { convertDate, leadingZeros } from "../Commons/functions";
 import { TailSpin } from "react-loader-spinner";
+import ModalBase from "./ReservationModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -211,33 +212,8 @@ interface IState {
 const ReservationCheck = () => {
   const [value, setValue] = useState(new Date());
   const [mark, setMark] = useState<string[]>([]);
-  const [reservations, setReservations] = useState<IState["reservation"][]>([
-    {
-      ID: "dami123",
-      nailart: "글레이즈-딥다크",
-      time: "13:00",
-    },
-    {
-      ID: "dami123",
-      nailart: "글레이즈-딥다크",
-      time: "13:00",
-    },
-    {
-      ID: "dami123",
-      nailart: "글레이즈-딥다크",
-      time: "13:00",
-    },
-    {
-      ID: "dami123",
-      nailart: "글레이즈-딥다크",
-      time: "13:00",
-    },
-    {
-      ID: "dami123",
-      nailart: "글레이즈-딥다크",
-      time: "13:00",
-    },
-  ]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [info, setInfo] = useState<any>({});
   const navigate = useNavigate();
   const { userSeq } = useParams();
 
@@ -287,9 +263,20 @@ const ReservationCheck = () => {
     }
   );
 
-  const onClickBook = (nailartSeq: number) => {
-    navigate(`/nft/${nailartSeq}`);
+  const onClickBook = (book:any) => {
+    // navigate(`/nft/${nailartSeq}`);
+    setInfo(book)
+    handleModalOpen();
   };
+  
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
+
 
   const onClickCancelBtn = async (bookSeq: number) => {
     try {
@@ -372,29 +359,29 @@ const ReservationCheck = () => {
                       return (
                         <tr key={idx}>
                           <th
-                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                            onClick={() => onClickBook(book)}
                           >
                             {book.bookSeq}
                           </th>
                           <th
-                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                            onClick={() => onClickBook(book)}
                           >
                             {book.user.userNickname}
                           </th>
                           <th
-                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                            onClick={() => onClickBook(book)}
                           >
                             {book.user.userEmail}
                           </th>
                           <th
-                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                            onClick={() => onClickBook(book)}
                             className="title"
                           >
-                            {book.nailart.nailartType} - {" "}
+                            {book.nailart.nailartType} -{" "}
                             {book.nailart.nailartDetailColor}
                           </th>
                           <th
-                            onClick={() => onClickBook(book.nailart.nailartSeq)}
+                            onClick={() => onClickBook(book)}
                           >
                             {convertDate(book.bookDatetime).slice(10, 16)}
                           </th>
@@ -423,6 +410,11 @@ const ReservationCheck = () => {
           </TableWrapper>
         )}
       </FormWrapper>
+      <ModalBase
+        visible={isOpen}
+        onClose={handleModalClose}
+        info={info}
+      ></ModalBase>
     </Wrapper>
   );
 };

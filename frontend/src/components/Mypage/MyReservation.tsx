@@ -26,6 +26,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+
   .title {
     display: flex;
     width: 90%;
@@ -38,7 +39,7 @@ const Wrapper = styled.div`
     font-weight: 500;
     margin-bottom: 20px;
   }
-  .subexplain{
+  .subexplain {
     margin-bottom: 10px;
     opacity: 0.8;
   }
@@ -48,6 +49,33 @@ const Wrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     /* justify-content: center; */
+    .cardbox {
+      width: 580px;
+    }
+    .btnbox {
+      button {
+        border: 1px solid #ff3939;
+        padding: 3px 8px;
+        position: absolute;
+        margin-left: 195px;
+        margin-top: -63px;
+        color: #ff3939;
+      }
+      .confirm {
+        border: 1px solid #61c560;
+        padding: 3px 8px;
+        position: absolute;
+        color: #61c560;
+        cursor: default;
+      }
+      .cancel {
+        :hover {
+          border: none;
+          background-color: #f85757;
+          color: white;
+        }
+      }
+    }
     .card {
       position: relative;
       display: flex;
@@ -63,7 +91,7 @@ const Wrapper = styled.div`
       }
       .cardleft {
         border-right: 1px solid #e6e6e6;
-        
+
         width: 180px;
         height: 100%;
         display: flex;
@@ -80,6 +108,7 @@ const Wrapper = styled.div`
         width: 260px;
         height: 100%;
         text-align: left;
+
         .cardright-top {
           padding-left: 25px;
           padding-top: 10px;
@@ -106,31 +135,6 @@ const Wrapper = styled.div`
             height: 10px;
             margin-right: 5px;
           }
-        }
-        .btnbox {
-          .cancel {
-            :hover {
-              border: none;
-              background-color: #f85757;
-              color: white;
-            }
-          }
-        }
-        .confirm {
-          border: 1px solid #61c560;
-          padding: 3px 8px;
-          position: absolute;
-          margin-left: 165px;
-          margin-top: 15px;
-          color: #61c560;
-          /* cursor: default; */
-        }
-        button {
-          border: 1px solid #ff3939;
-          padding: 3px 8px;
-          position: absolute;
-          margin-left: 160px;
-          color: #ff3939;
         }
       }
     }
@@ -235,6 +239,14 @@ const MyReservation = () => {
     }
   }
 
+  const canCancel = (date: any) => {
+    const today = moment().format('YYYY-MM-DD');
+    const day = moment(date).subtract(2, "days");
+    const flag = moment(today).isBefore(day); // 오늘이 date보다 이틀전인가? (취소가능한가)
+    return flag
+  }
+
+
   return isLoading ? (
     <LoadingBox className="loading">
       <TailSpin height={50} width={50} color="gray" />
@@ -252,13 +264,21 @@ const MyReservation = () => {
           {data.bookList.length !== 0 &&
             data.bookList.map((book: any, idx: any) => {
               return (
+                <div className="cardbox">
                 <div
                   onClick={() => onClickCard(book.designerInfo.designerSeq)}
                   className="card"
                   key={idx}
                 >
                   <div className="cardleft">
-                    <img src={book.designerInfo.designerProfileImgUrl? book.designerInfo.designerProfileImgUrl : "/assets/images/default_profile.png"} alt="" />
+                    <img
+                      src={
+                        book.designerInfo.designerProfileImgUrl
+                          ? book.designerInfo.designerProfileImgUrl
+                          : "/assets/images/default_profile.png"
+                      }
+                      alt=""
+                    />
                   </div>
                   <div className="cardright">
                     <div className="cardright-top">
@@ -285,17 +305,33 @@ const MyReservation = () => {
                         <ArrowForwardIosIcon />
                         가격: {book.nailart.nailartPrice.toLocaleString()}원
                       </div>
-                      <div className="btnbox">
-                        {parseInt(
-                          moment(convertDate(book.bookDatetime)).fromNow(true)
-                        ) >= 2 ? sessionStorage.getItem("userSeq") === userSeq && <button className="cancel" onClick={(e) => {
-                          e.stopPropagation();
-                          onClickCancel(book.bookSeq);
-                        }}>예약취소</button> : <button className="confirm">예약확정</button>}
-                      </div>
                     </div>
+                    
                   </div>
+                  
                 </div>
+                <div className="btnbox">
+                {canCancel(convertDate(book.bookDatetime))
+                ? (
+                  sessionStorage.getItem("userSeq") === userSeq && (
+                    <button
+                      className="cancel"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // onClickCancel(book.bookSeq);
+                        console.log(convertDate(book.bookDatetime))
+                      }}
+                    >
+                      예약취소
+                    </button>
+                  )
+                ) : (
+                  <button className="confirm">예약확정</button>
+                )}
+              </div>
+
+
+              </div>
               );
             })}
           {data.bookList.length === 0 && <div>예약 내역이 없습니다</div>}

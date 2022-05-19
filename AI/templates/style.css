@@ -1,0 +1,15 @@
+* {
+  overflow:hidden;
+  color:blue !important;
+}
+
+body {
+  overflow:hidden;
+}
+
+.buttonPlace .btn {
+  position :absolute;
+  left: 50%;
+  top : 50%;
+  padding : 10px 20px 10px 20px;
+}
