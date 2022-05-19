@@ -218,7 +218,7 @@ const ModalBase = ({
           <Ask>
           <div className="tag">요청사항</div>
           <div className="tagright">
-            {info?.bookComment ? info?.bookComment : "요청사항 없음"}ddddddddddd 아머리;ㄴㅇ머럴ㅇㅇ ㅇㅇㅇㅇㅇㅇㅇㅇ ㅇㅇㅇㅇㅇㅇㅇ ㅇㅇㅇㅇㅇㅇㅇ ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ ㅇㅇㅇㅇㅇㅇㅇㅇ
+            {info?.bookComment ? info?.bookComment : "요청사항 없음"}
           </div>
           </Ask>
 

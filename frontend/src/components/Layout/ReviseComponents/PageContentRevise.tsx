@@ -315,7 +315,7 @@ const PageContentRevise = () => {
               <div className='subTitle' style={{marginTop:"120px"}} >
                 소개글 등록 
               </div>
-              <textarea name="textVal" id="" onChange={onChangeText} style={{resize:"none"}} placeholder="10자 이상 입력해주세요." value={nailartDesc}></textarea>
+              <textarea name="textVal" id="" onChange={onChangeText} style={{resize:"none"}} placeholder="10자 이상 입력해주세요." value={nailartDesc} spellCheck="false"></textarea>
               <div className="buttons">
                 <div className="btn1" onClick={nftFunc}>
                   등록
