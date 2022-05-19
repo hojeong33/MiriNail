@@ -1,0 +1,77 @@
+* {
+  overflow:hidden;
+  /* color:blue !important; */
+  
+}
+
+html {
+  width:660px;
+  height:520px;
+}
+body {
+  overflow:hidden; 
+  position:relative;
+  
+}
+
+.buttonPlace {
+  width:100%;
+  top : 30%;
+  position :absolute;
+}
+.buttonPlace .btn {
+  /* border : 1px solid black; */
+  
+  
+  text-align:center;
+  
+  /* font-size : 32px; */
+  padding : 10px 20px 10px 20px;
+  background: #55ffaa;
+  background: -webkit-linear-gradient(left, #ffc400, #ff8bf9);
+  background:    -moz-linear-gradient(right, #ffc400, #ff8bf9);
+  background:      -o-linear-gradient(right, #ffc400, #ff8bf9);
+  background:         linear-gradient(to right, #ffc400, #ff8bf9);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.buttonPlace .on_now_tag{
+  text-align:center;
+  font-size: 14px;
+  color:white;
+  background:         linear-gradient(to right, #ffc400, #ff8bf9);
+  padding: 10px 0px;
+  margin-left: -7px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.buttonPlace .on_now_tag:after {
+  content: "CLICK ME!";
+  display: inline-block;
+  /* width: 90%; */
+  height: 10px;
+  font-size: 32px;
+  /* background-color: #fd183a; */
+  border-radius: 50%;
+  margin-left: 3px;
+  -webkit-animation:blink 1s ease-in-out infinite alternate;
+  -moz-animation:blink 1s ease-in-out infinite alternate;
+  animation:blink 1s ease-in-out infinite alternate;
+}
+@-webkit-keyframes blink{
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+@-moz-keyframes blink{
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+@keyframes blink{
+  0% {opacity:0;}
+  100% {opacity:1;}
+}

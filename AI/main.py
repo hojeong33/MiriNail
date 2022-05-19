@@ -22,10 +22,9 @@ import asyncio
 from fastapi.templating import Jinja2Templates
 from fastapi.logger import logger
 from imageio import imread
-from sockett import summ
 import os
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.staticfiles import StaticFiles 
 
 app = FastAPI()
 origins = [
@@ -40,6 +39,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+app.mount("/static", StaticFiles(directory="static"), name="static") 
 
 test = '1'
 
