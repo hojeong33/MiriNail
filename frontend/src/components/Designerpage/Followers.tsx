@@ -35,13 +35,13 @@ const Wrapper = styled.div`
     flex-direction: row;
     width: 340px;
     height: 150px;
-    margin: 10px 20px 30px 20px;
+    margin: 10px 20px 30px 0px;
     padding: 20px 0;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    cursor: pointer;
-    :hover {
+    /* cursor: pointer; */
+    /* :hover {
       background-color: #f8f8fa;
-    }
+    } */
     .cardleft {
       border-right: 1px solid #d2d2d0;
       width: 120px;
@@ -141,7 +141,7 @@ const FollowingDesigner = () => {
             <div className="cards">
               {followersData.content?.map((follower: any, idx: any) => {
                 return (
-                  <Link to={`/mypage/${follower.userSeq}`}>
+                  <div>
                     <div className="card" key={idx}>
                       <div className="cardleft">
                         <img src={follower.userProfileImg ? convertImgToThumnail(follower.userProfileImg): "/assets/images/default_proflie.png"} alt="" />
@@ -153,7 +153,7 @@ const FollowingDesigner = () => {
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
             </div>

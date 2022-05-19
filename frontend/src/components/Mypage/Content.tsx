@@ -184,7 +184,7 @@ const Content = () => {
                         temp[temp.length - 1] === "myreview" ? "selected" : ""
                       }`}
                     >
-                      작성 한 후기
+                      작성 한 리뷰
                     </Link>
                     <Link
                       to="myask"
