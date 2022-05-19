@@ -6,6 +6,8 @@ export const convertQnatypeToText = (type:number|undefined) => {
       return "디자인"
     case 2:
       return "기타"
+    case 3:
+      return "네일아트"
     default:
       return "???"
   }
