@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 const MainFrame = styled.div`
   width :1300px;
   height: 100%;
+  min-height : 1300px;
   margin : 0 auto;
 
   .carouselGroup {

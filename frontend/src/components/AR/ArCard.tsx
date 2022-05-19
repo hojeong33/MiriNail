@@ -77,7 +77,7 @@ const ArCard = () => {
           cursor: "pointer",
           height: "4rem",
         }}
-        onClick={() => window.open("https://k6e101.p.ssafy.io/nail/client")}
+        onClick={() => window.open('https://3.34.140.229:8000/nail/client')}
       >
         Try Virtual Try on Now
       </div>

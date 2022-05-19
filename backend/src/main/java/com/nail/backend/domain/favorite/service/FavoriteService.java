@@ -12,7 +12,7 @@ public interface FavoriteService {
     Favorite favoriteRegister(String userId, Long nailartSeq);
 
     //Read
-    boolean getIsFavorited(String userId, Long nailartSeq);
+    boolean getIsFavorited(Long userSeq, Long nailartSeq);
     Long getFavoriteCount(Long productId);
 
     //Delete

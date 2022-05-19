@@ -74,8 +74,8 @@ const PageContentAll = () => {
     let scrollHeight = document.documentElement.scrollHeight;
     let clientHeight = document.documentElement.clientHeight;
     console.log(scrollTop, scrollHeight, clientHeight);
-    console.log(scrollTop + clientHeight >= scrollHeight - 10);
-    if (scrollTop + clientHeight >= scrollHeight) {
+    console.log(scrollTop + clientHeight >= scrollHeight - 5);
+    if (scrollTop + clientHeight >= scrollHeight - 1 ) {
       setTest((e) => e + 1);
       // await console.log(test)
 
@@ -94,7 +94,7 @@ const PageContentAll = () => {
 
   useEffect(() => {
     console.log(test);
-    getAllDesigner(test, 10).then((res): any => setAllDesigner(res));
+    getAllDesigner(test, 5).then((res): any => setAllDesigner(res));
     window.addEventListener("scroll", infiniteScroll, true);
   }, []);
 

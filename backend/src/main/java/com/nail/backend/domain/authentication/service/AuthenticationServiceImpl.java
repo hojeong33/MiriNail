@@ -46,7 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
     @Override
     public DesignerApplication artistRegister(ArtistRegisterPostReq artistRegisterPostReq,
-            MultipartFile registrationFile, String userId) throws IOException {
+            MultipartFile registrationFile) throws IOException {
 
         // 사업자 등록증 파일 처리
         System.out.println("check");
@@ -69,7 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         file.delete();
 
 
-        User user = userRepository.findByUserId(userId);
+        User user = userRepository.findByUserSeq(artistRegisterPostReq.getUserSeq());
         DesignerApplication designerApplication = DesignerApplication.builder()
                 .designerSeq(user.getUserSeq())
                 .user(user)

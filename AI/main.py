@@ -164,6 +164,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 image_nparray = np.asarray(bytearray(requests.get(nailImage).content), dtype=np.uint8)
                 imageDecode = cv2.imdecode(image_nparray, cv2.IMREAD_COLOR)
                 print(imageDecode)
+                img = imageDecode
 
                 
                 while True:
@@ -173,23 +174,23 @@ async def websocket_endpoint(websocket: WebSocket):
                     data = data.split(',')[1]
 
                     imgtest = imread(io.BytesIO(base64.b64decode(data)))
-                    print(imgtest)
-                    img = imageDecode
+                
+                    
                     frame = cv2.flip(imgtest, 1)
-                    image = frame
-                    (H, W) = image.shape[:2]
+                    # image = frame
+                    (H, W) = frame.shape[:2]
                     # print("H,W:", (H, W))
                    
-                    output = image.copy()
+                    output = frame.copy()
                 
                     # output[0:450, 0:450] = img
-                    img_ff, bin_mask, res = ff.find_hand_old(image.copy())
+                    img_ff, bin_mask, res = ff.find_hand_old(output)
                     image = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)
                     image_2 = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
                     results = hands.process(image_2)
                    
                     image = np.expand_dims(image, axis=0)
-                    image_2 = cv2.cvtColor(image_2, cv2.COLOR_RGB2BGR)
+                    # image_2 = cv2.cvtColor(image_2, cv2.COLOR_RGB2BGR)
                     imageHeight, imageWidth, _ = image_2.shape
                     # print('여기까진 옴')
                     if results.multi_hand_landmarks:
@@ -259,17 +260,17 @@ async def websocket_endpoint(websocket: WebSocket):
                                 # print(startX,startY,endX,endY)
                                 X_mid = startX + int(abs(endX - startX) / 2)
                                 Y_mid = startY + int(abs(endY - startY) / 2)
-                                box_mid = (X_mid, Y_mid)
+                                # box_mid = (X_mid, Y_mid)
                                 # draw the prediction on the output image
-                                label_name = 'nail'
+                                # label_name = 'nail'
                                 # idx = int(label["id"]) - 1
-                                idx = 0
-                                label = "{}: {:.2f}".format(label_name, score)
-                                cv2.rectangle(image_2, (startX, startY), (endX, endY),
-                                            COLORS[idx], 2)
-                                y = startY - 10 if startY - 10 > 10 else startY + 10
-                                cv2.putText(image_2, label, (startX, y),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.3, COLORS[idx], 1)
+                                # idx = 0
+                                # label = "{}: {:.2f}".format(label_name, score)
+                                # cv2.rectangle(image_2, (startX, startY), (endX, endY),
+                                #             COLORS[idx], 2)
+                                # y = startY - 10 if startY - 10 > 10 else startY + 10
+                                # cv2.putText(image_2, label, (startX, y),
+                                #             cv2.FONT_HERSHEY_SIMPLEX, 0.3, COLORS[idx], 1)
 
                                 # x = X_mid
                                 # y = Y_mid
@@ -278,10 +279,10 @@ async def websocket_endpoint(websocket: WebSocket):
 
                                 # x = 가로 y = 세로 점
                                 # print(startX,startY,endX,endY)
-                                startX = startX -20
-                                startY = startY -20
-                                endX = endX +20
-                                endY = endY +20
+                                startX = startX -17
+                                startY = startY -17
+                                endX = endX +17
+                                endY = endY +17
                                 wi = int(abs(endY-startY))
                                 he = int(abs(endX-startX))
                                 try: 
@@ -298,7 +299,7 @@ async def websocket_endpoint(websocket: WebSocket):
                                 xx = X_mid -wi // 2
                                 yy = Y_mid - he // 2
                                 if xx < 0:
-                                    cat_sticer = cat_sticker[:,xx:]
+                                    cat_sticker = cat_sticker[:,xx:]
                                 if yy < 0:
                                     cat_sticker = cat_sticker[-yy:,:]
                                 
@@ -317,30 +318,30 @@ async def websocket_endpoint(websocket: WebSocket):
                                 
                             # show the image_2 image
                             # print(boxnum)
-                            if box_mid == (0, 0):
-                                drawboxes.clear()
-                                cv2.putText(image_2, 'Nothing', (20, 50),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
-                            elif boxnum == 1:
-                                drawboxes.append(box_mid)
-                                if len(drawboxes) == 1:
-                                    pp = drawboxes[0]
-                                    cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
-                                    # cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
-                                if len(drawboxes) > 1:
-                                    num_p = len(drawboxes)
-                                    for i in range(1, num_p):
-                                        pt1 = drawboxes[i - 1]
-                                        pt2 = drawboxes[i]
-                                        # cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
-                                        cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
+                            # if box_mid == (0, 0):
+                            #     drawboxes.clear()
+                            #     cv2.putText(image_2, 'Nothing', (20, 50),
+                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            # elif boxnum == 1:
+                            #     drawboxes.append(box_mid)
+                            #     if len(drawboxes) == 1:
+                            #         pp = drawboxes[0]
+                            #         cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
+                            #         # cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
+                            #     if len(drawboxes) > 1:
+                            #         num_p = len(drawboxes)
+                            #         for i in range(1, num_p):
+                            #             pt1 = drawboxes[i - 1]
+                            #             pt2 = drawboxes[i]
+                            #             # cv2.circle(image_2, pp, 0, (0, 0, 0), thickness=3)
+                            #             cv2.line(image_2, pt1, pt2, (0, 0, 0), 2, 2)
                                         
-                                cv2.putText(image_2, 'Point', (20, 50),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
-                            else:
-                                drawboxes.clear()
-                                cv2.putText(image_2, 'Nothing', (20, 50),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            #     cv2.putText(image_2, 'Point', (20, 50),
+                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
+                            # else:
+                            #     drawboxes.clear()
+                            #     cv2.putText(image_2, 'Nothing', (20, 50),
+                            #                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
 
 
                     

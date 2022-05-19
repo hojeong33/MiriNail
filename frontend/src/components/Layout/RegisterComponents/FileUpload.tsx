@@ -97,72 +97,72 @@ const ImageUploadBox = (props:any ) => {
   }, [uploadedImages]);
 
   // 1. props가 들어올 경우 handler 함수실행 
-  useEffect(() => {
-    const handler = async() => {
+  // useEffect(() => {
+  //   const handler = async() => {
       
-        let ls:any = []
-        console.log(props)
-        console.log(props.itemDetail.nailartImgUrl)
-        console.log(props.itemDetail.nailartThumbnailUrl)
+  //       let ls:any = []
+  //       console.log(props)
+  //       console.log(props.itemDetail.nailartImgUrl)
+  //       console.log(props.itemDetail.nailartThumbnailUrl)
 
-        // 2. 파일 변환 함수 실행
-        const response_1 = await convertURLtoFile(props.itemDetail.nailartImgUrl)
-        const response_2 = await convertURLtoFile(props.itemDetail.nailartThumbnailUrl)
+  //       // 2. 파일 변환 함수 실행
+  //       const response_1 = await convertURLtoFile(props.itemDetail.nailartImgUrl)
+  //       const response_2 = await convertURLtoFile(props.itemDetail.nailartThumbnailUrl)
 
-        ls.push(response_1)
-        ls.push(response_2)
+  //       ls.push(response_1)
+  //       ls.push(response_2)
         
-        console.log(ls)
-        // 4. convertedTest 에 변환된 파일 넣기
-        setConvertedTest(ls)
-        ls = []
+  //       console.log(ls)
+  //       // 4. convertedTest 에 변환된 파일 넣기
+  //       setConvertedTest(ls)
+  //       ls = []
       
-    }
-    if (props) {
-      handler()
-    }
-  },[])
+  //   }
+  //   if (props) {
+  //     handler()
+  //   }
+  // },[])
 
   
   // 5. convertedTest 들어오면 실행(파일을 추가하는거랑 똑같은 로직으로 돌아감) fin
-  useEffect(() => {
-    console.log(convertedTest)
+  // useEffect(() => {
+  //   console.log(convertedTest)
     
-    for (const file of convertedTest) {
-      console.log(file)
-      console.log('들어는갓니?')
-      if (!file.type.startsWith("image/")) continue;
-      const reader = new FileReader();
-      reader.onloadend = (e: any) => {
-        const result: any = e.target.result;
-        console.log(e)
-        console.log(result)
-        console.log(file)
-        if (result) {
-          setUploadedImages((state: any) => [...state, result].slice(0, 2));
-          setTestImages((state: any) => [...state, file].slice(0, 2));
-        };
-      };
-      reader.readAsDataURL(file);
-    }
-  },[convertedTest])
+  //   for (const file of convertedTest) {
+  //     console.log(file)
+  //     console.log('들어는갓니?')
+  //     if (!file.type.startsWith("image/")) continue;
+  //     const reader = new FileReader();
+  //     reader.onloadend = (e: any) => {
+  //       const result: any = e.target.result;
+  //       console.log(e)
+  //       console.log(result)
+  //       console.log(file)
+  //       if (result) {
+  //         setUploadedImages((state: any) => [...state, result].slice(0, 2));
+  //         setTestImages((state: any) => [...state, file].slice(0, 2));
+  //       };
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // },[convertedTest])
 
   // 3. 파일로 변환
-  const convertURLtoFile = async (url: string) => {
-    console.log(url)
-    const response = await fetch(url,
-    //   {mode: 'no-cors',headers: {
-    //   'Access-Control-Allow-Origin':'*'
-    // }}
-    );
-    console.log(response)
-    const data = await response.blob();
-    console.log(data)
-    const ext = url?.split(".").pop(); // url 구조에 맞게 수정할 것
-    const filename = url?.split("/").pop(); // url 구조에 맞게 수정할 것
-    const metadata = { type: `image/${ext}` };
-    return new File([data], filename!, metadata);
-  };
+  // const convertURLtoFile = async (url: string) => {
+  //   console.log(url)
+  //   const response = await fetch(url,
+  //   //   {mode: 'no-cors',headers: {
+  //   //   'Access-Control-Allow-Origin':'*'
+  //   // }}
+  //   );
+  //   console.log(response)
+  //   const data = await response.blob();
+  //   console.log(data)
+  //   const ext = url?.split(".").pop(); // url 구조에 맞게 수정할 것
+  //   const filename = url?.split("/").pop(); // url 구조에 맞게 수정할 것
+  //   const metadata = { type: `image/${ext}` };
+  //   return new File([data], filename!, metadata);
+  // };
 
   return (
     <div className="ImageUploadBox">

@@ -6,16 +6,16 @@ const VideoPlayer = () => {
   const playList = [
     {
       index: 1,
-      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      url: "https://www.youtube.com/watch?v=Z9Xi-spO7CA" ,
     },
-    {
-      index: 2,
-      url: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8",
-    },
-    {
-      index: 3,
-      url: "http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8",
-    },
+    // {
+    //   index: 2,
+    //   url: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8",
+    // },
+    // {
+    //   index: 3,
+    //   url: "http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8",
+    // },
   ];
 
   const handleNextVideo = (video: string | any[], playIndex: number) => {
@@ -32,20 +32,26 @@ const VideoPlayer = () => {
 
   if (playList === null) return <p>Loading...</p>;
 
+  
+
   return (
     <>
+      <div style={{position:'absolute',width:'100vw',backgroundColor:'white',zIndex:'9997',height:'55px'}}> </div>
+      <div style={{position:'absolute',width:'130px',backgroundColor:'white',zIndex:'9997',height:'100vh'}}> </div>
+      <div style={{position:'absolute',width:'130px',backgroundColor:'white',zIndex:'9997',height:'100vh',right:'0px'}}> </div>
+      
       <ReactPlayer
         url={playList[playIndex].url}
         playing
-        controls
+        controls={false}
         muted
         progressInterval={1000}
         pip={true}
         onEnded={() => {
           handleNextVideo(playList, playIndex);
         }}
-        width={"100%"}
-        height={"5%"}
+        width={"100vw"}
+        height={"100vh"}
       />
     </>
   );
