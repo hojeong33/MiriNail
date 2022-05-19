@@ -291,7 +291,7 @@ const UpperFrame = () => {
   );
   const { isLoading: isLikeCheckLoading, data: isLikeData } = useQuery(
     "isLike",
-    () => isLike(params)
+    () => isLike(params,myId)
   );
   const [designerSeq, setDesignerSeq] = useRecoilState<any>(designerId);
   useEffect((): any => {
@@ -305,7 +305,7 @@ const UpperFrame = () => {
   const likeFunc: any = useMutation((param: any) => nailLike(param), {
     onSuccess: () => {
       console.log("성공");
-      isLike(Number(params));
+      isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },
@@ -318,7 +318,7 @@ const UpperFrame = () => {
   const disLikeFunc: any = useMutation((param: any) => nailDislike(param), {
     onSuccess: () => {
       console.log("성공");
-      isLike(Number(params));
+      isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },

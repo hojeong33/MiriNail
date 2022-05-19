@@ -122,11 +122,9 @@ export const nailCount = async (param: any) => {
 };
 
 // 디자인 여부 확인
-export const isLike = async (param: any) => {
+export const isLike = async (param: any  , userSeq:any) => {
   const response = await axios.get(base_url + `favorite/${Number(param)}`, {
-    headers: {
-      Authorization: `Bearer ${ACCESS_TOKEN}`,
-    },
+    params : { userNum : userSeq}
   });
   console.log(response.data);
   return response.data;
