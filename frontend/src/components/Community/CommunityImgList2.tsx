@@ -309,7 +309,7 @@ export default function CommunityImgList() {
       return;
     }
     if (true) {
-      axios({
+      await axios({
         method: "get",
         url: `https://k6e101.p.ssafy.io/api/community`,
         params: {
