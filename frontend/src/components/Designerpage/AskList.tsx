@@ -156,6 +156,12 @@ const AskList = () => {
         >
           기타
         </button>
+        <button
+          className={`${qnaType === 3 ? "selected" : ""}`}
+          onClick={() => onClicktype(3)}
+        >
+          네일아트
+        </button>
       </div>
       {isLoading ? (
         <LoadingBox className="loading">
@@ -221,6 +227,13 @@ const AskList = () => {
             />
           )}
           {qnaType === 2 && (
+            <Pagination
+              count={lastPage}
+              shape="rounded"
+              onChange={onchangePage}
+            />
+          )}
+          {qnaType === 3 && (
             <Pagination
               count={lastPage}
               shape="rounded"
