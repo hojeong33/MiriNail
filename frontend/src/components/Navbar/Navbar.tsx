@@ -192,6 +192,7 @@ const Navbar = () => {
       style={{
         boxShadow: "none",
         borderBottom: "1px solid rgba(61,60,58,0.5)",
+        zIndex:'9999'
       }}
       className={styles.top}
     >
