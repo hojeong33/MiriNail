@@ -309,9 +309,11 @@ const UpperFrame = () => {
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },
-    onError: (error) => {
-      // 요청에 에러가 발생된 경우
-      console.log("onError", error);
+    onError: (err: any) => {
+      console.log(err)
+      if (err.response.status === 401) { 
+        navigate("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+      }
     },
   });
 
@@ -322,9 +324,11 @@ const UpperFrame = () => {
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },
-    onError: (error) => {
-      // 요청에 에러가 발생된 경우
-      console.log("onError", error);
+    onError: (err: any) => {
+      console.log(err)
+      if (err.response.status === 401) { 
+        navigate("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+      }
     },
   });
 

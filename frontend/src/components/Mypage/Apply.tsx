@@ -247,8 +247,11 @@ const Apply = () => {
         navigate(`/mypage/${sessionStorage.getItem("userSeq")}/like`);
       },
       onError: (err: any) => {
-        console.log(err);
+        console.log(err)
         alert("신청중 오류가 발생하였습니다");
+        if (err.response.status === 401) { 
+          navigate("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+        }
       },
     }
   );
