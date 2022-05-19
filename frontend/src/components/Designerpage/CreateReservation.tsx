@@ -423,7 +423,19 @@ const CreateReservation = () => {
     return ""
   }
 
-
+  const canSelect = (day:any, time:any) => {
+    console.log(moment().format("DD"))
+    const nowTime = moment().hour()
+    const compTime = moment(time).format("HH")
+    const today = moment().format("DD")
+    if (today === day && Number(nowTime) <= Number(compTime)) {
+      return "past"
+    } else {
+      return ""
+    }
+    // const nowday = 
+  }
+  // canSelect()
   return (
     <Wrapper>
       <div className="calendarbox">
@@ -477,7 +489,7 @@ const CreateReservation = () => {
                     <div
                       className={`timetile ${
                         time === selectedTime ? "selected" : ""
-                      } ${convertTimeAM(time)}`}
+                      } ${convertTimeAM(time)} ${canSelect(moment(value).format("DD"), time)}`}
                       key={idx}
                       onClick={() => setSelectedTime(time)}
                     >
@@ -498,7 +510,7 @@ const CreateReservation = () => {
                     <div
                       className={`timetile ${
                         time === selectedTime ? "selected" : ""
-                      }${convertTimePM(time)}`}
+                      } ${convertTimePM(time)} ${canSelect(moment(value).format("DD"), time)}`}
                       key={idx}
                       onClick={() => {
                         if (convertTimePM(time) !== "booked") {
