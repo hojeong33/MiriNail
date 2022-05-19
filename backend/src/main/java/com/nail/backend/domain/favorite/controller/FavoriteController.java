@@ -63,9 +63,10 @@ public class FavoriteController {
             @ApiResponse(code = 201 , message = "반환 성공"),
             @ApiResponse(code = 404 , message = "반환 실패")
     })
-    public boolean getFavoriteUserUse ( @RequestParam Long userNum,
+    public boolean getFavoriteUserUse (@RequestParam Long userNum,
                                  @ApiParam(value = "네일아트 seq") @PathVariable("nailartSeq") Long nailartSeq){
         log.info("favoriteGet - 호출");
+        if(null == userNum) return false;
         if( favoriteService.getIsFavorited(userNum, nailartSeq)){
             return true;
         }else{
