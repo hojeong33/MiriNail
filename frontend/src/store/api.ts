@@ -4,7 +4,6 @@ import { page, pagenationInquiry } from "./atoms";
 const ACCESS_TOKEN = localStorage.getItem("token");
 const base_url = "https://k6e101.p.ssafy.io/api/";
 
-
 // 디자인 관련
 
 // 디자인 조회
@@ -27,26 +26,26 @@ export const registDesign = async (files: any) => {
     console.log(value);
   }
   const response = axios.post(base_url + "nailart", files, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    return response
-    
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response;
+
   // console.log(response)
 };
 
 // ipfs 주소 등록
-export const pushIpfs = async(data:any) => {
-  console.log(data)
-  const response = axios.put(base_url + 'nailart/nft',data)
-  
-  return response
-}
+export const pushIpfs = async (data: any) => {
+  console.log(data);
+  const response = axios.put(base_url + "nailart/nft", data);
+
+  return response;
+};
 
 // 디자인 삭제
 export const deleteDesign = async (param: any) => {
-  console.log(param)
+  console.log(param);
   const response = await axios.put(base_url + `nailart/${Number(param)}`);
 };
 
@@ -58,8 +57,10 @@ export const designDetail = async (param: any) => {
 };
 
 // 다른 디자이너 작품 조회
-export const otherDesign = async (param: any, nailSeq:any) => {
-  const response = await axios.get(base_url + `nailart/designer/${param}/${nailSeq}`);
+export const otherDesign = async (param: any, nailSeq: any) => {
+  const response = await axios.get(
+    base_url + `nailart/designer/${param}/${nailSeq}`
+  );
   console.log(response);
   return response.data;
 };
@@ -139,7 +140,7 @@ export const inquiryList = async ({ queryKey }: any) => {
     params: { page: queryKey[2], size: 10 },
   });
   console.log(response);
-  
+
   return response;
 };
 
@@ -228,12 +229,12 @@ export const postReview = async (data: any) => {
   console.log(data);
   const response = await axios.post(base_url + "review", data, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${ACCESS_TOKEN}`,
-    }}
-    )
-  console.log(response)
-}
+    },
+  });
+  console.log(response);
+};
 
 // 리뷰 조회
 export const getReview = async ({ queryKey }: any) => {
@@ -255,11 +256,11 @@ export const getReview = async ({ queryKey }: any) => {
 // 리뷰 조회순 조회
 
 // 조회수 증가
-export const countView = async(data:any) => {
-  console.log(data)
-  console.log(base_url +`review/cnt/${data}`)
-  const response = await axios.post(base_url +`review/cnt/${data}`,)
-}
+export const countView = async (data: any) => {
+  console.log(data);
+  console.log(base_url + `review/cnt/${data}`);
+  const response = await axios.post(base_url + `review/cnt/${data}`);
+};
 
 // 리뷰 삭제
 export const delReview = async (param: any) => {
@@ -267,28 +268,27 @@ export const delReview = async (param: any) => {
 };
 
 // 리뷰 댓글 작성
-export const postReviewComment = async(data:any) => {
-  console.log(data)
-  const response = await axios.post(base_url +`review/comment`,data,{
+export const postReviewComment = async (data: any) => {
+  console.log(data);
+  const response = await axios.post(base_url + `review/comment`, data, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
-    }
-  })
-}
+    },
+  });
+};
 
 // 리뷰 댓글 수정
-export const revReviewComment = async(data:any) => {
-  console.log(data)
-  const response = await axios.put(base_url +`review/comment`,data,{
+export const revReviewComment = async (data: any) => {
+  console.log(data);
+  const response = await axios.put(base_url + `review/comment`, data, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
-    }
-  })
-}
+    },
+  });
+};
 
 // 리뷰 댓글 삭제
-export const delReviewComment = async(param:any) => {
-  console.log(param)
-  const response = await axios.patch(base_url + `review/review/${param}`)
-}
-
+export const delReviewComment = async (param: any) => {
+  console.log(param);
+  const response = await axios.patch(base_url + `review/review/${param}`);
+};
