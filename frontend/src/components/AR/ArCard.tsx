@@ -8,7 +8,8 @@ const ArCard = () => {
         marginRight: "auto",
         marginLeft: "auto",
         position: "relative",
-        top: "-40rem",
+        top: "200px",
+        marginBottom: "500px",
       }}
     >
       <div style={{ fontSize: "3rem", fontWeight: "500" }}>
@@ -76,7 +77,7 @@ const ArCard = () => {
           cursor: "pointer",
           height: "4rem",
         }}
-        onClick={() => window.open('https://k6e101.p.ssafy.io/nail/client')}
+        onClick={() => window.open("https://k6e101.p.ssafy.io/nail/client")}
       >
         Try Virtual Try on Now
       </div>
