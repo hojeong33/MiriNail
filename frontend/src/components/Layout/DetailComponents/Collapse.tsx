@@ -64,6 +64,7 @@ const ReplsyStyle = styled.div`
     }
 
   }
+}
 `
 
 const NestedList = ({replyList,reviewSeq}:any) => {
@@ -93,7 +94,14 @@ const NestedList = ({replyList,reviewSeq}:any) => {
     ,{
       onSuccess: () => {
         queryClient.invalidateQueries('reviews')
-      } 
+      },
+      onError: (err: any) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+        }
+      },
+      retry : false,
     }
   )
 
@@ -102,7 +110,14 @@ const NestedList = ({replyList,reviewSeq}:any) => {
     ,{
       onSuccess: () => {
         queryClient.invalidateQueries('reviews')
-      }
+      },
+      onError: (err: any) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+        }
+      },
+      retry : false,
     }
   )
 
@@ -111,7 +126,14 @@ const NestedList = ({replyList,reviewSeq}:any) => {
     ,{
       onSuccess: () => {
         queryClient.invalidateQueries('reviews')
-      }
+      },
+      onError: (err: any) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+        }
+      },
+      retry : false,
     })
 
 
