@@ -64,15 +64,11 @@ export const reviseDesign = async (param: any) => {
 };
 
 // 디자인 좋아요
-export const nailLike = async (param: any) => {
+export const nailLike = async (param: any,id :any) => {
   const response = await axios.post(
-    base_url + `favorite/${Number(param)}`,
+    base_url + `favorite/${Number(param)}/${id}`,
     {},
-    {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-    }
+    
   );
 };
 

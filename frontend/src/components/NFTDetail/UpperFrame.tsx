@@ -300,7 +300,7 @@ const UpperFrame = () => {
   }, [nailData]);
 
   const ACCESS_TOKEN = localStorage.getItem("token");
-  const likeFunc: any = useMutation((param: any) => nailLike(param), {
+  const likeFunc: any = useMutation((param: any) => nailLike(param,myId), {
     onSuccess: () => {
       isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
