@@ -7,7 +7,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/메인페이지.gif" alt="text" width="number" />
+  <img src="./image/main.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -21,7 +21,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/검색.gif" alt="text" width="number" />
+  <img src="./image/search.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -39,7 +39,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/네일목록.gif" alt="text" width="number" />
+  <img src="./image/naillist.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -56,7 +56,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/네일디테일.gif" alt="text" width="number" />
+  <img src="./image/naildetail.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -78,7 +78,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/예약하기.gif" alt="text" width="number" />
+  <img src="./image/reservation.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -109,7 +109,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/디자이너목록.gif" alt="text" width="number" />
+  <img src="./image/designerList.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -130,7 +130,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/마이페이지_유저.gif" alt="text" width="number" />
+  <img src="./image/mypage_user.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -147,7 +147,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/디자이너등록.gif" alt="text" width="number" />
+  <img src="./image/designerRegister.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -166,7 +166,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/NFT등록.gif" alt="text" width="number" />
+  <img src="./image/register.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -182,7 +182,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/새소식작성.gif" alt="text" width="number" />
+  <img src="./image/new.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -195,7 +195,7 @@
 ## 문의 내역
 
 <p align="center">
-  <img src="./image/문의작성.gif" alt="text" width="number" />
+  <img src="./image/qna.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -208,7 +208,7 @@
 # 관리자
 
 <p align="center">
-  <img src="./image/관리자승인.gif" alt="text" width="number" />
+  <img src="./image/admin.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -222,7 +222,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/커뮤니티.gif" alt="text" width="number" />
+  <img src="./image/community.gif" alt="text" width="number" />
 </p>
 
 </br>
