@@ -359,7 +359,7 @@ const UpperFrame = () => {
   useEffect(() => {
    
     // 주소
-    axios.post('https://3.34.140.229:8000/post',{
+    axios.post('https://3.34.182.44:8000/post',{
       strings : params
     })
     .then(res => console.log(res))
@@ -457,7 +457,15 @@ const UpperFrame = () => {
                   </div>
            
                   <div className="btns">
-                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('https://3.34.182.44:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}>
+                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => {
+                      if (sessionStorage.getItem("userRole") === 'ROLE_ARTIST') {
+                        window.open('https://3.34.182.44:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')
+                      } else {
+                        alert('원활한 시연을 위해 접근을 제한합니다.')
+                      }
+                      }
+                      }
+                      >
                       AR 피팅하기
 
                     </a>

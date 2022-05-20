@@ -304,7 +304,7 @@ const DesignReview = () => {
               <StarIcon />
             </div>
             <div className="score">
-              {reviewData?.content.length != 0 ? (dummy2.best*5+dummy2.good*4+dummy2.soso*3+dummy2.bad*2+dummy2.worst*1)/reviewData?.content.length :0}
+              {reviewData?.content.length != 0 ? ((dummy2.best*5+dummy2.good*4+dummy2.soso*3+dummy2.bad*2+dummy2.worst*1)/reviewData?.content.length).toFixed(1) :0}
             </div>
             
           </div>
