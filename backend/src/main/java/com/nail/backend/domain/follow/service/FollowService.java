@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface FollowService {
 
-    Follow followRegister(Long followeeId, String userId);
-    Follow followRemove(Long followeeId, String userId);
+    Follow followRegister(Long followeeId, Long userSeq);
+    Follow followRemove(Long followeeId, Long userSeq);
 
     List<User> getFollowerList(Long userSeq);
     Page<User> getFollowerList(Long userSeq, Pageable pageable);

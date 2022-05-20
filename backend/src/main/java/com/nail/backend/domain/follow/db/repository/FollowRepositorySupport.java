@@ -74,20 +74,20 @@ public class FollowRepositorySupport {
         return new PageImpl<>(designerInfoList, pageable, designerInfoList.size());
     }
 
-    public Follow followRegister(Long followeeId, String userId) {
+    public Follow followRegister(Long followeeId, Long userSeq) {
 
         // 토큰에 카카오 id 값이 들어있다는 전제하에 코딩함.
 
         // 해당 팔로우가 이미 있는지 확인.
         Follow isExist = jpaQueryFactory.select(qFollow)
                 .from(qFollow)
-                .where(qFollow.followFollower.userId.eq(userId)
+                .where(qFollow.followFollower.userSeq.eq(userSeq)
                         .and(qFollow.followFollowee.designerSeq.eq(followeeId)))
                 .fetchFirst();
 
         if(null == isExist) {
             DesignerInfo designerInfo = designerInfoRepository.findByDesignerSeq(followeeId);
-            User follower = userRepository.findByUserId(userId);
+            User follower = userRepository.findByUserSeq(userSeq);
             Follow follow = Follow.builder()
                     .followFollowee(designerInfo)
                     .followFollower(follower)
@@ -100,11 +100,11 @@ public class FollowRepositorySupport {
         return isExist;
     }
 
-    public Follow followRemove(Long followeeId, String userId) {
+    public Follow followRemove(Long followeeId, Long userSeq) {
 
         Follow follow = jpaQueryFactory.select(qFollow)
                 .from(qFollow)
-                .where(qFollow.followFollower.userId.eq(userId)
+                .where(qFollow.followFollower.userSeq.eq(userSeq)
                         .and(qFollow.followFollowee.designerSeq.eq(followeeId)))
                 .fetchOne();
 

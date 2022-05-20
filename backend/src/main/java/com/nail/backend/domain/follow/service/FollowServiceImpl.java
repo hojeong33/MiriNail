@@ -18,14 +18,14 @@ public class FollowServiceImpl implements FollowService{
     FollowRepositorySupport followRepositorySupport;
 
     @Override
-    public Follow followRegister(Long followeeId, String userId) {
-        Follow follow = followRepositorySupport.followRegister(followeeId,userId);
+    public Follow followRegister(Long followeeId, Long userSeq) {
+        Follow follow = followRepositorySupport.followRegister(followeeId,userSeq);
         return follow;
     }
 
     @Override
-    public Follow followRemove(Long followeeId, String userId) {
-        Follow follow = followRepositorySupport.followRemove(followeeId,userId);
+    public Follow followRemove(Long followeeId, Long userSeq) {
+        Follow follow = followRepositorySupport.followRemove(followeeId,userSeq);
         return follow;
     }
 

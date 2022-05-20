@@ -77,22 +77,20 @@ public class FollowController {
         }
     }
 
-    @PostMapping("/{followFollowee}")
+    @PostMapping("/{followFollowee}/{userSeq}")
     @ApiOperation(value = "팔로우 신청", notes = "<strong>팔로우 신청</strong>한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "신청 성공"),
             @ApiResponse(code = 404, message = "신청 실패")
     })
     public ResponseEntity<BaseResponseBody> followRegister(@PathVariable(value = "followFollowee") Long followeeId,
-                                                           Principal principal){
+                                                           @PathVariable(value = "userSeq") Long userSeq){
 
         // 0. 토큰으로부터 내 userId와 팔로우 신청할 유저의 Id(followeeId)를 받아온다.
         // 1. Follow 테이블에 추가.
-
         log.info("FollowRegister - 호출");
 
-//        Long userId = Long.valueOf(principal.getName());
-        Follow follow = followService.followRegister(followeeId,principal.getName());
+        Follow follow = followService.followRegister(followeeId,userSeq);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(BaseResponseBody.of(201, "신청 성공"));
@@ -102,20 +100,20 @@ public class FollowController {
         }
     }
 
-    @DeleteMapping("/{followFollowee}")
+    @DeleteMapping("/{followFollowee}/{userSeq}")
     @ApiOperation(value = "팔로우 취소", notes = "<strong>팔로우 취소</strong>한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "취소 성공"),
             @ApiResponse(code = 404, message = "취소 실패")
     })
     public ResponseEntity<BaseResponseBody> followRemove(@PathVariable(value = "followFollowee") Long followeeId,
-                                                         Principal principal){
+                                                         @PathVariable(value = "userSeq") Long userSeq){
 
         // 0. 토큰으로부터 내 userId와 팔로우 신청할 유저의 Id(followeeId)를 받아온다.
         // 1. Follow 테이블에서 삭제.
         log.info("followRemove - 호출");
 //        Long userId = Long.valueOf(principal.getName());
-        Follow follow = followService.followRemove(followeeId,principal.getName());
+        Follow follow = followService.followRemove(followeeId,userSeq);
 
         if(null != follow) {
             return ResponseEntity.status(201).body(BaseResponseBody.of(201, "취소 성공"));
