@@ -170,7 +170,15 @@ const Header: React.FC<IProps> = ({ refetch }) => {
       },
       onError: (err: any) => {
         console.log(err);
+        const mySeq = sessionStorage.getItem("userSeq")
+        if (!mySeq) {
+          alert("로그인이 필요합니다.");
+          window.location.replace(
+            "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+          );
+        } 
         if (err.response.status === 401) {
+          alert("로그인이 필요합니다")
           window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
         }
       },
@@ -181,6 +189,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   const unFollow = useMutation<any, Error>(
     ["unFollow"],
     async () => {
+
       return await deleteFollow(Number(userSeq));
     },
     {
@@ -189,7 +198,15 @@ const Header: React.FC<IProps> = ({ refetch }) => {
       },
       onError: (err: any) => {
         console.log(err);
+        const mySeq = sessionStorage.getItem("userSeq")
+        if (!mySeq) {
+          alert("로그인이 필요합니다.");
+          window.location.replace(
+            "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+          );
+        } 
         if (err.response.status === 401) {
+          alert("로그인이 필요합니다")
           window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
         }
       },
@@ -210,6 +227,18 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     }
   }
 
+  const onClickReservation = (e:any) => {
+    e.preventDefault()
+    const mySeq = sessionStorage.getItem("userSeq")
+    if (!mySeq) {
+      alert("로그인이 필요합니다.");
+      window.location.replace(
+        "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      );
+    } else {
+      navigate("reservation")
+    }
+  }
 
   const findIsFollow = (res:any) => {
     const me = Number(sessionStorage.getItem("userSeq"));
@@ -309,6 +338,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
                           ? "selected"
                           : ""
                       }`}
+                      onClick={(e) => onClickReservation(e)}
                     >
                       <CalendarMonthIcon />
                       예약하기
