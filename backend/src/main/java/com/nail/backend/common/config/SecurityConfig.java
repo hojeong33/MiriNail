@@ -66,9 +66,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 인증 필요한 URL 과 필요하지 않은 URL 설정
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-                .antMatchers("/api/**",
+                .antMatchers("/api/**/admin").hasAnyAuthority(RoleType.ADMIN.getCode())
+                .antMatchers("/api/qna/designer/**").hasAnyAuthority(RoleType.ARTIST.getCode())
+                .antMatchers("/api/designerpage/**/reservation","/api/designerpage/**/creaatesk","/api/book/**").hasAnyAuthority(RoleType.USER.getCode())
+//                .antMatchers("/api/designerpage/**/new").permitAll()
+                .antMatchers(//"/api/**",
+                        "/api/nailart/**", "/api/designer/**", "/api/community/**", "/api/review/**", "/api/favorite/**", "/api/qna/nailart/**",
                         // swagger 관련 보안 설정
                         "/api/auth/**",
                         // 스웨거 버전이 3이어서 /v2/api-docs => /v3/api-docs로 변경필요
