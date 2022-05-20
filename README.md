@@ -7,7 +7,6 @@
 </br></br>
 
 ## 한 줄 소개
-<hr>
 </br>
 
 ### **AR기술과 NFT를 이용한 네일 피팅 서비스**
@@ -15,7 +14,7 @@
 </br></br>
 
 ## 기획배경
-<hr>
+
 </br>
 
 * 커져가는 네일시장
@@ -26,7 +25,7 @@
 </br></br>
 
 ## 기획의도
-<hr>
+
 </br>
 
 * 커져가는 네일시장에 맞춰 고객과 디자이너의 이어주는 서비스를 제공
@@ -36,7 +35,7 @@
 </br></br>
 
 ## 서비스 특징
-<hr>
+
 </br>
 
 * MiriNail은 Designer, Community 페이지를 통해 고객과 디자이너간의 원활한 소통 서비스를 제공합니다.
@@ -46,7 +45,7 @@
 </br></br>
 
 ## 프로젝트 팀원
-<hr>
+
 </br>
 <p align="center">
   <img src="./image/team.png" alt="text" width="number" />
@@ -56,7 +55,7 @@
 </br></br>
 
 ## 프로젝트 기간
-<hr>
+
 </br>
 
 ### 2022.04.11 ~ 2022.05.20 ( 6주 )
@@ -64,7 +63,7 @@
 </br></br>
 
 ## 주요 협업 툴
-<hr>
+
 </br>
 
 - Jira
@@ -76,7 +75,7 @@
 
 
 ## 서비스 아키텍쳐
-<hr>
+
 </br>
 
 <p align="center">
@@ -95,7 +94,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/메인페이지.gif" alt="text" width="number" />
+  <img src="/image/main.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -109,7 +108,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/검색.gif" alt="text" width="number" />
+  <img src="/image/search.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -127,7 +126,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/네일목록.gif" alt="text" width="number" />
+  <img src="/image/naillist.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -144,7 +143,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/네일디테일.gif" alt="text" width="number" />
+  <img src="/image/naildetail.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -166,7 +165,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/예약하기.gif" alt="text" width="number" />
+  <img src="/image/reservation.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -182,7 +181,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/AR.gif" alt="text" width="number" />
+  <img src="/image/AR.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -197,7 +196,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/디자이너목록.gif" alt="text" width="number" />
+  <img src="/image/designerList.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -218,7 +217,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/마이페이지_유저.gif" alt="text" width="number" />
+  <img src="/image/mypage_user.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -235,7 +234,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/디자이너등록.gif" alt="text" width="number" />
+  <img src="/image/designerRegister.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -254,7 +253,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/NFT등록.gif" alt="text" width="number" />
+  <img src="/image/register.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -270,7 +269,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/새소식작성.gif" alt="text" width="number" />
+  <img src="/image/new.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -283,7 +282,7 @@
 ## 문의 내역
 
 <p align="center">
-  <img src="./image/문의작성.gif" alt="text" width="number" />
+  <img src="/image/qna.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -296,7 +295,7 @@
 # 관리자
 
 <p align="center">
-  <img src="./image/관리자승인.gif" alt="text" width="number" />
+  <img src="/image/admin.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -310,7 +309,7 @@
 </br>
 
 <p align="center">
-  <img src="./image/커뮤니티.gif" alt="text" width="number" />
+  <img src="/image/community.gif" alt="text" width="number" />
 </p>
 
 </br>
@@ -318,12 +317,6 @@
 ### 1. 커뮤니티 페이지에서는 다른 유저들의 글을 확인 할 수 있다.
 ### 2. 올라온 글을 클릭해 댓글을 달아 소통 할 수 있다.
 ### 3. 작성하기 버튼을 통해 이미지를 올리고 글을 작성하여 소통 할 수도 있다.
-
-
-
-
-
-
 
 
 
