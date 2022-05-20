@@ -10,38 +10,43 @@ interface AccordionProps {
 
 // style
 const Container = styled.div`
-  border-radius: 10px;
   display: flex;
-  width: 70vw;
+  width: 100%;
   position: relative;
   flex-direction: column;
   justify-content: center;
-  /* border-radius: 10px; */
   border: 1px solid lightgray;
   margin-bottom: 5px;
   span {
     font-size: 24px;
-    font-weight: bold;
+
     margin-right: 12px;
   }
+  padding-left:"15px"
 `;
 
 const Question = styled.div`
+  padding: 5px 10px !important;
   font-size: 20px;
-  font-weight: bold;
+  width:100%;
   display: flex;
   align-items: center;
   cursor: pointer;
   height: 40px;
   margin: 0 32px 0 20px;
-  padding: 5px 0;
+  
+  .btn {
+    right:30px;
+    font-size: 14px;
+    position: absolute;
+
+    @media screen and (max-width: 767px) {
+      display:none;
+    }
+  }
 `;
 
-const Button = styled.div`
-  right: 10px;
-  font-size: 14px;
-  position: absolute;
-`;
+
 
 const ContentsWrapper = styled.div`
   height: 0;
@@ -52,7 +57,8 @@ const ContentsWrapper = styled.div`
 `;
 
 const Contents = styled.div`
-  padding: 12px;
+  padding: 12px 12px !important;
+  // padding: 12px;
   p {
     margin: 0;
     font-weight: 500;
@@ -86,7 +92,7 @@ function Accordion(props: AccordionProps) {
         parentRef.current.style.height = `${
           props.contents ? childRef.current.clientHeight : 0
         }px`;
-        parentRef.current.style.backgroundColor = "#efeff8 ";
+        parentRef.current.style.backgroundColor = "rgb(236 236 236)";
       }
       setIsCollapse(!isCollapse);
     },
@@ -108,17 +114,17 @@ function Accordion(props: AccordionProps) {
           </div>
         ))}
       </>
-    ); 
+    );
   }
 
   return (
     <Container>
       <Question onClick={handleButtonClick}>
-        <div>
+        <div style={{padding:"5px 0 !important"}}>
           <span>Q.</span>
           {props.title}
         </div>
-        <Button>{buttonText}</Button>
+        <div className="btn">{buttonText}</div>
       </Question>
       <ContentsWrapper ref={parentRef}>
         <Contents ref={childRef}>{enter(props.contents)}</Contents>

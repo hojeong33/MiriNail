@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AR 가상 피팅 서비스</title>
+  <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet"> 
+</head>
+<script async src="https://docs.opencv.org/3.4/opencv.js"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.0/sockjs.min.js" integrity="sha512-ksHM9XpigYGeRdXZfI4GddPsUjmLj6zd1MCNXL4fsfDwp1G+u6hC73uwDjlpjdX4tbEtj/N1AWkLo6WjDwQkyA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+<!--script async src="./opencv.js"></script-->
+<body>
+	<video id="videoInput" style="display:none;" ></video>
+  <canvas id="videoOutput" style="display:none"></canvas>
+  <div class="buttonPlace" id="text">
+    <div class="btn" >Virtual Try On</div>
+    <div class="on_now_tag" onclick=stream()></div>
+  </div>
+  <canvas id="testt" width="640" height="480" style=""></canvas>
+  <div id="status">
+    Connection failed. Somebody may be using the socket.
+  </div>
+  <!-- <video id=""video></video> -->
+</body>
+
+
+<script>
+  
+  var w = 640, h = 480;
+//   sock = new SockJS("https://k6e101.p.ssafy.io/websocket")
+//   sock.onopen = function() {
+//      console.log('open');
+//      sock.send('test');
+//  };
+
+	var url = "ws://localhost:8000/websocket"
+	var ws = new WebSocket(url);
+  let testt = document.getElementById("testt");
+  testt.width = w;
+  testt.height = h;
+  ws.addEventListener('open', (e) => {
+    // console.log('ㅇㅇㅇㅇㄹㄴㅇㅁㄹㄴㅁ래제머ㅏ레ㅐㅈ머')
+    document.getElementById("status").innerHTML = "Opened";
+  });
+
+  ws.addEventListener('message', (e) => {
+    console.log(e.data)
+    let ctx = testt.getContext("2d");
+    let image = new Image();
+    // URL.revokeObjectURL( oldObjectUrl );
+    try {
+    image.src = URL.createObjectURL(e.data);
+    
+    }
+    catch {
+      // console.log('여기로?')
+      image.srcObject = e.data
+    }
+    console.log(image)
+    image.addEventListener("load", (e) => {
+        // console.log('들어옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ')
+        ctx.drawImage(image, 0, 0, testt.width, testt.height);
+    });
+  });
+
+
+	ws.onopen = function(){
+		console.log("Websocket is connected.");
+   
+	}
+  
+
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+  var constraints = {audio: false, video: true};
+  var video = document.getElementById("videoInput");
+  video.width = w;
+  video.height = h;
+  function successCallback(stream){
+    console.log('엥들어옴')
+  	video.srcObject = stream;
+  	video.play();
+  }
+  
+  function errorCallback(error){
+   	console.log(error);
+  }
+  navigator.getUserMedia(constraints, successCallback, errorCallback);
+	var canvas = document.getElementById("videoOutput");
+  canvas.width = w;
+  canvas.height = h;
+  var ctx = canvas.getContext("2d");
+  function processImage(){
+        ctx.drawImage(video, 0, 0, w, h);
+        setTimeout(processImage, 1);
+  }
+  processImage();
+
+  function stream(){
+    var x = document.getElementById("text");
+    console.log(x)
+    x.style.display = 'none'
+
+    setInterval(sendImage, 100);
+  }
+
+  function sendImage(){
+    var rawData = canvas.toDataURL("image/jpeg", 1.0);
+    // console.log(rawData)
+    ws.send(rawData)
+    // ws.send(rawData);
+  }
+
+
+ 
+
+
+  
+</script>
+</html>

@@ -1,0 +1,149 @@
+@mixin centerFill($width, $direction: row) {
+  width: $width;
+  display: flex;
+  // flex-direction: $direction;
+  // align-items: center;
+  justify-content: center;
+}
+
+.ImagePreview {
+  $size: 180px;
+  $size2 : 220px;
+
+  @keyframes ImagePreview_construct {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  position: relative;
+  
+  width: $size;
+  height: $size2;
+  overflow: hidden;
+  animation: ImagePreview_construct 0.5s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #e3e3e3;
+  }
+
+  .icon_container {
+    $size: 25px;
+
+    // @include centerFill(100%);
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    width: $size;
+    height: $size;
+    margin: 5px;
+    background-color: #c4c4c4;
+    border-radius: 50%;
+
+    i {
+      color: white;
+    }
+  }
+}
+
+.ImageUploadBox2 {
+  > * {
+    width: 100%;
+    border-radius: 3px;
+  }
+  input {
+    display: none;
+    opacity: 0;
+  }
+
+  label {
+    @include centerFill(90%);
+    // display: flex;
+    justify-content: space-between;
+    background-color: #dedede;
+    padding: 20px 50px;
+    margin : 20px;
+    margin-left :auto;
+    margin-right: auto;
+    width: 50%;
+    height : 125px;
+
+    &:hover {
+      background-color: #c8c8c8;
+    }
+
+    .text_box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h3 {
+        font-size: 18px;
+        margin-top:10px;
+        margin-bottom: 10px;
+      }
+      span {
+        font-size: 12px;
+        color: #6d6d6d;
+      }
+    }
+
+    .icon_box {
+      svg {
+        font-size: 50px;
+        margin-top:18px;
+        
+      }
+    }
+  }
+
+
+  .preview_wrapper {
+    
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #b8b8b8;
+    // display:flex;
+
+    .previewBoxLeft {
+      // display:flex;
+      height:20px;
+    }
+
+    .preview_container {
+      $height: 240px;
+      padding-top:10px;
+      padding-left:20px;
+      width: 100%;
+      overflow-y: auto;
+      height: $height;
+      max-height: $height;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 104px);
+      column-gap: 120px;
+      row-gap: 30px;
+
+      &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #7c7c7c;
+        border-radius: 10px;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: #a6a6a6;
+      }
+      &::-webkit-scrollbar-track {
+        background: #ededed;
+        border-radius: 10px;
+      }
+    }
+  }
+}
