@@ -576,7 +576,7 @@ export default function CommunityImgList() {
                       } else {
                         alert("로그인이 필요합니다.");
                         window.location.replace(
-                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                          "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
                         );
                       }
                     }}
@@ -604,7 +604,7 @@ export default function CommunityImgList() {
                       } else {
                         alert("로그인이 필요합니다.");
                         window.location.replace(
-                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                          "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
                         );
                       }
                     }}
@@ -645,7 +645,7 @@ export default function CommunityImgList() {
                         } else {
                           alert("로그인이 필요합니다.");
                           window.location.replace(
-                            "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                            "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
                           );
                         }
                       }}
@@ -674,7 +674,7 @@ export default function CommunityImgList() {
                       } else {
                         alert("로그인이 필요합니다.");
                         window.location.replace(
-                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                          "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
                         );
                       }
                     }}
@@ -710,7 +710,7 @@ export default function CommunityImgList() {
                       } else {
                         alert("로그인이 필요합니다.");
                         window.location.replace(
-                          "http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect"
+                          "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
                         );
                       }
                     }}

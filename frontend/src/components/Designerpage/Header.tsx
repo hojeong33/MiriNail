@@ -7,7 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CreateIcon from "@mui/icons-material/Create";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PeopleIcon from "@mui/icons-material/People";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { designerAtom } from "../../store/atoms";
@@ -136,6 +136,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   const designer = useRecoilValue(designerAtom);
   const [selected, setSelected] = useState(0);
   const [selectedByDesigner, setSelectedByDesigner] = useState(0);
+  const navigate = useNavigate();
   const { userSeq } = useParams();
   const location = useLocation();
   const temp = location.pathname.split("/");
@@ -168,9 +169,13 @@ const Header: React.FC<IProps> = ({ refetch }) => {
       onSuccess: (res) => {
         console.log(res);
         designerRefetch();
-
       },
-      onError: (err: any) => console.log(err),
+      onError: (err: any) => {
+        console.log(err);
+        if (err.response.status === 401) { 
+          navigate("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+        }
+      },
     }
   );
 
@@ -184,7 +189,12 @@ const Header: React.FC<IProps> = ({ refetch }) => {
         console.log(res);
         designerRefetch();
       },
-      onError: (err: any) => console.log(err),
+      onError: (err: any) => {
+        console.log(err)
+        if (err.response.status === 401) { 
+          navigate("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+        }
+      },
     }
   );
 
