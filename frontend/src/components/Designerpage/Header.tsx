@@ -197,6 +197,19 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     }
   );
 
+  const onClickOneToOne = (e:any) => {
+    e.preventDefault()
+    const mySeq = sessionStorage.getItem("userSeq")
+    if (!mySeq) {
+      alert("로그인이 필요합니다.");
+      window.location.replace(
+        "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      );
+    } else {
+      navigate("createask")
+    }
+  }
+
 
   const findIsFollow = (res:any) => {
     const me = Number(sessionStorage.getItem("userSeq"));
@@ -283,6 +296,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
                       className={`${
                         temp[temp.length - 1] === "createask" ? "selected" : ""
                       }`}
+                      onClick={(e) => onClickOneToOne(e)}
                     >
                       <CreateIcon />
                       1:1 문의
