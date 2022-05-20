@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface FavoriteService {
 
     //Create
-    Favorite favoriteRegister(String userId, Long nailartSeq);
+    Favorite favoriteRegister(Long userSeq, Long nailartSeq);
 
     //Read
     boolean getIsFavorited(Long userSeq, Long nailartSeq);

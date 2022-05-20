@@ -20,9 +20,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     UserRepository userRepository;
     // Create
     @Override
-    public Favorite favoriteRegister(String userId, Long nailartSeq) {
-        User user = userRepository.findByUserId(userId);
-        Favorite favorite = favoriteRepositorySupport.favoriteRegister(user.getUserSeq(),nailartSeq);
+    public Favorite favoriteRegister(Long userSeq, Long nailartSeq) {
+        Favorite favorite = favoriteRepositorySupport.favoriteRegister(userSeq,nailartSeq);
         return favorite;
     }
 

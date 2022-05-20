@@ -30,21 +30,21 @@ public class FavoriteController {
     NailartService nailartService;
 
     // Create
-    @PostMapping("/{nailartSeq}")
+    @PostMapping("/{nailartSeq}/{userSeq}")
     @ApiOperation(value = "상품 좋아요 추가")
     @ApiResponses({
             @ApiResponse(code = 201,message = "신청 성공"),
             @ApiResponse(code = 404, message = "신청 실패")
     })
-    public ResponseEntity<BaseResponseBody> favoriteRegister (Principal principal,
+    public ResponseEntity<BaseResponseBody> favoriteRegister (@ApiParam(value = "유저 seq") @PathVariable("userSeq") Long userSeq,
                                                               @ApiParam(value = "네일아트 seq") @PathVariable("nailartSeq") Long nailartSeq){
         log.info("favoriteRegister - 호출");
 
         /**
          * 카카오 id 값이 토큰에 저장된다는 전제조건.
          */
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");         System.out.println(principal.getName());
-        Favorite favorite = favoriteService.favoriteRegister(principal.getName(), nailartSeq);
+
+        Favorite favorite = favoriteService.favoriteRegister(userSeq, nailartSeq);
 
         if(null != favorite){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"신청 성공"));
@@ -113,7 +113,7 @@ public class FavoriteController {
             @ApiResponse(code = 404 , message = "취소 실패")
     })
     public ResponseEntity<BaseResponseBody> favoriteRemove(@ApiParam(value ="네일아트 seq") @PathVariable("nailartSeq") Long nailartSeq,
-                                                           @PathVariable("userSeq") Long userSeq){
+                                                           @ApiParam(value = "유저 seq") @PathVariable("userSeq") Long userSeq){
         log.info("favoriteRemove - 호출");
 
         Favorite favorite = favoriteService.favoriteRemove(userSeq, nailartSeq);
