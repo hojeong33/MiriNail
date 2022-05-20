@@ -291,7 +291,7 @@ const UpperFrame = () => {
   );
   const { isLoading: isLikeCheckLoading, data: isLikeData } = useQuery(
     "isLike",
-    () => isLike(params)
+    () => isLike(params,myId)
   );
   const [designerSeq, setDesignerSeq] = useRecoilState<any>(designerId);
   useEffect((): any => {
@@ -305,7 +305,7 @@ const UpperFrame = () => {
   const likeFunc: any = useMutation((param: any) => nailLike(param), {
     onSuccess: () => {
       console.log("성공");
-      isLike(Number(params));
+      isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },
@@ -320,7 +320,7 @@ const UpperFrame = () => {
   const disLikeFunc: any = useMutation((param: any) => nailDislike(param), {
     onSuccess: () => {
       console.log("성공");
-      isLike(Number(params));
+      isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },
@@ -333,6 +333,11 @@ const UpperFrame = () => {
   });
 
   const likeHandler = async () => {
+    if (!myId) {
+      alert('로그인이 필요합니다')
+      window.location.replace("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+      return
+    }
     console.log("핸들러실행");
     if (isLikeData) {
       console.log("싫어요 실행");
@@ -359,7 +364,7 @@ const UpperFrame = () => {
   useEffect(() => {
    
     // 주소
-    axios.post('https://k6e101.p.ssafy.io/post',{
+    axios.post('https://3.34.140.229:8000/post',{
       strings : params
     })
     .then(res => console.log(res))
@@ -457,7 +462,7 @@ const UpperFrame = () => {
                   </div>
            
                   <div className="btns">
-                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('http://localhost:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}>
+                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => window.open('https://3.34.140.229:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}>
                       AR 피팅하기
 
                     </a>

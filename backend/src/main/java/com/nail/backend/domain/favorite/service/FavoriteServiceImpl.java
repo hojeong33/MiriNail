@@ -28,9 +28,8 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     // Read
     @Override
-    public boolean getIsFavorited(String userId, Long nailartSeq){
-        User user = userRepository.findByUserId(userId);
-        return favoriteRepositorySupport.getIsFavorited(user.getUserSeq(),nailartSeq);
+    public boolean getIsFavorited(Long userSeq, Long nailartSeq){
+        return favoriteRepositorySupport.getIsFavorited(userSeq,nailartSeq);
     }
 
     @Override

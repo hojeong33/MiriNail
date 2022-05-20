@@ -6,7 +6,7 @@ import {
   IHotDesigner,
   ILatestDesigner,
 } from "../Designer/PageContentThema";
-
+// import defaultImage from '/assets/images/default_profile.png'
 const Wrapper = styled.div`
   h1,
   h2,
@@ -170,7 +170,7 @@ const Cards = ({
           onClick={() => navigate(`/${url}/${info.designerSeq}/new`)}
         >
           <div className="profile-card-6">
-            <img src={info.designerImgUrl ? info.designerImgUrl : 'https://source.unsplash.com/75S9fpDJVdo/300x510'} className="img img-responsive" />
+            <img src={info.designerImgUrl ? info.designerImgUrl : '/assets/images/default_profile.png'} className="img img-responsive" />
             <div className="profile-name">{info.designerShopName}</div>
             <div className="profile-position" style={{ color: "#c5c4c4" }}>
               {info.designerNickName}

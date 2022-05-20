@@ -12,8 +12,7 @@ import java.io.IOException;
 
 public interface AuthenticationService {
     DesignerApplication artistRegister(ArtistRegisterPostReq artistRegisterPostReq,
-                                       MultipartFile registrationFile,
-                                       String userId) throws IOException;
+                                       MultipartFile registrationFile) throws IOException;
 
     Page<DesignerApplication> getDesignerApplicationList(Pageable pageable);
     DesignerApplication getDesignerApplicationDetail(Long designerSeq);
