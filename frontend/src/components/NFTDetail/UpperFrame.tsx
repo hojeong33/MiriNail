@@ -314,7 +314,7 @@ const UpperFrame = () => {
     },
   });
 
-  const disLikeFunc: any = useMutation((param: any) => nailDislike(param), {
+  const disLikeFunc: any = useMutation((param: any) => nailDislike(param,myId), {
     onSuccess: () => {
       isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
@@ -335,9 +335,9 @@ const UpperFrame = () => {
       return
     }
     if (isLikeData) {
-      disLikeFunc.mutate(Number(params));
+      disLikeFunc.mutate(Number(params),myId);
     } else {
-      likeFunc.mutate(Number(params));
+      likeFunc.mutate(Number(params),myId);
     }
   };
 

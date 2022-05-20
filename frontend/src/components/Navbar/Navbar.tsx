@@ -136,7 +136,6 @@ const Navbar = () => {
   const userRole = sessionStorage.getItem("userRole");
   useEffect(() => {
     const myNavbar = document.getElementById("myNavbar");
-    console.log("myNavbar", myNavbar);
     if (myNavbar) {
       window.addEventListener("scroll", function () {
         var top =
@@ -169,8 +168,6 @@ const Navbar = () => {
 
   const onKeyDownEnter = (e: any) => {
     if (e.code === "Enter") {
-      console.log("엔터");
-      console.log(searchValue);
       if (searchValue === "") {
         alert("검색어를 입력해주세요");
         return;

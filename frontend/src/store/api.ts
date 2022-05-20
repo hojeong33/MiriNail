@@ -77,12 +77,10 @@ export const nailLike = async (param: any) => {
 };
 
 // 디자인 싫어요
-export const nailDislike = async (param: any) => {
-  const response = await axios.delete(base_url + `favorite/${Number(param)}`, {
-    headers: {
-      Authorization: `Bearer ${ACCESS_TOKEN}`,
-    },
-  });
+export const nailDislike = async (param: any, id :any) => {
+  const response = await axios.delete(base_url + `favorite/${Number(param)}/${id}`, 
+  // {}
+  );
 };
 
 //디자인 갯수확인
