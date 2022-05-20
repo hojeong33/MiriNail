@@ -889,7 +889,7 @@ services:
 </br>
 
 # ERD
-![ERD](/image/ERD.png)
+![ERD](/image/erd.png)
 
 </br></br>
 
