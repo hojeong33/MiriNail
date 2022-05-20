@@ -39,9 +39,8 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     // Delete
     @Override
-    public Favorite favoriteRemove(String userId, Long productId) {
-        User user = userRepository.findByUserId(userId);
-        Favorite favorite = favoriteRepositorySupport.favoriteRemove(user.getUserSeq(),productId);
+    public Favorite favoriteRemove(Long userSeq, Long productId) {
+        Favorite favorite = favoriteRepositorySupport.favoriteRemove(userSeq,productId);
         return favorite;
     }
 

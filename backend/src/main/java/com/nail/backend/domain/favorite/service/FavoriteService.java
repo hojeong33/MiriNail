@@ -16,7 +16,7 @@ public interface FavoriteService {
     Long getFavoriteCount(Long productId);
 
     //Delete
-    Favorite favoriteRemove(String userId, Long nailartSeq);
+    Favorite favoriteRemove(Long userSeq, Long nailartSeq);
 
     Page<Favorite> getFavoriteListByUserSeq(Long userSeq, Pageable pageable);
 

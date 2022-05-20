@@ -106,17 +106,17 @@ public class FavoriteController {
 
 
     // Delete
-    @DeleteMapping("/{nailartSeq}")
+    @DeleteMapping("/{nailartSeq}/{userSeq}")
     @ApiOperation(value = "좋아요취소")
     @ApiResponses({
             @ApiResponse(code = 201 , message = "취소 성공"),
             @ApiResponse(code = 404 , message = "취소 실패")
     })
     public ResponseEntity<BaseResponseBody> favoriteRemove(@ApiParam(value ="네일아트 seq") @PathVariable("nailartSeq") Long nailartSeq,
-                                                           Principal principal){
+                                                           @PathVariable("userSeq") Long userSeq){
         log.info("favoriteRemove - 호출");
 
-        Favorite favorite = favoriteService.favoriteRemove(principal.getName(), nailartSeq);
+        Favorite favorite = favoriteService.favoriteRemove(userSeq, nailartSeq);
 
         if(null != favorite){
             return ResponseEntity.status(201).body(BaseResponseBody.of(201,"취소 성공"));
