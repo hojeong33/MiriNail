@@ -26,19 +26,13 @@
 <script>
   
   var w = 640, h = 480;
-//   sock = new SockJS("https://k6e101.p.ssafy.io/websocket")
-//   sock.onopen = function() {
-//      console.log('open');
-//      sock.send('test');
-//  };
 
-	var url = "ws://localhost:8000/websocket"
+	var url = "wss://{ar.server.url}:8000/websocket"
 	var ws = new WebSocket(url);
   let testt = document.getElementById("testt");
   testt.width = w;
   testt.height = h;
   ws.addEventListener('open', (e) => {
-    // console.log('ㅇㅇㅇㅇㄹㄴㅇㅁㄹㄴㅁ래제머ㅏ레ㅐㅈ머')
     document.getElementById("status").innerHTML = "Opened";
   });
 
@@ -57,7 +51,6 @@
     }
     console.log(image)
     image.addEventListener("load", (e) => {
-        // console.log('들어옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ')
         ctx.drawImage(image, 0, 0, testt.width, testt.height);
     });
   });
