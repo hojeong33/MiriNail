@@ -145,10 +145,12 @@ const AskDetail = () => {
         navigate(`/designerpage/${userSeq}/asklist`)
       },
       onError: (err: any) => {
-        if (err.response.status === 401) { 
-          navigate("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
         }
       },
+      retry : false,
     }
   );
 
@@ -163,10 +165,11 @@ const AskDetail = () => {
       },
       onError: (err: any) => {
         console.log(err);
-        if (err.response.status === 401) { 
-          navigate("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
+        if (err.response.status === 401) {
+          window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
         }
       },
+      retry : false,
     }
   );
 
