@@ -179,6 +179,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
       retry : false,
     }
   );
+  
 
   const unFollow = useMutation<any, Error>(
     ["unFollow"],
@@ -200,6 +201,31 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     }
   );
 
+  const onClickOneToOne = (e:any) => {
+    e.preventDefault()
+    const mySeq = sessionStorage.getItem("userSeq")
+    if (!mySeq) {
+      alert("로그인이 필요합니다.");
+      window.location.replace(
+        "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      );
+    } else {
+      navigate("createask")
+    }
+  }
+
+  const onClickReservation = (e:any) => {
+    e.preventDefault()
+    const mySeq = sessionStorage.getItem("userSeq")
+    if (!mySeq) {
+      alert("로그인이 필요합니다.");
+      window.location.replace(
+        "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      );
+    } else {
+      navigate("reservation")
+    }
+  }
 
   const findIsFollow = (res:any) => {
     const me = Number(sessionStorage.getItem("userSeq"));
@@ -211,11 +237,28 @@ const Header: React.FC<IProps> = ({ refetch }) => {
   };
 
   const onClickFollow = () => {
-    follow.mutate();
+    const mySeq = sessionStorage.getItem("userSeq")
+    if (!mySeq) {
+      alert("로그인이 필요합니다.");
+      window.location.replace(
+        "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      );
+    } else {
+      follow.mutate();
+    }
   };
 
   const onClickUnFollow = () => {
-    unFollow.mutate();
+    const mySeq = sessionStorage.getItem("userSeq")
+    if (!mySeq) {
+      alert("로그인이 필요합니다.");
+      window.location.replace(
+        "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      );
+    } else {
+      unFollow.mutate();
+    }
+    }
   };
 
   useEffect(() => {
