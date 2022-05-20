@@ -106,7 +106,6 @@ interface IProps {
 const Content:React.FC<IProps> = ({refetch}) => {
   const location = useLocation();
   const temp = location.pathname.split("/")
-  console.log(temp[temp.length - 1])
 
   return (
     <>

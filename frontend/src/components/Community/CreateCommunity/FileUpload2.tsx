@@ -11,13 +11,11 @@ const ImageUploadBox = (props: any) => {
   const [testImages, setTestImages] = useState<any[]>([])
 
   useEffect(() => {
-    console.log(uploadedImages);
     props.setImageProcess(uploadedImages);
     // props.setImageProcess(uploadedImages.length)
   }, [uploadedImages]);
 
   useEffect(() => {
-    console.log(testImages)
     props.setPostImages(testImages)
   })
 

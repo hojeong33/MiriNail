@@ -302,11 +302,11 @@ export default function CommunityImgList() {
 
   const fetchData = async (page: number) => {
     if (page > totalPages) {
-      console.log("그만~``");
+
       return;
     }
     if (communityData?.last) {
-      console.log("그만~``");
+
       return;
     }
     if (true) {
@@ -323,14 +323,6 @@ export default function CommunityImgList() {
       })
         .then((res) => {
           setItemData((curItemData) => [...curItemData, ...res.data.content]); // state에 추가
-          console.log(
-            res.data,
-            "데이터 가져옴",
-            page,
-            "page",
-            totalPages,
-            "totalpages"
-          );
           setCommunityData(res.data);
           setTotalPages(res.data.totalPages);
         })
@@ -397,7 +389,6 @@ export default function CommunityImgList() {
         },
       })
         .then((res) => {
-          // console.log("댓글 데이터", res);
           setCommentData(res.data.content);
         })
         .catch((err) => {
@@ -421,7 +412,6 @@ export default function CommunityImgList() {
         },
       })
         .then((res) => {
-          // console.log("대댓글 데이터", res);
           setreplyData(res.data.content);
         })
         .catch((err) => {
@@ -446,7 +436,6 @@ export default function CommunityImgList() {
           setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
-          // console.log(res.data, "게시글 상세 데이터");
           let temp = TimeCounting(res.data.communityRegedAt, option);
           setCommunityTime(temp);
           sessionStorage.setItem("communitySeq", communitySeq.toString());
@@ -485,7 +474,6 @@ export default function CommunityImgList() {
       });
     }
 
-    // console.log(commentPostData, "댓글데이터");
   };
 
   //댓글 작성하기

@@ -63,8 +63,6 @@ const ApplyList = () => {
   const navigate = useNavigate();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event);
-    console.log(page);
     setPage(page);
   };
 
@@ -75,7 +73,6 @@ const ApplyList = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         setLastPage(res.totalPages);
       },
       onError: (err: any) => console.log(err),
@@ -85,7 +82,7 @@ const ApplyList = () => {
   const onClickConfirm = async (confirm:boolean, designerSeq:number) => {
     try {
       const res = await patchConfirmApply(confirm, designerSeq)
-      console.log(res)
+
       refetch()
     } catch (error) {
       console.log(error)
@@ -97,7 +94,6 @@ const ApplyList = () => {
     try {
       const res:any = await getDetailApply(designerSeq)
       const url = res.data.designerCertification
-      console.log(url)
       const res2 = await getDownloadApply(url)
       const url2 = window.URL.createObjectURL(new Blob([res2]));
       const link = document.createElement("a");

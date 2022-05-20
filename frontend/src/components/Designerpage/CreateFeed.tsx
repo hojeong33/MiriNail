@@ -113,7 +113,6 @@ const CreateFeed = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res)
         navigate(`/designerpage/${userSeq}/new`)
       },
       onError: (err: any) => {

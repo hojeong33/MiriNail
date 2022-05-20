@@ -124,9 +124,7 @@ const UpdateImg = () => {
   };
 
   const handleFileOnChange = (e: React.ChangeEvent) => {
-    console.log("메인파일변화");
     setFile((e.target as HTMLInputElement).files?.item(0));
-    console.log((e.target as HTMLInputElement).files?.item(0));
     if ((e.target as HTMLInputElement).files) {
       encodeMainFileToBasek64((e.target as HTMLInputElement).files?.item(0));
     }
@@ -163,7 +161,6 @@ const UpdateImg = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
       },
       onError: (err: any) => console.log(err),
     }
@@ -175,7 +172,6 @@ const UpdateImg = () => {
       formData.append("designerSeq ", String(userSeq));
       formData.append("file", file);
       const res = await putProfileImgUpdate(formData, Number(userSeq))
-      console.log(res)
       alert("디자이너 사진이 변경되었습니다")
       getDesigner.mutate();
       navigate(`/designerpage/${userSeq}/new`)

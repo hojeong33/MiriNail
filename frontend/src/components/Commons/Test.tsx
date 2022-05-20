@@ -6,13 +6,11 @@ import { create } from 'ipfs-http-client'
 // import { IPFS, create } from 'ipfs-core'
 // import type { CID } from 'ipfs-core'
 import * as IPFS from 'ipfs-core'
-import {fetchCoins} from './api'
 
 const Test = () => {
   // var url = "ws://localhost:3000/ws"
 	// var ws = new WebSocket(url);
   // ws.onopen = function(){
-	// 	console.log("Websocket is connected.");
    
 	// }
 

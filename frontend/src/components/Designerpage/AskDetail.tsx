@@ -122,7 +122,6 @@ const AskDetail = () => {
   const [answer, setAnswer] = useState("")
   const {qnaSeq, userSeq} = useParams()
   const navigate = useNavigate();
-  console.log(qnaSeq)
 
   const { data, isLoading, refetch } = useQuery<IData["data"], Error>(
     ["getAsklist"],
@@ -131,7 +130,6 @@ const AskDetail = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
       },
       onError: (err: any) => console.log(err),
     }
@@ -144,7 +142,6 @@ const AskDetail = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         navigate(`/designerpage/${userSeq}/asklist`)
       },
       onError: (err: any) => {
@@ -162,7 +159,6 @@ const AskDetail = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         refetch();
       },
       onError: (err: any) => {

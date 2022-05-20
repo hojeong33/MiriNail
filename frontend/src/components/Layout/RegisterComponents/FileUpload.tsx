@@ -6,7 +6,6 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 
 const ImageUploadBox = (props:any ) => {
-  console.log(props)
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [previewImages, setPreviewImages] = useState([]);
   const uploadBoxRef = useRef<any>();
@@ -15,13 +14,11 @@ const ImageUploadBox = (props:any ) => {
   const [convertedTest,setConvertedTest] = useState<any>([])
 
   useEffect(() => {
-    console.log(uploadedImages)
     props.setImageProcess(uploadedImages)
 
   }, [uploadedImages])
 
   useEffect(() => {
-    console.log(testImages)
     props.setPostImages(testImages)
   },[props])
 
@@ -32,13 +29,10 @@ const ImageUploadBox = (props:any ) => {
     const handleFiles = (files:any) => {
       
       for (const file of files) {
-        console.log(file)
         if (!file.type.startsWith("image/")) continue;
         const reader = new FileReader();
         reader.onloadend = (e:any) => {
           const result:any = e.target.result ;
-          console.log(result)
-          console.log(file)
           
           if (result) {
             setUploadedImages((state:any) => [...state, result].slice(0, 2));

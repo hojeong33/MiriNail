@@ -3,7 +3,6 @@ import Collapse from './Collapse';
 
 
 const Replys = ({e}:any) => {
-  console.log(e)
     const ratingCal = (rate:number) => {
       const array2 = []; 
       for (let i=0; i <rate; i++) {

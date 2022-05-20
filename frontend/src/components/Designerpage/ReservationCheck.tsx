@@ -224,10 +224,8 @@ const ReservationCheck = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         const temp = [];
         for (let i = 0; i < res.length; i++) {
-          console.log(res[i]);
           const year = String(res[i][0]);
           const month = String(res[i][1]);
           const day = String(res[i][2]);
@@ -235,7 +233,6 @@ const ReservationCheck = () => {
             year + "-" + leadingZeros(month, 2) + "-" + leadingZeros(day, 2)
           );
         }
-        console.log(temp);
         setMark(temp);
       },
       onError: (err: any) => {
@@ -261,7 +258,6 @@ const ReservationCheck = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         // setNailarts(res.content);
       },
       onError: (err: any) => {
@@ -291,7 +287,6 @@ const ReservationCheck = () => {
   const onClickCancelBtn = async (bookSeq: number) => {
     try {
       const res = await deleteCancelReservation(bookSeq);
-      console.log(res);
       refetch();
       daterefetch();
     } catch (error) {

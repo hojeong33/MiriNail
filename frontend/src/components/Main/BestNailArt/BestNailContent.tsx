@@ -26,7 +26,6 @@ const BestNailContent = () => {
     ["bestReview", myFilter],
     fetchDesigns
   );
-  console.log(bestReviewData, "!!!!!!!!!!!!!!!!");
 
   //베스트 네일 데이터 가져오기
   return (

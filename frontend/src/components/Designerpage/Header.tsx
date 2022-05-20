@@ -153,7 +153,6 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         findIsFollow(res)
       },
       onError: (err: any) => console.log(err),
@@ -167,7 +166,6 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         designerRefetch();
       },
       onError: (err: any) => {
@@ -186,7 +184,6 @@ const Header: React.FC<IProps> = ({ refetch }) => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         designerRefetch();
       },
       onError: (err: any) => {

@@ -117,7 +117,6 @@ const NestedList = ({replyList,reviewSeq}:any) => {
 
   const delSubmit = async(e:any) => {
     const param = e
-    console.log(param)
     delReviewCommentFunc.mutate(param)
   }
   const revSubmit = async(e:any) => {

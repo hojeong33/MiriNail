@@ -151,7 +151,6 @@ const ModalBase = ({
 }: ModalBaseProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
-  console.log(info)
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;

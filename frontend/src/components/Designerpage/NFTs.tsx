@@ -111,8 +111,6 @@ const NFTs = () => {
   const { userSeq } = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event);
-    console.log(page);
     setPage(page);
   };
 

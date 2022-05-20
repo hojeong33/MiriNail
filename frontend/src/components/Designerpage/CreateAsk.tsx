@@ -137,7 +137,6 @@ const CreateAsk = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         navigate(`/designerpage/${userSeq}/askdetail/${res.qnaSeq}`);
       },
       onError: (err: any) => {

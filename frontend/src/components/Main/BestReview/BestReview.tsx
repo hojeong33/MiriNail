@@ -36,7 +36,6 @@ const BestReview = () => {
         },
       })
         .then((res) => {
-          console.log(res, "!!!!!!!!!!!!!");
           setBestReview(res.data);
         })
         .catch((err) => {
@@ -44,7 +43,6 @@ const BestReview = () => {
         });
     };
     fetchData();
-    console.log("베스트 리뷰 데이터 가져오기");
   }, []);
   return (
     <div

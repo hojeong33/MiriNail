@@ -162,11 +162,9 @@ const UpdateCommunityContent = () => {
   //게시글 상세 정보 받아오기
   useEffect(() => {
     getDetail(communitySeq);
-    console.log(itemDetail, "아이템디테일!");
   }, []);
 
   useEffect(() => {
-    console.log(itemDetail);
     setMyTest(itemDetail?.communityImg);
   }, [itemDetail]);
 
@@ -184,7 +182,6 @@ const UpdateCommunityContent = () => {
           setCommunityDesc(res.data.communityDesc);
           setCommunityTitle(res.data.communityTitle);
           setPostImages(res.data.communityImg);
-          console.log(res.data, "아이템디테일");
         })
         .catch((err) => {
           console.log(err);
@@ -200,8 +197,6 @@ const UpdateCommunityContent = () => {
       alert("수정된 데이터가 없습니다.");
       return;
     }
-    console.log(communityDesc, "내용");
-    console.log(communityTitle, "제목");
     const formdata: any = new FormData();
     formdata.append("communitySeq", communitySeq);
     formdata.append("communityDesc", communityDesc);
@@ -209,14 +204,7 @@ const UpdateCommunityContent = () => {
     postImages.forEach((e) => {
       formdata.append("communityFiles", e);
     });
-    for (let key of formdata.keys()) {
-      console.log(key);
-    }
-
-    /* value 확인하기 */
-    for (let value of formdata.values()) {
-      console.log(value);
-    }
+   
     axios
       .post("https://k6e101.p.ssafy.io/api/community/update", formdata, {
         headers: {
@@ -226,7 +214,6 @@ const UpdateCommunityContent = () => {
       })
       .then((res) => {
         navigate("/community");
-        console.log("수정완료");
       })
       .catch(console.log);
   };
@@ -254,7 +241,6 @@ const UpdateCommunityContent = () => {
   const [postImages, setPostImages] = useState<any[]>([]);
 
   useEffect(() => {
-    console.log(imageProcess);
   }, [imageProcess]);
 
   const onChangeText = (e: any) => {

@@ -104,11 +104,9 @@ const Navbar = () => {
   );
   const handleOpenUserMenu2 = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser2(event.currentTarget);
-    console.log("열림");
   };
   const handleCloseUserMenu2 = () => {
     setAnchorElUser2(null);
-    console.log("닫힘");
   };
   // URL 이동
   const navigate = useNavigate();

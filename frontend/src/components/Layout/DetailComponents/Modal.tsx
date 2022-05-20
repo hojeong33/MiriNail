@@ -126,7 +126,6 @@ export default function BasicModal(modalStatus:any) {
 
   const onLoadFile = (e:any) => {
     const file = e.target.files
-    console.log(file)
     setFiles(file)
   }
   // const formdata = new FormData
@@ -135,7 +134,6 @@ export default function BasicModal(modalStatus:any) {
       return false
     }
     const imgEl:any = document.getElementById('uploadImg')
-    console.log(imgEl)
     const reader:any = new FileReader()
     reader.onload = () => {
       imgEl.src = reader.result
@@ -143,7 +141,6 @@ export default function BasicModal(modalStatus:any) {
       imgEl.style.height = "100%"
     }
     reader.readAsDataURL(files[0])
-    console.log(imgEl)
     
   }
   useEffect(() => {
@@ -176,7 +173,6 @@ export default function BasicModal(modalStatus:any) {
     reviewRating : 0,
   })
   useEffect(() => {
-    console.log(submitData)
   },[submitData])
 
   const onChangeInput = (e: any) => {
@@ -187,7 +183,6 @@ export default function BasicModal(modalStatus:any) {
   };
 
   useEffect(() => {
-    console.log(submitData);
   }, [submitData]);
 
   const submit = async() => {
@@ -198,14 +193,7 @@ export default function BasicModal(modalStatus:any) {
     formdata.append("designerSeq",submitData.designerSeq)
     formdata.append("reviewRating",submitData.reviewRating/20)
     formdata.append('reviewFiles',files[0])
-    for (let key of formdata.keys()) {
-      console.log(key);
-    }
-
-    /* value 확인하기 */
-    for (let value of formdata.values()) {
-      console.log(value);
-    }
+  
 
     await postReviewFunc.mutate(formdata)
     handleClose()

@@ -215,9 +215,7 @@ const InquiryTable = () => {
   })
   
   const writerId = useRecoilValue(designerId)
-  console.log(params)
   const {isLoading:isinquiryLoading,data:InquiryData} = useQuery<any>(['inquiry',params,mypage], inquiryList)
-  console.log(InquiryData)
   const myId = Number(sessionStorage.getItem('userSeq'))
   useEffect(() => {
     setMyPage(1)
@@ -227,18 +225,14 @@ const InquiryTable = () => {
   
   const testFunc = (id:any,e:any) => {
     
-    console.log(e.qnaDesignerSeq,writerId,e.userSeq,Number(myId))
     if (e.qnaIsPrivated) {
       if (Number(myId) === writerId || e.userSeq === Number(myId) ) {
         const mytest:any = document.getElementById(id)
         mytest?.classList.toggle('active')
-        console.log(mytest.classList.contains('active'))
         // console.log(mytest.style.display)
         if (mytest?.style.display === "none") {
           mytest.style.display = ''
-          console.log('none이엇음')
         } else {
-          console.log('none아님')
           mytest.style.display = 'none'
         }
       } else {
@@ -248,13 +242,10 @@ const InquiryTable = () => {
     else {
       const mytest:any = document.getElementById(id)
       mytest?.classList.toggle('active')
-      console.log(mytest.classList.contains('active'))
       // console.log(mytest.style.display)
       if (mytest?.style.display === "none") {
         mytest.style.display = ''
-        console.log('none이엇음')
       } else {
-        console.log('none아님')
         mytest.style.display = 'none'
       }
     }
@@ -262,7 +253,6 @@ const InquiryTable = () => {
 
   const AnswerFunc = (e:any) => {
     const role = sessionStorage.getItem("userRole")
-    console.log(e)
     if (e === true) {
       return "답변 완료"
     } else {
@@ -279,7 +269,6 @@ const InquiryTable = () => {
     postInquiryAnswer(data)
     ,{
       onSuccess: () => {
-        console.log('성공')
         queryClient.invalidateQueries('inquiry')
       }
     }
@@ -310,7 +299,6 @@ const InquiryTable = () => {
   const answerSubmit = async(e:any) => {
     const submitData = answerData
     submitData.qnaSeq = e.qnaSeq
-    // console.log(submitData)
     postInquiryAnswerFunc.mutate(submitData)
   }
 
@@ -337,7 +325,6 @@ const InquiryTable = () => {
   };
 
   const AnswerFrame = (e:any) => {
-    console.log(e)
     const role = sessionStorage.getItem("userRole")
     if (e.qnaIsAnswered === true) {
       if (answerFlag === true) {

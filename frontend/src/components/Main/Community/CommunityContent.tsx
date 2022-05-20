@@ -43,7 +43,6 @@ const CommunityContent = () => {
         });
     };
     fetchData();
-    console.log("소통게시글 데이터 가져오기");
   }, []);
   // 최신 소통게시글 20개
 

@@ -86,19 +86,16 @@ const Wrapper = styled.div`
 const NFTItems = (props:any) => {
 
   const [myFilter,setMyFilter] = useRecoilState(nftFilter)
-  console.log(myFilter)
   
   const [mypage,setMyPage] = useRecoilState(page)
   const {isLoading:nftLoading, data:nftData } = useQuery(["nfts",myFilter], fetchDesigns)
   const [totalCount,setTotalCount] = useRecoilState(pagenation)
   const navigate = useNavigate();
-  console.log(nftData)
   useEffect(() => {
     setMyPage(1)
   },[])
   useEffect(() => {
     if(nftData && nftData[0]){
-    console.log(nftData[0].totalCount)
     setTotalCount(nftData[0].totalCount)
     }
   },[nftData])

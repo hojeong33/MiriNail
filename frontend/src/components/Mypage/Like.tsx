@@ -145,8 +145,6 @@ const Like = () => {
   const { userSeq } = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event);
-    console.log(page);
     setPage(page);
   };
 
@@ -161,7 +159,6 @@ const Like = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         setLastPage(res.totalPages)
         // setNailarts(res.content);
       },

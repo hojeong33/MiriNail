@@ -94,7 +94,6 @@ interface IState {
 }
 
 const Feed: React.FC<IState> = ({ feed, refetch }) => {
-  // console.log(feed.designerNewsImgUrl);
   const { userSeq } = useParams();
   const settings = {
     dots: true,
@@ -110,7 +109,6 @@ const Feed: React.FC<IState> = ({ feed, refetch }) => {
   const onClickDelete = async (designerNewsSeq:number) => {
     try {
       const res = await deleteFeed(designerNewsSeq);
-      console.log(res)
       refetch();
     } catch (error) {
       alert("삭제중 에러발생")

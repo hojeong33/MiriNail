@@ -161,7 +161,6 @@ const Cards = ({
   url,
 }: IHotDesignerProp | ILatestDesignerProp | IHighRateDesignerProp) => {
   const navigate = useNavigate();
-  // console.log(info)
   return (
     <>
       <Wrapper>

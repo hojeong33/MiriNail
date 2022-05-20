@@ -88,8 +88,6 @@ function BestReviewCarousels({ items }: Props) {
   useEffect(() => {
     setMainSlick(mainSlickRef.current);
     setPagingSlick(pagingSlickRef.current);
-    console.log("메인", mainSlickRef);
-    console.log("사진", pagingSlickRef);
   }, []);
 
   const mainSettings = {

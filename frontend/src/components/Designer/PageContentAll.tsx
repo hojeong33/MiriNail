@@ -73,17 +73,12 @@ const PageContentAll = () => {
     let scrollTop = document.documentElement.scrollTop;
     let scrollHeight = document.documentElement.scrollHeight;
     let clientHeight = document.documentElement.clientHeight;
-    console.log(scrollTop, scrollHeight, clientHeight);
-    console.log(scrollTop + clientHeight >= scrollHeight - 5);
     if (scrollTop + clientHeight >= scrollHeight - 1 ) {
       setTest((e) => e + 1);
-      // await console.log(test)
 
-      //  {console.log(res); setAllDesigner((e:any) => allDesigner.push(...e))})
     }
   };
   useEffect(() => {
-    console.log(test);
     getAllDesigner(test, 5).then(
       async (res: any) =>
         await setAllDesigner((prev: any) =>
@@ -93,7 +88,6 @@ const PageContentAll = () => {
   }, [test]);
 
   useEffect(() => {
-    console.log(test);
     getAllDesigner(test, 5).then((res): any => setAllDesigner(res));
     window.addEventListener("scroll", infiniteScroll, true);
   }, []);

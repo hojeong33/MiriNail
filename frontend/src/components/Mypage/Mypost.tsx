@@ -298,7 +298,6 @@ const Mypost = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         setLastPage(res.totalPages);
         // setNailarts(res.content);
       },
@@ -363,7 +362,6 @@ const Mypost = () => {
         },
       })
         .then((res) => {
-          console.log("댓글 데이터", res);
           setCommentData(res.data.content);
         })
         .catch((err) => {
@@ -388,12 +386,10 @@ const Mypost = () => {
           setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
-          console.log(res.data.communityRegedAt, "게시글 상세 데이터");
           let temp = TimeCounting(res.data.communityRegedAt, option);
           setCommunityTime(temp);
           sessionStorage.setItem("communitySeq", communitySeq.toString());
           getNowTime();
-          console.log(time, "시간");
         })
         .catch((err) => {
           console.log(err);
@@ -416,7 +412,6 @@ const Mypost = () => {
         },
       })
         .then((res) => {
-          console.log("대댓글 데이터", res);
           setreplyData(res.data.content);
         })
         .catch((err) => {
@@ -426,7 +421,6 @@ const Mypost = () => {
   };
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(page);
     setPage(page);
   };
 
@@ -464,7 +458,6 @@ const Mypost = () => {
       });
     }
 
-    console.log(commentPostData, "댓글데이터");
   };
 
   //댓글 작성하기

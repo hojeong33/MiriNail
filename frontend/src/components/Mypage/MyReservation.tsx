@@ -214,7 +214,6 @@ const MyReservation = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         // setNailarts(res.content);
       },
       onError: (err: any) => console.log(err),
@@ -232,7 +231,6 @@ const MyReservation = () => {
   const onClickCancel = async (bookSeq:number) => {
     try {
       const res = await deleteCancelReservation(bookSeq)
-      console.log(res)
       refetch();
     } catch (error) {
       console.log(error)
@@ -318,8 +316,7 @@ const MyReservation = () => {
                       className="cancel"
                       onClick={(e) => {
                         e.stopPropagation();
-                        // onClickCancel(book.bookSeq);
-                        console.log(convertDate(book.bookDatetime))
+                        onClickCancel(book.bookSeq);
                       }}
                     >
                       예약취소

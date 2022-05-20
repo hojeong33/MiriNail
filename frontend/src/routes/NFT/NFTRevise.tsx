@@ -5,8 +5,7 @@ import PageContentRevise from "../../components/Layout/ReviseComponents/PageCont
 import PageHeader from "../../components/Layout/ReviseComponents/PageHeader";
 // import PageHeader from '../../Layout/PageHeader'
 const NFTRegister = () => {
-  const abc = useLocation().state
-  console.log(abc)
+  
   return (
     <div>
       <PageHeader />

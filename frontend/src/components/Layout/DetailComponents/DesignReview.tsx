@@ -241,7 +241,6 @@ const DesignReview = () => {
     const soso = reviewData?.content.filter((e:any) => e.reviewRating === 3).length
     const bad = reviewData?.content.filter((e:any) => e.reviewRating === 2).length
     const worst = reviewData?.content.filter((e:any) => e.reviewRating === 1).length
-    console.log(best, good, soso, bad, worst)
     setDummy2({
       best : best,
       good : good,
@@ -293,7 +292,6 @@ const DesignReview = () => {
   //   }
   // },[filter])
   
-  console.log(reviewData)
   return (
     <Wrapper>
       

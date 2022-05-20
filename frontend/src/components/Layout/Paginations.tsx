@@ -7,12 +7,10 @@ import { fetchDesigns } from "../../store/api";
 import { useQuery } from "react-query";
 
 const Paginations = ({page}:any) => {
-  console.log(page)
   const [mypage,setMyPage] = useRecoilState(nftFilter)
   // const {isLoading, data } = useQuery(["nfts",mypage], fetchDesigns)
 
   const onPageChange = async(e: any, pages: number) => {
-    console.log(pages)
     await setMyPage({...mypage,page:pages})   
   };
   
@@ -34,7 +32,6 @@ const Paginations2 = ({page}:any) => {
   const [mypage,setMyPage] = useRecoilState(page2)
   
   const onPageChange = async(e: any, pages: number) => {
-    console.log(pages)
     await setMyPage(pages)   
   };
   return (

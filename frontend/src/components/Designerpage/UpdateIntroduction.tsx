@@ -216,9 +216,7 @@ function UpdateIntroduction() {
   };
 
   const handleFileOnChange = (e: React.ChangeEvent) => {
-    console.log("메인파일변화");
     setFile((e.target as HTMLInputElement).files?.item(0));
-    console.log((e.target as HTMLInputElement).files?.item(0));
     if ((e.target as HTMLInputElement).files) {
       encodeMainFileToBasek64((e.target as HTMLInputElement).files?.item(0));
     }
@@ -262,7 +260,6 @@ function UpdateIntroduction() {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
       },
       onError: (err: any) => {
         console.log(err)
@@ -289,7 +286,6 @@ function UpdateIntroduction() {
       files.append("file", file);
 
       const res =  await putUpdateIntroduction(files);
-      console.log(res)
       alert("정보가 수정되었습니다.")
       getDesigner.mutate();
       navigate(`/designerpage/${userSeq}/new`)

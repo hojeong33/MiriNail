@@ -280,7 +280,6 @@ const UpperFrame = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   let params: any = useParams().id;
-  console.log(params);
   const myId = Number(sessionStorage.getItem("userSeq"));
 
   const { isLoading: isLikeLoading, data: likeData } = useQuery("like", () =>
@@ -298,13 +297,11 @@ const UpperFrame = () => {
     if (nailData) {
       setDesignerSeq(nailData.designerSeq);
     }
-    console.log(nailData);
   }, [nailData]);
 
   const ACCESS_TOKEN = localStorage.getItem("token");
   const likeFunc: any = useMutation((param: any) => nailLike(param), {
     onSuccess: () => {
-      console.log("성공");
       isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
@@ -319,7 +316,6 @@ const UpperFrame = () => {
 
   const disLikeFunc: any = useMutation((param: any) => nailDislike(param), {
     onSuccess: () => {
-      console.log("성공");
       isLike(Number(params),myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
@@ -338,12 +334,9 @@ const UpperFrame = () => {
       window.location.replace("https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect")
       return
     }
-    console.log("핸들러실행");
     if (isLikeData) {
-      console.log("싫어요 실행");
       disLikeFunc.mutate(Number(params));
     } else {
-      console.log("좋아요 실행");
       likeFunc.mutate(Number(params));
     }
   };

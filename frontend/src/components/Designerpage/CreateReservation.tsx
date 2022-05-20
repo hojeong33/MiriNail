@@ -339,7 +339,6 @@ const CreateReservation = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         const gel = []
         const french = []
         const linestone = []
@@ -371,11 +370,9 @@ const CreateReservation = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         // setNailarts(res.content);
       },
       onError: (err: any) => {
-        console.log(err);
         if (err.response.status === 401) {
           navigate(
             "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
@@ -398,7 +395,6 @@ const CreateReservation = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         alert("성공적으로 예약되었습니다.");
         navigate(`/mypage/${sessionStorage.getItem("userSeq")}/myreservation`);
       },
@@ -444,10 +440,8 @@ const CreateReservation = () => {
   }
 
   const canSelect = (day:any, time:any) => {
-    console.log(moment().format("DD"))
     const nowTime = moment().hour()
     const compTime = time.slice(0, 2)
-    console.log(compTime)
     const today = moment().format("DD")
     if (today === day && Number(nowTime) >= Number(compTime)) {
       return "booked"

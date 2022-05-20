@@ -103,8 +103,6 @@ const MyAsk = () => {
   const { userSeq } = useParams();
   const navigate = useNavigate()
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event);
-    console.log(page);
     setPage(page);
   };
 
@@ -115,7 +113,6 @@ const MyAsk = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         setLastPage(res.totalPages);
         setAsks(res.content);
       },

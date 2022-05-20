@@ -297,7 +297,6 @@ const PageContent = () => {
           }   
           const temp = file[0].hash
           // setIpfsPath(temp)
-          console.log(temp)
           resolve(temp)
         })
     
@@ -314,11 +313,8 @@ const PageContent = () => {
     // if (ipfsPath != null) {
    
     const returnValue = registDesign(files).then(async(res) => {
-      console.log(res)
       const ipfs = await getIPFS(testBuffer)
-      console.log(ipfs)
       await pushIpfs({nailartSeq : Number(res.data), nailartNft : ipfs}).then(response => {
-        console.log(response)
       })
 
     })

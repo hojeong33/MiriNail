@@ -4,7 +4,6 @@ import './File3.scss';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const ImageUploadBox = (props:any ) => {
-  console.log(props)
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [previewImages, setPreviewImages] = useState([]);
   const uploadBoxRef = useRef<any>();
@@ -13,13 +12,11 @@ const ImageUploadBox = (props:any ) => {
 
 
   useEffect(() => {
-    console.log(uploadedImages)
     props.setImageProcess(uploadedImages)
 
   }, [uploadedImages])
 
   useEffect(() => {
-    console.log(testImages)
     props.setPostImages(testImages)
   }, [testImages])
 
@@ -46,7 +43,6 @@ const ImageUploadBox = (props:any ) => {
     
     const changeHandler = (event:any) => {
       const files = event.target.files;
-      console.log(files)
       handleFiles(files);
     };
     

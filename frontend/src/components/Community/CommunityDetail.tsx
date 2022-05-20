@@ -106,7 +106,6 @@ export default function BasicModal(modalStatus:any) {
 
   const onLoadFile = (e:any) => {
     const file = e.target.files
-    console.log(file)
     setFiles(file)
   }
   // const formdata = new FormData
@@ -115,7 +114,7 @@ export default function BasicModal(modalStatus:any) {
       return false
     }
     const imgEl:any = document.getElementById('uploadImg')
-    console.log(imgEl)
+
     const reader:any = new FileReader()
     reader.onload = () => {
       imgEl.src = reader.result
@@ -123,7 +122,7 @@ export default function BasicModal(modalStatus:any) {
       imgEl.style.height = "100%"
     }
     reader.readAsDataURL(files[0])
-    console.log(imgEl)
+
     
   }
   useEffect(() => {

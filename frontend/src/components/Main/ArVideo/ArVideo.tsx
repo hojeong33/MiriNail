@@ -52,6 +52,7 @@ const VideoPlayer = () => {
         }}
         width={"100vw"}
         height={"100vh"}
+        loop={true}
       />
     </>
   );

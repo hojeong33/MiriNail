@@ -119,7 +119,6 @@ const Content = () => {
   const location = useLocation();
   const temp = location.pathname.split("/");
   const { userSeq } = useParams();
-  console.log(temp[temp.length - 1]);
   return (
     <>
       <Wrapper>

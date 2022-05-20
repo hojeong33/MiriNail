@@ -134,8 +134,6 @@ const SearchDesigner = () => {
   const { searchvalue } = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event);
-    console.log(page);
     setPage(page);
   };
 
@@ -150,7 +148,6 @@ const SearchDesigner = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         setLastPage(res.totalPages)
       },
       onError: (err: any) => console.log(err),

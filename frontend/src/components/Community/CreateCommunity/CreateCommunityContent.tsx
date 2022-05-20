@@ -157,22 +157,13 @@ const CreateCommunityContent = () => {
       return;
     }
 
-    console.log(communityDesc);
-    console.log(communityTitle);
     const formdata: any = new FormData();
     formdata.append("communityDesc", communityDesc);
     formdata.append("communityTitle", communityTitle);
     postImages.forEach((e) => {
       formdata.append("communityFiles", e);
     });
-    for (let key of formdata.keys()) {
-      console.log(key);
-    }
 
-    /* value 확인하기 */
-    for (let value of formdata.values()) {
-      console.log(value);
-    }
     axios
       .post("https://k6e101.p.ssafy.io/api/community", formdata, {
         headers: {
@@ -209,7 +200,7 @@ const CreateCommunityContent = () => {
   const [postImages, setPostImages] = useState<any[]>([]);
 
   useEffect(() => {
-    console.log(imageProcess);
+
   }, [imageProcess]);
 
   const onChangeText = (e: any) => {

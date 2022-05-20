@@ -131,7 +131,7 @@ const Wrapper = styled.div`
 // }
 
 const Input = (props: any) => {
-  // console.log(props);
+
   
   // 색깔 선택
   const [revData,setRevData] = useState('')
@@ -170,7 +170,6 @@ const Input = (props: any) => {
     })
   }
   useEffect(() => {
-    // console.log(color)
   }, [color])
   
   
@@ -237,13 +236,10 @@ const Input = (props: any) => {
   }, [inputStatus])
 
   useEffect(() => {
-    // console.log(inputStatus);
   }, [inputStatus]);
 
   useEffect(() => {
     if (props.infoProcess) {
-      // console.log('prop 들어감')
-      // console.log(props.infoProcess)
       setInputStatus({
         nailartType : props.infoProcess.nailartType,
         nailartWeather : props.infoProcess.nailartWeather,

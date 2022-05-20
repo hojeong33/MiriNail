@@ -42,7 +42,6 @@ const FeedCarousels:React.FC<IProps> = ({images}) => {
     autoplay: true,
     autoplaySpeed: 2000,
   };
-  console.log(images)
   return (
     <Container>
       <StyledSlider {...settings}>

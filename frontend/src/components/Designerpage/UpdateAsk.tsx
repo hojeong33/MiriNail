@@ -99,7 +99,6 @@ const UpdateAsk = () => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const navigate = useNavigate();
-  console.log(qnaSeq)
 
   const { data, isLoading } = useQuery<IData["data"], Error>(
     ["getAsklist"],
@@ -108,7 +107,6 @@ const UpdateAsk = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         setTitle(res.qnaTitle)
         setContent(res.qnaDesc)
       },
@@ -123,7 +121,6 @@ const UpdateAsk = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         navigate(`/designerpage/${userSeq}/asklist`)
       },
       onError: (err: any) => {

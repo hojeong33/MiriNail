@@ -80,7 +80,6 @@ function New() {
       return null;
     },
     onSuccess: (res) => {
-      console.log(res);
       if (res.pages[res.pages.length - 1].isLast) {
         setLastState(true)
       }

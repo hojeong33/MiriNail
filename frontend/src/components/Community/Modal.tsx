@@ -276,7 +276,6 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
         },
       })
         .then((res) => {
-          console.log("댓글 데이터", res);
           setCommentData(res.data.content);
         })
         .catch((err) => {
@@ -300,7 +299,6 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
         },
       })
         .then((res) => {
-          console.log("대댓글 데이터", res);
           setreplyData(res.data.content);
         })
         .catch((err) => {
@@ -324,7 +322,6 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
           //   setModalStatus((prev: any) => !prev);
           getComments(communitySeq);
           setCurrentCommunitySeq(communitySeq);
-          console.log(res.data.communityRegedAt, "게시글 상세 데이터");
           let temp = TimeCounting(res.data.communityRegedAt, option);
           setCommunityTime(temp);
           sessionStorage.setItem("communitySeq", communitySeq.toString());
@@ -363,7 +360,6 @@ export default function ModalTest({ contents, communitySeq, state }: any) {
       });
     }
 
-    console.log(commentPostData, "댓글데이터");
   };
 
   //댓글 작성하기

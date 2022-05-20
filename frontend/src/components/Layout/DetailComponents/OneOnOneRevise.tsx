@@ -97,7 +97,6 @@ const Content = styled.div`
 `
 
 export default function OneOneOneRevise({data}:any) {
-  console.log(data)
   let params:string|undefined = useParams().id
   // const userSeq:number = sessionStorage.getItem('userSeq')
   const queryClient = useQueryClient();
@@ -110,7 +109,6 @@ export default function OneOneOneRevise({data}:any) {
       postInquiry(form)
       ,{
         onSuccess: () => {
-          console.log('성공')
           // inquiryList(params.id?.slice(1,params.id.length),1)
           queryClient.invalidateQueries('inquiry')
         }
@@ -141,16 +139,13 @@ export default function OneOneOneRevise({data}:any) {
     qnaSeq : data.qnaSeq
   }
 
-  useEffect(() => {
-    console.log(submitData)
-  },[submitData])
+ 
   
 
   const reviseInquiryFunc = useMutation((body:any) => 
   reviseInquiry(body)
   ,{
     onSuccess: () => {
-      console.log('성공')
       queryClient.invalidateQueries('inquiry')
     }
   })

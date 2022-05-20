@@ -168,7 +168,6 @@ const PageContentColor = () => {
   const [totalCount,setTotalCount] = useRecoilState(pagenation)
 
   useEffect(() => {
-    console.log(myFilter);
   }, [myFilter]);
 
   const onCheckbox = async (e: any) => {

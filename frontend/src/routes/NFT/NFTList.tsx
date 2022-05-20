@@ -13,9 +13,7 @@ const NFTList = () => {
  
   }
 
-  useEffect(() => {
-    console.log(flag)
-  },[flag])
+
   return (
     <>
       <div>

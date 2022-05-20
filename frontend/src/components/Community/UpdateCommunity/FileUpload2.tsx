@@ -10,16 +10,13 @@ const ImageUploadBox = (props: any) => {
   const inputRef = useRef<any>();
   const [testImages, setTestImages] = useState<any[]>([]);
   const [convertedTest, setConvertedTest] = useState<any>([]);
-  // console.log(props.itemDetail, "디폴트이미지!!!!!!!!!!!");
 
   useEffect(() => {
-    // console.log(uploadedImages);
     props.setImageProcess(uploadedImages);
     // props.setImageProcess(uploadedImages.length)
   }, [uploadedImages]);
 
   useEffect(() => {
-    // console.log(testImages);
     props.setPostImages(testImages);
   }, [props]);
 
@@ -71,10 +68,8 @@ const ImageUploadBox = (props: any) => {
   }, []);
 
   useEffect(() => {
-    // console.log(uploadedImages)
 
     const imageJSXs: any = uploadedImages.map((image, index) => {
-      // console.log(image, "이미지 기본");
       const isDeleteImage = (element: any) => {
         return element === image;
       };
@@ -101,7 +96,6 @@ const ImageUploadBox = (props: any) => {
     const handler = async () => {
       if (props) {
         let ls: any = [];
-        console.log(props.itemDetail.communityImg);
         for await (const file of props.itemDetail.communityImg) {
           // 2. 파일 변환 함수 실행
           const response = await convertURLtoFile(file.communityImgUrl);
@@ -117,11 +111,8 @@ const ImageUploadBox = (props: any) => {
 
   // 5. convertedTest 들어오면 실행(파일을 추가하는거랑 똑같은 로직으로 돌아감) fin
   useEffect(() => {
-    console.log(convertedTest);
 
     for (const file of convertedTest) {
-      console.log(file);
-      console.log("들어는갓니?");
       if (!file.type.startsWith("image/")) continue;
       const reader = new FileReader();
       reader.onloadend = (e: any) => {

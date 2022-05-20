@@ -192,9 +192,7 @@ const Apply = () => {
   };
 
   const handleFileOnChange = (e: React.ChangeEvent) => {
-    console.log("메인파일변화");
     setFile((e.target as HTMLInputElement).files?.item(0));
-    console.log((e.target as HTMLInputElement).files?.item(0));
   };
 
   const onCompletePost = (data: any) => {
@@ -224,7 +222,6 @@ const Apply = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
       },
       onError: (err: any) => console.log(err),
     }
@@ -243,7 +240,6 @@ const Apply = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         alert("성공적으로 신청되었습니다");
         navigate(`/mypage/${sessionStorage.getItem("userSeq")}/like`);
       },

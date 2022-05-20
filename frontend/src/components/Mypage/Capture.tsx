@@ -122,8 +122,6 @@ const Capture = () => {
   const {userSeq} = useParams();
 
   const onchangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log(event)
-    console.log(page)
   }
   
   const { data, isLoading, refetch } = useQuery<any, Error>(
@@ -133,7 +131,6 @@ const Capture = () => {
     },
     {
       onSuccess: (res) => {
-        console.log(res);
         // setLastPage(res.totalPages);
       },
       onError: (err: any) => console.log(err),

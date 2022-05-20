@@ -2,14 +2,7 @@ import { apiClient, fileApiClient } from "./apiClient"
 
 // 디자이너 인증신청 
 export const postApply = async (formdata:any) => {
-  for (let key of formdata.keys()) {
-    console.log(key);
-  }
-
-  /* value 확인하기 */
-  for (let value of formdata.values()) {
-    console.log(value);
-  }
+  
   const response = await fileApiClient.post<any>(
     "/authentication",
     formdata

@@ -176,7 +176,6 @@ const MainFrame = styled.div`
 
 const PageContentRevise = () => {
   const {state}:any = useLocation()
-  console.log(state)
   // 리모컨 
   const navigate = useNavigate();
   
@@ -206,7 +205,6 @@ const PageContentRevise = () => {
     const [nailartDesc,setnailartDesc] = useState(state.data.nailartDesc)
     const [postImages,setPostImages] = useState<any[]>([])
     useEffect(() => {
-      console.log(postImages)
     },[postImages])
   
 
@@ -233,7 +231,6 @@ const PageContentRevise = () => {
       abc += 1;
     }
     setInfoProcessNum(abc);
-    console.log(infoProcess);
   }, [infoProcess]);
 
   // ipfs 등록 및 nft 발급
@@ -245,20 +242,11 @@ const PageContentRevise = () => {
     const multipartFiles = new FormData()
     const nailData:any = {...infoProcess,nailartDesc,nailartName,designerSeq,nailartSeq:Number(state.data.nailartSeq)}
     files.append("jsonList",JSON.stringify(nailData))
-    console.log(postImages)
-    console.log(nailData)
     postImages.forEach(e => {
       files.append('files',e)}
       )
 
-    for (let key of files.keys()) {
-      console.log(key);
-    }
-  
-    /* value 확인하기 */
-    for (let value of files.values()) {
-        console.log(value);
-    }
+    
     
 
     await reviseDesign(files)
