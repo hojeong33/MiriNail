@@ -1,8 +1,9 @@
 import { apiClient, fileApiClient } from "./apiClient";
+const userSeq = sessionStorage.getItem("userSeq")
 
 // 팔로우 신청
 export const postFollow = async (followFollowee: number) => {
-  const response = await apiClient.post<any>(`/follow/${followFollowee}`, {
+  const response = await apiClient.post<any>(`/follow/${followFollowee}/${userSeq}`, {
     params: { followFollowee },
   });
   return response;
@@ -10,7 +11,7 @@ export const postFollow = async (followFollowee: number) => {
 
 // 팔로우 취소
 export const deleteFollow = async (followFollowee: number) => {
-  const response = await apiClient.delete<any>(`/follow/${followFollowee}`, {
+  const response = await apiClient.delete<any>(`/follow/${followFollowee}/${userSeq}`, {
     params: { followFollowee },
   });
   return response;
