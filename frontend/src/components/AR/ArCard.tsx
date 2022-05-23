@@ -77,7 +77,7 @@ const ArCard = () => {
           cursor: "pointer",
           height: "4rem",
         }}
-        onClick={() => window.open('https://3.34.182.44:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}
+        onClick={() => window.open('https://3.38.92.146:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}
       >
         Try Virtual Try on Now
       </div>
