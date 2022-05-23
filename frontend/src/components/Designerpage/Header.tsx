@@ -244,9 +244,7 @@ const Header: React.FC<IProps> = ({ refetch }) => {
               <img
                 src={
                   data.designerInfo.designerProfileImgUrl
-                    ? convertImgToThumnail(
-                        data.designerInfo.designerProfileImgUrl
-                      )
+                    ? data.designerInfo.designerProfileImgUrl                      
                     : "/assets/images/default_profile.png"
                 }
                 alt=""
