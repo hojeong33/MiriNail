@@ -109,7 +109,7 @@ public class NailartRepositorySupport {
         List<Long> nailartNum = jpaQueryFactory.select(qNailart.nailartSeq)
                 .from(qNailart)
                 .orderBy(qNailart.nailartSeq.desc())
-                .where(qNailart.designerSeq.eq(designerSeq).and(qNailart.nailartSeq.ne(nailartSeq)))
+                .where(qNailart.designerSeq.eq(designerSeq).and(qNailart.nailartSeq.ne(nailartSeq)).and(qNailart.nailartAvailable.eq(false)))
                 .limit(10)
                 .fetch();
         nailartNum.forEach( num -> {
