@@ -458,7 +458,7 @@ const UpperFrame = () => {
            
                   <div className="btns">
                     <a style={{ backgroundColor: "red", color: "white" }} onClick={() => {                      
-                        window.open('https://3.38.92.146:8000/nail/client', 'AR 피팅 서비스', 'width=1300, height=1020, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')
+                        window.open('https://3.38.92.146:8000/nail/client', 'AR 피팅 서비스', 'width=750, height=560, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')
                       }
                       }
                       >
