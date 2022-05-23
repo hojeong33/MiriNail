@@ -359,7 +359,7 @@ const UpperFrame = () => {
   useEffect(() => {
    
     // 주소
-    axios.post('https://3.36.88.164:8000/post',{
+    axios.post('https://3.35.13.224:8000/post',{
       strings : params
     })
     .then(res => console.log(res))
@@ -458,7 +458,7 @@ const UpperFrame = () => {
            
                   <div className="btns">
                     <a style={{ backgroundColor: "red", color: "white" }} onClick={() => {                      
-                        window.open('https://3.36.88.164:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')
+                        window.open('https://3.35.13.224:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')
                       }
                       }
                       >
