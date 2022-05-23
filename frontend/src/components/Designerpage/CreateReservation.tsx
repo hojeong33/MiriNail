@@ -333,7 +333,7 @@ const CreateReservation = () => {
   const navigate = useNavigate();
 
   const { data:nailData } = useQuery<any, Error>(
-    ["getDesignerNailart"],
+    ["getDesignerNailart", userSeq],
     async () => {
       return await getDesignerNailart(Number(userSeq), 1, 100);
     },
@@ -361,7 +361,7 @@ const CreateReservation = () => {
   );
 
   const { data: bookData, isLoading: bookLoading } = useQuery<any, Error>(
-    ["getBookByDate", moment(value).format("YYYY-MM-DD")],
+    ["getBookByDate", userSeq, moment(value).format("YYYY-MM-DD")],
     async () => {
       return await getBookByCalendar(
         moment(value).format("YYYY-MM-DD"),
@@ -372,12 +372,12 @@ const CreateReservation = () => {
       onSuccess: (res) => {
         // setNailarts(res.content);
       },
-      onError: (err: any) => {
-        if (err.response.status === 401) {
-          window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
-        }
-      },
-      retry : false,
+      // onError: (err: any) => {
+      //   if (err.response.status === 401) {
+      //     window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      //   }
+      // },
+      // retry : false,
     }
   );
 
@@ -397,13 +397,13 @@ const CreateReservation = () => {
         alert("성공적으로 예약되었습니다.");
         navigate(`/mypage/${sessionStorage.getItem("userSeq")}/myreservation`);
       },
-      onError: (err: any) => {
-        console.log(err);
-        if (err.response.status === 401) {
-          window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
-        }
-      },
-      retry : false,
+      // onError: (err: any) => {
+      //   console.log(err);
+      //   if (err.response.status === 401) {
+      //     window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
+      //   }
+      // },
+      // retry : false,
     }
   );
 

@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { convertDate } from "../Commons/functions";
 import moment from "moment";
@@ -77,7 +77,7 @@ const Title = styled.h1<{ visible: boolean }>`
 `;
 
 const Divider = styled.hr`
-  border: solid 1px #000000 ;
+  border: solid 1px #000000;
   margin: 0 auto;
   width: 65%;
   margin-bottom: 30px;
@@ -88,9 +88,7 @@ const ProfileImg = styled.img`
   height: 40px;
   border-radius: 100%;
   margin-right: 5px;
-`
-
-
+`;
 
 const CloseButton = styled.div`
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z'/%3E%3C/svg%3E");
@@ -102,11 +100,11 @@ const CloseButton = styled.div`
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
-`; 
+`;
 
 const ContentBox = styled.div`
   height: 100%;
-`
+`;
 
 const Content = styled.div`
   height: 20px;
@@ -122,8 +120,7 @@ const Content = styled.div`
     white-space: pre-wrap;
     overflow-y: auto;
   }
-
-`
+`;
 const Ask = styled.div`
   margin: 40px 100px;
   .tag {
@@ -141,16 +138,10 @@ const Ask = styled.div`
   }
 `;
 
-
 //// component
-const ModalBase = ({
-  children,
-  visible,
-  onClose,
-  info,
-}: ModalBaseProps) => {
+const ModalBase = ({ children, visible, onClose, info }: ModalBaseProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -184,46 +175,41 @@ const ModalBase = ({
         <Divider />
         <ContentBox>
           <Content>
-
-          <div className="tag">예약자 :</div>
-          <div className="tagright">
-            <ProfileImg
-              src={
-                info?.user.userProfileImg
-                  ? info.user.userProfileImg
-                  : "/assets/images/default_profile.png"
-              }
-              alt=""
-            />
-            {info?.user.userNickname}
-          </div>
+            <div className="tag">예약자 :</div>
+            <div className="tagright">
+              <ProfileImg
+                src={
+                  info?.user.userProfileImg
+                    ? info.user.userProfileImg
+                    : "/assets/images/default_profile.png"
+                }
+                alt=""
+              />
+              {info?.user.userNickname}
+            </div>
           </Content>
           <Content>
-          <div className="tag">이메일</div>
-          <div className="tagright">{info?.user.userEmail}</div>
+            <div className="tag">이메일</div>
+            <div className="tagright">{info?.user.userEmail}</div>
           </Content>
           <Content>
-          <div className="tag">예약일시</div>
-          <div className="tagright">
-            {moment(info?.bookRegedAt).format("YYYY/MM/DD HH:mm")}
-          </div>
+            <div className="tag">예약일시</div>
+            <div className="tagright">
+              {moment(info?.bookRegedAt).format("YYYY/MM/DD HH:mm")}
+            </div>
           </Content>
           <Content>
-          <div className="tag">네일아트 명</div>
-          <div className="tagright">
-            {info?.nailart.nailartType} - {info?.nailart.nailartDetailColor}
-          </div>
+            <div className="tag">네일아트 명</div>
+            <div className="tagright">
+              {info?.nailart.nailartType} - {info?.nailart.nailartDetailColor}
+            </div>
           </Content>
           <Ask>
-          <div className="tag">요청사항</div>
-          <div className="tagright">
-            {info?.bookComment ? info?.bookComment : "요청사항 없음"}
-          </div>
+            <div className="tag">요청사항</div>
+            <div className="tagright">
+              {info?.bookComment ? info?.bookComment : "요청사항 없음"}
+            </div>
           </Ask>
-
-
-
-
         </ContentBox>
       </ModalSection>
     </div>
