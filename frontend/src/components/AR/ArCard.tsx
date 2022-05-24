@@ -47,26 +47,27 @@ const ArCard = () => {
         수 있어 선택이 훨씬 쉬워집니다.
       </div>
       <div style={{ margin: "1rem 0" }}>
-        가상 네일 피팅을 위한 세 가지 팁이 있습니다.
+        가상 네일 피팅서비스를 이용 방법을 알려드리겠습니다.
       </div>
       <div style={{ fontWeight: "bold" }}>
-        STEP 1: 제공되는 가이드 이미지와 같은 손동작을 펼쳐주세요.
+        STEP 1: 원하는 디자인 제품의 상세 페이지로 들어가세요.
       </div>
       <div style={{ marginBottom: "1rem" }}>
         최상의 인식률을 유지하기 위해 인식 초기에는 제공되는 가이드의 손모양과
         동일한 모양을 유지해주세요.
       </div>
-      <div style={{ fontWeight: "bold" }}> STEP 2: 밝은 조명</div>
+      <div style={{ fontWeight: "bold" }}> STEP 2: 제품 이미지 우측의 붉은색 'AR 피팅하기' 버튼을 클릭하세요.</div>
       <div style={{ marginBottom: "1rem" }}>
         어두운 환경에서는 인식률이 저하되거나, 원하는 결과물을 받지 못할 수
-        있습니다. 밝은 조명아래서 서비스를 이용해주세요.
+        있습니다. 밝은 조명아래서 서비스를 이용해주세요.(배경이 검은 경우 더욱 인식률이 높아집니다.)
       </div>
-      <div style={{ fontWeight: "bold" }}> STEP 3: 깨끗한 손상태</div>
+      <div style={{ fontWeight: "bold" }}> STEP 3: 웹캠 혹은 노트북 캠으로 손톱을 촬영해주세요.</div>
       <div style={{ marginBottom: "1rem" }}>
         손톱에 이물질이나 잔여물들을 제거한 후 서비스를 이용해주세요. 이물질들에
         의해 방해가 생길 수 있고, 결과물을 제대로 표현하지 못할 가능성이
         있습니다.
       </div>
+      
       <div
         style={{
           fontSize: "2rem",
@@ -79,7 +80,7 @@ const ArCard = () => {
         }}
         onClick={() => window.open('https://3.38.98.84:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}
       >
-        Try Virtual Try on Now
+        Test AR service with sample image
       </div>
     </div>
   );
