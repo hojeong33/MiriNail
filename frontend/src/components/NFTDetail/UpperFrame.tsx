@@ -217,7 +217,7 @@ const Wrapper = styled.div`
               }
             }
             .btns {
-              margin-top: 70px;
+              margin-top: 100px;
               position: relative;
               zoom: 1;
               width: 100%;
