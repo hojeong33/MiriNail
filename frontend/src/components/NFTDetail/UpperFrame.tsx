@@ -374,7 +374,7 @@ const UpperFrame = () => {
               <div className="imHarf">
                 <div className="mainImg">
                   <img
-                    style={{ width: "95%", height: "100%" }}
+                    style={{ width: "92%", height: "100%" }}
                     src={nailData?.nailartThumbnailUrl}
                     alt=""
                   />
