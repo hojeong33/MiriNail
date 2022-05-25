@@ -393,15 +393,17 @@ const UpperFrame = () => {
                       <div className="boxsRight">
                         <div
                           className="rev"
-                          style={{cursor:"pointer"}}
+                          style={{ cursor: "pointer" }}
                           onClick={() =>
-                            navigate("/nft/revise", { state: {data :nailData} })
+                            navigate("/nft/revise", {
+                              state: { data: nailData },
+                            })
                           }
                         >
                           수정
                         </div>
                         <div
-                          style={{ marginLeft: "10px",cursor:"pointer" }}
+                          style={{ marginLeft: "10px", cursor: "pointer" }}
                           onClick={() => delDesign(params)}
                         >
                           삭제
@@ -409,7 +411,9 @@ const UpperFrame = () => {
                       </div>
                     ) : null}
                   </div>
-                  <div className="name">{nailData?.nailartType} - {nailData?.nailartDetailColor}</div>
+                  <div className="name">
+                    {nailData?.nailartType} - {nailData?.nailartDetailColor}
+                  </div>
                   <div className="price">
                     {nailData?.nailartPrice
                       .toString()
@@ -430,7 +434,11 @@ const UpperFrame = () => {
                   <div className="designerInfo">
                     <div className="designerImg">
                       <img
-                        src={nailData?.designerImgUrl ? nailData?.designerImgUrl : "https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg"}
+                        src={
+                          nailData?.designerImgUrl
+                            ? nailData?.designerImgUrl
+                            : "https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg"
+                        }
                         alt=""
                         onClick={() =>
                           navigate(`/designerpage/${nailData?.designerSeq}/new`)
@@ -450,22 +458,41 @@ const UpperFrame = () => {
                         {nailData?.designerShopName}
                       </div> */}
                     </div>
-                    <div className="ipfsInfo" >
-                      <span data-tooltip-text={nailData?.nailartNft} onClick={() => copy(nailData?.nailartNft)}>IPFS HASH</span>
-                      <br/><br/>
+                    <div className="ipfsInfo">
+                      <span
+                        data-tooltip-text={nailData?.nailartNft}
+                        onClick={() => copy(nailData?.nailartNft)}
+                      >
+                        IPFS HASH
+                      </span>
+                      <br />
+                      <br />
                     </div>
                   </div>
-           
-                  <div className="btns">
-                    <a style={{ backgroundColor: "red", color: "white" }} onClick={() => {                      
-                        window.open('https://3.38.98.84:8000/nail/client', 'AR 피팅 서비스', 'width=750, height=590, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')
-                      }
-                      }
-                      >
-                      AR 피팅하기
 
+                  <div className="btns">
+                    <a
+                      style={{ backgroundColor: "red", color: "white" }}
+                      onClick={() => {
+                        if (
+                          sessionStorage.getItem("userRole") === "ROLE_ARTIST"
+                        ) {
+                          window.open(
+                            "https://3.38.98.84:8000/nail/client",
+                            "AR 피팅 서비스",
+                            "width=750, height=590, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no"
+                          );
+                        } else {
+                          alert(
+                            "원활한 시연을 위해 접속을 제한합니다. 양해바랍니다."
+                          );
+                        }
+                      }}
+                    >
+                      AR 피팅하기
                     </a>
-                    <Link to={`/designerpage/${nailData?.designerSeq}/reservation`}
+                    <Link
+                      to={`/designerpage/${nailData?.designerSeq}/reservation`}
                       style={{ backgroundColor: "white" }}
                     >
                       <CalendarMonthIcon style={{ marginBottom: "2px" }} />
