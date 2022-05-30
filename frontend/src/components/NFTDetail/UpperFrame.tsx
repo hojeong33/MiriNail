@@ -478,7 +478,7 @@ const UpperFrame = () => {
                           sessionStorage.getItem("userRole") === "ROLE_ARTIST"
                         ) {
                           window.open(
-                            "https://3.38.183.211:8000/nail/client",
+                            "https://52.79.183.13:8000/nail/client",
                             "AR 피팅 서비스",
                             "width=750, height=590, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no"
                           );
