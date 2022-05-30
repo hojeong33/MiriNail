@@ -359,7 +359,7 @@ const UpperFrame = () => {
   useEffect(() => {
    
     // 주소
-    axios.post('https://3.38.183.211:8000/post',{
+    axios.post('https://52.79.183.13:8000/post',{
       strings : params
     })
     .then(res => console.log(res))
