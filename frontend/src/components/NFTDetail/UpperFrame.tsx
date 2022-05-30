@@ -359,7 +359,7 @@ const UpperFrame = () => {
   useEffect(() => {
    
     // 주소
-    axios.post('https://15.164.244.19:8000/post',{
+    axios.post('https://3.38.183.211:8000/post',{
       strings : params
     })
     .then(res => console.log(res))
@@ -478,7 +478,7 @@ const UpperFrame = () => {
                           sessionStorage.getItem("userRole") === "ROLE_ARTIST"
                         ) {
                           window.open(
-                            "https://15.164.244.19:8000/nail/client",
+                            "https://3.38.183.211:8000/nail/client",
                             "AR 피팅 서비스",
                             "width=750, height=590, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no"
                           );
