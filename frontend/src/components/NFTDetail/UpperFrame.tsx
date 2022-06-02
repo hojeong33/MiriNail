@@ -276,7 +276,7 @@ const Wrapper = styled.div`
 `;
 
 const UpperFrame = () => {
-  
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   let params: any = useParams().id;
@@ -290,7 +290,7 @@ const UpperFrame = () => {
   );
   const { isLoading: isLikeCheckLoading, data: isLikeData } = useQuery(
     "isLike",
-    () => isLike(params,myId)
+    () => isLike(params, myId)
   );
   const [designerSeq, setDesignerSeq] = useRecoilState<any>(designerId);
   useEffect((): any => {
@@ -300,9 +300,9 @@ const UpperFrame = () => {
   }, [nailData]);
 
   const ACCESS_TOKEN = localStorage.getItem("token");
-  const likeFunc: any = useMutation((param: any) => nailLike(param,myId), {
+  const likeFunc: any = useMutation((param: any) => nailLike(param, myId), {
     onSuccess: () => {
-      isLike(Number(params),myId);
+      isLike(Number(params), myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },
@@ -312,12 +312,12 @@ const UpperFrame = () => {
         window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
       }
     },
-    retry : false,
+    retry: false,
   });
 
-  const disLikeFunc: any = useMutation((param: any) => nailDislike(param,myId), {
+  const disLikeFunc: any = useMutation((param: any) => nailDislike(param, myId), {
     onSuccess: () => {
-      isLike(Number(params),myId);
+      isLike(Number(params), myId);
       queryClient.invalidateQueries("isLike");
       queryClient.invalidateQueries("like");
     },
@@ -327,7 +327,7 @@ const UpperFrame = () => {
         window.location.href = "https://k6e101.p.ssafy.io:8443/oauth2/authorization/kakao?redirect_uri=https://k6e101.p.ssafy.io/oauth2/redirect"
       }
     },
-    retry : false,
+    retry: false,
   });
 
   const likeHandler = async () => {
@@ -337,9 +337,9 @@ const UpperFrame = () => {
       return
     }
     if (isLikeData) {
-      disLikeFunc.mutate(Number(params),myId);
+      disLikeFunc.mutate(Number(params), myId);
     } else {
-      likeFunc.mutate(Number(params),myId);
+      likeFunc.mutate(Number(params), myId);
     }
   };
 
@@ -348,23 +348,23 @@ const UpperFrame = () => {
     navigate("/nft");
   };
 
-  const copy = (link:any) => {
+  const copy = (link: any) => {
     const el = 'https://ipfs.io/ipfs/' + link
     // el.select()
     // document.execCommand("copy")
- 
-    navigator.clipboard.writeText(`${el}`).then(() => {alert('해쉬를 클립보드에 복사했습니다.')})
+
+    navigator.clipboard.writeText(`${el}`).then(() => { alert('해쉬를 클립보드에 복사했습니다.') })
   }
 
   useEffect(() => {
-   
+
     // 주소
-    axios.post('https://3.38.135.105:8000/post',{
-      strings : params
+    axios.post('https://3.38.165.101:8000/post', {
+      strings: params
     })
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-  },[])
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }, [])
   return (
     <>
       <Wrapper>
@@ -478,7 +478,7 @@ const UpperFrame = () => {
                           sessionStorage.getItem("userRole") === "ROLE_ARTIST"
                         ) {
                           window.open(
-                            "https://3.38.135.105:8000/nail/client",
+                            "https://3.38.165.101:8000/nail/client",
                             "AR 피팅 서비스",
                             "width=750, height=590, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no"
                           );

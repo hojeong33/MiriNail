@@ -67,7 +67,7 @@ const ArCard = () => {
         의해 방해가 생길 수 있고, 결과물을 제대로 표현하지 못할 가능성이
         있습니다.
       </div>
-      
+
       <div
         style={{
           fontSize: "2rem",
@@ -78,7 +78,7 @@ const ArCard = () => {
           cursor: "pointer",
           height: "4rem",
         }}
-        onClick={() => window.open('https://3.38.135.105:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}
+        onClick={() => window.open('https://3.38.165.101:8000/nail/client', 'AR 피팅 서비스', 'width=660, height=520, status=no, menubar=no, toolbar=no, resizable=no, directories=no, scrollbars=0, location=no')}
       >
         Test AR service with sample image
       </div>
