@@ -181,7 +181,7 @@
 </br>
 
 <p align="center">
-  <img src="/image/AR.gif" alt="text" width="number" />
+  <img src="/image/finger_detection.gif" alt="text" width="number" />
 </p>
 
 </br>
