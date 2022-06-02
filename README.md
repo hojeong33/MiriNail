@@ -68,7 +68,7 @@
 
 - Jira
 - MatterMost
-- GitLap
+- GitLab
 - [Notion](https://www.notion.so/MIRINAIL-33e8f8a0c76f4aed8a8e2f6998be4300)
 
 </br></br>
